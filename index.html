@@ -2719,6 +2719,7 @@ const IDA_FULL = `<svg viewBox="128 -4 100 200">
   </g></g>
 </svg>`;
 // Gemeinsam genutzt von Teil 1 und Teil 2
+const partyHat = (cx, ty, c1 = "#3d7fd6", c2 = "#ffcc33") => `<g transform="rotate(10 ${cx} ${ty})"><path d="M${cx - 10} ${ty + 4}L${cx + 1} ${ty - 20}L${cx + 10} ${ty + 4}z" fill="${c1}" stroke="#4a3728" stroke-width="2" stroke-linejoin="round"/><path d="M${cx - 6} ${ty - 4}l12 0M${cx - 3} ${ty - 12}l7 0" stroke="${c2}" stroke-width="3"/><circle cx="${cx + 1}" cy="${ty - 21}" r="3.6" fill="${c2}" stroke="#4a3728" stroke-width="1.6"/></g>`;
 // ======================================================================
 // Abwechslungsreichere Wände + jede Person genau einmal pro Level
 // ======================================================================
@@ -2931,7 +2932,6 @@ document.head.insertAdjacentHTML("beforeend", `<style>
 const snowHTML = () => Array.from({ length: 14 }, (_, i) => `<span class="snow" style="left:${(i * 37) % 100}%;--dur:${8 + (i % 5)}s;--delay:${-i * .9}s;transform:scale(${.5 + (i % 3) * .3})"></span>`).join("");
 
 // Partyhut / Weihnachtsmütze für die Wandbilder (in den Koordinaten des Brustbilds)
-const partyHat = (cx, ty, c1 = "#3d7fd6", c2 = "#ffcc33") => `<g transform="rotate(10 ${cx} ${ty})"><path d="M${cx - 10} ${ty + 4}L${cx + 1} ${ty - 20}L${cx + 10} ${ty + 4}z" fill="${c1}" stroke="#4a3728" stroke-width="2" stroke-linejoin="round"/><path d="M${cx - 6} ${ty - 4}l12 0M${cx - 3} ${ty - 12}l7 0" stroke="${c2}" stroke-width="3"/><circle cx="${cx + 1}" cy="${ty - 21}" r="3.6" fill="${c2}" stroke="#4a3728" stroke-width="1.6"/></g>`;
 const santaHat = (cx, ty) => `<g transform="rotate(-8 ${cx} ${ty})"><path d="M${cx - 16} ${ty + 4}q4-22 20-22 10 2 16 14-6-4-10-2l2 10z" fill="#d6262b" stroke="#4a3728" stroke-width="2" stroke-linejoin="round"/><rect x="${cx - 18}" y="${ty}" width="34" height="8" rx="4" fill="#ffffff" stroke="#4a3728" stroke-width="1.8"/><circle cx="${cx + 22}" cy="${ty - 4}" r="4.4" fill="#ffffff" stroke="#4a3728" stroke-width="1.6"/></g>`;
 const guest = (who, padTop, padSide, hat = "") => famPad(padTop, padSide, who + hat);
 
@@ -3461,7 +3461,8 @@ const placeFull = (svg, cx, g, s) => svg.replace("<svg ", `<svg x="${(cx - 50 * 
 const LOGO_KIDS = FRIENDS.map(f => `<svg viewBox="0 -24 100 124" overflow="visible">${kidFigure({ ...f, shirt: pastel(f.shirt, .4), shorts: pastel(f.shorts, .4),
   socks: f.socks === "none" ? "none" : pastel(f.socks, .3), shoes: pastel(f.shoes, .35), hat: f.hat.map(c => pastel(c, .3)) })}</svg>`);
 const placeKid = (svg, cx, g, s) => svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 118 * s).toFixed(1)}" width="${100 * s}" height="${124 * s}" `);
-const LOGO_LASSE = LASSE.fussball.replace("<svg ", `<svg x="${280 - 96}" y="${318 - 186}" width="192" height="192" overflow="visible" `);
+// Titelbild in beiden Teilen mit demselben Lasse (Teil 2 überschreibt LASSE.fussball mit der Comic-Figur)
+const LOGO_LASSE = (typeof LASSE_CLASSIC !== "undefined" ? LASSE_CLASSIC : LASSE.fussball).replace("<svg ", `<svg x="${280 - 96}" y="${318 - 186}" width="192" height="192" overflow="visible" `);
 const FAMILY_HERO = `<svg viewBox="34 54 506 270" role="img" aria-label="Lasse mit Familie und Freunden: Papa Sören, Mama Anna, Schwester Ida, Oma Ilse und Opa, Oma Gobi, Arne und Matze, Christian, Alex und Enni, Levi, Willem, Lucas, Miko und Ege">
   <ellipse cx="287" cy="318" rx="248" ry="9" fill="#2a3f8414"/>
   <!-- hinten links: Oma Gobi, daneben Oma Ilse und Opa als Paar -->
