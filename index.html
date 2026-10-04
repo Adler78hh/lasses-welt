@@ -156,6 +156,8 @@ button:disabled { cursor: default; }
 .actions svg { width: 16px; height: 16px; }
 
 .stage { position: relative; max-width: 100%; }
+.stage.zoomed { overflow: hidden; max-width: none; }
+#board.pinching .sprite, #board.pinching .box .spin { transition: none; }
 /* Gäste, die neben dem Spielfeld stehen (z. B. beim Grillfest) */
 .arena { width: 100%; display: flex; align-items: flex-end; justify-content: center; gap: 4px; }
 .arena .stage { flex: 0 1 auto; min-width: 0; }
@@ -3811,7 +3813,7 @@ function loadLevel(w, l, data) {
   board.style.setProperty("--w", W); board.style.setProperty("--h", H);
   for (const k of ["--g1", "--g2", "--g3"]) board.style.removeProperty(k);
   if (T.levelVars) for (const [k, v] of Object.entries(T.levelVars(l))) board.style.setProperty(k, v);
-  sizeTiles(); buildBoard();
+  ZOOM = 1; sizeTiles(); buildBoard();
   savedBeforeReset = null;
   reset(data);
 }
@@ -3968,6 +3970,14 @@ function render() {
 
 function follow() {
   const stage = document.querySelector(".stage");
+  if (ZOOM > 1) {
+    const t = TILE0 * ZOOM, px = player[0] * t + t / 2, py = player[1] * t + t / 2, vw = stage.clientWidth, vh = stage.clientHeight, m = t * 1.5;
+    let l = stage.scrollLeft, tp = stage.scrollTop;
+    if (px - l < m || px - l > vw - m) l = px - vw / 2;
+    if (py - tp < m || py - tp > vh - m) tp = py - vh / 2;
+    if (l !== stage.scrollLeft || tp !== stage.scrollTop) stage.scrollTo({ left: l, top: tp, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    return;
+  }
   const wide = board.scrollWidth > stage.parentElement.clientWidth - 8;
   stage.classList.toggle("wide", wide);
   if (!wide) return;
@@ -4043,14 +4053,54 @@ document.getElementById("next").addEventListener("click", () => {
   else show("map");
 });
 
-let touch = null;
-board.addEventListener("pointerdown", (e) => { touch = [e.clientX, e.clientY]; });
-board.addEventListener("pointerup", (e) => {
-  if (!touch) return;
-  const dx = e.clientX - touch[0], dy = e.clientY - touch[1]; touch = null;
-  if (Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
-  step(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "r" : "l") : (dy > 0 ? "d" : "u"));
+// Steuerung auf dem Spielfeld: ein Finger wischt (Lasse läuft), zwei Finger zoomen und verschieben,
+// zweimal schnell tippen zeigt wieder das ganze Feld
+const ptrs = new Map();
+let swipeStart = null, pinch = null, pinchUsed = false, lastTap = 0;
+const stageEl = () => document.querySelector(".stage");
+const mid = () => { const p = [...ptrs.values()]; return [(p[0][0] + p[1][0]) / 2, (p[0][1] + p[1][1]) / 2]; };
+const dist = () => { const p = [...ptrs.values()]; return Math.hypot(p[0][0] - p[1][0], p[0][1] - p[1][1]); };
+board.addEventListener("pointerdown", (e) => {
+  ptrs.set(e.pointerId, [e.clientX, e.clientY]);
+  if (ptrs.size === 1) { swipeStart = [e.clientX, e.clientY]; pinchUsed = false; }
+  if (ptrs.size === 2) { const st = stageEl(), r = st.getBoundingClientRect(), [mx, my] = mid();
+    pinch = { d: dist(), z: ZOOM, m: [mx, my], fx: (st.scrollLeft + mx - r.left) / (TILE0 * ZOOM), fy: (st.scrollTop + my - r.top) / (TILE0 * ZOOM) };
+    pinchUsed = true; swipeStart = null; board.classList.add("pinching"); }
 });
+board.addEventListener("pointermove", (e) => {
+  if (!ptrs.has(e.pointerId)) return;
+  ptrs.set(e.pointerId, [e.clientX, e.clientY]);
+  if (ptrs.size === 2 && pinch) {
+    const st = stageEl(), r = st.getBoundingClientRect(), [mx, my] = mid();
+    setZoom(pinch.z * dist() / pinch.d);
+    st.scrollLeft = pinch.fx * TILE0 * ZOOM - (mx - r.left); st.scrollTop = pinch.fy * TILE0 * ZOOM - (my - r.top);
+  }
+});
+const ptrEnd = (e) => {
+  if (!ptrs.has(e.pointerId)) return;
+  ptrs.delete(e.pointerId);
+  if (ptrs.size < 2 && pinch) { pinch = null; board.classList.remove("pinching"); }
+  if (ptrs.size || !swipeStart || pinchUsed) { if (!ptrs.size) swipeStart = null; return; }
+  const dx = e.clientX - swipeStart[0], dy = e.clientY - swipeStart[1]; swipeStart = null;
+  if (Math.max(Math.abs(dx), Math.abs(dy)) < 20) {
+    const now = Date.now(); if (now - lastTap < 320 && ZOOM > 1) { setZoom(1); lastTap = 0; } else lastTap = now; return;
+  }
+  step(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "r" : "l") : (dy > 0 ? "d" : "u"));
+};
+board.addEventListener("pointerup", ptrEnd);
+board.addEventListener("pointercancel", (e) => { ptrs.delete(e.pointerId); if (ptrs.size < 2) { pinch = null; board.classList.remove("pinching"); } swipeStart = null; });
+
+// Zoom: Grundgröße TILE0 passt das ganze Feld ein, ZOOM vergrößert bis 3×; die Bühne bleibt so groß wie das ganze Feld
+let ZOOM = 1, TILE0 = 0;
+function setZoom(z) {
+  ZOOM = Math.max(1, Math.min(3, z));
+  if (ZOOM < 1.04) ZOOM = 1;
+  const st = stageEl(), zoomed = ZOOM > 1;
+  st.classList.toggle("zoomed", zoomed);
+  st.style.width = zoomed ? TILE0 * W + "px" : ""; st.style.height = zoomed ? TILE0 * H + "px" : "";
+  board.style.setProperty("--t", (zoomed ? TILE0 * ZOOM : TILE0) + "px");
+  if (!zoomed) { st.scrollLeft = 0; st.scrollTop = 0; }
+}
 
 // Platz für das Spielfeld: Breite abzüglich Randfiguren, Höhe vom Spielfeld bis zum unteren Bildschirmrand
 function availSize() {
@@ -4085,7 +4135,9 @@ const stateOrig = (s) => s && { ...s, player: fromRot(s.player), boxes: s.boxes.
 const stateRot = (s) => s && { ...s, player: toRot(s.player), boxes: s.boxes.map(b => ({ ...b, ...xy(toRot([b.x, b.y])) })) };
 function sizeTiles() {
   if (!W) return;
-  board.style.setProperty("--t", Math.max(TILE_MIN, Math.floor(tileFor(W, H, availSize()))) + "px");
+  // Bei gleicher Grundgröße (z. B. Safari-Leiste ein-/ausgeblendet) bleibt der Zoom erhalten
+  const t0 = Math.max(TILE_MIN, Math.floor(tileFor(W, H, availSize()))), keep = t0 === TILE0;
+  TILE0 = t0; setZoom(keep ? ZOOM : 1);
 }
 // Gerät gedreht: Level neu ausrichten und den Spielstand (samt Zurück-Verlauf) mitnehmen
 function reorient() {
