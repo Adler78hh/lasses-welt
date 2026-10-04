@@ -1536,10 +1536,11 @@ const lasseBase = (shirt, pants, shoes, extraBody, head) => `<svg viewBox="0 0 1
 </svg>`;
 const HAIR_STRUBBEL = `<path d="M26 30q-1-22 24-22t24 22q-5-6-10-7l-3 6-5-7-6 7-4-7-6 6q-5-2-14 2z" fill="${HAIR}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
   <path d="M48 9q-2-7 5-8-1 4 2 7" fill="${HAIR}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>`;
+const LEGO_YELLOW = "#ffd21f";
+// Duplo-Lasse als Lego-Figur: gelber Kopf und gelbe Hände, keine Haare, Noppe obendrauf
 LASSE.duplo = lasseBase("#ffcd03", "#0055bf", "#e3000b",
   `<path d="M36 60h28v16H36z" fill="#0055bf" stroke="${INK}" stroke-width="2"/><path d="M38 50v10M62 50v10" stroke="#0055bf" stroke-width="4"/><circle cx="40" cy="62" r="2" fill="#ffcd03"/><circle cx="60" cy="62" r="2" fill="#ffcd03"/>`,
-  `<path d="M38 14V4h24v10z" fill="${SKIN}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="50" cy="4" rx="12" ry="3.8" fill="${SKIN}" stroke="${INK}" stroke-width="2.4"/><path d="M42.5 7v5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".7"/>
-  ${HAIR_STRUBBEL.split("\n")[0]}`);
+  `<path d="M38 11.5V5h24v6.5" fill="${SKIN}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="50" cy="5" rx="12" ry="3.6" fill="${SKIN}" stroke="${INK}" stroke-width="2.4"/><path d="M42.5 8v3" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".7"/>`).replaceAll(SKIN, LEGO_YELLOW);
 LASSE.feuerwehr = lasseBase("#4a3728", "#4a3728", "#16181f",
   `<path d="M34 64h32M34 70h32" stroke="#ffcd03" stroke-width="3"/>`,
   `<path d="M26 33q-3 6 1 10 1-6 4-8zM74 33q3 6-1 10-1-6-4-8z" fill="${HAIR}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
@@ -2708,6 +2709,96 @@ const IDA_FULL = `<svg viewBox="128 -4 100 200">
     ${famArmF("M23 34q-4 8-4 14", "#bfeedd").replace(/12\.6/, "8.4").replace(/"8"/, "4.6")}<circle cx="19" cy="49" r="3.2" fill="#ffd9bf" ${FFK} stroke-width="1.6"/>
   </g></g>
 </svg>`;
+// Gemeinsam genutzt von Teil 1 und Teil 2
+// ======================================================================
+// Abwechslungsreichere Wände + jede Person genau einmal pro Level
+// ======================================================================
+// Plan wird beim Aufbau eines Levels einmal berechnet: Personen weit verteilt, übrige Wände
+// gleichmäßig aus allen Motiven, nie zwei gleiche nebeneinander oder übereinander.
+function feierPlan(decor, people) {
+  const vis = [];
+  for (const k of walls) { const [x, y] = k.split(",").map(Number); if (touchesInside(x, y)) vis.push([x, y]); }
+  const plan = new Map(), chosen = [];
+  const order = vis.slice().sort((a, b) => hash(a[0], a[1], 7) - hash(b[0], b[1], 7));
+  for (const [pi, p] of people.entries()) {
+    let best = null, bestD = -1;
+    for (const [x, y] of order) {
+      if (plan.has(key(x, y))) continue;
+      const d = chosen.length ? Math.min(...chosen.map(([a, b]) => Math.abs(a - x) + Math.abs(b - y))) : 0;
+      if (d > bestD) { bestD = d; best = [x, y]; }
+      if (!chosen.length) break;
+    }
+    if (!best) break;
+    plan.set(key(best[0], best[1]), p.replace("<svg", `<svg data-person="${pi}"`)); chosen.push(best);
+  }
+  const used = decor.map(() => 0);
+  vis.sort((a, b) => a[1] - b[1] || a[0] - b[0]);
+  for (const [x, y] of vis) {
+    const k = key(x, y); if (plan.has(k)) continue;
+    const near = [plan.get(key(x - 1, y)), plan.get(key(x, y - 1)), plan.get(key(x + 1, y)), plan.get(key(x, y + 1))];
+    const idx = decor.map((_, i) => i).sort((a, b) => used[a] - used[b] || hash(x, y, a + 50) - hash(x, y, b + 50));
+    let html = null;
+    for (const i of idx) { const h = decor[i](x, y); if (!near.includes(h)) { html = h; used[i]++; break; } }
+    plan.set(k, html || decor[idx[0]](x, y));
+  }
+  return plan;
+}
+const feierWalls = (decor, people) => { let ref = null, plan = null;
+  return (x, y) => { if (ref !== walls) { ref = walls; plan = feierPlan(decor, people()); } return plan.get(key(x, y)) || decor[pick(x, y, 31, decor.length)](x, y); }; };
+
+// ---------- Die fünf Freunde: Levi, Willem, Lucas, Miko, Ege (Kindergeburtstag, Trainingsplatz) ----------
+const KK = `stroke="#4a3728" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"`;
+const kidHair = {
+  levi: (c) => `<path d="M35 32q-2-16 15-17 15 0 16 15-3-5-6-5 1-3-1-5-4 4-9 4-3-3-6-2-4 4-9 10z" fill="${c}" ${KK}/><path d="M44 15q2-4 6-3M52 14q3-3 6-1" stroke="${c}" stroke-width="3" fill="none"/>`,
+  willem: (c) => `<path d="M35 31q-1-16 15-16t15 16q-5-5-15-5t-15 5z" fill="${c}" ${KK}/>`,
+  carter: (c) => `<path d="M34 38q-3-24 16-24t16 24q-3-10-8-14-4 6-8 6v-8q-4 8-8 8-5 0-8 8z" fill="${c}" ${KK}/><path d="M50 15v8" stroke="#4a3728" stroke-width="1.2" opacity=".5"/>`,
+  ege: (c) => `<path d="M34 33q-3-16 8-19l2-5 4 4 4-6 3 6 5-4 1 6q8 4 6 17-4-6-8-7-6 3-12 2-6 1-13 6z" fill="${c}" ${KK}/>`
+};
+const kidFigure = ({ hair, hc, shirt, shorts, socks = "#ffffff", shoes = "#4a3728", hat, prop = "", back = "", front = "", sockStripe = "" }) => `
+  <ellipse cx="50" cy="94" rx="18" ry="3" fill="#00000020"/>${back}
+  <rect x="41" y="70" width="7" height="20" rx="3" fill="#ffd9bf" ${KK}/><rect x="52" y="70" width="7" height="20" rx="3" fill="#ffd9bf" ${KK}/>
+  <rect x="41" y="${socks === "none" ? 90 : 78}" width="7" height="${socks === "none" ? 0 : 12}" rx="2" fill="${socks}" ${KK} stroke-width="1.4"/><rect x="52" y="${socks === "none" ? 90 : 78}" width="7" height="${socks === "none" ? 0 : 12}" rx="2" fill="${socks}" ${KK} stroke-width="1.4"/>${sockStripe}
+  <ellipse cx="44" cy="91" rx="5.4" ry="3" fill="${shoes}" ${KK} stroke-width="1.4"/><ellipse cx="56" cy="91" rx="5.4" ry="3" fill="${shoes}" ${KK} stroke-width="1.4"/>
+  <path d="M38 64h24l1 12h-11l-2-4-2 4H37z" fill="${shorts}" ${KK}/>
+  <path d="M38 66q-6-2-8 6M62 66q6-2 8 6" stroke="#4a3728" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M38 66q-6-2-8 6M62 66q6-2 8 6" stroke="#ffd9bf" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M37 66V54q0-8 13-8t13 8v12z" fill="${shirt}" ${KK}/>
+  <path d="M37 54q-5 2-7 8M63 54q5 2 7 8" stroke="${shirt}" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <rect x="47" y="42" width="6" height="6" rx="2" fill="#ffd9bf" ${KK} stroke-width="1.4"/>
+  <ellipse cx="34.5" cy="33" rx="2.6" ry="3.6" fill="#ffd9bf" ${KK} stroke-width="1.4"/><ellipse cx="65.5" cy="33" rx="2.6" ry="3.6" fill="#ffd9bf" ${KK} stroke-width="1.4"/>
+  <circle cx="50" cy="31" r="15" fill="#ffd9bf" ${KK}/>
+  ${kidHair[hair](hc)}
+  <circle cx="45" cy="33" r="1.9" fill="#4a3728"/><circle cx="55" cy="33" r="1.9" fill="#4a3728"/><circle cx="45.6" cy="32.4" r=".6" fill="#fff"/><circle cx="55.6" cy="32.4" r=".6" fill="#fff"/>
+  <path d="M45 38q5 5 10 0" stroke="#4a3728" stroke-width="1.6" fill="#ffffff"/>
+  <ellipse cx="40" cy="37" rx="2.6" ry="1.6" fill="#ff8f8f" opacity=".55"/><ellipse cx="60" cy="37" rx="2.6" ry="1.6" fill="#ff8f8f" opacity=".55"/>
+  ${hat ? partyHat(52, 15, hat[0], hat[1]) : ""}${front}${prop}`;
+const handball = (x, y, c1 = "#ffcc33", c2 = "#3d7fd6") => `<circle cx="${x}" cy="${y}" r="7" fill="${c1}" ${KK} stroke-width="1.6"/><path d="M${x - 7} ${y}q7-4 14 0M${x - 3} ${y - 6}q-2 6 1 12M${x + 3} ${y - 6}q3 6 0 12" stroke="${c2}" stroke-width="1.6" fill="none"/>`;
+const basketball = (x, y) => `<circle cx="${x}" cy="${y}" r="8" fill="#f08a24" ${KK} stroke-width="1.6"/><path d="M${x - 8} ${y}h16M${x} ${y - 8}v16M${x - 6} ${y - 5}q4 5 0 10M${x + 6} ${y - 5}q-4 5 0 10" stroke="#4a3728" stroke-width="1.1" fill="none"/>`;
+const comicHeft = (x, y) => `<g transform="rotate(-12 ${x} ${y})"><rect x="${x - 8}" y="${y - 10}" width="16" height="20" rx="1.5" fill="#ffe14d" ${KK} stroke-width="1.4"/><rect x="${x - 6}" y="${y - 8}" width="12" height="7" fill="#ef4b4b"/><text x="${x}" y="${y - 2.6}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="5" fill="#ffffff">POW!</text><path d="M${x - 5} ${y + 2}h10M${x - 5} ${y + 5}h7" stroke="#4a3728" stroke-width="1"/></g>`;
+const paperPlane = (x, y) => `<g transform="rotate(-18 ${x} ${y})"><path d="M${x - 12} ${y}l24-8-8 14-4-5z" fill="#ffffff" ${KK} stroke-width="1.4"/><path d="M${x - 12} ${y}l12 1 4 5" stroke="#4a3728" stroke-width="1" fill="none"/></g><path d="M${x - 26} ${y + 8}q6-6 12-2" stroke="#9aa3b1" stroke-width="1.2" stroke-dasharray="2 2" fill="none"/>`;
+const ideaBulb = (x, y) => `<g><circle cx="${x}" cy="${y - 2}" r="10" fill="#fff36b" opacity=".45"/><path d="M${x} ${y - 9}a7 7 0 0 1 4 12.6v2.4h-8v-2.4A7 7 0 0 1 ${x} ${y - 9}z" fill="#ffe14d" ${KK} stroke-width="1.6"/><path d="M${x - 3} ${y + 7}h6" stroke="#4a3728" stroke-width="1.4"/><path d="M${x - 11} ${y - 6}l-3-2M${x + 11} ${y - 6}l3-2M${x} ${y - 13}v-3" stroke="#ffcc33" stroke-width="1.6"/></g>`;
+const FRIENDS = [
+  // Levi: dunkelblond, kurze Hose und hohe Socken, Handball
+  ({ hair: "levi", hc: "#b88a4a", shirt: "#3d7fd6", shorts: "#1f3f80", socks: "#ffffff", shoes: "#ef4b4b", hat: ["#ef4b4b", "#ffcc33"],
+    sockStripe: `<path d="M41 81h7M52 81h7" stroke="#3d7fd6" stroke-width="1.6"/><path d="M41 84h7M52 84h7" stroke="#ef4b4b" stroke-width="1.6"/>`,
+    front: `<text x="50" y="62" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="9" fill="#ffffff">7</text>`, prop: handball(72, 70) }),
+  // Willem: Hannover-96-Fan, kurze hellblonde Haare
+  ({ hair: "willem", hc: "#f6dc7a", shirt: "#d6262b", shorts: "#ffffff", socks: "#d6262b", shoes: "#4a3728", hat: ["#2f9a52", "#ffffff"],
+    front: `<path d="M39 46q11 7 22 0v5q-11 7-22 0z" fill="#d6262b" ${KK} stroke-width="1.4"/><path d="M43 48.6v5M49 49.6v5M55 48.6v5" stroke="#ffffff" stroke-width="2.4"/>
+      <path d="M41 50l-5 18h7l3-16z" fill="#d6262b" ${KK} stroke-width="1.4"/><path d="M40 56h5M38.6 61h5" stroke="#ffffff" stroke-width="2.4"/><path d="M36 68l-1 3M39 68v3M42 68l1 3" stroke="#4a3728" stroke-width="1.2"/>
+      <circle cx="56" cy="59" r="6" fill="#ffffff" ${KK} stroke-width="1.2"/><text x="56" y="61.8" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="7" fill="#d6262b">96</text>` }),
+  // Lucas: dunkelblonde Nick-Carter-Frisur, Basketball
+  ({ hair: "carter", hc: "#b88a4a", shirt: "#7b4fd6", shorts: "#7b4fd6", socks: "#ffffff", shoes: "#ffffff", hat: ["#ffcc33", "#7b4fd6"],
+    front: `<path d="M41 47l4 6M59 47l-4 6" stroke="#ffcc33" stroke-width="2"/><text x="50" y="62" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="8" fill="#ffcc33">23</text>`, prop: basketball(72, 64) }),
+  // Miko: blonde Nick-Carter-Frisur, Handball, Comics
+  ({ hair: "carter", hc: "#f2c94c", shirt: "#2f9a52", shorts: "#4a3728", socks: "#ffffff", shoes: "#3d7fd6", hat: ["#ff8fb1", "#ffffff"],
+    prop: handball(73, 72, "#ffffff", "#2f9a52") + comicHeft(26, 66) }),
+  // Ege: schwarze Haare, wilde Ideen, Papierflieger
+  ({ hair: "ege", hc: "#1d1a20", shirt: "#ffcc33", shorts: "#3d7fd6", socks: "none", shoes: "#ef4b4b", hat: ["#3d7fd6", "#ffcc33"],
+    prop: paperPlane(76, 56) + ideaBulb(23, 22) })
+];
+
+// Die fünf ohne Partyhut, als Wandfelder auf dem Trainingsplatz
+const trainingFriends = (padFn) => FRIENDS.map(f => padFn(kidFigure({ ...f, hat: null })));
 // ===== Welt 8: Feiern (früher „Essen“). Es sind immer Freunde dabei. =====
 // Design 1 (Level 1–2): an Bord des Segelschiffs Pippilotta – Arne und Matze kochen Nudeln, Lasse schiebt Nudelschüsseln.
 document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
@@ -3062,41 +3153,6 @@ const FEIERN = [
   });
 }
 
-// ======================================================================
-// Abwechslungsreichere Wände + jede Person genau einmal pro Level
-// ======================================================================
-// Plan wird beim Aufbau eines Levels einmal berechnet: Personen weit verteilt, übrige Wände
-// gleichmäßig aus allen Motiven, nie zwei gleiche nebeneinander oder übereinander.
-function feierPlan(decor, people) {
-  const vis = [];
-  for (const k of walls) { const [x, y] = k.split(",").map(Number); if (touchesInside(x, y)) vis.push([x, y]); }
-  const plan = new Map(), chosen = [];
-  const order = vis.slice().sort((a, b) => hash(a[0], a[1], 7) - hash(b[0], b[1], 7));
-  for (const [pi, p] of people.entries()) {
-    let best = null, bestD = -1;
-    for (const [x, y] of order) {
-      if (plan.has(key(x, y))) continue;
-      const d = chosen.length ? Math.min(...chosen.map(([a, b]) => Math.abs(a - x) + Math.abs(b - y))) : 0;
-      if (d > bestD) { bestD = d; best = [x, y]; }
-      if (!chosen.length) break;
-    }
-    if (!best) break;
-    plan.set(key(best[0], best[1]), p.replace("<svg", `<svg data-person="${pi}"`)); chosen.push(best);
-  }
-  const used = decor.map(() => 0);
-  vis.sort((a, b) => a[1] - b[1] || a[0] - b[0]);
-  for (const [x, y] of vis) {
-    const k = key(x, y); if (plan.has(k)) continue;
-    const near = [plan.get(key(x - 1, y)), plan.get(key(x, y - 1)), plan.get(key(x + 1, y)), plan.get(key(x, y + 1))];
-    const idx = decor.map((_, i) => i).sort((a, b) => used[a] - used[b] || hash(x, y, a + 50) - hash(x, y, b + 50));
-    let html = null;
-    for (const i of idx) { const h = decor[i](x, y); if (!near.includes(h)) { html = h; used[i]++; break; } }
-    plan.set(k, html || decor[idx[0]](x, y));
-  }
-  return plan;
-}
-const feierWalls = (decor, people) => { let ref = null, plan = null;
-  return (x, y) => { if (ref !== walls) { ref = walls; plan = feierPlan(decor, people()); } return plan.get(key(x, y)) || decor[pick(x, y, 31, decor.length)](x, y); }; };
 
 // ---------- neue Motive: Pippilotta ----------
 const anchorTile = svgT(`${pad(...SHIP_GREEN)}<rect x="3" y="12" width="94" height="8" rx="3" fill="#ffffff" stroke="#4a3728" stroke-width="2"/><g stroke="#4a3728" stroke-width="2" fill="#5a5f6e"><circle cx="50" cy="32" r="6" fill="none" stroke="#5a5f6e" stroke-width="4"/><path d="M47 38h6v34h-6z"/><path d="M38 46h24v5H38z"/><path d="M26 64q4 18 24 18t24-18l-6 2q-4 10-18 10t-18-10z"/></g>`);
@@ -3156,57 +3212,8 @@ KINDERGEBURTSTAG.wall = feierWalls([() => sprossenwand, () => turnkasten, () => 
 SILVESTER.wall = feierWalls([fireworks, (x, y) => fireworks(x + 3, y + 5), () => fountainFw, () => rocketTrails, () => goldRain, () => raclette, () => raclettePan, () => racletteBowl],
   () => [SOEREN, ANNA, IDA, ARNE, MATZE, CHRISTIAN, ALEX, ENNI].map(skyGuest));
 
-// ---------- Kindergeburtstag: die fünf Gäste als kleine Ganzkörper-Figuren ----------
-const KK = `stroke="#4a3728" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"`;
-const kidHair = {
-  levi: (c) => `<path d="M35 32q-2-16 15-17 15 0 16 15-3-5-6-5 1-3-1-5-4 4-9 4-3-3-6-2-4 4-9 10z" fill="${c}" ${KK}/><path d="M44 15q2-4 6-3M52 14q3-3 6-1" stroke="${c}" stroke-width="3" fill="none"/>`,
-  willem: (c) => `<path d="M35 31q-1-16 15-16t15 16q-5-5-15-5t-15 5z" fill="${c}" ${KK}/>`,
-  carter: (c) => `<path d="M34 38q-3-24 16-24t16 24q-3-10-8-14-4 6-8 6v-8q-4 8-8 8-5 0-8 8z" fill="${c}" ${KK}/><path d="M50 15v8" stroke="#4a3728" stroke-width="1.2" opacity=".5"/>`,
-  ege: (c) => `<path d="M34 33q-3-16 8-19l2-5 4 4 4-6 3 6 5-4 1 6q8 4 6 17-4-6-8-7-6 3-12 2-6 1-13 6z" fill="${c}" ${KK}/>`
-};
-const kidFigure = ({ hair, hc, shirt, shorts, socks = "#ffffff", shoes = "#4a3728", hat, prop = "", back = "", front = "", sockStripe = "" }) => `
-  <ellipse cx="50" cy="94" rx="18" ry="3" fill="#00000020"/>${back}
-  <rect x="41" y="70" width="7" height="20" rx="3" fill="#ffd9bf" ${KK}/><rect x="52" y="70" width="7" height="20" rx="3" fill="#ffd9bf" ${KK}/>
-  <rect x="41" y="${socks === "none" ? 90 : 78}" width="7" height="${socks === "none" ? 0 : 12}" rx="2" fill="${socks}" ${KK} stroke-width="1.4"/><rect x="52" y="${socks === "none" ? 90 : 78}" width="7" height="${socks === "none" ? 0 : 12}" rx="2" fill="${socks}" ${KK} stroke-width="1.4"/>${sockStripe}
-  <ellipse cx="44" cy="91" rx="5.4" ry="3" fill="${shoes}" ${KK} stroke-width="1.4"/><ellipse cx="56" cy="91" rx="5.4" ry="3" fill="${shoes}" ${KK} stroke-width="1.4"/>
-  <path d="M38 64h24l1 12h-11l-2-4-2 4H37z" fill="${shorts}" ${KK}/>
-  <path d="M38 66q-6-2-8 6M62 66q6-2 8 6" stroke="#4a3728" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M38 66q-6-2-8 6M62 66q6-2 8 6" stroke="#ffd9bf" stroke-width="4" stroke-linecap="round" fill="none"/>
-  <path d="M37 66V54q0-8 13-8t13 8v12z" fill="${shirt}" ${KK}/>
-  <path d="M37 54q-5 2-7 8M63 54q5 2 7 8" stroke="${shirt}" stroke-width="7" stroke-linecap="round" fill="none"/>
-  <rect x="47" y="42" width="6" height="6" rx="2" fill="#ffd9bf" ${KK} stroke-width="1.4"/>
-  <ellipse cx="34.5" cy="33" rx="2.6" ry="3.6" fill="#ffd9bf" ${KK} stroke-width="1.4"/><ellipse cx="65.5" cy="33" rx="2.6" ry="3.6" fill="#ffd9bf" ${KK} stroke-width="1.4"/>
-  <circle cx="50" cy="31" r="15" fill="#ffd9bf" ${KK}/>
-  ${kidHair[hair](hc)}
-  <circle cx="45" cy="33" r="1.9" fill="#4a3728"/><circle cx="55" cy="33" r="1.9" fill="#4a3728"/><circle cx="45.6" cy="32.4" r=".6" fill="#fff"/><circle cx="55.6" cy="32.4" r=".6" fill="#fff"/>
-  <path d="M45 38q5 5 10 0" stroke="#4a3728" stroke-width="1.6" fill="#ffffff"/>
-  <ellipse cx="40" cy="37" rx="2.6" ry="1.6" fill="#ff8f8f" opacity=".55"/><ellipse cx="60" cy="37" rx="2.6" ry="1.6" fill="#ff8f8f" opacity=".55"/>
-  ${partyHat(52, 15, hat[0], hat[1])}${front}${prop}`;
-const handball = (x, y, c1 = "#ffcc33", c2 = "#3d7fd6") => `<circle cx="${x}" cy="${y}" r="7" fill="${c1}" ${KK} stroke-width="1.6"/><path d="M${x - 7} ${y}q7-4 14 0M${x - 3} ${y - 6}q-2 6 1 12M${x + 3} ${y - 6}q3 6 0 12" stroke="${c2}" stroke-width="1.6" fill="none"/>`;
-const basketball = (x, y) => `<circle cx="${x}" cy="${y}" r="8" fill="#f08a24" ${KK} stroke-width="1.6"/><path d="M${x - 8} ${y}h16M${x} ${y - 8}v16M${x - 6} ${y - 5}q4 5 0 10M${x + 6} ${y - 5}q-4 5 0 10" stroke="#4a3728" stroke-width="1.1" fill="none"/>`;
-const comicHeft = (x, y) => `<g transform="rotate(-12 ${x} ${y})"><rect x="${x - 8}" y="${y - 10}" width="16" height="20" rx="1.5" fill="#ffe14d" ${KK} stroke-width="1.4"/><rect x="${x - 6}" y="${y - 8}" width="12" height="7" fill="#ef4b4b"/><text x="${x}" y="${y - 2.6}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="5" fill="#ffffff">POW!</text><path d="M${x - 5} ${y + 2}h10M${x - 5} ${y + 5}h7" stroke="#4a3728" stroke-width="1"/></g>`;
-const paperPlane = (x, y) => `<g transform="rotate(-18 ${x} ${y})"><path d="M${x - 12} ${y}l24-8-8 14-4-5z" fill="#ffffff" ${KK} stroke-width="1.4"/><path d="M${x - 12} ${y}l12 1 4 5" stroke="#4a3728" stroke-width="1" fill="none"/></g><path d="M${x - 26} ${y + 8}q6-6 12-2" stroke="#9aa3b1" stroke-width="1.2" stroke-dasharray="2 2" fill="none"/>`;
-const ideaBulb = (x, y) => `<g><circle cx="${x}" cy="${y - 2}" r="10" fill="#fff36b" opacity=".45"/><path d="M${x} ${y - 9}a7 7 0 0 1 4 12.6v2.4h-8v-2.4A7 7 0 0 1 ${x} ${y - 9}z" fill="#ffe14d" ${KK} stroke-width="1.6"/><path d="M${x - 3} ${y + 7}h6" stroke="#4a3728" stroke-width="1.4"/><path d="M${x - 11} ${y - 6}l-3-2M${x + 11} ${y - 6}l3-2M${x} ${y - 13}v-3" stroke="#ffcc33" stroke-width="1.6"/></g>`;
 const guestPad = (inner) => svgT(`${pad("#e6f7ff", "#a9d6ef")}${inner}`);
-const PARTY_KIDS = [
-  // Levi: dunkelblond, kurze Hose und hohe Socken, Handball
-  guestPad(kidFigure({ hair: "levi", hc: "#b88a4a", shirt: "#3d7fd6", shorts: "#1f3f80", socks: "#ffffff", shoes: "#ef4b4b", hat: ["#ef4b4b", "#ffcc33"],
-    sockStripe: `<path d="M41 81h7M52 81h7" stroke="#3d7fd6" stroke-width="1.6"/><path d="M41 84h7M52 84h7" stroke="#ef4b4b" stroke-width="1.6"/>`,
-    front: `<text x="50" y="62" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="9" fill="#ffffff">7</text>`, prop: handball(72, 70) })),
-  // Willem: Hannover-96-Fan, kurze hellblonde Haare
-  guestPad(kidFigure({ hair: "willem", hc: "#f6dc7a", shirt: "#d6262b", shorts: "#ffffff", socks: "#d6262b", shoes: "#4a3728", hat: ["#2f9a52", "#ffffff"],
-    front: `<path d="M39 46q11 7 22 0v5q-11 7-22 0z" fill="#d6262b" ${KK} stroke-width="1.4"/><path d="M43 48.6v5M49 49.6v5M55 48.6v5" stroke="#ffffff" stroke-width="2.4"/>
-      <path d="M41 50l-5 18h7l3-16z" fill="#d6262b" ${KK} stroke-width="1.4"/><path d="M40 56h5M38.6 61h5" stroke="#ffffff" stroke-width="2.4"/><path d="M36 68l-1 3M39 68v3M42 68l1 3" stroke="#4a3728" stroke-width="1.2"/>
-      <circle cx="56" cy="59" r="6" fill="#ffffff" ${KK} stroke-width="1.2"/><text x="56" y="61.8" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="7" fill="#d6262b">96</text>` })),
-  // Lucas: dunkelblonde Nick-Carter-Frisur, Basketball
-  guestPad(kidFigure({ hair: "carter", hc: "#b88a4a", shirt: "#7b4fd6", shorts: "#7b4fd6", socks: "#ffffff", shoes: "#ffffff", hat: ["#ffcc33", "#7b4fd6"],
-    front: `<path d="M41 47l4 6M59 47l-4 6" stroke="#ffcc33" stroke-width="2"/><text x="50" y="62" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="8" fill="#ffcc33">23</text>`, prop: basketball(72, 64) })),
-  // Miko: blonde Nick-Carter-Frisur, Handball, Comics
-  guestPad(kidFigure({ hair: "carter", hc: "#f2c94c", shirt: "#2f9a52", shorts: "#4a3728", socks: "#ffffff", shoes: "#3d7fd6", hat: ["#ff8fb1", "#ffffff"],
-    prop: handball(73, 72, "#ffffff", "#2f9a52") + comicHeft(26, 66) })),
-  // Ege: schwarze Haare, wilde Ideen, Papierflieger
-  guestPad(kidFigure({ hair: "ege", hc: "#1d1a20", shirt: "#ffcc33", shorts: "#3d7fd6", socks: "none", shoes: "#ef4b4b", hat: ["#3d7fd6", "#ffcc33"],
-    prop: paperPlane(76, 56) + ideaBulb(23, 22) }))
-];
+const PARTY_KIDS = FRIENDS.map(f => guestPad(kidFigure(f)));
 KINDERGEBURTSTAG.wall = feierWalls([() => sprossenwand, () => turnkasten, () => turnmatte, () => ringe, () => basketballkorb, () => turnbock, () => medizinball, () => fantaSprite, () => fantaTable, () => barren, () => schwebebalken, () => kletterseil, () => sprungbrett, () => hulaHoops, () => ballnetz],
   () => PARTY_KIDS);
 FEIERN[4].win = "Muffins für Levi, Willem, Lucas, Miko und Ege!";
@@ -3349,6 +3356,10 @@ Object.assign(EXTRA_WALLS, {
   "Bibi und Tina": [() => grassPad(`<path d="M20 86l60-60" stroke="#8a5a2b" stroke-width="6"/><path d="M18 88l-8 8 6 2 8-6z" fill="#d9b36b" ${EK}/><path d="M74 20l4 6 6 1-4 4 1 6-5-3-6 3 1-6-4-4 6-1z" fill="#ffd35a" ${EK} stroke-width="1.2"/>`)],
   "Idas Kinderzimmer": [() => svgT(`${pad("#ffe3f1", "#f2b6d3")}<rect x="18" y="40" width="64" height="40" rx="8" fill="#c78bff" ${EK}/><rect x="18" y="30" width="22" height="20" rx="6" fill="#ffffff" ${EK}/><path d="M18 70h64" stroke="#ffffff" stroke-width="4"/>`)]
 });
+
+// Trainingsplatz (Teil 1): Levi, Willem, Lucas, Miko und Ege stehen je einmal pro Level in der Bande
+{ const tp = THEMES.fussball.scenes[1], ex = EXTRA_WALLS.Trainingsplatz;
+  if (tp && tp.name === "Trainingsplatz") { tp.wall = feierWalls([() => cone("#4fbf57"), adBoard, adBoard, ...ex], () => trainingFriends(grassPad)); delete EXTRA_WALLS.Trainingsplatz; } }
 
 // ===== Kinderbuch-Details =====
 // Kleine Dinge, die auf Wände und Böden gestreut werden, damit sich nichts wiederholt.
