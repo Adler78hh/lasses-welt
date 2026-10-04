@@ -168,6 +168,8 @@ button:disabled { cursor: default; }
 /* Personen stehen unter dem Spielfeld nebeneinander, damit das Spielfeld die volle Breite bekommt */
 .arena.has-side { display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; row-gap: 6px; align-items: end; }
 .arena.has-side .stage { grid-row: 1; grid-column: 1 / -1; justify-self: center; }
+.arena.has-side .side { width: auto; }
+.side svg[data-kid] + svg[data-kid] { margin-left: calc(var(--side-w) * -.3); }
 .arena.has-side #side-l { grid-row: 2; grid-column: 1; justify-self: end; } .arena.has-side #side-r { grid-row: 2; grid-column: 2; justify-self: start; }
 .side svg { width: var(--side-w); flex: none; height: auto; display: block; overflow: visible; }
 .side svg + svg { margin-left: calc(var(--side-w) * -.55); }
@@ -3217,6 +3219,19 @@ const FEIERN = [
 const anchorTile = svgT(`${pad(...SHIP_GREEN)}<rect x="3" y="12" width="94" height="8" rx="3" fill="#ffffff" stroke="#4a3728" stroke-width="2"/><g stroke="#4a3728" stroke-width="2" fill="#5a5f6e"><circle cx="50" cy="32" r="6" fill="none" stroke="#5a5f6e" stroke-width="4"/><path d="M47 38h6v34h-6z"/><path d="M38 46h24v5H38z"/><path d="M26 64q4 18 24 18t24-18l-6 2q-4 10-18 10t-18-10z"/></g>`);
 const shipBell = svgT(`${pad("#dfb985", "#b98d58")}<path d="M50 10v8" stroke="#8a4a2b" stroke-width="4"/><path d="M34 62q0-38 16-38t16 38z" fill="url(#gold)" stroke="#4a3728" stroke-width="2.4"/><rect x="30" y="60" width="40" height="6" rx="3" fill="url(#gold)" stroke="#4a3728" stroke-width="2"/><circle cx="50" cy="72" r="4" fill="#9a6404" stroke="#4a3728" stroke-width="1.4"/><path d="M60 72q14 6 20 20" stroke="#c9a46a" stroke-width="3" fill="none"/>`);
 const bollardGull = svgT(`${pad("#dfb985", "#b98d58")}<path d="M36 90V56h28v34z" fill="#3a3f55" stroke="#4a3728" stroke-width="2"/><ellipse cx="50" cy="56" rx="18" ry="6" fill="#5a5f6e" stroke="#4a3728" stroke-width="2"/><g class="bob"><ellipse cx="50" cy="40" rx="14" ry="10" fill="#ffffff" stroke="#4a3728" stroke-width="2"/><circle cx="60" cy="30" r="7" fill="#ffffff" stroke="#4a3728" stroke-width="2"/><path d="M66 30l8 2-8 2z" fill="#ffcc33" stroke="#4a3728" stroke-width="1.2"/><circle cx="61" cy="29" r="1.4" fill="#4a3728"/><path d="M38 38q-8-2-10 4 8 2 14-1z" fill="#9aa3b1" stroke="#4a3728" stroke-width="1.4"/></g>`);
+// Piratenschatz: offene Truhe mit Goldmünzen, Edelsteinen und Perlenkette
+const pirateTreasure = svgT(`${pad("#dfb985", "#b98d58")}
+  <path d="M18 52h64v32H18z" fill="#8a5a2b" stroke="#4a3728" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M18 52l4-22h56l4 22" fill="#6b3f1d" stroke="#4a3728" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M22 30q28-14 56 0" fill="#7a4a22" stroke="#4a3728" stroke-width="2.4"/>
+  <path d="M30 30v22M70 30v22M30 52v32M70 52v32" stroke="url(#gold)" stroke-width="4"/>
+  <ellipse cx="50" cy="52" rx="30" ry="7" fill="url(#gold)" stroke="#4a3728" stroke-width="2"/>
+  ${[[30, 48], [40, 45], [52, 44], [62, 46], [70, 49], [36, 51], [58, 51]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.2" fill="url(#gold)" stroke="#9a6404" stroke-width="1.2"/>`).join("")}
+  <path d="M44 42l4-6 4 6-4 5z" fill="#e2402f" stroke="#4a3728" stroke-width="1.4"/><path d="M60 42l3-5 3 5-3 4z" fill="#3fae4a" stroke="#4a3728" stroke-width="1.4"/><path d="M33 43l3-5 3 5-3 4z" fill="#3d7fd6" stroke="#4a3728" stroke-width="1.4"/>
+  <path d="M24 58q6 10 14 12" stroke="#ffffff" stroke-width="3" stroke-dasharray=".1 4" stroke-linecap="round" fill="none"/>
+  <rect x="45" y="58" width="10" height="10" rx="2" fill="url(#gold)" stroke="#4a3728" stroke-width="1.6"/><circle cx="50" cy="63" r="1.6" fill="#4a3728"/>
+  <g class="twinkle-d"><path d="M76 24l1.6 3.4 3.4 1.6-3.4 1.6-1.6 3.4-1.6-3.4-3.4-1.6 3.4-1.6z" fill="#fff6c8"/></g>
+  ${[[14, 88], [86, 86], [82, 92]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.4" fill="url(#gold)" stroke="#9a6404" stroke-width="1"/>`).join("")}`);
 const fishNet = svgT(`${pad("#cfe9ff", "#9fc6e6")}<path d="M10 14q40 30 80 0v60q-40 20-80 0z" fill="#c9a46a" opacity=".25"/>${[20, 32, 44, 56, 68, 80].map(x => `<path d="M${x} 14q-2 30 0 70" stroke="#8a6a3c" stroke-width="1.4" fill="none"/>`).join("")}${[28, 42, 56, 70].map(y => `<path d="M10 ${y}q40 14 80 0" stroke="#8a6a3c" stroke-width="1.4" fill="none"/>`).join("")}<path d="M36 52q8-6 16 0-8 6-16 0zM52 52l6-4v8z" fill="#3d7fd6" stroke="#4a3728" stroke-width="1.4"/><path d="M56 70q6-4 12 0-6 4-12 0zM68 70l4-3v6z" fill="#ffcc33" stroke="#4a3728" stroke-width="1.2"/>`);
 const shipLantern = svgT(`${pad("#ffffff", "#c9ced8")}<path d="M50 8v10" stroke="#4a3728" stroke-width="2"/><path d="M38 22h24l-4 8H42z" fill="#2f9a52" stroke="#4a3728" stroke-width="2"/><rect x="38" y="30" width="24" height="34" rx="3" fill="#ffe8a0" stroke="#4a3728" stroke-width="2"/><path class="flame" d="M50 38q6 8 0 16-6-8 0-16z" fill="#ffb02e"/><path d="M38 64h24l4 8H34z" fill="#2f9a52" stroke="#4a3728" stroke-width="2"/><path d="M44 30v34M56 30v34" stroke="#4a3728" stroke-width="1.2" opacity=".5"/>`);
 
@@ -3258,7 +3273,7 @@ const raclettePan = nightPad(`<rect x="12" y="60" width="76" height="8" rx="3" f
 const racletteBowl = nightPad(`<path d="M18 52h64q-4 30-32 30t-32-30z" fill="#f4e9d8" stroke="#4a3728" stroke-width="2.4"/>${[[32, 50], [44, 46], [56, 48], [68, 50], [38, 56], [52, 56], [62, 56]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="7" ry="5" fill="#e3c27e" stroke="#4a3728" stroke-width="1.2"/>`).join("")}<path d="M24 52h52" stroke="#4a3728" stroke-width="2"/><path d="M76 30l-8 18M84 32l-10 16" stroke="#9aa3b1" stroke-width="2.4" stroke-linecap="round"/>`);
 
 // ---------- Wände der sechs Feste neu verteilen ----------
-PIPPILOTTA.wall = feierWalls([() => bulwark, mastSail, () => deckhouse, () => lifeRing, () => ropeCoil, () => galleyStove, () => galleyStove2, () => nameBoard, () => shipWheel, seaView, () => anchorTile, () => shipBell, () => bollardGull, () => fishNet, () => shipLantern],
+PIPPILOTTA.wall = feierWalls([() => bulwark, mastSail, () => deckhouse, () => lifeRing, () => ropeCoil, () => galleyStove, () => galleyStove2, () => nameBoard, () => shipWheel, seaView, () => anchorTile, () => shipBell, () => bollardGull, () => pirateTreasure, () => shipLantern],
   () => [arneCooks, matzeCooks]);
 GRILLFEST.wall = feierWalls([() => fence, () => hedge, () => grillStation, () => saladTable, () => grillSandbox, () => swingSet, () => kubb, () => trampoline, () => lightsTree, () => lemonadeTable, () => miniGoal, () => flowerBed, () => deckChair, () => paddlingPool, () => birdhouse],
   () => [christianGrills, alexServes, enniPlays]);
@@ -3308,7 +3323,10 @@ SILVESTER.wall = feierWalls([nyConfetti, nyStreamers, (x, y) => nyStreamers(x + 
 const guestPad = (inner) => svgT(`${pad("#e6f7ff", "#a9d6ef")}${inner}`);
 const PARTY_KIDS = FRIENDS.map(f => guestPad(kidFigure(f)));
 KINDERGEBURTSTAG.wall = feierWalls([() => sprossenwand, () => turnkasten, () => turnmatte, () => ringe, () => basketballkorb, () => turnbock, () => medizinball, () => fantaSprite, () => fantaTable, () => barren, () => schwebebalken, () => kletterseil, () => sprungbrett, () => hulaHoops, () => ballnetz],
-  () => PARTY_KIDS);
+  () => []);
+// Die fünf Freunde stehen mit Partyhüten unter dem Spielfeld (Kinderfigur 100×100 samt Hut, Füße unten bündig)
+const KID_FULL = (f) => `<svg data-kid="1" viewBox="0 -26 100 126" overflow="visible">${kidFigure(f)}</svg>`;
+KINDERGEBURTSTAG.side = { l: FRIENDS.slice(0, 2).map(KID_FULL), r: FRIENDS.slice(2).map(KID_FULL) };
 FEIERN[4].win = "Muffins für Levi, Willem, Lucas, Miko und Ege!";
 
 // ===== Zusätzliche Wandteile je Schauplatz =====

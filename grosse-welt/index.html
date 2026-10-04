@@ -168,6 +168,8 @@ button:disabled { cursor: default; }
 /* Personen stehen unter dem Spielfeld nebeneinander, damit das Spielfeld die volle Breite bekommt */
 .arena.has-side { display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; row-gap: 6px; align-items: end; }
 .arena.has-side .stage { grid-row: 1; grid-column: 1 / -1; justify-self: center; }
+.arena.has-side .side { width: auto; }
+.side svg[data-kid] + svg[data-kid] { margin-left: calc(var(--side-w) * -.3); }
 .arena.has-side #side-l { grid-row: 2; grid-column: 1; justify-self: end; } .arena.has-side #side-r { grid-row: 2; grid-column: 2; justify-self: start; }
 .side svg { width: var(--side-w); flex: none; height: auto; display: block; overflow: visible; }
 .side svg + svg { margin-left: calc(var(--side-w) * -.55); }
