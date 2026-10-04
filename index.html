@@ -3573,6 +3573,60 @@ const FAMILY_HERO = `<svg viewBox="34 54 506 270" role="img" aria-label="Lasse m
   <!-- Lasse groß vorn in der Mitte -->
   ${LOGO_LASSE}
 </svg>`;
+// ===== Unterscheidbare Kisten: jedes geschobene Ding bekommt Varianten =====
+// Aus jedem Motiv entstehen weitere Symbole (<id>-v1, -v2 …) durch Farbtausch, kleine Zusätze oder Helligkeitsfilter.
+// Die Kisten eines Levels laufen der Reihe nach durch Original und Varianten (wie die Pferde).
+(() => {
+  const defs = document.querySelector("svg defs");
+  defs.insertAdjacentHTML("beforeend", `
+    <filter id="v-hell"><feComponentTransfer><feFuncR type="linear" slope=".7" intercept=".3"/><feFuncG type="linear" slope=".7" intercept=".3"/><feFuncB type="linear" slope=".7" intercept=".3"/></feComponentTransfer></filter>
+    <filter id="v-dunkel"><feComponentTransfer><feFuncR type="linear" slope=".72"/><feFuncG type="linear" slope=".72"/><feFuncB type="linear" slope=".72"/></feComponentTransfer></filter>
+    <filter id="v-dreh"><feColorMatrix type="hueRotate" values="40"/></filter>`);
+  const K = 'stroke="#4a3728" stroke-width="2" stroke-linejoin="round"';
+  const TX = (x, y, s, c, fs = 12) => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Fredoka, Arial, sans-serif" font-weight="700" font-size="${fs}" fill="${c}">${s}</text>`;
+  const label = (s, c, fs) => `<rect x="22" y="56" width="56" height="18" rx="3" fill="#fff" ${K}/>${TX(50, 69, s, c, fs)}`;
+  const sticker = (s, bg, fg) => `<circle cx="72" cy="70" r="12" fill="${bg}" ${K}/>${TX(72, 74.5, s, fg)}`;
+  const tints = [[{}, "", "v-hell"], [{}, "", "v-dunkel"], [{}, "", "v-dreh"]];
+  const SPEC = {
+    tennisball: [[{ "#d7f03c": "#7ad65a" }], [{ "#d7f03c": "#ffa43a" }], [{ "#d7f03c": "#ff8fc8" }]],
+    k2tennis: [[{ "#d7f03c": "#7ad65a" }], [{ "#d7f03c": "#ffa43a" }], [{ "#d7f03c": "#ff8fc8" }]],
+    pauke: [[{ "url(#gold)": "#d07a45", "#9a6404": "#8a4a1d" }], [{ "url(#gold)": "#c9ced8", "#9a6404": "#6b7280" }], [{ "url(#gold)": "#a8743a", "#9a6404": "#6b4420" }]],
+    pommes: [[{ "#fff6dc": "#e53935" }], [{ "#e53935": "#fff6dc" }],
+      [{}, `<g ${K}>${[30, 44, 58].map(x => `<ellipse cx="${x + 6}" cy="30" rx="7" ry="5" fill="#b5532a"/>`).join("")}</g><path d="M30 26q10 6 22 0 8-4 18 2" stroke="#e53935" stroke-width="4" fill="none"/>`]],
+    nudeln: [[{ "#3d7fd6": "#e2402f", "#d6262b": "#4fae3a", "#ff7a6a": "#8fd66e" }], [{ "#3d7fd6": "#3fae4a", "#d6262b": "#ffe9a0", "#ff7a6a": "#fff6cf" }], [{ "#3d7fd6": "#f2b630" }]],
+    burger: [[{}, `<rect x="16" y="49" width="68" height="10" rx="5" fill="#7a3b1d" ${K}/>`], [{ "#7a3b1d": "#6aa84f", "#ffcc33": "#ff7a5c" }],
+      [{}, `<ellipse cx="50" cy="50" rx="22" ry="6" fill="#ffffff" ${K}/><circle cx="50" cy="49" r="5" fill="#ffcc33" ${K}/>`]],
+    muffin: [[{ "#b8763e": "#ff9fc0", "#4a2a14": "#d6262b", "#f4f1ea": "#ffe3ef" }], [{ "#b8763e": "#c9b8f0", "#4a2a14": "#3a3a9a", "#f4f1ea": "#e3edff" }], [{ "#b8763e": "#ffe680", "#4a2a14": "#ffffff", "#f4f1ea": "#fff6c8" }]],
+    // Superbälle: Meisterball, Premierball, Heilball (der Hyperball gehört schon zu den Pokébällen)
+    superball: [[{ "#2f7ae5": "#8b5cf6", "#ef4b4b": "#ff8fb1" }], [{ "#2f7ae5": "#ffffff" }], [{ "#2f7ae5": "#ff8fc8", "#ef4b4b": "#ffffff" }]],
+    k2super: [[{ "#2b5fd9": "#8b5cf6", "#e2402f": "#ff8fb1" }], [{ "#2b5fd9": "#ffffff" }], [{ "#2b5fd9": "#ff8fc8", "#e2402f": "#ffffff" }]],
+    trommel: [[{ "#ef4b4b": "#3d7fd6" }], [{ "#ef4b4b": "#4fae3a" }], [{ "#ef4b4b": "#8b5cf6" }]],
+    einhorn: [[{ "#c78bff": "#4fd6d0", "#ff8fb1": "#2a9fd6" }], [{ "#c78bff": "#ff8fb1", "#ff8fb1": "#ff5c8a" }], [{ "#c78bff": "#ffcc33", "#ff8fb1": "#ff8a3a" }]],
+    k2heu: [[{ "#c0392b": "#2b5fd9" }], [{ "#c0392b": "#3fae4a" }, `<circle cx="50" cy="26" r="6" fill="#ff8fb1" ${K}/><circle cx="50" cy="26" r="2.4" fill="#ffd23a"/>`],
+      [{ "#c0392b": "#e8b51a" }, `<path d="M44 26l14-14" stroke="#3fae4a" stroke-width="4"/><path d="M38 30l16-10 4 6z" fill="#ff8a1a" ${K}/>`]],
+    k2pizza: [[{}, sticker("M", "#3fae4a", "#fff")], [{}, sticker("S", "#e2402f", "#fff")], [{}, sticker("F", "#8a5a3a", "#fff")], [{}, sticker("H", "#ffd23a", "#1d1b1a")]],
+    k2karton: [[{}, label("SPIELZEUG", "#e2402f", 9)], [{}, label("BÜCHER", "#2b5fd9", 10)], [{}, label("LEGO", "#e8a21a", 11)], [{}, label("KUSCHELTIERE", "#c2418a", 7.5)]],
+    k2kristall: tints
+  };
+  document.querySelectorAll('symbol[id^="gem-"]').forEach(s => { SPEC[s.id] = tints; });
+  const VARIANTS = {};
+  for (const [id, vars] of Object.entries(SPEC)) {
+    const sym = document.getElementById(id); if (!sym) continue;
+    const vb = sym.getAttribute("viewBox"), ids = [id];
+    vars.forEach(([rep, overlay = "", filter = ""], i) => {
+      let h = sym.innerHTML; for (const [a, z] of Object.entries(rep)) h = h.split(a).join(z);
+      const nid = `${id}-v${i + 1}`;
+      defs.insertAdjacentHTML("beforeend", `<symbol id="${nid}" viewBox="${vb}" overflow="visible">${filter ? `<g filter="url(#${filter})">${h}</g>` : h}${overlay}</symbol>`);
+      ids.push(nid);
+    });
+    VARIANTS[id] = ids;
+  }
+  // Eigene Reihenfolgen (Pokébälle, Idas Klötze) haben Vorrang
+  for (const T of Object.values(THEMES)) {
+    const own = T.boxCycle;
+    T.boxCycle = (l) => (own && own(l)) || VARIANTS[T.levelBox ? T.levelBox(l) : T.box] || null;
+  }
+})();
 
 // ---------- Neutrale Welt (Platzhalter für Welten 3–10) ----------
 LASSE.neutral = `<svg viewBox="0 0 100 100">
