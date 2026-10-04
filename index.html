@@ -3367,7 +3367,7 @@ Object.assign(EXTRA_WALLS, {
   if (tp && tp.name === "Trainingsplatz") { tp.wall = feierWalls([() => cone("#4fbf57"), adBoard, adBoard, ...ex], () => trainingFriends(grassPad)); delete EXTRA_WALLS.Trainingsplatz; } }
 
 // Level, die vorerst nie automatisch gedreht werden (Welt-Index-Level-Index)
-const NO_ROTATE = new Set(["5-5", "10-0"]);
+const NO_ROTATE = new Set(["5-5"]); // Lasses Konzert bleibt eine breite Bühne
 
 // ===== Kinderbuch-Details =====
 // Kleine Dinge, die auf Wände und Böden gestreut werden, damit sich nichts wiederholt.
