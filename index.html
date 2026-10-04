@@ -163,6 +163,10 @@ button:disabled { cursor: default; }
 .arena.has-side .side { display: flex; align-items: flex-end; }
 .arena.has-side #side-l { width: calc(var(--side-w) * (1 + .45 * (var(--side-l) - 1))); }
 .arena.has-side #side-r { width: calc(var(--side-w) * (1 + .45 * (var(--side-r) - 1))); }
+/* Personen stehen unter dem Spielfeld nebeneinander, damit das Spielfeld die volle Breite bekommt */
+.arena.has-side { display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; row-gap: 6px; align-items: end; }
+.arena.has-side .stage { grid-row: 1; grid-column: 1 / -1; justify-self: center; }
+.arena.has-side #side-l { grid-row: 2; grid-column: 1; justify-self: end; } .arena.has-side #side-r { grid-row: 2; grid-column: 2; justify-self: start; }
 .side svg { width: var(--side-w); flex: none; height: auto; display: block; overflow: visible; }
 .side svg + svg { margin-left: calc(var(--side-w) * -.55); }
 .side .bobside { animation: idle 2.2s ease-in-out infinite; transform-origin: 50% 98%; transform-box: view-box; }
@@ -3489,7 +3493,10 @@ const LOGO_SOFT = {
   ALEX: [ALEX_FULL, ["#1d1a20", "#2a2228", "#4a3728"], .66],
   ENNI: [ENNI_FULL, [], 0], SOEREN: [SOEREN_FULL, [], 0], ANNA: [ANNA_FULL, [], 0], IDA: [IDA_FULL, [], 0]
 };
-const logoFig = (name) => { const [s, c, t] = LOGO_SOFT[name]; return softFill(s, c, t); };
+// Eigene Kennungen (clipPath usw.) im Titelbild umbenennen, sonst greifen die Figuren im Spiel auf die versteckte Kopie zu
+const logoIds = (svg) => { const ids = [...svg.matchAll(/ id="([^"]+)"/g)].map(m => m[1]);
+  return ids.reduce((t, id) => t.split(`id="${id}"`).join(`id="${id}-logo"`).split(`url(#${id})`).join(`url(#${id}-logo)`), svg); };
+const logoFig = (name) => { const [s, c, t] = LOGO_SOFT[name]; return logoIds(softFill(s, c, t)); };
 // Figur mit Füßen auf Bodenhöhe g und Mittelpunkt cx einsetzen (Ganzkörper 100×200, Füße bei y≈196)
 const placeFull = (svg, cx, g, s) => svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 196 * s).toFixed(1)}" width="${100 * s}" height="${200 * s}" overflow="visible" `);
 const LOGO_KIDS = FRIENDS.map(f => `<svg viewBox="0 -24 100 124" overflow="visible">${kidFigure({ ...f, shirt: pastel(f.shirt, .4), shorts: pastel(f.shorts, .4),
@@ -3950,8 +3957,7 @@ function render() {
 
 function follow() {
   const stage = document.querySelector(".stage");
-  const sides = [...document.querySelectorAll(".side")].reduce((n, el) => n + el.offsetWidth, 0);
-  const wide = board.scrollWidth > stage.parentElement.clientWidth - sides - 8;
+  const wide = board.scrollWidth > stage.parentElement.clientWidth - 8;
   stage.classList.toggle("wide", wide);
   if (!wide) return;
   const t = board.clientWidth / W;
@@ -4038,14 +4044,14 @@ board.addEventListener("pointerup", (e) => {
 // Platz für das Spielfeld: Breite abzüglich Randfiguren, Höhe vom Spielfeld bis zum unteren Bildschirmrand
 function availSize() {
   const arena = document.querySelector(".arena"), hasSide = !!(S && S.side);
-  const sideW = hasSide ? Math.round(Math.min(84, Math.max(44, window.innerWidth * .13))) : 0;
+  // Personen stehen unter dem Spielfeld: sie kosten Höhe (Figur 1:2), aber keine Breite
+  const sideW = hasSide ? Math.round(Math.min(78, Math.max(40, Math.min(window.innerWidth * .11, window.innerHeight * .07)))) : 0;
   if (arena) arena.style.setProperty("--side-w", sideW + "px");
-  const nSide = hasSide ? (1 + .45 * (S.side.l.length - 1)) + (1 + .45 * (S.side.r.length - 1)) : 0;
   const room = arena && arena.clientWidth ? arena.clientWidth : Math.min(window.innerWidth - 32, 720);
-  const aw = room - (hasSide ? Math.round(nSide * sideW) + 16 : 0) - 4;
+  const aw = room - 4;
   const top = arena ? arena.getBoundingClientRect().top + window.scrollY : 200;
   const below = [".pad-zone", "#hint"].reduce((n, q) => n + (document.querySelector(q)?.offsetHeight || 0), 0) + 28;
-  return [aw, Math.max(200, window.innerHeight - top - below)];
+  return [aw, Math.max(200, window.innerHeight - top - below - (hasSide ? sideW * 2 + 6 : 0))];
 }
 const TILE_MAX = 84, TILE_MIN = 26;
 const tileFor = (w, h, [aw, ah]) => Math.min(TILE_MAX, aw / w, ah / h);
