@@ -537,6 +537,39 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
       <circle cx="50" cy="50" r="11" fill="#4a3728"/><circle cx="50" cy="50" r="6.5" fill="#ffffff"/>
       <ellipse cx="34" cy="30" rx="7" ry="4" fill="#ffffff" opacity=".6" transform="rotate(-30 34 30)"/>
     </symbol>
+    <symbol id="netzball" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/>
+      <clipPath id="netzball-top"><path d="M16 50a34 34 0 0168 0z"/></clipPath>
+      <path d="M16 50a34 34 0 0168 0z" fill="#3fb6c8"/>
+      <g clip-path="url(#netzball-top)"><path d="M28 10v40M40 10v40M52 10v40M64 10v40M76 10v40M10 24h80M10 36h80" stroke="#4a3728" stroke-width="2.2"/></g>
+      <path d="M16 50a34 34 0 0168 0z" fill="none" stroke="#4a3728" stroke-width="3.5"/>
+      <path d="M16 50a34 34 0 0068 0z" fill="#ffffff" stroke="#4a3728" stroke-width="3.5"/>
+      <rect x="16" y="46" width="68" height="8" fill="#4a3728"/>
+      <circle cx="50" cy="50" r="11" fill="#4a3728"/><circle cx="50" cy="50" r="6.5" fill="#ffffff"/>
+      <ellipse cx="34" cy="30" rx="7" ry="4" fill="#ffffff" opacity=".6" transform="rotate(-30 34 30)"/>
+    </symbol>
+    <symbol id="tauchball" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/>
+      <clipPath id="tauchball-top"><path d="M16 50a34 34 0 0168 0z"/></clipPath>
+      <path d="M16 50a34 34 0 0168 0z" fill="#2f6fd6"/>
+      <g clip-path="url(#tauchball-top)"><path d="M14 26q6-5 12 0t12 0 12 0 12 0 12 0 12 0M14 38q6-5 12 0t12 0 12 0 12 0 12 0 12 0" stroke="#9fdcff" stroke-width="4" fill="none"/></g>
+      <path d="M16 50a34 34 0 0168 0z" fill="none" stroke="#4a3728" stroke-width="3.5"/>
+      <path d="M16 50a34 34 0 0068 0z" fill="#ffffff" stroke="#4a3728" stroke-width="3.5"/>
+      <rect x="16" y="46" width="68" height="8" fill="#4a3728"/>
+      <circle cx="50" cy="50" r="11" fill="#4a3728"/><circle cx="50" cy="50" r="6.5" fill="#ffffff"/>
+      <ellipse cx="34" cy="30" rx="7" ry="4" fill="#ffffff" opacity=".6" transform="rotate(-30 34 30)"/>
+    </symbol>
+    <symbol id="hyperball" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/>
+      <clipPath id="hyperball-top"><path d="M16 50a34 34 0 0168 0z"/></clipPath>
+      <path d="M16 50a34 34 0 0168 0z" fill="#16181f"/>
+      <g clip-path="url(#hyperball-top)"><path d="M31 10v40M69 10v40" stroke="#ffcc33" stroke-width="9"/></g>
+      <path d="M16 50a34 34 0 0168 0z" fill="none" stroke="#4a3728" stroke-width="3.5"/>
+      <path d="M16 50a34 34 0 0068 0z" fill="#ffffff" stroke="#4a3728" stroke-width="3.5"/>
+      <rect x="16" y="46" width="68" height="8" fill="#4a3728"/>
+      <circle cx="50" cy="50" r="11" fill="#4a3728"/><circle cx="50" cy="50" r="6.5" fill="#ffffff"/>
+      <ellipse cx="34" cy="30" rx="7" ry="4" fill="#ffffff" opacity=".6" transform="rotate(-30 34 30)"/>
+    </symbol>
     <symbol id="orden" viewBox="0 0 100 100">
       <path d="M50 6l38 22v44L50 94 12 72V28z" fill="url(#gold)" stroke="#9a6404" stroke-width="3.5" stroke-linejoin="round"/>
       <path d="M50 18l28 16v32L50 82 22 66V34z" fill="#e3350d" stroke="#9a6404" stroke-width="3" stroke-linejoin="round"/>
@@ -3424,9 +3457,9 @@ Object.assign(EXTRA_WALLS, {
 // Level, die vorerst nie automatisch gedreht werden (Welt-Index-Level-Index)
 const NO_ROTATE = new Set(["5-5"]); // Lasses Konzert bleibt eine breite Bühne
 
-// Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Pokébälle rot, lila, magenta
+// Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Pokébälle als Pokéball, Netzball, Tauchball, Hyperball
 THEMES.fussball.boxColors = [["#4a3728", "url(#ballShade)"], ["#4a3728", "#ffd3e4"], ["#4a3728", "#cfe6ff"]];
-THEMES.pokemon.boxColors = [["#e3350d", "#e3350d"], ["#8b5cf6", "#8b5cf6"], ["#e0218a", "#e0218a"]];
+THEMES.pokemon.boxCycle = () => ["pokeball", "netzball", "tauchball", "hyperball"];
 
 // ===== Kinderbuch-Details =====
 // Kleine Dinge, die auf Wände und Böden gestreut werden, damit sich nichts wiederholt.

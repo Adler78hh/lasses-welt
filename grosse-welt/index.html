@@ -583,6 +583,39 @@ body { background-attachment: scroll; }
       <circle cx="50" cy="50" r="11" fill="#1d1b1a"/><circle cx="50" cy="50" r="6.5" fill="#ffffff"/>
       <ellipse cx="34" cy="30" rx="7" ry="4" fill="#ffffff" opacity=".6" transform="rotate(-30 34 30)"/>
     </symbol>
+    <symbol id="netzball" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/>
+      <clipPath id="netzball-top"><path d="M16 50a34 34 0 0168 0z"/></clipPath>
+      <path d="M16 50a34 34 0 0168 0z" fill="#3fb6c8"/>
+      <g clip-path="url(#netzball-top)"><path d="M28 10v40M40 10v40M52 10v40M64 10v40M76 10v40M10 24h80M10 36h80" stroke="#1d1b1a" stroke-width="2.2"/></g>
+      <path d="M16 50a34 34 0 0168 0z" fill="none" stroke="#1d1b1a" stroke-width="3.5"/>
+      <path d="M16 50a34 34 0 0068 0z" fill="#ffffff" stroke="#1d1b1a" stroke-width="3.5"/>
+      <rect x="16" y="46" width="68" height="8" fill="#1d1b1a"/>
+      <circle cx="50" cy="50" r="11" fill="#1d1b1a"/><circle cx="50" cy="50" r="6.5" fill="#ffffff"/>
+      <ellipse cx="34" cy="30" rx="7" ry="4" fill="#ffffff" opacity=".6" transform="rotate(-30 34 30)"/>
+    </symbol>
+    <symbol id="tauchball" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/>
+      <clipPath id="tauchball-top"><path d="M16 50a34 34 0 0168 0z"/></clipPath>
+      <path d="M16 50a34 34 0 0168 0z" fill="#2f6fd6"/>
+      <g clip-path="url(#tauchball-top)"><path d="M14 26q6-5 12 0t12 0 12 0 12 0 12 0 12 0M14 38q6-5 12 0t12 0 12 0 12 0 12 0 12 0" stroke="#9fdcff" stroke-width="4" fill="none"/></g>
+      <path d="M16 50a34 34 0 0168 0z" fill="none" stroke="#1d1b1a" stroke-width="3.5"/>
+      <path d="M16 50a34 34 0 0068 0z" fill="#ffffff" stroke="#1d1b1a" stroke-width="3.5"/>
+      <rect x="16" y="46" width="68" height="8" fill="#1d1b1a"/>
+      <circle cx="50" cy="50" r="11" fill="#1d1b1a"/><circle cx="50" cy="50" r="6.5" fill="#ffffff"/>
+      <ellipse cx="34" cy="30" rx="7" ry="4" fill="#ffffff" opacity=".6" transform="rotate(-30 34 30)"/>
+    </symbol>
+    <symbol id="hyperball" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/>
+      <clipPath id="hyperball-top"><path d="M16 50a34 34 0 0168 0z"/></clipPath>
+      <path d="M16 50a34 34 0 0168 0z" fill="#1d1b1a"/>
+      <g clip-path="url(#hyperball-top)"><path d="M31 10v40M69 10v40" stroke="#ffcc33" stroke-width="9"/></g>
+      <path d="M16 50a34 34 0 0168 0z" fill="none" stroke="#1d1b1a" stroke-width="3.5"/>
+      <path d="M16 50a34 34 0 0068 0z" fill="#ffffff" stroke="#1d1b1a" stroke-width="3.5"/>
+      <rect x="16" y="46" width="68" height="8" fill="#1d1b1a"/>
+      <circle cx="50" cy="50" r="11" fill="#1d1b1a"/><circle cx="50" cy="50" r="6.5" fill="#ffffff"/>
+      <ellipse cx="34" cy="30" rx="7" ry="4" fill="#ffffff" opacity=".6" transform="rotate(-30 34 30)"/>
+    </symbol>
     <symbol id="orden" viewBox="0 0 100 100">
       <path d="M50 6l38 22v44L50 94 12 72V28z" fill="url(#gold)" stroke="#9a6404" stroke-width="3.5" stroke-linejoin="round"/>
       <path d="M50 18l28 16v32L50 82 22 66V34z" fill="#e3350d" stroke="#9a6404" stroke-width="3" stroke-linejoin="round"/>
@@ -2575,6 +2608,9 @@ LASSE.neutral = LASSE.familie;
 const K_BOXES = {
   k2ball: `<circle cx="50" cy="52" r="30" fill="var(--c2, #fff)" ${kO}/><path d="M50 40l11 8-4 13H43l-4-13z" fill="var(--c1, ${KI})"/><path d="M50 40V24M61 48l14-5M57 61l8 12M43 61l-8 12M39 48l-14-5" stroke="${KI}" stroke-width="2.4"/>`,
   k2heu: `<rect x="14" y="26" width="72" height="56" rx="6" fill="#f0c94a" ${kO}/><path d="M20 40h20M50 36h24M24 56h30M60 62h20M30 72h22" stroke="#b8902a" stroke-width="3"/><path d="M34 26v56M66 26v56" stroke="#c0392b" stroke-width="4"/>`,
+  k2netz: `<clipPath id="k2netz-top"><path d="M18 52a32 32 0 0164 0z"/></clipPath><circle cx="50" cy="52" r="32" fill="#fff" ${kO}/><path d="M18 52a32 32 0 0164 0z" fill="#3fb6c8"/><g clip-path="url(#k2netz-top)"><path d="M30 14v38M42 14v38M58 14v38M70 14v38M14 30h72M14 42h72" stroke="${KI}" stroke-width="2.2"/></g><path d="M18 52a32 32 0 0164 0z" fill="none" ${kO}/><path d="M18 52h64" stroke="${KI}" stroke-width="5"/><circle cx="50" cy="52" r="9" fill="#fff" ${kO}/>`,
+  k2tauch: `<clipPath id="k2tauch-top"><path d="M18 52a32 32 0 0164 0z"/></clipPath><circle cx="50" cy="52" r="32" fill="#fff" ${kO}/><path d="M18 52a32 32 0 0164 0z" fill="#2b5fd9"/><g clip-path="url(#k2tauch-top)"><path d="M16 30q6-5 12 0t12 0 12 0 12 0 12 0 12 0M16 42q6-5 12 0t12 0 12 0 12 0 12 0 12 0" stroke="#9fdcff" stroke-width="4" fill="none"/></g><path d="M18 52a32 32 0 0164 0z" fill="none" ${kO}/><path d="M18 52h64" stroke="${KI}" stroke-width="5"/><circle cx="50" cy="52" r="9" fill="#fff" ${kO}/>`,
+  k2hyper: `<clipPath id="k2hyper-top"><path d="M18 52a32 32 0 0164 0z"/></clipPath><circle cx="50" cy="52" r="32" fill="#fff" ${kO}/><path d="M18 52a32 32 0 0164 0z" fill="#1d1b1a"/><g clip-path="url(#k2hyper-top)"><path d="M33 14v38M67 14v38" stroke="#ffd23a" stroke-width="9"/></g><path d="M18 52a32 32 0 0164 0z" fill="none" ${kO}/><path d="M18 52h64" stroke="${KI}" stroke-width="5"/><circle cx="50" cy="52" r="9" fill="#fff" ${kO}/>`,
   k2poke: `<circle cx="50" cy="52" r="32" fill="#fff" ${kO}/><path d="M18 52a32 32 0 0164 0z" fill="var(--c1, #e2402f)" ${kO}/><path d="M18 52h64" stroke="${KI}" stroke-width="5"/><circle cx="50" cy="52" r="9" fill="#fff" ${kO}/>`,
   k2lego: `<rect x="12" y="30" width="76" height="54" rx="5" fill="var(--c1, #ffd23a)" ${kO}/>${[30, 50, 70].map(a => `<rect x="${a - 8}" y="20" width="16" height="11" rx="3" fill="var(--c1, #ffd23a)" ${kO2}/>`).join("")}<path d="M18 40v36" stroke="#fff" stroke-width="4" opacity=".6"/>`,
   k2kristall: `<path d="M28 84l-6-34 14-26h28l14 26-6 34z" fill="var(--g1, #d6f6ff)" ${kO}/><path d="M36 24l14 30 14-30M22 50h56M50 54v30" stroke="${KI}" stroke-width="2" opacity=".55"/><path d="M34 34l6 12" stroke="#fff" stroke-width="4"/>`,
@@ -2943,9 +2979,9 @@ THEMES.familie = theme2({
   ]
 });
 
-// Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Pokébälle rot, lila, magenta
+// Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Pokébälle als Pokéball, Netzball, Tauchball, Hyperball
 THEMES.fussball.boxColors = [["#1d1b1a", "#ffffff"], ["#1d1b1a", "#ffd3e4"], ["#1d1b1a", "#cfe6ff"]];
-THEMES.pokemon.boxColors = [["#e2402f", "#e2402f"], ["#8b5cf6", "#8b5cf6"], ["#e0218a", "#e0218a"]];
+THEMES.pokemon.boxCycle = () => ["k2poke", "k2netz", "k2tauch", "k2hyper"];
 // ===== Bonus: Lasses Ehrenrunde =====
 // Microban Nr. 154 „Take the long way home“: eine Doppelspirale mit nur einer Kiste.
 // Lasse läuft die Ehrenrunde einmal durch alle zehn Welten und stellt die Meisterschale aufs Podest.
