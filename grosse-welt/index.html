@@ -228,7 +228,9 @@ button:disabled { cursor: default; }
 .bit { position: absolute; top: 30%; width: 9px; height: 14px; border-radius: 3px; animation: fall 1.4s cubic-bezier(.2,.6,.4,1) forwards; }
 @keyframes fall { from { transform: translate(0, 0) rotate(0); opacity: 1; } to { transform: translate(var(--dx), var(--dy)) rotate(var(--r)); opacity: 0; } }
 
-.pad-zone { padding-top: 10px; }
+.pad-zone { padding-top: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.pad-zone.no-pad .pad { display: none; }
+.pad-toggle { font-size: 12px; padding: 4px 12px; min-height: 0; border-radius: 999px; opacity: .75; box-shadow: none; }
 .pad { display: grid; grid-template-columns: repeat(3, 58px); grid-template-rows: repeat(3, 58px); gap: 6px; }
 .pad button { border-radius: 18px; color: var(--accent); display: grid; place-items: center; }
 .pad button svg { width: 24px; height: 24px; }
@@ -909,6 +911,7 @@ body { background-attachment: scroll; }
         <button type="button" data-d="r" aria-label="Rechts"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 12L8 4v16z"/></svg></button>
         <button type="button" data-d="d" aria-label="Runter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 19l8-11H4z"/></svg></button>
       </div>
+      <button type="button" id="pad-toggle" class="pad-toggle" aria-pressed="false">Pfeile zeigen</button>
     </div>
     <p class="hint" id="hint"></p>
   </section>
@@ -3003,6 +3006,9 @@ THEMES.garten = theme2({
     extras: () => bunting(["#0a5cb0", "#ffffff", "#ffd23a", "#e2402f"]) + birdHTML()
   }]
 });
+
+// Level, die vorerst nie automatisch gedreht werden (Welt-Index-Level-Index)
+const NO_ROTATE = new Set(["10-0"]);
 const EXTRA_WALLS = {};
 
 // ===== Kinderbuch-Details =====
@@ -3335,7 +3341,13 @@ function loadLevel(w, l, data) {
   document.getElementById("push-word").textContent = T.pushWord;
   document.getElementById("hint").textContent = typeof T.hint === "function" ? T.hint(l) : T.hint;
   document.getElementById("win-title").textContent = finale ? T.prize.title : (typeof T.winTitle === "function" ? T.winTitle(l) : T.winTitle);
-  parse(L.levels[l].m);
+  ROT = chooseRot(L.levels[l].m);
+  const raw = L.levels[l].m;
+  ORIG = { w: Math.max(...raw.map(r => r.length)), h: raw.length };
+  parse(ROT ? rotRows(raw) : raw);
+  // Kisten in der Reihenfolge des Originals nummerieren, damit Farben und Buchstaben gleich bleiben
+  if (ROT) startBoxes.sort((a, b) => { const [ax, ay] = fromRot(a), [bx, by] = fromRot(b); return ay - by || ax - bx; });
+  if (data) data = { ...data, player: data.player && toRot(data.player), boxes: data.boxes && data.boxes.map(b => ({ ...b, ...xy(toRot([b.x, b.y])) })) };
   board.style.setProperty("--w", W); board.style.setProperty("--h", H);
   for (const k of ["--g1", "--g2", "--g3"]) board.style.removeProperty(k);
   if (T.levelVars) for (const [k, v] of Object.entries(T.levelVars(l))) board.style.setProperty(k, v);
@@ -3581,18 +3593,53 @@ board.addEventListener("pointerup", (e) => {
   step(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "r" : "l") : (dy > 0 ? "d" : "u"));
 });
 
-function sizeTiles() {
-  if (!W) return;
+// Platz für das Spielfeld: Breite abzüglich Randfiguren, Höhe vom Spielfeld bis zum unteren Bildschirmrand
+function availSize() {
   const arena = document.querySelector(".arena"), hasSide = !!(S && S.side);
   const sideW = hasSide ? Math.round(Math.min(84, Math.max(44, window.innerWidth * .13))) : 0;
   if (arena) arena.style.setProperty("--side-w", sideW + "px");
   const nSide = hasSide ? (1 + .45 * (S.side.l.length - 1)) + (1 + .45 * (S.side.r.length - 1)) : 0;
-  const avail = Math.min(window.innerWidth - 32, 720) - (hasSide ? Math.round(nSide * sideW) + 8 : 0);
-  board.style.setProperty("--t", Math.max(26, Math.min(64, Math.floor(avail / W))) + "px");
+  const room = arena && arena.clientWidth ? arena.clientWidth : Math.min(window.innerWidth - 32, 720);
+  const aw = room - (hasSide ? Math.round(nSide * sideW) + 16 : 0) - 4;
+  const top = arena ? arena.getBoundingClientRect().top + window.scrollY : 200;
+  const below = [".pad-zone", "#hint"].reduce((n, q) => n + (document.querySelector(q)?.offsetHeight || 0), 0) + 28;
+  return [aw, Math.max(200, window.innerHeight - top - below)];
 }
-window.addEventListener("resize", sizeTiles);
+const TILE_MAX = 84, TILE_MIN = 26;
+const tileFor = (w, h, [aw, ah]) => Math.min(TILE_MAX, aw / w, ah / h);
+// Automatisch drehen: nur wenn das Level gedreht deutlich größer auf den Bildschirm passt
+function chooseRot(rows) {
+  if (typeof NO_ROTATE !== "undefined" && NO_ROTATE.has(lk(curWorld, curLevel))) return 0;
+  const w = Math.max(...rows.map(r => r.length)), h = rows.length, av = availSize();
+  return tileFor(h, w, av) > tileFor(w, h, av) * 1.15 ? 1 : 0;
+}
+// Im Uhrzeigersinn um 90° drehen: (x, y) → (h-1-y, x)
+function rotRows(rows) {
+  const h = rows.length, w = Math.max(...rows.map(r => r.length)), p = rows.map(r => r.padEnd(w));
+  return Array.from({ length: w }, (_, y) => Array.from({ length: h }, (_, x) => p[h - 1 - x][y]).join(""));
+}
+let ROT = 0, ORIG = null;
+const xy = ([x, y]) => ({ x, y });
+const toRot = (p) => ROT ? [ORIG.h - 1 - p[1], p[0]] : [...p];
+const fromRot = (p) => ROT ? [p[1], ORIG.h - 1 - p[0]] : [...p];
+const stateOrig = (s) => s && { ...s, player: fromRot(s.player), boxes: s.boxes.map(b => ({ ...b, ...xy(fromRot([b.x, b.y])) })) };
+const stateRot = (s) => s && { ...s, player: toRot(s.player), boxes: s.boxes.map(b => ({ ...b, ...xy(toRot([b.x, b.y])) })) };
+function sizeTiles() {
+  if (!W) return;
+  board.style.setProperty("--t", Math.max(TILE_MIN, Math.floor(tileFor(W, H, availSize()))) + "px");
+}
+// Gerät gedreht: Level neu ausrichten und den Spielstand (samt Zurück-Verlauf) mitnehmen
+function reorient() {
+  if (screen !== "game" || !W || !L) return sizeTiles();
+  if (chooseRot(L.levels[curLevel].m) === ROT || lasseEl.classList.contains("cheer")) return sizeTiles();
+  const cur = stateOrig({ player, boxes, moves, pushes }), hist = history.map(stateOrig), saved = stateOrig(savedBeforeReset), f = facing;
+  loadLevel(curWorld, curLevel, cur);
+  history = hist.map(stateRot); savedBeforeReset = stateRot(saved); facing = f; render();
+}
+let rsT = null;
+window.addEventListener("resize", () => { clearTimeout(rsT); rsT = setTimeout(reorient, 120); });
 
-window.claude?.hot?.snapshot?.(() => ({ screen, curWorld, curLevel, game: screen === "game" ? { player, boxes, moves, pushes } : null }));
+window.claude?.hot?.snapshot?.(() => ({ screen, curWorld, curLevel, game: screen === "game" ? stateOrig({ player, boxes, moves, pushes }) : null }));
 function boot(data) {
   if (data && data.screen === "game" && data.game) return loadLevel(data.curWorld, data.curLevel, data.game);
   if (data && data.screen && data.screen !== "game") { curWorld = data.curWorld || 0; return show(data.screen); }
@@ -3604,6 +3651,17 @@ window.claude?.hot?.ready ? window.claude.hot.ready(boot) : boot(window.claude?.
 document.addEventListener("contextmenu", e => { if (!e.target.closest("input, textarea")) e.preventDefault(); });
 document.addEventListener("dragstart", e => e.preventDefault());
 document.addEventListener("selectstart", e => { if (!e.target.closest || !e.target.closest("input, textarea")) e.preventDefault(); });
+
+// Pfeile: auf iPad und Handy ausgeblendet (gespielt wird mit Wischen), per Schalter wieder einblendbar
+(() => {
+  const zone = document.querySelector(".pad-zone"), btn = document.getElementById("pad-toggle");
+  if (!zone || !btn) return;
+  let on = !matchMedia("(pointer: coarse)").matches;
+  try { const v = localStorage.getItem("lasse-pfeile"); if (v !== null) on = v === "1"; } catch (e) {}
+  const apply = () => { zone.classList.toggle("no-pad", !on); btn.textContent = on ? "Pfeile ausblenden" : "Pfeile zeigen"; btn.setAttribute("aria-pressed", on); };
+  btn.addEventListener("click", () => { on = !on; try { localStorage.setItem("lasse-pfeile", on ? "1" : "0"); } catch (e) {} apply(); reorient(); });
+  apply();
+})();
 </script>
 
 <script>if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});</script>
