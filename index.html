@@ -2814,18 +2814,20 @@ const FRIENDS = [
 // Die fünf ohne Partyhut, als Wandfelder auf dem Trainingsplatz
 const trainingFriends = (padFn) => FRIENDS.map(f => padFn(kidFigure({ ...f, hat: null })));
 // ===== Welt 8: Feiern (früher „Essen“). Es sind immer Freunde dabei. =====
-// Design 1 (Level 1–2): an Bord des Segelschiffs Pippilotta – Arne und Matze kochen Nudeln, Lasse schiebt Nudelschüsseln.
+// Design 1 (Level 1–2): an Bord des Segelschiffs Pippilotta – Arne und Matze kochen Nudeln, Lasse schiebt Teller mit Nudelbergen.
 document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
   <symbol id="nudeln" viewBox="0 0 100 100">
-    <ellipse cx="50" cy="90" rx="32" ry="5" fill="#00000024"/>
-    <path class="steam" d="M38 22q-5-7 0-14M52 18q-5-7 0-14M66 22q-5-7 0-14" stroke="#ffffff" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-    <path d="M14 46q36 10 72 0-2 36-36 38-34-2-36-38z" fill="#ffffff" stroke="#4a3728" stroke-width="3" stroke-linejoin="round"/>
-    <path d="M18 60q32 10 64 0" stroke="#3d7fd6" stroke-width="4" fill="none"/>
-    <ellipse cx="50" cy="46" rx="36" ry="10" fill="#f6d77a" stroke="#4a3728" stroke-width="3"/>
-    <path d="M24 46q6-6 12 0t12 0 12 0 12 0M28 42q6-5 12 0t12 0 12 0M30 50q8-4 16 0t16 0" stroke="#d9b24a" stroke-width="2" fill="none"/>
-    <ellipse cx="52" cy="43" rx="13" ry="5" fill="#d6262b"/><circle cx="46" cy="42" r="3" fill="#7a3b1d"/><circle cx="57" cy="43" r="3" fill="#7a3b1d"/>
-    <path d="M60 38q4-4 8-2-2 4-8 2z" fill="#3fae4a"/>
-    <path d="M22 62q2 10 8 14" stroke="#ffffff" stroke-width="3" opacity=".7" stroke-linecap="round" fill="none"/>
+    <!-- Teller mit Nudelberg -->
+    <ellipse cx="50" cy="90" rx="38" ry="5" fill="#00000024"/>
+    <path class="steam" d="M36 16q-5-7 0-14M50 12q-5-7 0-14M64 16q-5-7 0-14" stroke="#ffffff" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="50" cy="76" rx="44" ry="13" fill="#ffffff" stroke="#4a3728" stroke-width="3"/>
+    <ellipse cx="50" cy="74" rx="36" ry="8.6" fill="none" stroke="#3d7fd6" stroke-width="2.6"/>
+    <path d="M18 74q2-22 14-34 8-14 18-16 10 2 18 16 12 12 14 34-32 9-64 0z" fill="#f6d77a" stroke="#4a3728" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M24 70q6-6 12 0t12 0 12 0 12 0M26 62q6-6 12 0t12 0 12 0 10 0M30 54q6-6 12 0t12 0 12 0M34 46q5-5 10 0t10 0 10 0M40 38q5-5 10 0t8 0" stroke="#d9b24a" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M32 44q4-12 18-14 14 2 18 14-6 6-18 5-12 1-18-5z" fill="#d6262b" stroke="#4a3728" stroke-width="2.2" stroke-linejoin="round"/>
+    <circle cx="42" cy="40" r="4.6" fill="#7a3b1d" stroke="#4a3728" stroke-width="1.6"/><circle cx="56" cy="38" r="4.6" fill="#7a3b1d" stroke="#4a3728" stroke-width="1.6"/><circle cx="50" cy="45" r="4" fill="#7a3b1d" stroke="#4a3728" stroke-width="1.6"/>
+    <path d="M58 28q5-5 10-2-3 5-10 2zM58 28q-2-6 2-9 3 4-2 9z" fill="#3fae4a" stroke="#4a3728" stroke-width="1.2"/>
+    <path d="M40 33l1.4 1.4M47 31l-1 1.6M60 33l1.4 1" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
   </symbol>`);
 
 const deckPlanks = (x, y) => svgT(`<rect width="100" height="100" fill="${(x + y) % 2 ? "#d8b07a" : "#dfb985"}"/><path d="M0 20h100M0 40h100M0 60h100M0 80h100" stroke="#9c7445" stroke-width="2.4"/><path d="M${pick(x, y, 1, 4) * 25 + 10} 0v20M${pick(x, y, 2, 4) * 25} 40v20M${pick(x, y, 3, 4) * 25 + 15} 80v20" stroke="#9c7445" stroke-width="1.6"/>${pick(x, y, 4, 7) === 0 ? `<circle cx="${20 + pick(x, y, 5, 60)}" cy="30" r="1.6" fill="#7a5530"/><circle cx="${20 + pick(x, y, 6, 60)}" cy="70" r="1.6" fill="#7a5530"/>` : ""}`);
@@ -3130,8 +3132,8 @@ const enniPlays = gardenPad(`<rect x="8" y="58" width="84" height="34" rx="4" fi
   WEIHNACHTEN.wall = (x, y) => { const k = pick(x, y, 21, 10); return k === 0 ? guest(SOEREN, "#f4e9d8", "#d8c7ad", santaHat(52, 14)) : k === 1 ? guest(ANNA, "#f4e9d8", "#d8c7ad", santaHat(50, 18)) : k === 2 ? guest(IDA, "#f4e9d8", "#d8c7ad", santaHat(50, 24)) : w3(x, y); };
 }
 const FEIERN = [
-  { scene: PIPPILOTTA, box: "nudeln", name: "Segelschiff Pippilotta", word: "Nudelschüssel",
-    hint: "Arne und Matze kochen Nudeln an Bord! Bring jede Nudelschüssel an einen gedeckten Platz.", title: "Ahoi!", win: "Nudeln für alle an Deck der Pippilotta!" },
+  { scene: PIPPILOTTA, box: "nudeln", name: "Segelschiff Pippilotta", word: "Nudelteller",
+    hint: "Arne und Matze kochen Nudeln an Bord! Bring jeden Teller mit Nudelberg an einen gedeckten Platz.", title: "Ahoi!", win: "Nudeln für alle an Deck der Pippilotta!" },
   { scene: GRILLFEST, box: "burger", name: "Grillfest im Garten", word: "Burger",
     hint: "Grillfest bei Christian und Alex! Bring jeden Burger an einen gedeckten Platz.", title: "Mahlzeit!", win: "Burger für alle beim Grillfest!" },
   { scene: WEIHNACHTEN, box: "christbaumkugel", name: "Weihnachten", word: "Christbaumkugel",
