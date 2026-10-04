@@ -1573,7 +1573,8 @@ const HAIR_STRUBBEL = `<path d="M26 30q-1-22 24-22t24 22q-5-6-10-7l-3 6-5-7-6 7-
   <path d="M48 9q-2-7 5-8-1 4 2 7" fill="${HAIR}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>`;
 LASSE.duplo = lasseBase("#ffcd03", "#0055bf", "#e3000b",
   `<path d="M36 60h28v16H36z" fill="#0055bf" stroke="${INK}" stroke-width="2"/><path d="M38 50v10M62 50v10" stroke="#0055bf" stroke-width="4"/><circle cx="40" cy="62" r="2" fill="#ffcd03"/><circle cx="60" cy="62" r="2" fill="#ffcd03"/>`,
-  HAIR_STRUBBEL);
+  `<path d="M38 14V4h24v10z" fill="${SKIN}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="50" cy="4" rx="12" ry="3.8" fill="${SKIN}" stroke="${INK}" stroke-width="2.4"/><path d="M42.5 7v5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".7"/>
+  ${HAIR_STRUBBEL.split("\n")[0]}`);
 LASSE.feuerwehr = lasseBase("#1d1b1a", "#1d1b1a", "#16181f",
   `<path d="M34 64h32M34 70h32" stroke="#ffcd03" stroke-width="3"/>`,
   `<path d="M26 33q-3 6 1 10 1-6 4-8zM74 33q3 6-1 10-1-6-4-8z" fill="${HAIR}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
@@ -2423,7 +2424,7 @@ const kFloor = (a, b, extra = () => "") => (x, y, ctx) => svgT(`<rect width="100
 
 // ---------- Lasse mit etwa 10 ----------
 const SKIN10 = "#f6cfae", HAIR10 = "#f3c93f";
-function kLasse({ shirt = "#e2402f", pants = "#33507f", shoes = "#ffffff", head = "", body = "", hand = "", glove = SKIN10, hair = true }) {
+function kLasse({ shirt = "#e2402f", pants = "#33507f", shoes = "#ffffff", head = "", body = "", hand = "", glove = SKIN10, hair = true, under = "" }) {
   return `<svg viewBox="0 0 100 100" overflow="visible">
   <ellipse class="shadow" cx="50" cy="95" rx="18" ry="4" fill="#0003"/>
   <g class="body">
@@ -2436,6 +2437,7 @@ function kLasse({ shirt = "#e2402f", pants = "#33507f", shoes = "#ffffff", head 
   <g class="pick">${hand}</g>
   <path d="M46 38h8v6h-8z" fill="${SKIN10}" ${kO2}/>
   <ellipse cx="50" cy="26" rx="15" ry="17" fill="${SKIN10}" ${kO}/>
+  ${under}
   ${hair ? `<path d="M34 24q-2-16 12-18l4-4 4 5q12 0 13 15l-5-5-3 6-4-7-5 6-3-7-5 6-3-5z" fill="${HAIR10}" ${kO}/>` : ""}
   <path d="M42 24l5-1M53 23l5 1" stroke="${KI}" stroke-width="2.2" stroke-linecap="round"/>
   <g class="eyes"><circle cx="44.5" cy="28" r="2" fill="${KI}"/><circle cx="55.5" cy="28" r="2" fill="${KI}"/></g>
@@ -2452,6 +2454,7 @@ Object.assign(LASSE, {
   reiten: kLasse({ shirt: "#3b5f8a", pants: "#eadfc8", shoes: KI, body: `<path d="M40 74h9v16h-9zM51 74h9v16h-9z" fill="${KI}"/>`, head: `<path d="M34 22q0-18 16-18t16 18z" fill="#222a3a" ${kO}/><path d="M32 22h36l-3 5H35z" fill="#222a3a" ${kO2}/>` }),
   pokemon: kLasse({ shirt: "#2b5fd9", pants: "#33507f", shoes: "#e2402f", glove: "#3fae4a", body: `<path d="M44 40l6 6 6-6" fill="#fff" ${kO2}/><path d="M46 46v24M54 46v24" stroke="${KI}" stroke-width="5"/>`, head: ashCap + `<g class="buddy"><path d="M66 36l-4-10 8 6zM78 36l4-10-8 6z" fill="#f7d02c" ${kO2}/><ellipse cx="72" cy="42" rx="8" ry="7" fill="#f7d02c" ${kO2}/><circle cx="69" cy="41" r="1.3" fill="${KI}"/><circle cx="75" cy="41" r="1.3" fill="${KI}"/><circle cx="66" cy="44" r="1.6" fill="#e8402c"/><circle cx="78" cy="44" r="1.6" fill="#e8402c"/></g>` }),
   lego: kLasse({ shirt: "#ffd23a", pants: "#33507f", shoes: "#e2402f", body: `<rect x="44" y="50" width="12" height="8" rx="1.6" fill="#e2402f" ${kO2}/>`, head: `<path d="M33 18q0-14 17-14t17 14z" fill="#ff8a1a" ${kO}/><rect x="30" y="17" width="40" height="5" rx="2" fill="#ff8a1a" ${kO2}/>` }),
+  legoNoppe: kLasse({ shirt: "#ffd23a", pants: "#33507f", shoes: "#e2402f", body: `<rect x="44" y="50" width="12" height="8" rx="1.6" fill="#e2402f" ${kO2}/>`, under: `<path d="M39 9V0h22v9z" fill="${SKIN10}" ${kO}/><ellipse cx="50" cy="0" rx="11" ry="3.4" fill="${SKIN10}" ${kO}/><path d="M43 3v4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".7"/>` }),
   steine: kLasse({ shirt: "#a7473c", pants: "#5b4636", shoes: "#3b2a1e", body: `<path d="M40 44v26M50 42v28M60 44v26M33 56h35" stroke="#7a2f28" stroke-width="2"/>`, hand: `<path d="M72 68L84 30" stroke="#8a5a2b" stroke-width="4"/><path d="M74 34q12-10 22 2-10-3-12-1z" fill="#c9ced8" ${kO2}/>`, head: `<path d="M33 20q0-16 17-16t17 16z" fill="#ffd23a" ${kO}/><rect x="44" y="6" width="12" height="9" rx="3" fill="#c9ced8" ${kO2}/><circle cx="50" cy="10.5" r="2.6" fill="#fff6b0"/>` }),
   schlagzeug: kLasse({ shirt: KI, pants: "#33507f", shoes: "#ffffff", body: kStar(50, 54, 6, "#ffd23a"), hand: `<path d="M72 68L90 46M74 72L94 56" stroke="#c9935a" stroke-width="3.6" stroke-linecap="round"/>`, head: `<path d="M33 26q0-24 17-24t17 24" fill="none" stroke="${KI}" stroke-width="4"/><rect x="29" y="20" width="9" height="14" rx="4" fill="#e2402f" ${kO2}/><rect x="62" y="20" width="9" height="14" rx="4" fill="#e2402f" ${kO2}/>` }),
   tennis: kLasse({ shirt: "#ffffff", pants: "#ffffff", shoes: "#ffffff", body: `<path d="M44 42l6 5 6-5" fill="none" stroke="#2f7a4a" stroke-width="2.4"/>`, hand: `<path d="M72 68L80 46" stroke="${KI}" stroke-width="4"/><ellipse cx="84" cy="34" rx="9" ry="13" fill="#d7f03c55" stroke="#e2402f" stroke-width="3.4" transform="rotate(15 84 34)"/>`, head: `<path d="M35 16q15-6 30 0" stroke="#e2402f" stroke-width="5" fill="none"/>` }),
@@ -2611,14 +2614,14 @@ THEMES.lego = theme2({
       () => kB("#c2c6cc", `<path d="M30 84l8-40h24l8 40z" fill="#ff8a1a" ${kO2}/><path d="M34 64h32" stroke="#fff" stroke-width="5"/>`),
       () => kB("#2b5fd9", `<rect x="30" y="22" width="40" height="48" rx="10" fill="#ffd23a" ${kO}/><circle cx="42" cy="42" r="3" fill="${KI}"/><circle cx="58" cy="42" r="3" fill="${KI}"/><path d="M40 54q10 8 20 0" fill="none" stroke="${KI}" stroke-width="2.4"/><path d="M28 24q22-14 44 0z" fill="#ffd23a" ${kO2}/>`)
     ]),
-    kScene("Lego-Stadt", "lego", PAL("#e6eef8", "#f8fbff"), kFloor("#a3a7ad", "#9a9ea4", (x, y, ctx) => y === ctx.midY ? `<path d="M0 50h100" stroke="#fff" stroke-width="5" stroke-dasharray="14 10"/>` : ""), [
+    kScene("Lego-Stadt", "legoNoppe", PAL("#e6eef8", "#f8fbff"), kFloor("#a3a7ad", "#9a9ea4", (x, y, ctx) => y === ctx.midY ? `<path d="M0 50h100" stroke="#fff" stroke-width="5" stroke-dasharray="14 10"/>` : ""), [
       () => kB("#f2f2f2", `<rect x="14" y="30" width="72" height="32" fill="#9fd2ff" ${kO2}/><path d="M38 30v32M62 30v32" stroke="${KI}" stroke-width="2"/><rect x="14" y="66" width="72" height="12" fill="#2b5fd9" ${kO2}/>`),
       () => kB("#e2402f", `<rect x="16" y="40" width="68" height="46" fill="#c0392b" ${kO2}/><path d="M16 54h68M16 68h68" stroke="${KI}" stroke-width="2"/>${kHand("112", "#fff", 16, 32)}`),
       () => kB("#2b5fd9", `${kHand("POLIZEI", "#fff", 14, 30)}<rect x="20" y="40" width="24" height="22" fill="#9fd2ff" ${kO2}/><rect x="56" y="40" width="24" height="22" fill="#9fd2ff" ${kO2}/><rect x="40" y="66" width="20" height="24" fill="#1a3f99" ${kO2}/>`),
       () => kB("#c2c6cc", `<rect x="14" y="44" width="72" height="30" rx="8" fill="#e2402f" ${kO}/><rect x="24" y="30" width="34" height="18" rx="4" fill="#9fd2ff" ${kO2}/><circle cx="30" cy="76" r="8" fill="${KI}"/><circle cx="70" cy="76" r="8" fill="${KI}"/><rect class="siren" x="34" y="22" width="14" height="8" rx="3" fill="#4fd1ff" ${kO2}/>`),
       (x, y) => kBricks("#c9b8a6", kGraffiti(x, y, ["BRICK", "LASSE", "CITY"], GRAF))
     ]),
-    kScene("Raumstation", "lego", PAL("#0f1433", "#232c66", "#d8deff", "#ffffff"), kFloor("#3e4766", "#454e6e", (x, y) => [[30, 30], [70, 30], [30, 70], [70, 70]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="10" fill="#4f5a7e" stroke="#2c3350" stroke-width="2"/>`).join("")), [
+    kScene("Raumstation", "legoNoppe", PAL("#0f1433", "#232c66", "#d8deff", "#ffffff"), kFloor("#3e4766", "#454e6e", (x, y) => [[30, 30], [70, 30], [30, 70], [70, 70]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="10" fill="#4f5a7e" stroke="#2c3350" stroke-width="2"/>`).join("")), [
       () => kB("#c9ced8", `<circle cx="50" cy="46" r="22" fill="#2b3a67" ${kO2}/><circle class="glowwin" cx="50" cy="46" r="14" fill="#7fe3ff"/><path d="M10 78h80" stroke="#2b5fd9" stroke-width="6"/>`),
       () => kB("#232c66", `<path d="M50 8q18 16 16 50H34Q32 24 50 8z" fill="#fff" ${kO}/><path d="M50 8q10 8 13 20H37Q40 16 50 8z" fill="#e2402f" ${kO2}/><circle cx="50" cy="40" r="7" fill="#7fe3ff" ${kO2}/><path class="flame" d="M40 60q10 28 20 0z" fill="#ffb02e"/>`),
       () => kB("#232c66", `<g class="bob"><path d="M30 88q0-30 20-30t20 30z" fill="#6fe36f" ${kO2}/><ellipse cx="50" cy="40" rx="22" ry="20" fill="#6fe36f" ${kO}/><ellipse cx="50" cy="38" rx="9" ry="10" fill="#fff" ${kO2}/><circle cx="50" cy="40" r="4.4" fill="${KI}"/></g>`),
