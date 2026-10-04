@@ -437,7 +437,7 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
       <g fill="#7a4a22"><circle cx="24" cy="34" r="2.6"/><circle cx="25" cy="52" r="2.6"/><circle cx="34" cy="70" r="2.6"/><circle cx="76" cy="34" r="2.6"/><circle cx="75" cy="52" r="2.6"/><circle cx="66" cy="70" r="2.6"/></g>
     </symbol>
     <symbol id="ball" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="34" fill="url(#ballShade)" stroke="#4a3728" stroke-width="3.5"/>
+      <circle cx="50" cy="50" r="34" fill="var(--c2, url(#ballShade))" stroke="#4a3728" stroke-width="3.5"/>
       <path d="M50 37l12 8.5-4.5 14h-15L38 45.5z" fill="var(--c1, #4a3728)"/>
       <path d="M50 37V22M62 45.5l13-5M57.5 59.5l8 12M42.5 59.5l-8 12M38 45.5l-13-5" stroke="#4a3728" stroke-width="3" stroke-linecap="round"/>
       <path d="M42 18q8-4 16 0l-8 6zM82 40q2 9-3 15l-3-10zM70 78q-7 6-15 6l5-8zM30 78q7 6 15 6l-5-8zM18 40q-2 9 3 15l3-10z" fill="var(--c1, #4a3728)"/>
@@ -3424,8 +3424,8 @@ Object.assign(EXTRA_WALLS, {
 // Level, die vorerst nie automatisch gedreht werden (Welt-Index-Level-Index)
 const NO_ROTATE = new Set(["5-5"]); // Lasses Konzert bleibt eine breite Bühne
 
-// Unterscheidbare Bälle: Fußball-Flecken schwarz, blau, gold; Pokébälle rot, lila, magenta
-THEMES.fussball.boxColors = [["#4a3728", "#4a3728"], ["#2a6ae0", "#2a6ae0"], ["#e0a91c", "#e0a91c"]];
+// Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Pokébälle rot, lila, magenta
+THEMES.fussball.boxColors = [["#4a3728", "url(#ballShade)"], ["#4a3728", "#ffd3e4"], ["#4a3728", "#cfe6ff"]];
 THEMES.pokemon.boxColors = [["#e3350d", "#e3350d"], ["#8b5cf6", "#8b5cf6"], ["#e0218a", "#e0218a"]];
 
 // ===== Kinderbuch-Details =====
