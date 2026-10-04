@@ -3457,9 +3457,9 @@ Object.assign(EXTRA_WALLS, {
 // Level, die vorerst nie automatisch gedreht werden (Welt-Index-Level-Index)
 const NO_ROTATE = new Set(["5-5"]); // Lasses Konzert bleibt eine breite Bühne
 
-// Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Pokébälle als Pokéball, Netzball, Tauchball, Hyperball
+// Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Pokémon-Welten mit Superball-Varianten
 THEMES.fussball.boxColors = [["#4a3728", "url(#ballShade)"], ["#4a3728", "#ffd3e4"], ["#4a3728", "#cfe6ff"]];
-THEMES.pokemon.boxCycle = () => ["pokeball", "netzball", "tauchball", "hyperball"];
+THEMES.pokemon.box = "superball"; // gleiche Bälle wie in Pokémon 2: Superball, Meisterball, Premierball, Heilball
 
 // ===== Kinderbuch-Details =====
 // Kleine Dinge, die auf Wände und Böden gestreut werden, damit sich nichts wiederholt.
