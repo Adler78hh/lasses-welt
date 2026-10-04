@@ -3218,8 +3218,42 @@ GEBURTSTAG.wall = feierWalls([() => kaffeetafel, () => kuchenStueck, () => gugel
   () => [guest(ILSE, "#e6f0ff", "#b8cbe8"), guest(OPA, "#e6f0ff", "#b8cbe8"), guest(GOBI, "#e6f0ff", "#b8cbe8"), guest(ANNA, "#fff6dc", "#e8d3a0"), guest(IDA, "#fff6dc", "#e8d3a0"), guest(SOEREN, "#fff6dc", "#e8d3a0")]);
 KINDERGEBURTSTAG.wall = feierWalls([() => sprossenwand, () => turnkasten, () => turnmatte, () => ringe, () => basketballkorb, () => turnbock, () => medizinball, () => fantaSprite, () => fantaTable, () => barren, () => schwebebalken, () => kletterseil, () => sprungbrett, () => hulaHoops, () => ballnetz],
   () => BOYS.map(b => guest(b, "#e6f7ff", "#a9d6ef")));
-SILVESTER.wall = feierWalls([fireworks, (x, y) => fireworks(x + 3, y + 5), () => fountainFw, () => rocketTrails, () => goldRain, () => raclette, () => raclettePan, () => racletteBowl],
-  () => [SOEREN, ANNA, IDA, ARNE, MATZE, CHRISTIAN, ALEX, ENNI].map(skyGuest));
+// Silvester: bunte Kacheln (Boden bleibt Nachthimmel). Konfetti, Luftschlangen, Raclette, Tischfeuerwerk, Kinderfeuerwerk, Personen
+const NY_COLS = [["#ff7eb6", "#d9528f"], ["#ffd84d", "#d9a91c"], ["#4fd6d0", "#26a39e"], ["#a98bff", "#7a5ad6"], ["#ffa04d", "#d9742a"], ["#7fdc6a", "#4fae3e"]];
+const nyCol = (x, y, k = 0) => NY_COLS[(pick(x, y, 61 + k, 6))];
+const nyPad = (x, y, inner, k) => { const [c, s] = nyCol(x, y, k); return svgT(`${pad(c, s)}${inner}`); };
+const nyRecolor = (tile) => (x, y) => { const [c, s] = nyCol(x, y, 3); return tile.replace(pad("#1d2440", "#10152a"), pad(c, s)); };
+const NK = `stroke="#4a3728" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"`;
+const NY_BRIGHT = ["#ffffff", "#ef4b4b", "#3d7fd6", "#ffcc33", "#5fbf4a", "#8b5cf6", "#ff5c8a"];
+const nyConfetti = (x, y) => nyPad(x, y, Array.from({ length: 30 }, (_, i) => { const px = 10 + (i * 37 + pick(x, y, 5, 9)) % 80, py = 12 + (i * 53) % 76, c = NY_BRIGHT[(i + pick(x, y, 6, 7)) % 7];
+  return i % 3 ? `<rect x="${px}" y="${py}" width="6" height="3.4" rx="1" fill="${c}" stroke="#4a3728" stroke-width=".8" transform="rotate(${(i * 47) % 180} ${px + 3} ${py + 1.7})"/>` : `<circle cx="${px}" cy="${py}" r="2.6" fill="${c}" stroke="#4a3728" stroke-width=".8"/>`; }).join(""));
+const nyStreamers = (x, y) => nyPad(x, y, `<path d="M4 10h92" stroke="#4a3728" stroke-width="3"/>${[[14, 0], [34, 1], [54, 2], [74, 3]].map(([sx, i]) => { const c = NY_BRIGHT[(i * 2 + 1 + pick(x, y, 7, 5)) % 7];
+  return `<path d="M${sx} 10c10 6 10 14 0 18s-10 12 0 18 10 14 0 18-10 12 0 18" stroke="#4a3728" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M${sx} 10c10 6 10 14 0 18s-10 12 0 18 10 14 0 18-10 12 0 18" stroke="${c}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`; }).join("")}`, 1);
+// Tischfeuerwerk: Pappröhre auf dem Tisch, aus der Konfetti und Mini-Luftschlangen springen
+const nyTableFw = (x, y) => nyPad(x, y, `<rect x="8" y="78" width="84" height="10" rx="3" fill="#f4e9d8" ${NK}/>
+  <path d="M40 78V56h20v22z" fill="#3d7fd6" ${NK}/><path d="M40 62h20M40 70h20" stroke="#ffcc33" stroke-width="3"/><ellipse cx="50" cy="56" rx="10" ry="3" fill="#4a3728"/>
+  <g class="burst">${Array.from({ length: 14 }, (_, i) => { const a = Math.PI * (1.12 + i * .055), r = 22 + (i % 3) * 8, px = 50 + Math.cos(a) * r, py = 52 + Math.sin(a) * r * .9;
+    return `<rect x="${px.toFixed(1)}" y="${py.toFixed(1)}" width="5" height="3" rx="1" fill="${NY_BRIGHT[(i + 1) % 7]}" stroke="#4a3728" stroke-width=".7" transform="rotate(${i * 33} ${px.toFixed(1)} ${py.toFixed(1)})"/>`; }).join("")}
+  <path d="M50 52q-8-12-2-22M50 52q10-10 14-22" stroke="#ff5c8a" stroke-width="2" fill="none" stroke-dasharray="1 0"/><path d="M50 52q2-16 8-24" stroke="#5fbf4a" stroke-width="2" fill="none"/></g>`, 2);
+// Kinderfeuerwerk
+const nyBonbon = (cx, cy, c, st, r = 0) => `<g transform="rotate(${r} ${cx} ${cy})"><path d="M${cx - 13} ${cy - 6}l-9-5v22l9-5z M${cx + 13} ${cy - 6}l9-5v22l9-5z" fill="${c}" ${NK}/><path d="M${cx + 13} ${cy - 6}l9-5v22l-9-5z" fill="${c}" ${NK}/>
+  <rect x="${cx - 13}" y="${cy - 8}" width="26" height="16" rx="7" fill="${c}" ${NK}/><path d="M${cx - 6} ${cy - 8}v16M${cx + 2} ${cy - 8}v16" stroke="${st}" stroke-width="3"/></g>`;
+const nyCrackers = (x, y) => nyPad(x, y, `${nyBonbon(46, 40, "#ef4b4b", "#ffcc33", -14)}${nyBonbon(54, 68, "#3d7fd6", "#ffffff", 10)}`, 4);
+const nySnaps = (x, y) => nyPad(x, y, `<path d="M28 34h44l-4 50H32z" fill="#ffffff" ${NK}/><path d="M28 34l6-8h32l6 8" fill="#f4e9d8" ${NK}/><text x="50" y="58" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="11" fill="#ef4b4b">KNALL</text><text x="50" y="70" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="10" fill="#3d7fd6">ERBSEN</text>
+  ${[[20, 86], [80, 84], [86, 70], [14, 74]].map(([px, py]) => `<circle cx="${px}" cy="${py}" r="3.6" fill="#f4f1ea" ${NK} stroke-width="1.2"/><path d="M${px} ${py - 3.6}l-1-3" stroke="#4a3728" stroke-width="1"/>`).join("")}<path d="M80 62l4-4M84 66l5-1M76 58l1-5" stroke="#ffcc33" stroke-width="2"/>`, 5);
+const nyVolcano = (x, y) => nyPad(x, y, `<path d="M34 86l10-24h12l10 24z" fill="#8b5cf6" ${NK}/><path d="M38 76h24" stroke="#ffcc33" stroke-width="3"/><g class="sparkler">${Array.from({ length: 14 }, (_, i) => { const a = Math.PI * (1.12 + i * .055);
+  const d = `M50 60q${(Math.cos(a) * 18).toFixed(1)} -36 ${(Math.cos(a) * 36).toFixed(1)} -22`;
+  return `<path d="${d}" stroke="#4a3728" stroke-width="4.4" fill="none" stroke-linecap="round" stroke-dasharray="3 3"/><path d="${d}" stroke="${["#ffffff", "#ffe066", "#ff5c8a"][i % 3]}" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-dasharray="3 3"/>`; }).join("")}
+  ${[[30, 26], [70, 22], [50, 14]].map(([sx, sy]) => `<path d="M${sx} ${sy - 6}l1.8 4.2 4.2 1.8-4.2 1.8-1.8 4.2-1.8-4.2-4.2-1.8 4.2-1.8z" fill="#ffffff" ${NK} stroke-width="1.2"/>`).join("")}</g>`, 6);
+// Wunderkerzen: zwei Stäbe mit hell sprühenden Sternchen an der Spitze, dazu ein Glas Kinderpunsch
+const nySpark = (cx, cy) => `<g class="sparkler">${Array.from({ length: 10 }, (_, i) => { const a = i / 10 * Math.PI * 2, x2 = cx + Math.cos(a) * 12, y2 = cy + Math.sin(a) * 12;
+  return `<path d="M${cx} ${cy}L${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="#4a3728" stroke-width="3.6" stroke-linecap="round"/><path d="M${cx} ${cy}L${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${i % 2 ? "#ffffff" : "#ffe066"}" stroke-width="1.8" stroke-linecap="round"/>`; }).join("")}
+  <path d="M${cx} ${cy - 7}l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#ffffff" ${NK} stroke-width="1.2"/></g>`;
+const nySparklers = (x, y) => nyPad(x, y, `<path d="M30 90L46 34M70 90L56 30" stroke="#4a3728" stroke-width="5" stroke-linecap="round"/><path d="M30 90L46 34M70 90L56 30" stroke="#b9bfca" stroke-width="2.6" stroke-linecap="round"/>
+  ${nySpark(46, 30)}${nySpark(57, 26)}<path d="M74 66h14l-2 20h-10z" fill="#ff8f8f" fill-opacity=".8" ${NK}/><path d="M74 72h14" stroke="#ffffff" stroke-width="2"/>`, 7);
+const nyGuest = (who, i) => { const [c, s] = NY_COLS[i % NY_COLS.length]; return famPad(c, s, who); };
+SILVESTER.wall = feierWalls([nyConfetti, nyStreamers, (x, y) => nyStreamers(x + 4, y + 2), nyRecolor(raclette), nyRecolor(raclettePan), nyRecolor(racletteBowl), nyTableFw, nySparklers, nyCrackers, nySnaps, nyVolcano],
+  () => [SOEREN, ANNA, IDA, ARNE, MATZE, CHRISTIAN, ALEX, ENNI].map(nyGuest));
 
 const guestPad = (inner) => svgT(`${pad("#e6f7ff", "#a9d6ef")}${inner}`);
 const PARTY_KIDS = FRIENDS.map(f => guestPad(kidFigure(f)));
