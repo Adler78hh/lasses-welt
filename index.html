@@ -4195,7 +4195,7 @@ function render() {
     el.style.setProperty("--x", b.x); el.style.setProperty("--y", b.y); el.style.setProperty("--rot", b.rot + "deg");
     const isIn = goals.has(k);
     if (isIn) { scored++; hit.add(k); }
-    if (isIn && !el.classList.contains("in") && el.dataset.ready) SND.place();
+    if (isIn && !el.classList.contains("in") && el.dataset.ready) { SND.place(); if (typeof FX !== "undefined") FX.place(b.x, b.y); }
     el.dataset.ready = "1";
     el.classList.toggle("in", isIn);
     if (T.boxIn) el.querySelector("use").setAttribute("href", "#" + (isIn ? T.boxIn : boxId()));
@@ -4273,6 +4273,8 @@ function step(d) {
   history.push(snap);
   player = [nx, ny]; moves++;
   pulse(lasseEl, b ? "kick" : "hop", ["hop", "kick"]);
+  // Optische Effekte (nur wenn ein Spiel sie mitbringt, z. B. Staubwölkchen in Teil 2)
+  if (typeof FX !== "undefined") FX.step(snap.player, dx, dy, b ? { x: b.x, y: b.y, el: boxEls[boxes.indexOf(b)] } : null);
   render();
 }
 function undo() {
