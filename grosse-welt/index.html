@@ -128,7 +128,14 @@ button:disabled { cursor: default; }
 .levelgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 110px)); gap: 14px; justify-content: center; width: 100%; }
 .lvl { aspect-ratio: 1; max-width: 100%; border-radius: 24px; font-size: 36px; font-weight: 700; position: relative; display: grid; place-items: center; }
 .lvl.done { background: var(--soft); }
-.lvl .star { position: absolute; right: -6px; top: -6px; width: 30px; height: 30px; }
+.lvl .lvl-star { position: absolute; left: -8px; top: -8px; width: 34px; height: 34px; filter: drop-shadow(0 2px 2px #0002); }
+.win-star { margin: 4px 0 0; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 800; font-size: 14px; color: var(--ink); }
+.win-star svg { width: 34px; height: 34px; flex: none; animation: starpop 600ms cubic-bezier(.3,1.8,.5,1) both; }
+@keyframes starpop { from { transform: scale(0) rotate(-40deg); } to { transform: scale(1) rotate(0); } }
+.side .bobside.jubel { animation: jubelhop .42s ease-in-out infinite alternate; }
+@keyframes jubelhop { from { transform: translateY(0); } to { transform: translateY(-14%); } }
+#sound .cross { display: none; } #sound.off .cross { display: inline; } #sound.off .wave { display: none; } #sound.off { opacity: .6; }
+.icon-btn { padding-inline: 12px; } .icon-btn svg { margin: 0; }
 .lvl.locked { background: color-mix(in srgb, var(--card) 45%, transparent); color: color-mix(in srgb, var(--muted) 60%, transparent); box-shadow: none; }
 .lvl.locked svg { width: 28px; height: 28px; }
 .lvl.next { background: var(--accent); color: var(--white); box-shadow: 0 4px 0 var(--accent-dark); }
@@ -514,6 +521,10 @@ body { background-attachment: scroll; }
     </symbol>
     <symbol id="stern" viewBox="0 0 100 100">
       <path d="M50 8l12 26 28 3-21 19 6 28-25-14-25 14 6-28-21-19 28-3z" fill="#ffcc33" stroke="#c98f00" stroke-width="4" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="stern-silber" viewBox="0 0 100 100">
+      <path d="M50 8l12 26 28 3-21 19 6 28-25-14-25 14 6-28-21-19 28-3z" fill="#e4e8ef" stroke="#8f98a8" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M50 22l6 13 13 2" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round"/>
     </symbol>
     <symbol id="welt" viewBox="0 0 100 100">
       <circle cx="50" cy="50" r="38" fill="#e6e9ee" stroke="#4f5766" stroke-width="4"/>
@@ -921,6 +932,7 @@ body { background-attachment: scroll; }
       </div>
       <div class="actions">
         <button type="button" id="undo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg>Zurück</button>
+        <button type="button" id="sound" class="icon-btn" aria-pressed="true" aria-label="Ton ausschalten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path class="wave" d="M16 9q2 3 0 6M19 6q4 6 0 12"/><path class="cross" d="M16 9l6 6M22 9l-6 6"/></svg></button>
         <button type="button" id="reset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Neu starten</button>
       </div>
     </div>
@@ -3560,6 +3572,31 @@ const FAMILY_HERO = `<svg viewBox="34 54 506 270" role="img" aria-label="Lasse m
     T.boxCycle = (l) => (own && own(l)) || VARIANTS[T.levelBox ? T.levelBox(l) : T.box] || null;
   }
 })();
+// Kleinste mögliche Schrittzahl je Level (per Breitensuche ausgerechnet); fehlende Level sind zu groß für die Suche
+const OPTIMAL = {"0-0": 52, "0-1": 30, "0-2": 46, "0-3": 78, "0-4": 47, "0-5": 104, "1-0": 48, "1-1": 131, "1-2": 82, "1-3": 85, "1-4": 71, "1-5": 64, "2-0": 79, "2-1": 98, "2-2": 83, "2-3": 99, "2-4": 106, "2-5": 92, "3-0": 76, "3-1": 125, "3-2": 117, "3-3": 100, "3-4": 105, "3-5": 77, "4-0": 155, "4-1": 131, "4-2": 245, "4-3": 135, "4-4": 146, "4-5": 110, "5-0": 102, "5-1": 135, "5-2": 125, "5-4": 138, "5-5": 169, "6-0": 149, "6-1": 178, "6-2": 164, "6-3": 172, "6-4": 155, "6-5": 164, "7-0": 155, "7-1": 155, "7-2": 181, "7-3": 177, "7-4": 125, "7-5": 177, "8-0": 189, "8-1": 149, "8-2": 205, "8-3": 162, "8-4": 195, "8-5": 134, "9-0": 183, "9-1": 201, "9-3": 227, "9-4": 244, "9-5": 290, "10-0": 429};
+// ---------- Geräusche (mit Web Audio erzeugt, ohne Tondateien) ----------
+const SND = (() => {
+  let ctx = null, muted = false;
+  try { muted = localStorage.getItem("lasse-ton") === "aus"; } catch (e) {}
+  const ac = () => { if (muted) return null; if (!ctx) { const A = window.AudioContext || window.webkitAudioContext; if (!A) return null; ctx = new A(); } if (ctx.state === "suspended") ctx.resume(); return ctx; };
+  const noise = (c, dur) => { const b = c.createBuffer(1, Math.ceil(c.sampleRate * dur), c.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; const s = c.createBufferSource(); s.buffer = b; return s; };
+  const env = (g, t, a, dur, peak) => { g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + dur); };
+  const tone = (c, f, t, dur, peak, type = "sine") => { const o = c.createOscillator(), g = c.createGain(); o.type = type; o.frequency.value = f; env(g, t, .008, dur, peak); o.connect(g).connect(c.destination); o.start(t); o.stop(t + dur + .02); };
+  return {
+    get muted() { return muted; },
+    set muted(v) { muted = v; try { localStorage.setItem("lasse-ton", v ? "aus" : "an"); } catch (e) {} },
+    // Schieben: dumpfes Rutschen
+    push() { const c = ac(); if (!c) return; const t = c.currentTime, s = noise(c, .14), f = c.createBiquadFilter(), g = c.createGain();
+      f.type = "lowpass"; f.frequency.value = 650; env(g, t, .012, .13, .28); s.connect(f).connect(g).connect(c.destination); s.start(t);
+      const o = c.createOscillator(), g2 = c.createGain(); o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(75, t + .1); env(g2, t, .005, .12, .22); o.connect(g2).connect(c.destination); o.start(t); o.stop(t + .14); },
+    // Platz getroffen: helles Pling
+    place() { const c = ac(); if (!c) return; const t = c.currentTime + .05; tone(c, 880, t, .25, .18); tone(c, 1320, t + .07, .35, .14); tone(c, 1760, t + .14, .4, .08, "triangle"); },
+    // Applaus: viele kurze Klatscher über zwei Sekunden
+    applause() { const c = ac(); if (!c) return; const t0 = c.currentTime + .05;
+      for (let i = 0; i < 70; i++) { const t = t0 + Math.random() * 2.2 * Math.sqrt(Math.random()), s = noise(c, .04), f = c.createBiquadFilter(), g = c.createGain();
+        f.type = "bandpass"; f.frequency.value = 900 + Math.random() * 1800; f.Q.value = 1.2; env(g, t, .002, .035, .12 + Math.random() * .12); s.connect(f).connect(g).connect(c.destination); s.start(t); } }
+  };
+})();
 
 // ===== Kinderbuch-Details =====
 // Kleine Dinge, die auf Wände und Böden gestreut werden, damit sich nichts wiederholt.
@@ -3814,6 +3851,9 @@ function renderMap() {
 }
 
 // Levelauswahl
+// Sterne: Silber fürs Lösen, Gold für die kleinste mögliche Schrittzahl
+const optOf = (w, l) => (typeof OPTIMAL !== "undefined" && OPTIMAL[lk(w, l)]) || 0;
+const isGold = (p, w, l) => { const b = p.solved[lk(w, l)], o = optOf(w, l); return !!(b && o && b.m <= o); };
 function renderLevels() {
   const p = P(), w = WORLDS[curWorld], th = THEMES[w.theme];
   document.getElementById("levels-title").innerHTML = `Welt ${curWorld + 1}${w.theme === "neutral" ? "" : ` · ${esc(w.name)}`}<small>${esc(p.name)} · ${solvedIn(p, curWorld)} von ${NL(curWorld)} geschafft</small>`;
@@ -3829,7 +3869,8 @@ function renderLevels() {
       ${open ? l + 1 : `<svg viewBox="0 0 24 24"><use href="#schloss"/></svg>`}
       ${open && (th.levelIcon || th.levelBox) && !prize ? `<svg class="lvl-gem" viewBox="0 0 100 100"><use href="#${(th.levelIcon || th.levelBox)(l)}"/></svg>` : ""}
       ${prize ? `<svg class="prize-ico" viewBox="0 0 100 ${th.prize.symbol === "schleife" ? 128 : 100}"><use href="#${th.prize.symbol}"/></svg>`
-        : done ? `<svg class="star" viewBox="0 0 100 100"><use href="#stern"/></svg>` : ""}
+        : ""}
+      ${done ? `<svg class="lvl-star" viewBox="0 0 100 100"><use href="#${isGold(p, curWorld, l) ? "stern" : "stern-silber"}"/></svg>` : ""}
     </button>`;
   }).join("");
   document.querySelectorAll("#levelgrid [data-l]").forEach(b => b.addEventListener("click", () => loadLevel(curWorld, +b.dataset.l)));
@@ -4032,6 +4073,8 @@ function render() {
     el.style.setProperty("--x", b.x); el.style.setProperty("--y", b.y); el.style.setProperty("--rot", b.rot + "deg");
     const isIn = goals.has(k);
     if (isIn) { scored++; hit.add(k); }
+    if (isIn && !el.classList.contains("in") && el.dataset.ready) SND.place();
+    el.dataset.ready = "1";
     el.classList.toggle("in", isIn);
     if (T.boxIn) el.querySelector("use").setAttribute("href", "#" + (isIn ? T.boxIn : boxId()));
   });
@@ -4048,12 +4091,18 @@ function render() {
     if (!best || moves < best.m) p.solved[k] = { m: moves, p: pushes };
     save();
     document.getElementById("win-text").textContent = T.prize && curLevel === NL(curWorld) - 1 ? T.prize.text(moves) : T.winText(moves, pushes, curLevel);
+    const o = optOf(curWorld, curLevel), gold = o && moves <= o;
+    let ws = document.getElementById("win-star");
+    if (!ws) { document.getElementById("win-text").insertAdjacentHTML("afterend", '<p id="win-star" class="win-star"></p>'); ws = document.getElementById("win-star"); }
+    ws.innerHTML = `<svg viewBox="0 0 100 100"><use href="#${gold ? "stern" : "stern-silber"}"/></svg><span>${gold ? "Goldener Stern! Weniger Schritte geht nicht." : o ? `Silberner Stern. Schaffst du es in ${o} Schritten? Dann gibt es Gold.` : "Silberner Stern!"}</span>`;
     const nextBtn = document.getElementById("next");
     if (curLevel < NL(curWorld) - 1) nextBtn.textContent = `Weiter: Level ${curLevel + 2}`;
     else nextBtn.textContent = curWorld < WORLDS.length - 1 ? "Zur Weltkarte" : "Fertig!";
     const w = curWorld, l = curLevel;
+    document.querySelectorAll(".side svg").forEach(s => s.classList.add("jubel"));
+    SND.applause();
     setTimeout(() => { if (w === curWorld && l === curLevel && lasseEl.classList.contains("cheer")) { winEl.hidden = false; confetti(); } }, 450);
-  } else if (!won) { winEl.hidden = true; lasseEl.classList.remove("cheer"); }
+  } else if (!won) { winEl.hidden = true; lasseEl.classList.remove("cheer"); document.querySelectorAll(".side svg.jubel").forEach(s => s.classList.remove("jubel")); }
 }
 
 function follow() {
@@ -4095,7 +4144,7 @@ function step(d) {
     b.x = bx; b.y = by;
     if (typeof T.rolls === "function" ? T.rolls(curLevel) : T.rolls) b.rot += (dx || dy) * 180; // Ball: eine Feldlänge ≈ halbe Umdrehung
     else pulse(boxEls[boxes.indexOf(b)], T.squish ? "squish" : "shove");
-    pushes++;
+    pushes++; SND.push();
   }
   history.push(snap);
   player = [nx, ny]; moves++;
@@ -4260,6 +4309,13 @@ document.addEventListener("selectstart", e => { if (!e.target.closest || !e.targ
   const apply = () => { zone.classList.toggle("no-pad", !on); btn.textContent = on ? "Pfeile ausblenden" : "Pfeile zeigen"; btn.setAttribute("aria-pressed", on); };
   btn.addEventListener("click", () => { on = !on; try { localStorage.setItem("lasse-pfeile", on ? "1" : "0"); } catch (e) {} apply(); reorient(); });
   apply();
+})();
+
+(() => {
+  const b = document.getElementById("sound"); if (!b) return;
+  const upd = () => { b.classList.toggle("off", SND.muted); b.setAttribute("aria-pressed", !SND.muted); b.setAttribute("aria-label", SND.muted ? "Ton einschalten" : "Ton ausschalten"); };
+  b.addEventListener("click", () => { SND.muted = !SND.muted; upd(); if (!SND.muted) SND.place(); });
+  upd();
 })();
 </script>
 
