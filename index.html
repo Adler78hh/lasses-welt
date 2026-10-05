@@ -417,6 +417,64 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 @keyframes beam { 0%, 100% { opacity: .15; } 50% { opacity: .5; } }
 .glowtext { animation: glowwin 1.6s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .drumhit, .shake, .tick, .boom, .beam, .glowtext { animation: none !important; } }
+
+/* ---------- Werkzeugkoffer ---------- */
+.kit-entry button { background: #fff4e6; }
+.kit-entry button svg.icon { width: 62px; height: 62px; }
+.kit { width: 100%; max-width: 560px; margin-top: 26px; position: relative; background: #e2402f; border-radius: 26px; padding: 26px 12px 12px; box-sizing: border-box;
+  box-shadow: 0 8px 0 #a8261a, 0 16px 30px #0002; border: 3px solid #4a3728; }
+.kit-handle { position: absolute; left: 50%; top: -26px; width: 120px; height: 34px; transform: translateX(-50%); border: 8px solid #4a3728; border-bottom: 0; border-radius: 22px 22px 0 0; box-sizing: border-box; }
+.kit-trays { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.tray { border-radius: 14px; padding: 10px 8px; font-size: 18px; background: #b8301f; color: #ffe2dc; box-shadow: inset 0 3px 0 #0003; display: grid; gap: 2px; }
+.tray small { font-family: var(--body); font-size: 12px; font-weight: 800; opacity: .85; }
+.tray.on { background: #ffcc33; color: #4a3728; box-shadow: 0 4px 0 #c99a12; }
+.kit-body { background: #f4efe6; border-radius: 16px; padding: 12px; display: grid; gap: 10px; min-height: 160px; border: 3px solid #4a3728; }
+.kempty { margin: 8px; text-align: center; color: var(--muted); font-weight: 700; }
+.knew { background: #fff; border-radius: 14px; padding: 10px 12px; display: grid; gap: 8px; box-shadow: 0 3px 0 #e2d8c6; }
+.knew b { font-family: var(--display); font-size: 18px; }
+.kbtns { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.kbtns button { padding: 8px 14px; font-size: 15px; display: grid; justify-items: center; }
+.kbtns button small { font-family: var(--body); font-size: 11px; font-weight: 800; color: var(--muted); }
+.kbtns .kdel { padding: 8px 12px; margin-left: auto; color: var(--muted); }
+.kcard { background: #fff; border-radius: 14px; padding: 10px; display: flex; gap: 12px; align-items: center; box-shadow: 0 3px 0 #e2d8c6; }
+.kprev { flex: none; position: relative; }
+.kinfo { display: grid; gap: 6px; min-width: 0; flex: 1; }
+.kinfo b { font-family: var(--display); font-size: 18px; line-height: 1.1; overflow-wrap: anywhere; }
+.kinfo small { color: var(--muted); font-weight: 700; font-size: 12px; }
+.kstar { position: absolute; left: -8px; top: -8px; width: 30px; height: 30px; filter: drop-shadow(0 2px 2px #0002); }
+.mini, .edboard { position: relative; width: calc(var(--w) * var(--t)); height: calc(var(--h) * var(--t)); }
+.mini { border-radius: 6px; overflow: hidden; }
+.dv { width: 100%; height: 100%; }
+.dv > svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.kit-check { position: fixed; inset: 0; background: #1d1b1a66; display: grid; place-items: center; z-index: 50; padding: 16px; }
+.kit-check[hidden] { display: none; }
+.kcheck-card { background: var(--card); border-radius: 24px; padding: 22px; max-width: 380px; text-align: center; display: grid; gap: 10px; justify-items: center; box-shadow: 0 10px 30px #0003; }
+.kcheck-card h3 { margin: 0; font-family: var(--display); font-size: 26px; color: var(--accent); }
+.kcheck-card p { margin: 0; font-weight: 700; color: var(--ink); line-height: 1.4; }
+.kbusy { width: 84px; height: 84px; animation: kshake .5s ease-in-out infinite alternate; }
+@keyframes kshake { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+/* Baufeld */
+.ed-name { flex: 1; min-width: 0; font: inherit; font-family: var(--display); font-weight: 700; font-size: 22px; border: 2px solid var(--edge); border-radius: 14px; padding: 6px 12px; background: var(--card); color: var(--ink); }
+.ed-designs { width: 100%; display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 10px; scrollbar-width: thin; }
+.dchip { flex: none; display: grid; justify-items: center; gap: 4px; width: 86px; padding: 6px 4px; border-radius: 16px; font-size: 11.5px; line-height: 1.1; }
+.dchip .dtile { width: 46px; height: 46px; display: grid; place-items: center; }
+.dchip .dtile > svg { width: 26px; height: 26px; color: var(--muted); }
+.dchip .dname { text-align: center; min-height: 2.2em; }
+.dchip.on { outline: 3px solid var(--accent); outline-offset: -3px; background: var(--soft); }
+.dchip.locked { opacity: .55; box-shadow: none; background: transparent; }
+.ed-tools { width: 100%; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+.tool { display: grid; justify-items: center; gap: 2px; padding: 6px 2px; border-radius: 14px; font-size: 12px; }
+.tool .ticon { width: 40px; height: 40px; display: block; }
+.tool .ticon > svg, .tool .ticon .dv > svg { width: 100%; height: 100%; }
+.tool.on { background: var(--accent); color: var(--white); box-shadow: 0 4px 0 var(--accent-dark); }
+.ed-wrap { max-width: 100%; overflow: auto; }
+.edboard { touch-action: none; background: repeating-conic-gradient(#ffffff 0 25%, #eef2f8 0 50%) 0 0 / calc(var(--t) * 2) calc(var(--t) * 2); border-radius: 10px; box-shadow: inset 0 0 0 2px var(--edge); }
+.ed-empty { box-shadow: inset 0 0 0 1px #d5dce8; }
+.ed-box svg, .ed-lasse svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.ed-status { margin: 0; font-weight: 800; color: #c0392b; text-align: center; }
+.ed-status.ok { color: #2f8a3a; }
+.ed-actions { display: flex; gap: 10px; }
+.ed-actions button { padding: 12px 22px; font-size: 18px; }
 </style>
 
 <!-- Gemeinsame Verläufe und Symbole -->
@@ -853,6 +911,40 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
     </div>
     <div class="map" id="map"></div>
   </section>
+
+  <!-- Werkzeugkoffer: Werkstatt (bauen) und Spielfach (spielen) -->
+  <section class="screen" id="scr-toolbox" hidden>
+    <div class="topbar">
+      <button type="button" class="back" data-go="map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Welten</button>
+      <h2 id="kit-title">Werkzeugkoffer</h2>
+    </div>
+    <div class="kit">
+      <div class="kit-handle" aria-hidden="true"></div>
+      <div class="kit-trays" role="tablist" aria-label="Ebenen im Werkzeugkoffer">
+        <button type="button" role="tab" id="tab-build" class="tray on">Werkstatt<small>Level bauen</small></button>
+        <button type="button" role="tab" id="tab-play" class="tray">Spielfach<small>Level spielen</small></button>
+      </div>
+      <div class="kit-body" id="kit-body"></div>
+    </div>
+  </section>
+
+  <!-- Werkstatt: Baufeld -->
+  <section class="screen" id="scr-editor" hidden>
+    <div class="topbar">
+      <button type="button" class="back" data-go="toolbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Koffer</button>
+      <input id="ed-name" class="ed-name" maxlength="24" aria-label="Name des Levels">
+    </div>
+    <div class="ed-designs" id="ed-designs" aria-label="Designs"></div>
+    <div class="ed-tools" id="ed-tools" aria-label="Werkzeuge"></div>
+    <div class="ed-wrap"><div class="edboard" id="edboard" role="img" aria-label="Baufeld"></div></div>
+    <p class="ed-status" id="ed-status"></p>
+    <div class="ed-actions">
+      <button type="button" id="ed-test">Testen</button>
+      <button type="button" id="ed-publish" class="primary">Veröffentlichen</button>
+    </div>
+    <p class="hint">Tippe oder wische über das Baufeld. Offene Ränder bekommen beim Spielen automatisch eine Wand.</p>
+  </section>
+  <div class="kit-check" id="kit-check" hidden></div>
 
   <!-- Levelauswahl -->
   <section class="screen" id="scr-levels" hidden>
@@ -3769,7 +3861,7 @@ const levelOpen = (p, w, l) => !!p.unlockAll || worldOpen(p, w) && (l === 0 || i
 const totalSolved = (p) => Object.keys(p.solved).filter(k => !WORLDS[+k.split("-")[0]].bonus).length;
 
 // ---------- Bildschirme ----------
-const screens = { players: "scr-players", map: "scr-map", levels: "scr-levels", game: "scr-game" };
+const screens = { players: "scr-players", map: "scr-map", levels: "scr-levels", game: "scr-game", toolbox: "scr-toolbox", editor: "scr-editor" };
 let screen = "players", curWorld = 0, curLevel = 0;
 const DEFAULT_PAL = { "--bg": "#dcecff", "--bg-2": "#f3f8ff", "--ink": "#4a3728", "--muted": "#6a7fa8", "--accent": "#2a6ae0", "--accent-dark": "#1a4bae", "--soft": "#e3edff", "--edge": "#c9daf5", "--floor-a": "#8fdc7c", "--floor-b": "#80d16d" };
 function applyPal(pal, cls) {
@@ -3778,11 +3870,15 @@ function applyPal(pal, cls) {
   document.body.className = cls || "";
 }
 function show(name) {
+  // Eigene Level: „zurück“ führt in den Werkzeugkoffer bzw. die Werkstatt
+  if (name === "levels" && WORLDS[curWorld] && WORLDS[curWorld].custom) name = (L && L.back) || "toolbox";
   if (name === "levels" && NL(curWorld) === 1) name = "map";
   screen = name;
   for (const [k, id] of Object.entries(screens)) document.getElementById(id).hidden = k !== name;
   if (name === "players") { applyPal(DEFAULT_PAL); renderPlayers(); }
   if (name === "map") { applyPal(DEFAULT_PAL); renderMap(); }
+  if (name === "toolbox") { applyPal(DEFAULT_PAL, "kitmode"); renderToolbox(); }
+  if (name === "editor") { applyPal(DEFAULT_PAL, "kitmode"); renderEditor(); }
   if (name === "levels") { const th = THEMES[WORLDS[curWorld].theme]; applyPal(th.pal, "theme-" + WORLDS[curWorld].theme); renderLevels(); }
   window.scrollTo(0, 0);
 }
@@ -3835,7 +3931,7 @@ function renderMap() {
   document.getElementById("map-title").innerHTML = `${esc(p.name)}<small>${totalSolved(p)} von ${TOTAL} Leveln geschafft</small>`;
   const map = document.getElementById("map");
   // Der Bonus ist unsichtbar (auch ohne Wolke), bis die letzte Welt komplett geschafft ist
-  const shown = WORLDS.filter((w, i) => !w.bonus || worldOpen(p, i));
+  const shown = WORLDS.filter((w, i) => !w.hidden && (!w.bonus || worldOpen(p, i)));
   const H = shown.length * ROW;
   map.style.height = H + "px";
   const pts = shown.map((_, i) => [MAP_X[i], i * ROW + 60]);
@@ -3867,6 +3963,10 @@ function renderMap() {
         ${showCloud ? `<svg class="cloud" viewBox="0 0 170 120" aria-hidden="true"><use href="#wolke"/></svg>` : ""}
       </div>`;
     }).join("")}`;
+  if (typeof renderToolbox === "function") map.insertAdjacentHTML("beforeend", `<div class="world kit-entry" style="left:78%;top:58px">
+    <button type="button" id="open-kit" aria-label="Werkzeugkoffer: Level bauen und spielen"><svg class="icon" viewBox="0 0 100 100"><use href="#werkzeugkoffer"/></svg></button>
+    <span class="wname">Werkzeug&shy;koffer</span></div>`);
+  const kitBtn = document.getElementById("open-kit"); if (kitBtn) kitBtn.addEventListener("click", () => show("toolbox"));
   map.querySelectorAll("[data-w]").forEach(b => b.addEventListener("click", () => { curWorld = +b.dataset.w; if (NL(curWorld) === 1) loadLevel(curWorld, 0); else show("levels"); }));
   if (reveal) { p.seen = lastOpen + 1; save(); }
 }
@@ -3949,7 +4049,7 @@ function loadLevel(w, l, data) {
   document.querySelector(".win-card").classList.toggle("prize", finale);
   document.getElementById("game-player").textContent = P().name;
   const lname = T.levelName ? T.levelName(l) : (S ? S.name : "");
-  document.getElementById("subtitle").textContent = `${L.bonus ? "Bonus" : "Welt " + (w + 1)}${lname ? " · " + lname : ""}${L.bonus ? "" : ` · Level ${l + 1}${finale ? " · Finale" : ""}`}`;
+  document.getElementById("subtitle").textContent = L.custom ? `${L.back === "editor" ? "Test" : "Eigenes Level"} · ${lname}` : `${L.bonus ? "Bonus" : "Welt " + (w + 1)}${lname ? " · " + lname : ""}${L.bonus ? "" : ` · Level ${l + 1}${finale ? " · Finale" : ""}`}`;
   document.getElementById("push-word").textContent = T.pushWord;
   document.getElementById("hint").textContent = typeof T.hint === "function" ? T.hint(l) : T.hint;
   document.getElementById("win-title").textContent = finale ? T.prize.title : (typeof T.winTitle === "function" ? T.winTitle(l) : T.winTitle);
@@ -3972,7 +4072,7 @@ function buildBoard() {
   let html = "";
   const xs = [...inside].map(k => +k.split(",")[0]), ys = [...inside].map(k => +k.split(",")[1]);
   const ctx = { mid: Math.round((Math.min(...xs) + Math.max(...xs)) / 2), midY: Math.round((Math.min(...ys) + Math.max(...ys)) / 2) };
-  const mood = moodOf(L.theme, S ? S.name : "");
+  const mood = T.mood || moodOf(L.theme, S ? S.name : "");
   const free = (x, y) => !inside.has(key(x, y)) && !(walls.has(key(x, y)) && touchesInside(x, y));
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
     const pos = `style="--x:${x};--y:${y}"`;
@@ -4012,7 +4112,7 @@ function buildBoard() {
       const wd = wallDetail(mood, x, y);
       if (wd) html += `<div class="tile detail" ${pos}><svg viewBox="0 0 100 100">${wd}</svg></div>`;
     }
-    if (goals.has(k)) html += `<div class="tile target" data-k="${k}" ${pos}>${T.target(curLevel)}</div>`;
+    if (goals.has(k)) html += `<div class="tile target" data-k="${k}" ${pos}>${T.targetAt ? T.targetAt(...k.split(",").map(Number)) : T.target(curLevel)}</div>`;
   }
   if (T.levelName) html += signHTML(T.levelName(curLevel));
   board.innerHTML = html;
@@ -4069,7 +4169,8 @@ function makeSprites() {
   boxEls = boxes.map((b, i) => {
     const el = document.createElement("div");
     el.className = "sprite box";
-    if (T.boxColors) { const [c, m] = T.boxColors[i % T.boxColors.length]; el.style.setProperty("--c1", c); el.style.setProperty("--c2", m); }
+    if (T.boxStyle) el.style.cssText = T.boxStyle(i);
+    if (T.boxColors) { const [c, m] = T.boxColors[i % T.boxColors.length]; if (c) el.style.setProperty("--c1", c); if (m) el.style.setProperty("--c2", m); }
     const cyc = T.boxCycle && T.boxCycle(curLevel);
     el.innerHTML = `<div class="squash"><div class="spin"><svg viewBox="0 0 100 100"><use href="#${cyc ? cyc[i % cyc.length] : boxId()}"/></svg></div></div>`;
     board.appendChild(el); return el;
@@ -4108,16 +4209,18 @@ function render() {
   const won = scored === goals.size, winEl = document.getElementById("win");
   if (won && !lasseEl.classList.contains("cheer")) {
     lasseEl.classList.add("cheer");
-    const p = P(), k = lk(curWorld, curLevel), best = p.solved[k];
-    if (!best || moves < best.m) p.solved[k] = { m: moves, p: pushes };
+    if (L.custom) L.custom.won(moves, pushes);
+    else { const p = P(), k = lk(curWorld, curLevel), best = p.solved[k];
+      if (!best || moves < best.m) p.solved[k] = { m: moves, p: pushes }; }
     save();
     document.getElementById("win-text").textContent = T.prize && curLevel === NL(curWorld) - 1 ? T.prize.text(moves) : T.winText(moves, pushes, curLevel);
-    const o = optOf(curWorld, curLevel), gold = o && moves <= o;
+    const o = L.custom ? L.custom.opt : optOf(curWorld, curLevel), gold = o && moves <= o;
     let ws = document.getElementById("win-star");
     if (!ws) { document.getElementById("win-text").insertAdjacentHTML("afterend", '<p id="win-star" class="win-star"></p>'); ws = document.getElementById("win-star"); }
     ws.innerHTML = `<svg viewBox="0 0 100 100"><use href="#${gold ? "stern" : "stern-silber"}"/></svg><span>${gold ? "Goldener Stern! Weniger Schritte geht nicht." : o ? `Silberner Stern. Schaffst du es in ${o} Schritten? Dann gibt es Gold.` : "Silberner Stern!"}</span>`;
     const nextBtn = document.getElementById("next");
-    if (curLevel < NL(curWorld) - 1) nextBtn.textContent = `Weiter: Level ${curLevel + 2}`;
+    if (L.custom) nextBtn.textContent = L.back === "editor" ? "Zurück in die Werkstatt" : "Zurück zum Koffer";
+    else if (curLevel < NL(curWorld) - 1) nextBtn.textContent = `Weiter: Level ${curLevel + 2}`;
     else nextBtn.textContent = curWorld < WORLDS.length - 1 ? "Zur Weltkarte" : "Fertig!";
     const w = curWorld, l = curLevel;
     document.querySelectorAll(".side svg").forEach(s => s.classList.add("jubel"));
@@ -4163,7 +4266,7 @@ function step(d) {
     const bx = nx + dx, by = ny + dy;
     if (walls.has(key(bx, by)) || boxAt(bx, by)) { render(); return; }
     b.x = bx; b.y = by;
-    if (typeof T.rolls === "function" ? T.rolls(curLevel) : T.rolls) b.rot += (dx || dy) * 180; // Ball: eine Feldlänge ≈ halbe Umdrehung
+    if (T.rollsBox ? T.rollsBox(b) : typeof T.rolls === "function" ? T.rolls(curLevel) : T.rolls) b.rot += (dx || dy) * 180; // Ball: eine Feldlänge ≈ halbe Umdrehung
     else pulse(boxEls[boxes.indexOf(b)], T.squish ? "squish" : "shove");
     pushes++; SND.push();
   }
@@ -4207,6 +4310,7 @@ document.getElementById("reset").addEventListener("click", () => {
 });
 document.getElementById("again").addEventListener("click", () => { savedBeforeReset = null; reset(); });
 document.getElementById("next").addEventListener("click", () => {
+  if (L.custom) { show(L.back || "toolbox"); return; }
   if (curLevel < NL(curWorld) - 1) loadLevel(curWorld, curLevel + 1);
   else show("map");
 });
@@ -4310,6 +4414,8 @@ window.addEventListener("resize", () => { clearTimeout(rsT); rsT = setTimeout(re
 
 window.claude?.hot?.snapshot?.(() => ({ screen, curWorld, curLevel, game: screen === "game" ? stateOrig({ player, boxes, moves, pushes }) : null }));
 function boot(data) {
+  if (data && WORLDS[data.curWorld] && WORLDS[data.curWorld].custom) return show("map");
+  if (data && (data.screen === "toolbox" || data.screen === "editor")) return show("map");
   if (data && data.screen === "game" && data.game) return loadLevel(data.curWorld, data.curLevel, data.game);
   if (data && data.screen && data.screen !== "game") { curWorld = data.curWorld || 0; return show(data.screen); }
   show("players");
@@ -4338,6 +4444,410 @@ document.addEventListener("selectstart", e => { if (!e.target.closest || !e.targ
   b.addEventListener("click", () => { SND.muted = !SND.muted; upd(); if (!SND.muted) SND.place(); });
   upd();
 })();
+// ===== Werkzeugkoffer: eigene Level bauen (Werkstatt) und spielen (Spielfach) =====
+// Ein Design ist ein Schauplatz (z. B. „Bolzplatz im Park“). Es ist frei, sobald ein Level dieses Schauplatzes geschafft ist.
+// Jedes Feld merkt sich sein Design, daher lassen sich Designs in einem Level mischen.
+// Gespielt wird über eine versteckte Welt, deren Thema für jedes eigene Level neu zusammengesetzt wird.
+
+document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
+  <symbol id="werkzeugkoffer" viewBox="0 0 100 100">
+    <ellipse cx="50" cy="90" rx="38" ry="5" fill="#00000022"/>
+    <path d="M36 30v-8q0-6 6-6h16q6 0 6 6v8" fill="none" stroke="#4a3728" stroke-width="8" stroke-linecap="round"/>
+    <path d="M36 30v-8q0-6 6-6h16q6 0 6 6v8" fill="none" stroke="#9aa3b1" stroke-width="4" stroke-linecap="round"/>
+    <rect x="10" y="30" width="80" height="54" rx="9" fill="#e2402f" stroke="#4a3728" stroke-width="3"/>
+    <rect x="10" y="30" width="80" height="16" rx="7" fill="#f2604a" stroke="#4a3728" stroke-width="3"/>
+    <rect x="42" y="40" width="16" height="12" rx="3" fill="#ffcc33" stroke="#4a3728" stroke-width="2.4"/>
+    <path d="M22 60l14 14M30 60l-8 8" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+    <path d="M62 72l14-14" stroke="#4a3728" stroke-width="7" stroke-linecap="round"/><path d="M62 72l14-14" stroke="#c9ced8" stroke-width="3.6" stroke-linecap="round"/>
+    <circle cx="78" cy="56" r="5" fill="none" stroke="#c9ced8" stroke-width="3.4"/>
+  </symbol>
+  <symbol id="radierer" viewBox="0 0 100 100">
+    <path d="M18 64l34-34q6-6 12 0l14 14q6 6 0 12L56 78H32z" fill="#ff8fb1" stroke="#4a3728" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M30 52l24 24" stroke="#4a3728" stroke-width="4"/><path d="M18 64l14 14" fill="none" stroke="#4a3728" stroke-width="4"/>
+    <path d="M14 86h72" stroke="#4a3728" stroke-width="4" stroke-linecap="round"/>
+  </symbol>`);
+
+// ---------- versteckte Welt für eigene Level ----------
+const CUSTOM_W = WORLDS.length;
+WORLDS.push({ theme: "custom", custom: {}, bonus: true, hidden: true, name: "Eigene Level", levels: [{ m: ["@"] }] });
+
+// ---------- Designs ----------
+const sceneOf = (w, l) => { const T = THEMES[WORLDS[w].theme]; return T.levelScenes ? T.levelScenes[l] : T.scenes ? T.scenes[Math.min(T.scenes.length - 1, Math.floor(l / PER_DESIGN))] : null; };
+const DESIGNS = [];
+WORLDS.forEach((w, wi) => {
+  if (w.custom) return;
+  const T = THEMES[w.theme];
+  w.levels.forEach((_, l) => {
+    const S = sceneOf(wi, l), name = S ? S.name : w.name, key = wi + ":" + name;
+    let d = DESIGNS.find(x => x.key === key);
+    if (!d) { d = { key, w: wi, l, T, S, name, levels: [] }; DESIGNS.push(d); }
+    d.levels.push(l);
+  });
+});
+const designByKey = (k) => DESIGNS.find(d => d.key === k);
+const designOpen = (p, d) => !!p.unlockAll || d.levels.some(l => isSolved(p, d.w, l));
+// Farben des Designs (Boden, Edelsteine …) wandern als CSS-Variablen mit jedem Feld mit
+function dVars(d) {
+  if (!d._vars) { const pal = { ...DEFAULT_PAL, ...(d.T.pal || {}), ...((d.S && d.S.pal) || {}), ...(d.T.levelVars ? d.T.levelVars(d.l) : {}) };
+    d._vars = Object.entries(pal).map(([k, v]) => `${k}:${v}`).join(";"); }
+  return d._vars;
+}
+const dWrap = (html, d) => html ? `<div class="dv" style="${dVars(d)}">${html}</div>` : "";
+const dWall = (d, x, y) => { const S = d.S, ex = S && EXTRA_WALLS[S.name], base = S ? S.wall : d.T.wall;
+  return ex && pick(x, y, 77, 10) < 4 ? ex[pick(x, y, 78, ex.length)](x, y) : base(x, y); };
+const dFloor = (d, x, y, ctx) => d.S ? d.S.floor(x, y, ctx) : `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${(x + y) % 2 ? "var(--floor-b)" : "var(--floor-a)"}"/></svg>`;
+const dTarget = (d) => d.T.target(d.l);
+const dBoxes = (d) => (d.T.boxCycle && d.T.boxCycle(d.l)) || [d.T.levelBox ? d.T.levelBox(d.l) : d.T.box];
+const dLasse = (d) => (d.S && d.S.lasse) || WORLDS[d.w].theme;
+const dRolls = (d) => typeof d.T.rolls === "function" ? !!d.T.rolls(d.l) : !!d.T.rolls;
+const boxSvg = (sym, col) => `<svg viewBox="0 0 100 100" style="${col && col[0] ? `--c1:${col[0]};` : ""}${col && col[1] ? `--c2:${col[1]};` : ""}"><use href="#${sym}"/></svg>`;
+
+// ---------- Speicher: eigene Level gehören dem Spieler ----------
+const kitOf = (p) => (p.kit = p.kit || { levels: [], seq: 0 });
+const SIZES = { klein: [7, 7], mittel: [9, 9], gross: [12, 12] };
+const genitiv = (n) => /[sxzß]$/i.test(n) ? n + "’" : n + "s";
+
+// ---------- Level übersetzen: Felder → Microban-Zeilen (mit automatischem Wandrand) ----------
+// Zellen: 0 = leer, ["w", key] = Wand, ["f", key] = Boden; Kisten, Ziele und Lasse liegen extra.
+function compileLevel(lv) {
+  const W2 = lv.w + 2, H2 = lv.h + 2;
+  const inner = (x, y) => x >= 0 && y >= 0 && x < lv.w && y < lv.h ? lv.cells[y * lv.w + x] : 0;
+  const rows = [], dg = [];
+  for (let y = -1; y <= lv.h; y++) {
+    let r = ""; const drow = [];
+    for (let x = -1; x <= lv.w; x++) {
+      const c = inner(x, y), i = y * lv.w + x, isIn = x >= 0 && y >= 0 && x < lv.w && y < lv.h;
+      if (c && c[0] === "w") { r += "#"; drow.push(c[1]); continue; }
+      if (c && c[0] === "f") {
+        const box = isIn && lv.box[i], goal = isIn && lv.goal[i], st = isIn && lv.start.i === i;
+        r += st ? (goal ? "+" : "@") : box ? (goal ? "*" : "$") : goal ? "." : " ";
+        drow.push(c[1]); continue;
+      }
+      // leeres Feld neben Boden: automatische Wand im Design des Nachbarbodens
+      let near = null;
+      for (let dy = -1; dy <= 1 && !near; dy++) for (let dx = -1; dx <= 1 && !near; dx++) { const n = inner(x + dx, y + dy); if (n && n[0] === "f") near = n[1]; }
+      r += near ? "#" : " "; drow.push(near);
+    }
+    rows.push(r); dg.push(drow);
+  }
+  // Kisten in Zeilenreihenfolge (so nummeriert die Engine sie auch)
+  const boxD = [], boxSyms = [], boxCols = [], perD = {};
+  for (let y = 0; y < lv.h; y++) for (let x = 0; x < lv.w; x++) {
+    const k = lv.box[y * lv.w + x]; if (!k) continue;
+    const d = designByKey(k) || DESIGNS[0], n = perD[d.key] = (perD[d.key] || 0) + 1, syms = dBoxes(d);
+    boxD.push(d); boxSyms.push(syms[(n - 1) % syms.length]);
+    boxCols.push(d.T.boxColors ? d.T.boxColors[(n - 1) % d.T.boxColors.length] : ["", ""]);
+  }
+  return { rows, dg, boxD, boxSyms, boxCols, W2, H2 };
+}
+const countOf = (lv) => ({ boxes: Object.keys(lv.box).length, goals: Object.keys(lv.goal).length });
+function problemOf(lv) {
+  const { boxes, goals } = countOf(lv);
+  if (!boxes || !goals) return "Bau mindestens eine Kiste und einen Zielplatz.";
+  if (boxes > goals) return `Es fehlt noch ${boxes - goals === 1 ? "ein Zielplatz" : boxes - goals + " Zielplätze"}.`;
+  if (goals > boxes) return `Es fehlt noch ${goals - boxes === 1 ? "eine Kiste" : goals - boxes + " Kisten"}.`;
+  if (Object.keys(lv.box).every(i => lv.goal[i])) return "Alle Kisten stehen schon im Ziel. Stell mindestens eine woanders hin.";
+  return "";
+}
+
+// ---------- Eigenes Level spielen ----------
+function playCustom(lv, back) {
+  const r = compileLevel(lv), p = P();
+  const sd = designByKey(lv.start.d) || DESIGNS[0];
+  const at = (x, y) => { const [ox, oy] = fromRot([x, y]); return designByKey(r.dg[oy] && r.dg[oy][ox]) || sd; };
+  const CW = WORLDS[CUSTOM_W];
+  CW.levels = [{ m: r.rows }];
+  CW.back = back;
+  CW.custom = {
+    opt: back === "toolbox" ? lv.opt || 0 : 0,
+    won(m) {
+      if (back === "editor") { lv.tested = true; lv.testBest = Math.min(lv.testBest || 1e9, m); }
+      else lv.best = Math.min(lv.best || 1e9, m);
+    }
+  };
+  const sT = sd.T, sS = sd.S || {};
+  THEMES.custom = {
+    title: lv.name, emblem: "werkzeugkoffer", box: r.boxSyms[0], boxWord: "Kisten", pushWord: sT.pushWord || "Schübe",
+    rolls: false, rollsBox: (b) => !!(r.boxD[b.id] && dRolls(r.boxD[b.id])), squish: !!sT.squish,
+    hint: back === "editor" ? "Teste dein Level! Schaffst du es selbst? Danach kannst du es veröffentlichen." : `Ein Level von ${p.name}. Bring alles auf die Zielplätze.`,
+    winTitle: "Geschafft!", winText: (m, pu) => `${lv.name}: ${m} Schritte, ${pu} Schübe.`,
+    levelName: () => lv.name,
+    confetti: sT.confetti || ["#e2402f", "#ffcc33", "#2a6ae0", "#3fae4a"],
+    pal: { ...DEFAULT_PAL, ...(sT.pal || {}), ...(sS.pal || {}) },
+    mood: moodOf(WORLDS[sd.w].theme, sd.name),
+    boxCycle: () => r.boxSyms, boxColors: r.boxCols, boxStyle: (i) => r.boxD[i] ? dVars(r.boxD[i]) : "",
+    target: () => dWrap(dTarget(sd), sd), targetAt: (x, y) => { const d = at(x, y); return dWrap(dTarget(d), d); },
+    levelScenes: [{
+      name: "Eigenes Level", lasse: dLasse(sd), pal: {},
+      floor: (x, y, ctx) => { const d = at(x, y); return dWrap(dFloor(d, x, y, ctx), d); },
+      wall: (x, y) => { const d = at(x, y); return dWrap(dWall(d, x, y), d); },
+      deco: () => "", extras: () => (sS.extras && !sS.side ? sS.extras() : "")
+    }]
+  };
+  loadLevel(CUSTOM_W, 0);
+}
+
+// ---------- Lösbarkeit prüfen (Breitensuche in kleinen Häppchen, damit das iPad nicht hängt) ----------
+function checkLevel(rows, done) {
+  const H = rows.length, W = Math.max(...rows.map(r => r.length)), N = W * H;
+  const wall = new Uint8Array(N), goal = new Uint8Array(N); let player = -1; const boxes0 = [];
+  rows.forEach((r, y) => [...r.padEnd(W)].forEach((c, x) => { const i = y * W + x;
+    if (c === "#") wall[i] = 1; if (".*+".includes(c)) goal[i] = 1; if ("$*".includes(c)) boxes0.push(i); if ("@+".includes(c)) player = i; }));
+  const D = [-W, W, -1, 1];
+  // lebendige Felder: von dort kann eine Kiste noch ein Ziel erreichen (rückwärts ziehen)
+  const live = new Uint8Array(N), q0 = [];
+  for (let i = 0; i < N; i++) if (goal[i]) { live[i] = 1; q0.push(i); }
+  while (q0.length) { const b = q0.pop(); for (const d of D) { const nb = b + d, pl = b + 2 * d;
+    if (nb < 0 || pl < 0 || nb >= N || pl >= N || wall[nb] || wall[pl] || live[nb]) continue; live[nb] = 1; q0.push(nb); } }
+  const goalKey = [...Array(N).keys()].filter(i => goal[i]).join(",");
+  const keyOf = (p, bs) => p + "|" + bs.join(",");
+  const start = { p: player, b: boxes0.slice().sort((a, b) => a - b), n: 0 };
+  // Stufe 1: kürzester Weg in Schritten (für den goldenen Stern), Stufe 2: nur schaffbar ja/nein (Spielerplatz zusammengefasst)
+  const runMoves = (cap, next) => {
+    const seen = new Set([keyOf(start.p, start.b)]); let frontier = [start], depth = 0;
+    const tick = () => {
+      const t0 = performance.now();
+      while (performance.now() - t0 < 30) {
+        if (!frontier.length) return next({ status: "impossible" });
+        const nf = [];
+        for (const s of frontier) {
+          if (s.b.join(",") === goalKey) return next({ status: "ok", moves: depth });
+          for (const d of D) {
+            const np = s.p + d; if (wall[np]) continue;
+            let nb = s.b; const bi = s.b.indexOf(np);
+            if (bi >= 0) { const t = np + d; if (wall[t] || !live[t] || s.b.includes(t)) continue; nb = s.b.slice(); nb[bi] = t; nb.sort((a, b) => a - b); }
+            const k = keyOf(np, nb); if (seen.has(k)) continue; seen.add(k); nf.push({ p: np, b: nb });
+          }
+        }
+        frontier = nf; depth++;
+        if (seen.size > cap) return next({ status: "unknown" });
+      }
+      setTimeout(tick, 0);
+    };
+    tick();
+  };
+  const reach = (p, bs) => { const set = new Set(bs), vis = new Uint8Array(N), st = [p]; vis[p] = 1; let mn = p;
+    while (st.length) { const c = st.pop(); if (c < mn) mn = c; for (const d of D) { const n = c + d; if (!wall[n] && !vis[n] && !set.has(n)) { vis[n] = 1; st.push(n); } } } return { vis, mn }; };
+  const runPushes = (cap, next) => {
+    const r0 = reach(start.p, start.b), seen = new Set([keyOf(r0.mn, start.b)]); const queue = [start]; let qi = 0;
+    const tick = () => {
+      const t0 = performance.now();
+      while (performance.now() - t0 < 30) {
+        if (qi >= queue.length) return next({ status: "impossible" });
+        const s = queue[qi++]; if (s.b.join(",") === goalKey) return next({ status: "ok" });
+        const { vis } = reach(s.p, s.b);
+        for (let bi = 0; bi < s.b.length; bi++) for (const d of D) {
+          const b = s.b[bi], from = b - d, to = b + d;
+          if (!vis[from] || wall[to] || !live[to] || s.b.includes(to)) continue;
+          const nb = s.b.slice(); nb[bi] = to; nb.sort((x, y) => x - y);
+          const k = keyOf(reach(b, nb).mn, nb); if (seen.has(k)) continue; seen.add(k); queue.push({ p: b, b: nb });
+        }
+        if (seen.size > cap) return next({ status: "unknown" });
+      }
+      setTimeout(tick, 0);
+    };
+    tick();
+  };
+  if (boxes0.some(b => !live[b])) return setTimeout(() => done({ status: "impossible" }), 400);
+  runMoves(300000, (r) => r.status === "unknown" ? runPushes(400000, done) : done(r));
+}
+
+// ---------- Werkzeugkoffer ----------
+let kitTab = "build", kitConfirm = null;
+function miniBoard(lv, t) {
+  // kleine Vorschau mit echten Feldern
+  const r = compileLevel(lv);
+  let html = "";
+  r.rows.forEach((row, y) => [...row].forEach((c, x) => {
+    const d = designByKey(r.dg[y][x]); if (!d) return;
+    const pos = `style="--x:${x};--y:${y}"`;
+    if (c === "#") html += `<div class="tile" ${pos}>${dWrap(dWall(d, x, y), d)}</div>`;
+    else { html += `<div class="tile" ${pos}>${dWrap(dFloor(d, x, y, { mid: -1, midY: -1 }), d)}</div>`;
+      if (".*+".includes(c)) html += `<div class="tile" ${pos}>${dWrap(dTarget(d), d)}</div>`; }
+  }));
+  r.rows.forEach((row, y) => [...row].forEach((c, x) => {
+    const pos = `style="--x:${x};--y:${y}"`;
+    if ("@+".includes(c)) html += `<div class="tile" ${pos}>${LASSE[dLasse(designByKey(lv.start.d) || DESIGNS[0])]}</div>`;
+  }));
+  let bi = 0;
+  r.rows.forEach((row, y) => [...row].forEach((c, x) => { if ("$*".includes(c)) { html += `<div class="tile" style="--x:${x};--y:${y}">${boxSvg(r.boxSyms[bi], r.boxCols[bi])}</div>`; bi++; } }));
+  return `<div class="mini" style="--w:${r.W2};--h:${r.H2};--t:${t}px">${html}</div>`;
+}
+function withEditorGlobals(lv, fn) {
+  // Wandmotive mancher Welten schauen auf das ganze Level; im Editor zeigen sie auf das Baufeld
+  const ws = new Set(), ins = new Set();
+  lv.cells.forEach((c, i) => { const k = key(i % lv.w, Math.floor(i / lv.w)); if (c && c[0] === "w") ws.add(k); if (c && c[0] === "f") ins.add(k); });
+  walls = ws; inside = ins; W = lv.w; H = lv.h; start = [lv.start.i % lv.w, Math.floor(lv.start.i / lv.w)];
+  return fn();
+}
+function renderToolbox() {
+  const p = P(), kit = kitOf(p), drafts = kit.levels.filter(l => !l.published), pub = kit.levels.filter(l => l.published);
+  const anyOpen = DESIGNS.some(d => designOpen(p, d));
+  document.getElementById("kit-title").innerHTML = `Werkzeugkoffer<small>${esc(p.name)} · ${drafts.length} in der Werkstatt · ${pub.length} im Spielfach</small>`;
+  document.getElementById("tab-build").classList.toggle("on", kitTab === "build");
+  document.getElementById("tab-play").classList.toggle("on", kitTab === "play");
+  document.getElementById("tab-build").setAttribute("aria-selected", kitTab === "build");
+  document.getElementById("tab-play").setAttribute("aria-selected", kitTab === "play");
+  const body = document.getElementById("kit-body");
+  const confirmRow = (lv) => kitConfirm === lv.id ? `<div class="confirm">„${esc(lv.name)}“ wegwerfen?<button type="button" data-kno>Nein</button><button type="button" class="danger" data-kdel="${lv.id}">Wegwerfen</button></div>` : "";
+  const star = (lv) => lv.best ? `<svg class="kstar" viewBox="0 0 100 100"><use href="#${lv.opt && lv.best <= lv.opt ? "stern" : "stern-silber"}"/></svg>` : "";
+  const card = (lv, actions) => `<div class="kcard"><div class="kprev">${withEditorGlobals(lv, () => miniBoard(lv, Math.min(13, Math.floor(150 / (lv.w + 2)))))}${star(lv)}</div>
+    <div class="kinfo"><b>${esc(lv.name)}</b><small>${countOf(lv).boxes} ${countOf(lv).boxes === 1 ? "Kiste" : "Kisten"} · ${lv.w}×${lv.h}${lv.published && lv.opt ? ` · Gold ab ${lv.opt} Schritten` : ""}</small>
+    <div class="kbtns">${actions}</div>${confirmRow(lv)}</div></div>`;
+  if (kitTab === "build") {
+    body.innerHTML = (anyOpen ? `<div class="knew"><b>Neues Level bauen</b><div class="kbtns">${Object.entries({ klein: "Klein", mittel: "Mittel", gross: "Groß" }).map(([k, n]) => `<button type="button" data-knew="${k}">${n}<small>${SIZES[k][0]}×${SIZES[k][1]}</small></button>`).join("")}</div></div>`
+      : `<p class="kempty">Schaffe zuerst ein Level auf der Weltkarte. Dann bekommst du die Bausteine von diesem Schauplatz.</p>`)
+      + (drafts.length ? drafts.map(lv => card(lv, `<button type="button" class="primary" data-kedit="${lv.id}">Bauen</button><button type="button" data-ktest="${lv.id}">Testen</button><button type="button" data-kpub="${lv.id}">Veröffentlichen</button><button type="button" class="kdel" data-kask="${lv.id}" aria-label="Wegwerfen">✕</button>`)).join("")
+        : anyOpen ? `<p class="kempty">Noch nichts gebaut. Wähle oben eine Größe!</p>` : "");
+  } else {
+    body.innerHTML = pub.length ? pub.map(lv => card(lv, `<button type="button" class="primary" data-kplay="${lv.id}">Spielen</button><button type="button" data-kback="${lv.id}">In die Werkstatt</button><button type="button" class="kdel" data-kask="${lv.id}" aria-label="Wegwerfen">✕</button>`)).join("")
+      : `<p class="kempty">Das Spielfach ist noch leer. Bau in der Werkstatt ein Level und veröffentliche es.</p>`;
+  }
+  const byId = (id) => kit.levels.find(l => l.id === id);
+  body.querySelectorAll("[data-knew]").forEach(b => b.addEventListener("click", () => newLevel(b.dataset.knew)));
+  body.querySelectorAll("[data-kedit]").forEach(b => b.addEventListener("click", () => { edLevel = byId(b.dataset.kedit); show("editor"); }));
+  body.querySelectorAll("[data-ktest]").forEach(b => b.addEventListener("click", () => testLevel(byId(b.dataset.ktest), "toolbox")));
+  body.querySelectorAll("[data-kpub]").forEach(b => b.addEventListener("click", () => publishLevel(byId(b.dataset.kpub))));
+  body.querySelectorAll("[data-kplay]").forEach(b => b.addEventListener("click", () => playCustom(byId(b.dataset.kplay), "toolbox")));
+  body.querySelectorAll("[data-kback]").forEach(b => b.addEventListener("click", () => { const lv = byId(b.dataset.kback); lv.published = false; save(); kitTab = "build"; renderToolbox(); }));
+  body.querySelectorAll("[data-kask]").forEach(b => b.addEventListener("click", () => { kitConfirm = b.dataset.kask; renderToolbox(); }));
+  body.querySelectorAll("[data-kno]").forEach(b => b.addEventListener("click", () => { kitConfirm = null; renderToolbox(); }));
+  body.querySelectorAll("[data-kdel]").forEach(b => b.addEventListener("click", () => { kit.levels = kit.levels.filter(l => l.id !== b.dataset.kdel); kitConfirm = null; save(); renderToolbox(); }));
+}
+document.getElementById("tab-build").addEventListener("click", () => { kitTab = "build"; kitConfirm = null; renderToolbox(); });
+document.getElementById("tab-play").addEventListener("click", () => { kitTab = "play"; kitConfirm = null; renderToolbox(); });
+
+function newLevel(size) {
+  const p = P(), kit = kitOf(p), [w, h] = SIZES[size];
+  const open = DESIGNS.filter(d => designOpen(p, d)), d = open[open.length - 1];
+  const cells = Array.from({ length: w * h }, (_, i) => { const x = i % w, y = Math.floor(i / w); return x === 0 || y === 0 || x === w - 1 || y === h - 1 ? ["w", d.key] : ["f", d.key]; });
+  kit.seq = (kit.seq || 0) + 1;
+  const lv = { id: "k" + Date.now().toString(36), name: `${genitiv(p.name)} Level ${kit.seq}`, w, h, cells, box: {}, goal: {}, start: { i: w + 1, d: d.key }, published: false };
+  kit.levels.push(lv); save();
+  edLevel = lv; edDesign = d.key; show("editor");
+}
+function testLevel(lv, back) {
+  const prob = problemOf(lv);
+  if (prob) { kitMessage("Noch nicht fertig", prob, [["OK", null]]); return; }
+  playCustom(lv, back);
+}
+
+// ---------- Prüfen und veröffentlichen ----------
+function kitMessage(title, text, buttons, busy = false) {
+  let m = document.getElementById("kit-check");
+  m.hidden = false;
+  m.innerHTML = `<div class="kcheck-card">${busy ? `<svg class="kbusy" viewBox="0 0 100 100"><use href="#werkzeugkoffer"/></svg>` : ""}<h3>${title}</h3><p>${text}</p>
+    <div class="kbtns">${buttons.map(([t, fn], i) => `<button type="button" class="${i === buttons.length - 1 ? "primary" : ""}" data-km="${i}">${t}</button>`).join("")}</div></div>`;
+  m.querySelectorAll("[data-km]").forEach(b => b.addEventListener("click", () => { m.hidden = true; const fn = buttons[+b.dataset.km][1]; if (fn) fn(); }));
+}
+function publishLevel(lv) {
+  const prob = problemOf(lv);
+  if (prob) { kitMessage("Noch nicht fertig", prob, [["OK", null]]); return; }
+  kitMessage("Ich prüfe …", `Kann man „${esc(lv.name)}“ schaffen?`, [], true);
+  const started = performance.now();
+  checkLevel(compileLevel(lv).rows, (r) => {
+    setTimeout(() => {
+      if (r.status === "ok" || (r.status === "unknown" && lv.tested)) {
+        lv.published = true; lv.opt = r.moves || 0; lv.best = 0; save();
+        kitTab = "play";
+        kitMessage("Schaffbar!", `„${esc(lv.name)}“ liegt jetzt im Spielfach.${lv.opt ? ` Mit ${lv.opt} Schritten gibt es Gold.` : ""}`, [["Super!", () => show("toolbox")]]);
+        SND.applause();
+      } else if (r.status === "impossible") {
+        kitMessage("Achtung!", `„${esc(lv.name)}“ kann man so nicht schaffen. Mindestens eine Kiste kommt nie auf einen Zielplatz. Bau noch etwas um.`, [["Zurück", () => show("toolbox")], ["Umbauen", () => { edLevel = lv; show("editor"); }]]);
+      } else {
+        kitMessage("Zu knifflig zum Prüfen", `Ich konnte nicht fertig prüfen, ob man „${esc(lv.name)}“ schaffen kann. Teste es einmal selbst bis zum Ende, dann kann ich es veröffentlichen.`, [["Zurück", () => show("toolbox")], ["Testen", () => playCustom(lv, "toolbox")]]);
+      }
+    }, Math.max(0, 1200 - (performance.now() - started)));
+  });
+}
+
+// ---------- Werkstatt: Baufeld ----------
+let edLevel = null, edDesign = null, edTool = "wall";
+const TOOLS = [["wall", "Wand"], ["floor", "Boden"], ["box", "Kiste"], ["goal", "Ziel"], ["start", "Lasse"], ["erase", "Radierer"]];
+function edTileSize() {
+  const room = Math.min(window.innerWidth - 32, 720), byH = (window.innerHeight - 330) / edLevel.h;
+  return Math.max(24, Math.min(64, Math.floor(room / edLevel.w), Math.floor(byH)));
+}
+function renderEditor() {
+  const p = P(), lv = edLevel;
+  if (!lv) return show("toolbox");
+  if (!edDesign || !designOpen(p, designByKey(edDesign))) edDesign = lv.start.d;
+  const cur = designByKey(edDesign);
+  const name = document.getElementById("ed-name");
+  name.value = lv.name;
+  // Designs: freie zuerst, gesperrte mit Schloss
+  document.getElementById("ed-designs").innerHTML = [...DESIGNS.filter(d => designOpen(p, d)), ...DESIGNS.filter(d => !designOpen(p, d))].map(d => {
+    const open = designOpen(p, d);
+    return `<button type="button" class="dchip${d.key === edDesign ? " on" : ""}${open ? "" : " locked"}" data-d="${d.key}" ${open ? "" : "disabled"} aria-label="${esc(d.name)}${open ? "" : ", noch gesperrt"}">
+      <span class="dtile">${open ? withEditorGlobals(lv, () => dWrap(dWall(d, 3, 5), d)) : `<svg viewBox="0 0 24 24"><use href="#schloss"/></svg>`}</span><span class="dname">${esc(d.name)}</span></button>`;
+  }).join("");
+  document.querySelectorAll("#ed-designs [data-d]").forEach(b => b.addEventListener("click", () => { edDesign = b.dataset.d; renderEditor(); }));
+  const on = document.querySelector("#ed-designs .dchip.on"); if (on) on.scrollIntoView({ block: "nearest", inline: "center" });
+  // Werkzeuge im aktuellen Design
+  const icon = {
+    wall: dWrap(dWall(cur, 2, 2), cur), floor: dWrap(dFloor(cur, 1, 1, { mid: -1, midY: -1 }), cur),
+    box: boxSvg(dBoxes(cur)[0], cur.T.boxColors && cur.T.boxColors[0]), goal: dWrap(dTarget(cur), cur), start: LASSE[dLasse(cur)],
+    erase: `<svg viewBox="0 0 100 100"><use href="#radierer"/></svg>`
+  };
+  document.getElementById("ed-tools").innerHTML = TOOLS.map(([k, n]) => `<button type="button" class="tool${edTool === k ? " on" : ""}" data-t="${k}" aria-pressed="${edTool === k}"><span class="ticon">${withEditorGlobals(lv, () => icon[k])}</span>${n}</button>`).join("");
+  document.querySelectorAll("#ed-tools [data-t]").forEach(b => b.addEventListener("click", () => { edTool = b.dataset.t; renderEditor(); }));
+  drawEdBoard();
+}
+function drawEdBoard() {
+  const lv = edLevel, b = document.getElementById("edboard"), t = edTileSize();
+  b.style.setProperty("--w", lv.w); b.style.setProperty("--h", lv.h); b.style.setProperty("--t", t + "px");
+  const ctx = (() => { const xs = [], ys = []; lv.cells.forEach((c, i) => { if (c && c[0] === "f") { xs.push(i % lv.w); ys.push(Math.floor(i / lv.w)); } });
+    return { mid: Math.round((Math.min(...xs) + Math.max(...xs)) / 2), midY: Math.round((Math.min(...ys) + Math.max(...ys)) / 2) }; })();
+  const r = compileLevel(lv); let bi = 0; const boxAtIdx = {};
+  // Kisten-Symbole in derselben Reihenfolge wie im Spiel
+  for (let y = 0; y < lv.h; y++) for (let x = 0; x < lv.w; x++) { const i = y * lv.w + x; if (lv.box[i]) boxAtIdx[i] = bi++; }
+  b.innerHTML = withEditorGlobals(lv, () => lv.cells.map((c, i) => {
+    const x = i % lv.w, y = Math.floor(i / lv.w), pos = `style="--x:${x};--y:${y}"`;
+    let h = "";
+    if (!c) h += `<div class="tile ed-empty" ${pos}></div>`;
+    else { const d = designByKey(c[1]) || DESIGNS[0]; h += `<div class="tile" ${pos}>${dWrap(c[0] === "w" ? dWall(d, x, y) : dFloor(d, x, y, ctx), d)}</div>`; }
+    if (lv.goal[i]) { const d = designByKey(lv.goal[i]) || DESIGNS[0]; h += `<div class="tile" ${pos}>${dWrap(dTarget(d), d)}</div>`; }
+    if (lv.box[i]) { const k = boxAtIdx[i]; h += `<div class="tile ed-box" ${pos}>${boxSvg(r.boxSyms[k], r.boxCols[k])}</div>`; }
+    if (lv.start.i === i) h += `<div class="tile ed-lasse" ${pos}>${LASSE[dLasse(designByKey(lv.start.d) || DESIGNS[0])]}</div>`;
+    return h;
+  }).join(""));
+  const prob = problemOf(lv), { boxes, goals } = countOf(lv);
+  document.getElementById("ed-status").innerHTML = `${boxes} ${boxes === 1 ? "Kiste" : "Kisten"} · ${goals} ${goals === 1 ? "Zielplatz" : "Zielplätze"} · ${prob ? esc(prob) : "Bereit zum Testen!"}`;
+  document.getElementById("ed-status").classList.toggle("ok", !prob);
+}
+function edApply(i, first) {
+  const lv = edLevel, d = edDesign, c = lv.cells[i];
+  const isStart = lv.start.i === i;
+  if (edTool === "wall") { if (isStart) return false; lv.cells[i] = ["w", d]; delete lv.box[i]; delete lv.goal[i]; }
+  else if (edTool === "floor") { if (c && c[0] === "f" && c[1] === d) return false; lv.cells[i] = ["f", d]; }
+  else if (edTool === "erase") {
+    if (isStart) return false;
+    if (lv.box[i]) delete lv.box[i]; else if (lv.goal[i]) delete lv.goal[i]; else if (c) lv.cells[i] = 0; else return false;
+  } else {
+    if (!first) return false;
+    if (!c || c[0] !== "f") lv.cells[i] = ["f", d];
+    if (edTool === "box") { if (isStart) return false; if (lv.box[i] === d) delete lv.box[i]; else lv.box[i] = d; }
+    if (edTool === "goal") { if (lv.goal[i] === d) delete lv.goal[i]; else lv.goal[i] = d; }
+    if (edTool === "start") { delete lv.box[i]; lv.start = { i, d }; }
+  }
+  lv.tested = false; lv.opt = 0; lv.published = false;
+  return true;
+}
+(() => {
+  const b = document.getElementById("edboard"); let down = false, last = -1, raf = 0;
+  const cellAt = (e) => { const r = b.getBoundingClientRect(), t = r.width / edLevel.w; const x = Math.floor((e.clientX - r.left) / t), y = Math.floor((e.clientY - r.top) / t);
+    return x >= 0 && y >= 0 && x < edLevel.w && y < edLevel.h ? y * edLevel.w + x : -1; };
+  const redraw = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; drawEdBoard(); }); };
+  b.addEventListener("pointerdown", (e) => { const i = cellAt(e); if (i < 0) return; down = true; last = i; b.setPointerCapture(e.pointerId);
+    if (edApply(i, true)) { redraw(); SND.place(); } });
+  b.addEventListener("pointermove", (e) => { if (!down) return; const i = cellAt(e); if (i < 0 || i === last) return; last = i; if (edApply(i, false)) redraw(); });
+  const up = () => { if (down) { down = false; save(); } };
+  b.addEventListener("pointerup", up); b.addEventListener("pointercancel", up);
+})();
+document.getElementById("ed-name").addEventListener("input", (e) => { if (edLevel) { edLevel.name = e.target.value.slice(0, 24) || "Mein Level"; save(); } });
+document.getElementById("ed-test").addEventListener("click", () => { save(); testLevel(edLevel, "editor"); });
+document.getElementById("ed-publish").addEventListener("click", () => { save(); publishLevel(edLevel); });
+window.addEventListener("resize", () => { if (screen === "editor" && edLevel) drawEdBoard(); });
 </script>
 
 <script>if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});</script>
