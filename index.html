@@ -3894,7 +3894,7 @@ function renderPlayers() {
     <div>
       <div class="player-row">
         <button type="button" class="player" data-id="${p.id}">
-          <span class="face">${LASSE.neutral}</span>
+          <span class="face">${LASSE.avatar || LASSE.neutral}</span>
           <span class="pname">${esc(p.name)}</span>
           <span class="pprog">${totalSolved(p)} / ${TOTAL}</span>
         </button>

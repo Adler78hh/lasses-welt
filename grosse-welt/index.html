@@ -1172,7 +1172,6 @@ const LASSE = {
   </svg>`
 };
 
-const LASSE_CLASSIC = LASSE.fussball;
 
 // ---------- Themen und Schauplätze ----------
 const THEMES = {};
@@ -3284,6 +3283,9 @@ const SCENE_MOODS = {
   "Sörens Proberaum": ["#ddd4f6", "#e9e3fa"], "Annas Klassenzimmer": ["#ffeda6", "#fff4c8"], "Idas Zimmer": ["#ffd4e7", "#ffe3ef"]
 };
 for (const T of Object.values(THEMES)) for (const S of (T.scenes || [])) if (SCENE_MOODS[S.name]) S.pal = { ...(S.pal || {}), "--bg": SCENE_MOODS[S.name][0], "--bg-2": SCENE_MOODS[S.name][1] };
+
+// Spielerbild auf der Startseite: der neue Comic-Lasse
+LASSE.avatar = LASSE.fussball;
 // ===== Bonus: Lasses Ehrenrunde =====
 // Microban Nr. 154 „Take the long way home“: eine Doppelspirale mit nur einer Kiste.
 // Lasse läuft die Ehrenrunde einmal durch alle zehn Welten und stellt die Meisterschale aufs Podest.
@@ -4069,7 +4071,7 @@ function renderPlayers() {
     <div>
       <div class="player-row">
         <button type="button" class="player" data-id="${p.id}">
-          <span class="face">${LASSE.neutral}</span>
+          <span class="face">${LASSE.avatar || LASSE.neutral}</span>
           <span class="pname">${esc(p.name)}</span>
           <span class="pprog">${totalSolved(p)} / ${TOTAL}</span>
         </button>
