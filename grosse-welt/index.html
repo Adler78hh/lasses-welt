@@ -571,6 +571,34 @@ button:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 v
 .sign { background: #ffd23a !important; border: 2px solid var(--ink2) !important; border-radius: 10px !important; box-shadow: 0 3px 0 var(--ink2) !important; transform: rotate(-1.5deg); }
 .sign::before, .sign::after { display: none !important; }
 .sign span, .sign { font-family: var(--display) !important; font-weight: 400 !important; letter-spacing: .06em; color: var(--ink2) !important; text-shadow: none !important; }
+
+/* Lasse zeigt Gefühle: Freude beim Treffer, Wackeln an der Wand, Arme hoch beim Sieg */
+.arms-up { display: none; }
+#lasse.cheer .arms-up { display: inline; } #lasse.cheer .arms-dn, #lasse.cheer .pick { display: none; }
+#lasse.m-happy .body { animation: n-happy 650ms cubic-bezier(.3, 1.6, .5, 1), n-idle 2.4s ease-in-out 650ms infinite; }
+#lasse.m-oops .body { animation: n-oops 420ms ease-in-out, n-idle 2.4s ease-in-out 420ms infinite; }
+@keyframes n-happy { 0% { transform: translateY(0) scale(1); } 30% { transform: translateY(-16%) scale(1.06, .96); } 60% { transform: translateY(0) scale(1.04, .96); } 100% { transform: none; } }
+@keyframes n-oops { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-8deg) translateX(-4%); } 45% { transform: rotate(7deg) translateX(3%); } 70% { transform: rotate(-4deg); } }
+.fx-bubble { z-index: 7; }
+.fx-bubble svg { transform-origin: 30% 100%; animation: n-bubble var(--life, 900ms) ease-out forwards; }
+.fx-q svg { --life: 900ms; } .fx-win svg { --life: 1600ms; }
+@keyframes n-bubble { 0% { transform: translate(25%, -95%) scale(0); opacity: 1; } 18% { transform: translate(25%, -125%) scale(1.1); } 30%, 80% { transform: translate(25%, -120%) scale(1); opacity: 1; } 100% { transform: translate(25%, -130%) scale(1); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .fx-bubble svg { animation: none !important; transform: translate(25%, -120%); } }
+
+/* Weltkarte als Comic-Stadtplan: helle Straßen, Welten als Sticker, Kreideweg */
+.map { background-color: #e6f0d6; background-image: linear-gradient(90deg, transparent 46%, #ffffffb3 46%, #ffffffb3 54%, transparent 54%), linear-gradient(transparent 46%, #ffffffb3 46%, #ffffffb3 54%, transparent 54%);
+  background-size: 120px 120px; border: 2px solid var(--ink2); border-radius: 24px; box-shadow: 0 4px 0 var(--ink2); }
+.map svg.route path:first-of-type { stroke: #ffffff !important; }
+.map svg.route path:last-of-type { stroke: var(--ink2) !important; }
+.world button { background: #ffffff; border: 2px solid var(--ink2) !important; box-shadow: 0 4px 0 var(--ink2) !important; transform: rotate(-4deg); }
+.world:nth-of-type(even) button { transform: rotate(4deg); }
+.world.locked button { box-shadow: none !important; border: 0 !important; background: transparent; transform: none; }
+.world .wname { font-family: var(--display); letter-spacing: .05em; font-size: 19px; background: #ffffff; border: 2px solid var(--ink2); border-radius: 8px; padding: 0 8px; text-shadow: none !important; }
+.world.locked .wname { background: transparent; border-color: transparent; }
+.world .wprog { text-shadow: none !important; font-family: var(--body); font-weight: 700; }
+.world.current::before { content: "LOS!"; position: absolute; top: -12px; right: 6px; z-index: 3; font-family: var(--display); letter-spacing: .06em; font-size: 17px; color: var(--ink2);
+  background: #ffd23a; border: 2px solid var(--ink2); border-radius: 8px; padding: 0 6px; transform: rotate(12deg); box-shadow: 0 2px 0 var(--ink2); }
+.world.current button::after { border-color: #e2402f !important; }
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -2732,11 +2760,15 @@ function kLasse({ shirt = "#e2402f", pants = "#33507f", shoes = "#ffffff", head 
     <path d="M36 50q2-6 14-6t14 6l1 18H35z" fill="${shirt}"/><path d="M56 45q7 1 8 5l1 18H56z" fill="${shade}"/>
     <path d="M36 50q2-6 14-6t14 6l1 18H35z" fill="none" ${kO}/>
     <g transform="translate(0 3)">${body}</g>
-    <path d="M37 51q-6 7-6 15" stroke="${KI}" stroke-width="8.6" stroke-linecap="round" fill="none"/><path d="M37 51q-6 7-6 15" stroke="${shirt}" stroke-width="5.2" stroke-linecap="round" fill="none"/>
+<g class="arms-dn">    <path d="M37 51q-6 7-6 15" stroke="${KI}" stroke-width="8.6" stroke-linecap="round" fill="none"/><path d="M37 51q-6 7-6 15" stroke="${shirt}" stroke-width="5.2" stroke-linecap="round" fill="none"/>
     <circle cx="31" cy="67.5" r="3.8" fill="${glove}" ${kO2}/>
     <path d="M63 51l9 8-7 7" stroke="${KI}" stroke-width="8.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M63 51l9 8-7 7" stroke="${shirt}" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
     <path d="M63 51l9 8-7 7" stroke="${shade}" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <circle cx="65" cy="66" r="3.6" fill="${glove}" ${kO2}/>
+    <circle cx="65" cy="66" r="3.6" fill="${glove}" ${kO2}/></g>
+    <g class="arms-up">
+      <path d="M38 50q-8-6-10-16" stroke="${KI}" stroke-width="8.6" stroke-linecap="round" fill="none"/><path d="M38 50q-8-6-10-16" stroke="${shirt}" stroke-width="5.2" stroke-linecap="round" fill="none"/>
+      <path d="M62 50q8-6 10-16" stroke="${KI}" stroke-width="8.6" stroke-linecap="round" fill="none"/><path d="M62 50q8-6 10-16" stroke="${shirt}" stroke-width="5.2" stroke-linecap="round" fill="none"/>
+      <circle cx="28" cy="32" r="3.8" fill="${glove}" ${kO2}/><circle cx="72" cy="32" r="3.8" fill="${glove}" ${kO2}/></g>
     <g class="pick">${hand}</g>
     <g transform="rotate(-6 50 28)">
       <ellipse cx="31" cy="29" rx="4" ry="5" fill="${SKIN10}" ${kO2}/><ellipse cx="69" cy="29" rx="4" ry="5" fill="${S2}" ${kO2}/>
@@ -3255,7 +3287,18 @@ const FX = (() => {
   const add = (cls, x, y, html, life, extra = "") => { const el = document.createElement("div"); el.className = "fx-pop " + cls;
     el.style.cssText = `--x:${x};--y:${y};${extra}`; el.innerHTML = html; board().appendChild(el); setTimeout(() => el.remove(), life); };
   const dust = (x, y, dx, dy, big) => add("fx-dust", x, y, `<svg viewBox="0 0 100 100">${[[-14, 6, 9], [0, 0, 12], [14, 7, 8]].map(([ox, oy, r]) => `<circle cx="${50 + ox - dx * 10}" cy="${80 + oy}" r="${r * (big ? 1.25 : 1)}" fill="#ffffff" stroke="${NI}" stroke-width="2"/>`).join("")}</svg>`, 480, `--dx:${-dx};--dy:${-dy}`);
-  const WORDS = ["ZACK!", "BÄM!", "TOR!", "WUMMS!", "YES!"];
+  // Passende Comic-Wörter je Welt
+  const WORDS = { fussball: ["TOR!", "ZACK!", "BÄM!"], reiten: ["HÜ!", "YEEHAA!", "HOPP!"], pokemon: ["GEFANGEN!", "ZACK!", "YES!"], lego: ["KLACK!", "KLICK!", "PASST!"],
+    steine: ["BLING!", "FUNKEL!", "GLITZER!"], schlagzeug: ["BUMM!", "TSCHING!", "BADUMM!"], tennis: ["ASS!", "PLOPP!", "OUT? NEIN!"], essen: ["LECKER!", "MJAM!", "HMMM!"],
+    pokemon2: ["GEFANGEN!", "WUMMS!", "SUPER!"], familie: ["SUPER!", "YES!", "TOLL!"], garten: ["CHAMPION!", "YES!"] };
+  const words = () => WORDS[L && L.theme] || ["ZACK!", "BÄM!", "WUMMS!", "YES!"];
+  // Lasse zeigt kurz eine Stimmung (Klasse am Sprite, wird nach der Animation wieder entfernt)
+  const mood = (cls, ms) => { const el = document.getElementById("lasse"); if (!el) return; el.classList.remove("m-happy", "m-oops"); void el.offsetWidth; el.classList.add(cls);
+    clearTimeout(el._mt); el._mt = setTimeout(() => el.classList.remove(cls), ms); };
+  const bubble = (text, cls, life) => { const p = player; if (!p) return;
+    add("fx-bubble " + cls, p[0], p[1], `<svg viewBox="-10 -10 120 90" overflow="visible"><path d="M8 4h84q8 0 8 8v30q0 8-8 8H46l-14 14 2-14H8q-8 0-8-8V12q0-8 8-8z" fill="#ffffff" stroke="${NI}" stroke-width="2.4" stroke-linejoin="round"/>
+      <text x="50" y="37" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="${text.length > 4 ? 22 : 28}" letter-spacing="1" fill="${NI}">${text}</text></svg>`, life); };
+  let lastBump = 0;
   return {
     step(from, dx, dy, pushed) {
       if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -3263,11 +3306,19 @@ const FX = (() => {
       if (pushed) dust(pushed.x - dx, pushed.y - dy, dx, dy, true);
     },
     place(x, y) {
-      const w = WORDS[Math.floor(Math.random() * WORDS.length)];
+      const ws = words(), w = ws[Math.floor(Math.random() * ws.length)];
+      mood("m-happy", 650);
       add("fx-zack", x, y, `<svg viewBox="-20 -20 140 140" overflow="visible"><path d="M50 -8l10 22 22-12-4 24 26 4-20 16 18 18-26 2 4 26-22-14-10 24-10-24-22 14 4-26-26-2 18-18-20-16 26-4-4-24 22 12z" fill="#ffd23a" stroke="${NI}" stroke-width="2.4" stroke-linejoin="round"/>
-        <text x="50" y="58" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="${w.length > 4 ? 22 : 28}" letter-spacing="1" fill="#e2402f" stroke="${NI}" stroke-width="1.6" paint-order="stroke" transform="rotate(-8 50 50)">${w}</text></svg>`, 900);
+        <text x="50" y="58" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="${w.length > 7 ? 16 : w.length > 4 ? 21 : 28}" letter-spacing="1" fill="#e2402f" stroke="${NI}" stroke-width="1.6" paint-order="stroke" transform="rotate(-8 50 50)">${w}</text></svg>`, 900);
       for (let i = 0; i < 3; i++) add("fx-star", x, y, `<svg viewBox="0 0 100 100"><path d="M50 10l10 26 28 2-22 18 8 28-24-16-24 16 8-28-22-18 28-2z" fill="#ffffff" stroke="${NI}" stroke-width="5" stroke-linejoin="round"/></svg>`, 800, `--a:${-60 + i * 60}deg`);
-    }
+    },
+    // gegen die Wand: kurz wackeln, Fragezeichen-Blase (nicht bei jedem Stoß, sonst nervt es)
+    bump() {
+      mood("m-oops", 420);
+      const now = Date.now(); if (now - lastBump > 2500) { lastBump = now; bubble("HM?", "fx-q", 900); }
+    },
+    // geschafft: Arme hoch, Sprechblase
+    win() { bubble(["YES!", "JAAA!", "COOL!"][Math.floor(Math.random() * 3)], "fx-win", 1600);    }
   };
 })();
 
@@ -3286,6 +3337,21 @@ for (const T of Object.values(THEMES)) for (const S of (T.scenes || [])) if (SCE
 
 // Spielerbild auf der Startseite: der neue Comic-Lasse
 LASSE.avatar = LASSE.fussball;
+
+// ---------- Graffiti auch in der Stadt: HSV-Campus, Lego-Stadt und Foodtruck-Festival ----------
+const gWallOn = (base, shade, words) => (x, y) => { const t = words[pick(x, y, 41, words.length)], col = gCol(x, y, 42), col2 = gCol(x, y, 43);
+  return nTile(base, shade, `${gSpray(x, y, col2[0])}${gDrips(x, y, col[0], 2)}${gBubble(t, 50, 60, t.length > 5 ? 19 : t.length > 3 ? 24 : 32, col, -10 + pick(x, y, 44, 16))}`); };
+const CITY_GRAFFITI = {
+  "HSV-Campus": gWallOn("#5d6f86", "#4b5b70", ["HSV", "NORD", "7", "KICK", "GOAL"]),
+  "Lego-Stadt": gWallOn("#9aa5b1", "#838e9a", ["KLICK", "CITY", "LEGO", "YO!", "BAU"]),
+  "Foodtruck-Festival": gWallOn("#e8a24a", "#d18a33", ["MJAM", "FOOD", "YUM!", "HUNGER", "LECKER"])
+};
+for (const T of Object.values(THEMES)) for (const S of (T.scenes || [])) if (CITY_GRAFFITI[S.name]) {
+  const base = S.wall, g = CITY_GRAFFITI[S.name];
+  S.wall = (x, y) => pick(x, y, 45, 100) < 24 ? g(x, y) : base(x, y);
+}
+// Titelbild: Figuren bekommen eine flache Schattenseite (Cel-Shading)
+const COMIC_LOGO = true;
 // ===== Bonus: Lasses Ehrenrunde =====
 // Microban Nr. 154 „Take the long way home“: eine Doppelspirale mit nur einer Kiste.
 // Lasse läuft die Ehrenrunde einmal durch alle zehn Welten und stellt die Meisterschale aufs Podest.
@@ -3783,10 +3849,18 @@ const logoIds = (svg) => { const ids = [...svg.matchAll(/ id="([^"]+)"/g)].map(m
   return ids.reduce((t, id) => t.split(`id="${id}"`).join(`id="${id}-logo"`).split(`url(#${id})`).join(`url(#${id}-logo)`), svg); };
 const logoFig = (name) => { const [s, c, t] = LOGO_SOFT[name]; return logoIds(softFill(s, c, t)); };
 // Figur mit Füßen auf Bodenhöhe g und Mittelpunkt cx einsetzen (Ganzkörper 100×200, Füße bei y≈196)
-const placeFull = (svg, cx, g, s) => svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 196 * s).toFixed(1)}" width="${100 * s}" height="${200 * s}" overflow="visible" `);
+// Im Comic-Look (Teil 2) bekommt jede Figur rechts eine flache, dunklere Schattenfläche, genau in ihrer Silhouette
+let shadeN = 0;
+const shadeFig = (el, x, y, w, h) => {
+  if (typeof COMIC_LOGO === "undefined") return el;
+  const id = "cs" + (++shadeN), m = el.replace(/ id="([^"]+)"/g, ' id="$1-' + id + '"').replace(/url\(#([^)]+)\)/g, "url(#$1-" + id + ")");
+  return `${el}<mask id="${id}" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="700" height="400">${m}</mask>
+    <path d="M${(x + w * .6).toFixed(1)} ${y.toFixed(1)}H${(x + w).toFixed(1)}V${(y + h).toFixed(1)}H${(x + w * .52).toFixed(1)}z" mask="url(#${id})" fill="#2d3036" opacity=".13"/>`;
+};
+const placeFull = (svg, cx, g, s) => shadeFig(svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 196 * s).toFixed(1)}" width="${100 * s}" height="${200 * s}" overflow="visible" `), cx - 50 * s, g - 196 * s, 100 * s, 200 * s);
 const LOGO_KIDS = FRIENDS.map(f => `<svg viewBox="0 -24 100 124" overflow="visible">${kidFigure({ ...f, shirt: pastel(f.shirt, .4), shorts: pastel(f.shorts, .4),
   socks: f.socks === "none" ? "none" : pastel(f.socks, .3), shoes: pastel(f.shoes, .35), hat: f.hat.map(c => pastel(c, .3)) })}</svg>`);
-const placeKid = (svg, cx, g, s) => svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 118 * s).toFixed(1)}" width="${100 * s}" height="${124 * s}" `);
+const placeKid = (svg, cx, g, s) => shadeFig(svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 118 * s).toFixed(1)}" width="${100 * s}" height="${124 * s}" `), cx - 50 * s, g - 118 * s, 100 * s, 124 * s);
 // Titelbild in beiden Teilen mit demselben Lasse (Teil 2 überschreibt LASSE.fussball mit der Comic-Figur)
 const LOGO_LASSE = (typeof LASSE_CLASSIC !== "undefined" ? LASSE_CLASSIC : LASSE.fussball).replace("<svg ", `<svg x="${280 - 96}" y="${318 - 186}" width="192" height="192" overflow="visible" `);
 const FAMILY_HERO = `<svg viewBox="34 54 506 270" role="img" aria-label="Lasse mit Familie und Freunden: Papa Sören, Mama Anna, Schwester Ida, Oma Ilse und Opa, Oma Gobi, Arne und Matze, Christian, Alex und Enni, Levi, Willem, Lucas, Miko und Ege">
@@ -4402,6 +4476,7 @@ function render() {
     const w = curWorld, l = curLevel;
     document.querySelectorAll(".side svg").forEach(s => s.classList.add("jubel"));
     SND.applause();
+    if (typeof FX !== "undefined" && FX.win) FX.win();
     setTimeout(() => { if (w === curWorld && l === curLevel && lasseEl.classList.contains("cheer")) { winEl.hidden = false; confetti(); } }, 450);
   } else if (!won) { winEl.hidden = true; lasseEl.classList.remove("cheer"); document.querySelectorAll(".side svg.jubel").forEach(s => s.classList.remove("jubel")); }
 }
@@ -4436,12 +4511,12 @@ function step(d) {
   const [dx, dy] = DIRS[d];
   const nx = player[0] + dx, ny = player[1] + dy;
   if (dx) facing = dx;
-  if (walls.has(key(nx, ny))) { render(); return; }
+  if (walls.has(key(nx, ny))) { if (typeof FX !== "undefined" && FX.bump) FX.bump(); render(); return; }
   const snap = { player: [...player], boxes: boxes.map(b => ({ ...b })), moves, pushes };
   const b = boxAt(nx, ny);
   if (b) {
     const bx = nx + dx, by = ny + dy;
-    if (walls.has(key(bx, by)) || boxAt(bx, by)) { render(); return; }
+    if (walls.has(key(bx, by)) || boxAt(bx, by)) { if (typeof FX !== "undefined" && FX.bump) FX.bump(); render(); return; }
     b.x = bx; b.y = by;
     if (T.rollsBox ? T.rollsBox(b) : typeof T.rolls === "function" ? T.rolls(curLevel) : T.rolls) b.rot += (dx || dy) * 180; // Ball: eine Feldlänge ≈ halbe Umdrehung
     else pulse(boxEls[boxes.indexOf(b)], T.squish ? "squish" : "shove");

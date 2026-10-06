@@ -3670,10 +3670,18 @@ const logoIds = (svg) => { const ids = [...svg.matchAll(/ id="([^"]+)"/g)].map(m
   return ids.reduce((t, id) => t.split(`id="${id}"`).join(`id="${id}-logo"`).split(`url(#${id})`).join(`url(#${id}-logo)`), svg); };
 const logoFig = (name) => { const [s, c, t] = LOGO_SOFT[name]; return logoIds(softFill(s, c, t)); };
 // Figur mit Füßen auf Bodenhöhe g und Mittelpunkt cx einsetzen (Ganzkörper 100×200, Füße bei y≈196)
-const placeFull = (svg, cx, g, s) => svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 196 * s).toFixed(1)}" width="${100 * s}" height="${200 * s}" overflow="visible" `);
+// Im Comic-Look (Teil 2) bekommt jede Figur rechts eine flache, dunklere Schattenfläche, genau in ihrer Silhouette
+let shadeN = 0;
+const shadeFig = (el, x, y, w, h) => {
+  if (typeof COMIC_LOGO === "undefined") return el;
+  const id = "cs" + (++shadeN), m = el.replace(/ id="([^"]+)"/g, ' id="$1-' + id + '"').replace(/url\(#([^)]+)\)/g, "url(#$1-" + id + ")");
+  return `${el}<mask id="${id}" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="700" height="400">${m}</mask>
+    <path d="M${(x + w * .6).toFixed(1)} ${y.toFixed(1)}H${(x + w).toFixed(1)}V${(y + h).toFixed(1)}H${(x + w * .52).toFixed(1)}z" mask="url(#${id})" fill="#2d3036" opacity=".13"/>`;
+};
+const placeFull = (svg, cx, g, s) => shadeFig(svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 196 * s).toFixed(1)}" width="${100 * s}" height="${200 * s}" overflow="visible" `), cx - 50 * s, g - 196 * s, 100 * s, 200 * s);
 const LOGO_KIDS = FRIENDS.map(f => `<svg viewBox="0 -24 100 124" overflow="visible">${kidFigure({ ...f, shirt: pastel(f.shirt, .4), shorts: pastel(f.shorts, .4),
   socks: f.socks === "none" ? "none" : pastel(f.socks, .3), shoes: pastel(f.shoes, .35), hat: f.hat.map(c => pastel(c, .3)) })}</svg>`);
-const placeKid = (svg, cx, g, s) => svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 118 * s).toFixed(1)}" width="${100 * s}" height="${124 * s}" `);
+const placeKid = (svg, cx, g, s) => shadeFig(svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 118 * s).toFixed(1)}" width="${100 * s}" height="${124 * s}" `), cx - 50 * s, g - 118 * s, 100 * s, 124 * s);
 // Titelbild in beiden Teilen mit demselben Lasse (Teil 2 überschreibt LASSE.fussball mit der Comic-Figur)
 const LOGO_LASSE = (typeof LASSE_CLASSIC !== "undefined" ? LASSE_CLASSIC : LASSE.fussball).replace("<svg ", `<svg x="${280 - 96}" y="${318 - 186}" width="192" height="192" overflow="visible" `);
 const FAMILY_HERO = `<svg viewBox="34 54 506 270" role="img" aria-label="Lasse mit Familie und Freunden: Papa Sören, Mama Anna, Schwester Ida, Oma Ilse und Opa, Oma Gobi, Arne und Matze, Christian, Alex und Enni, Levi, Willem, Lucas, Miko und Ege">
@@ -4225,6 +4233,7 @@ function render() {
     const w = curWorld, l = curLevel;
     document.querySelectorAll(".side svg").forEach(s => s.classList.add("jubel"));
     SND.applause();
+    if (typeof FX !== "undefined" && FX.win) FX.win();
     setTimeout(() => { if (w === curWorld && l === curLevel && lasseEl.classList.contains("cheer")) { winEl.hidden = false; confetti(); } }, 450);
   } else if (!won) { winEl.hidden = true; lasseEl.classList.remove("cheer"); document.querySelectorAll(".side svg.jubel").forEach(s => s.classList.remove("jubel")); }
 }
@@ -4259,12 +4268,12 @@ function step(d) {
   const [dx, dy] = DIRS[d];
   const nx = player[0] + dx, ny = player[1] + dy;
   if (dx) facing = dx;
-  if (walls.has(key(nx, ny))) { render(); return; }
+  if (walls.has(key(nx, ny))) { if (typeof FX !== "undefined" && FX.bump) FX.bump(); render(); return; }
   const snap = { player: [...player], boxes: boxes.map(b => ({ ...b })), moves, pushes };
   const b = boxAt(nx, ny);
   if (b) {
     const bx = nx + dx, by = ny + dy;
-    if (walls.has(key(bx, by)) || boxAt(bx, by)) { render(); return; }
+    if (walls.has(key(bx, by)) || boxAt(bx, by)) { if (typeof FX !== "undefined" && FX.bump) FX.bump(); render(); return; }
     b.x = bx; b.y = by;
     if (T.rollsBox ? T.rollsBox(b) : typeof T.rolls === "function" ? T.rolls(curLevel) : T.rolls) b.rot += (dx || dy) * 180; // Ball: eine Feldlänge ≈ halbe Umdrehung
     else pulse(boxEls[boxes.indexOf(b)], T.squish ? "squish" : "shove");
