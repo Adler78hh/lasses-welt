@@ -475,6 +475,46 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .ed-status.ok { color: #2f8a3a; }
 .ed-actions { display: flex; gap: 10px; }
 .ed-actions button { padding: 12px 22px; font-size: 18px; }
+
+/* Spielstand sichern */
+.backup { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.backup button { padding: 8px 14px; font-size: 14px; }
+.bk-panel { width: 100%; max-width: 480px; background: var(--card); border-radius: 18px; padding: 14px; box-sizing: border-box; display: grid; gap: 8px; box-shadow: 0 4px 0 var(--edge); }
+.bk-panel p { margin: 0; color: var(--muted); font-weight: 700; font-size: 14px; }
+.bk-panel textarea { width: 100%; box-sizing: border-box; font: 12px/1.3 ui-monospace, monospace; border: 2px solid var(--edge); border-radius: 10px; padding: 8px; resize: vertical; -webkit-user-select: text; user-select: text; }
+.bk-btns { display: flex; gap: 8px; } .bk-btns button { padding: 8px 16px; }
+.bk-msg { color: var(--accent) !important; min-height: 1em; }
+/* Sterne auf der Weltkarte, Vorschau auf den Level-Knöpfen */
+.wgold { color: #d99a00; }
+.lvl { display: grid; grid-template-rows: 1fr auto; place-items: center; padding: 6px 6px 10px; box-sizing: border-box; }
+.lvl .lvl-num { line-height: 1; }
+.lvl .lvl-mini { width: 76%; height: 48px; }
+.lvl-mini .mw { fill: currentColor; opacity: .35; } .lvl-mini .mg { fill: none; stroke: currentColor; stroke-width: .12; opacity: .8; }
+.lvl-mini .mb { fill: #e8a21a; } .lvl-mini .mp { fill: #e2402f; }
+.lvl.locked { grid-template-rows: 1fr; }
+
+/* Teil 1: weiche Effekte */
+.fx1 { position: absolute; left: calc(var(--x) * var(--t)); top: calc(var(--y) * var(--t)); width: var(--t); height: var(--t); pointer-events: none; z-index: 5; }
+.fx1 svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.fx1-dust svg { animation: f1dust 450ms ease-out forwards; }
+@keyframes f1dust { from { opacity: .9; transform: scale(.5); } to { opacity: 0; transform: translate(calc(var(--dx) * 20%), calc(var(--dy) * 20% - 5%)) scale(1.1); } }
+.fx1-word { z-index: 6; } .fx1-word svg { animation: f1word 950ms cubic-bezier(.2, 1.5, .4, 1) forwards; }
+@keyframes f1word { 0% { transform: translateY(-40%) scale(0); } 30% { transform: translateY(-80%) scale(1.15); } 75% { opacity: 1; transform: translateY(-90%) scale(1); } 100% { opacity: 0; transform: translateY(-115%) scale(.95); } }
+.fx1-star svg { animation: f1star 850ms ease-out forwards; }
+@keyframes f1star { from { transform: rotate(var(--a)) translateY(0) scale(.2); opacity: 1; } to { transform: rotate(var(--a)) translateY(-100%) scale(.36); opacity: 0; } }
+.fx1-bubble { z-index: 7; } .fx1-bubble svg { animation: f1bub var(--life, 900ms) ease-out forwards; transform-origin: 30% 100%; }
+.fx1-win svg { --life: 1600ms; }
+@keyframes f1bub { 0% { transform: translate(25%, -95%) scale(0); opacity: 1; } 18% { transform: translate(25%, -125%) scale(1.08); } 30%, 80% { transform: translate(25%, -120%) scale(1); opacity: 1; } 100% { transform: translate(25%, -130%); opacity: 0; } }
+#lasse.m-happy .body { animation: f1happy 650ms cubic-bezier(.3, 1.6, .5, 1), idle 1.6s ease-in-out 650ms infinite; }
+#lasse.m-oops .body { animation: f1oops 420ms ease-in-out, idle 1.6s ease-in-out 420ms infinite; }
+@keyframes f1happy { 30% { transform: translateY(-16%) scale(1.05, .96); } 60% { transform: translateY(0) scale(1.04, .97); } }
+@keyframes f1oops { 20% { transform: rotate(-8deg); } 45% { transform: rotate(7deg); } 70% { transform: rotate(-4deg); } }
+@media (prefers-reduced-motion: reduce) { .fx1 svg, #lasse.m-happy .body, #lasse.m-oops .body { animation: none !important; } .fx1-word svg { transform: translateY(-85%); } .fx1-bubble svg { transform: translate(25%, -120%); } }
+
+.mapdeco { position: absolute; transform: translate(-50%, -50%); pointer-events: none; animation: mapbob 3.2s ease-in-out infinite; opacity: .95; }
+.mapdeco svg { width: 100%; height: 100%; overflow: visible; display: block; }
+@keyframes mapbob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -58%); } }
+@media (prefers-reduced-motion: reduce) { .mapdeco { animation: none; } }
 </style>
 
 <!-- Gemeinsame Verläufe und Symbole -->
@@ -900,6 +940,11 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
       <input id="new-name" name="new-name" maxlength="20" placeholder="Name" aria-label="Name des neuen Spielers">
       <button type="submit" class="primary">Anmelden</button>
     </form>
+    <div class="backup">
+      <button type="button" id="bk-save">Spielstand sichern</button>
+      <button type="button" id="bk-load">Spielstand laden</button>
+    </div>
+    <div class="bk-panel" id="bk-panel" hidden></div>
     <p class="credit">Level: Microban von David W. Skinner, frei weitergegeben mit Nennung des Autors.</p>
   </section>
 
@@ -3678,28 +3723,39 @@ const shadeFig = (el, x, y, w, h) => {
   return `${el}<mask id="${id}" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="700" height="400">${m}</mask>
     <path d="M${(x + w * .6).toFixed(1)} ${y.toFixed(1)}H${(x + w).toFixed(1)}V${(y + h).toFixed(1)}H${(x + w * .52).toFixed(1)}z" mask="url(#${id})" fill="#2d3036" opacity=".13"/>`;
 };
-const placeFull = (svg, cx, g, s) => shadeFig(svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 196 * s).toFixed(1)}" width="${100 * s}" height="${200 * s}" overflow="visible" `), cx - 50 * s, g - 196 * s, 100 * s, 200 * s);
+// Comic-Look (Teil 2): Köpfe groß – der Kopf über dem Hals wird noch einmal vergrößert darübergelegt
+let bigN = 0;
+const bigHead = (svg, neck, k) => {
+  if (typeof COMIC_LOGO === "undefined") return svg;
+  const i = svg.indexOf(">") + 1, j = svg.lastIndexOf("</svg>"), inner = svg.slice(i, j), id = "bh" + (++bigN);
+  const [vx, vy] = (svg.match(/viewBox="([^"]+)"/) || [, "0 0"])[1].split(/\s+/).map(Number), cx = vx + 50, ny = vy + neck;
+  const copy = inner.replace(/ id="([^"]+)"/g, ' id="$1-' + id + '"').replace(/url\(#([^)]+)\)/g, "url(#$1-" + id + ")");
+  return svg.slice(0, i) + inner + `<clipPath id="${id}"><rect x="${vx - 60}" y="${vy - 80}" width="220" height="${neck + 80}"/></clipPath>` +
+    `<g transform="translate(${cx} ${ny}) scale(${k}) translate(${-cx} ${-ny})"><g clip-path="url(#${id})">${copy}</g></g></svg>`;
+};
+const FIG_NECK = { ENNI: [150, 1.25], IDA: [137, 1.25] };
+const placeFull = (svg, cx, g, s, name) => { const [n, k] = FIG_NECK[name] || [62, 1.32]; svg = bigHead(svg, n, k); return shadeFig(svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 196 * s).toFixed(1)}" width="${100 * s}" height="${200 * s}" overflow="visible" `), cx - 50 * s, g - 196 * s, 100 * s, 200 * s); };
 const LOGO_KIDS = FRIENDS.map(f => `<svg viewBox="0 -24 100 124" overflow="visible">${kidFigure({ ...f, shirt: pastel(f.shirt, .4), shorts: pastel(f.shorts, .4),
   socks: f.socks === "none" ? "none" : pastel(f.socks, .3), shoes: pastel(f.shoes, .35), hat: f.hat.map(c => pastel(c, .3)) })}</svg>`);
-const placeKid = (svg, cx, g, s) => shadeFig(svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 118 * s).toFixed(1)}" width="${100 * s}" height="${124 * s}" `), cx - 50 * s, g - 118 * s, 100 * s, 124 * s);
+const placeKid = (svg, cx, g, s) => shadeFig(bigHead(svg, 29, 1.25).replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 118 * s).toFixed(1)}" width="${100 * s}" height="${124 * s}" `), cx - 50 * s, g - 118 * s, 100 * s, 124 * s);
 // Titelbild in beiden Teilen mit demselben Lasse (Teil 2 überschreibt LASSE.fussball mit der Comic-Figur)
 const LOGO_LASSE = (typeof LASSE_CLASSIC !== "undefined" ? LASSE_CLASSIC : LASSE.fussball).replace("<svg ", `<svg x="${280 - 96}" y="${318 - 186}" width="192" height="192" overflow="visible" `);
-const FAMILY_HERO = `<svg viewBox="34 54 506 270" role="img" aria-label="Lasse mit Familie und Freunden: Papa Sören, Mama Anna, Schwester Ida, Oma Ilse und Opa, Oma Gobi, Arne und Matze, Christian, Alex und Enni, Levi, Willem, Lucas, Miko und Ege">
+const FAMILY_HERO = `<svg viewBox="${typeof COMIC_LOGO === "undefined" ? "34 54 506 270" : "34 36 506 288"}" role="img" aria-label="Lasse mit Familie und Freunden: Papa Sören, Mama Anna, Schwester Ida, Oma Ilse und Opa, Oma Gobi, Arne und Matze, Christian, Alex und Enni, Levi, Willem, Lucas, Miko und Ege">
   <ellipse cx="287" cy="318" rx="248" ry="9" fill="#2a3f8414"/>
   <!-- hinten links: Oma Gobi, daneben Oma Ilse und Opa als Paar -->
-  ${placeFull(logoFig("GOBI"), 96, 244, .84)}${placeFull(logoFig("ILSE"), 138, 246, .84)}${placeFull(logoFig("OPA"), 180, 248, .86)}
+  ${placeFull(logoFig("GOBI"), 96, 244, .84, "GOBI")}${placeFull(logoFig("ILSE"), 138, 246, .84, "ILSE")}${placeFull(logoFig("OPA"), 180, 248, .86, "OPA")}
   <!-- hinten rechts: Arne und Matze, daneben Christian und Alex -->
-  ${placeFull(logoFig("ARNE"), 382, 246, .86)}${placeFull(logoFig("MATZE"), 424, 244, .86)}
-  ${placeFull(logoFig("CHRISTIAN"), 468, 248, .86)}${placeFull(logoFig("ALEX"), 510, 250, .86)}
+  ${placeFull(logoFig("ARNE"), 382, 246, .86, "ARNE")}${placeFull(logoFig("MATZE"), 424, 244, .86, "MATZE")}
+  ${placeFull(logoFig("CHRISTIAN"), 468, 248, .86, "CHRISTIAN")}${placeFull(logoFig("ALEX"), 510, 250, .86, "ALEX")}
   <!-- Mitte hinten: Sören und Anna direkt hinter Lasse -->
-  ${placeFull(logoFig("SOEREN"), 238, 246, .92)}${placeFull(logoFig("ANNA"), 322, 246, .92)}
+  ${placeFull(logoFig("SOEREN"), 238, 246, .92, "SOEREN")}${placeFull(logoFig("ANNA"), 322, 246, .92, "ANNA")}
   <!-- die fünf Freunde mit Partyhüten: hinten bei den Erwachsenen, aber vor ihnen -->
   ${placeKid(LOGO_KIDS[0], 88, 268, 1.12)}${placeKid(LOGO_KIDS[1], 134, 270, 1.12)}${placeKid(LOGO_KIDS[4], 180, 272, 1.12)}
   ${placeKid(LOGO_KIDS[2], 398, 270, 1.12)}${placeKid(LOGO_KIDS[3], 444, 272, 1.12)}
   <!-- Enni vor Christian und Alex -->
-  ${placeFull(logoFig("ENNI"), 492, 278, .9)}
+  ${placeFull(logoFig("ENNI"), 492, 278, .9, "ENNI")}
   <!-- Ida hinten vor Anna, neben Lasses Kopf; kleiner als die fünf Freunde -->
-  ${placeFull(logoFig("IDA"), 356, 270, .8)}
+  ${placeFull(logoFig("IDA"), 356, 270, .8, "IDA")}
   <!-- Lasse groß vorn in der Mitte -->
   ${LOGO_LASSE}
 </svg>`;
@@ -3782,6 +3838,61 @@ const SND = (() => {
         f.type = "bandpass"; f.frequency.value = 900 + Math.random() * 1800; f.Q.value = 1.2; env(g, t, .002, .035, .12 + Math.random() * .12); s.connect(f).connect(g).connect(c.destination); s.start(t); } }
   };
 })();
+// ===== Teil 1: weiche Effekte – Sternchen und ein Wort am Ziel, Staubwölkchen, Lasse freut sich, wackelt und jubelt =====
+const FX = (() => {
+  const INK1 = "#4a3728";
+  const board = () => document.getElementById("board");
+  const calm = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const add = (cls, x, y, html, life, extra = "") => { const el = document.createElement("div"); el.className = "fx1 " + cls;
+    el.style.cssText = `--x:${x};--y:${y};${extra}`; el.innerHTML = html; board().appendChild(el); setTimeout(() => el.remove(), life); };
+  const WORDS = { fussball: ["Tor!", "Super!"], reiten: ["Hü!", "Brav!"], pokemon: ["Gefangen!", "Super!"], lego: ["Klick!", "Passt!"], steine: ["Bling!", "Funkel!"],
+    schlagzeug: ["Bumm!", "Tsching!"], tennis: ["Ass!", "Plopp!"], essen: ["Juhu!", "Lecker!"], pokemon2: ["Gefangen!", "Super!"], familie: ["Toll!", "Juhu!"], garten: ["Blüh!", "Toll!"] };
+  const COLS = ["#ff8fb1", "#ffcc33", "#7ad6ff", "#8fdc7c", "#c9a0ff"];
+  const mood = (cls, ms) => { const el = document.getElementById("lasse"); if (!el) return; el.classList.remove("m-happy", "m-oops"); void el.offsetWidth; el.classList.add(cls);
+    clearTimeout(el._mt); el._mt = setTimeout(() => el.classList.remove(cls), ms); };
+  const bubble = (text, cls, life) => { if (!player) return;
+    add("fx1-bubble " + cls, player[0], player[1], `<svg viewBox="-10 -10 120 90" overflow="visible"><path d="M14 4h72q10 0 10 10v26q0 10-10 10H48l-12 12 1-12H14q-10 0-10-10V14q0-10 10-10z" fill="#ffffff" stroke="${INK1}" stroke-width="2.4" stroke-linejoin="round"/>
+      <text x="50" y="35" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="${text.length > 5 ? 20 : 25}" fill="${INK1}">${text}</text></svg>`, life); };
+  let lastBump = 0;
+  return {
+    step(from, dx, dy, pushed) {
+      if (calm()) return;
+      add("fx1-dust", from[0], from[1], `<svg viewBox="0 0 100 100">${[[-12, 6, 8], [0, 0, 10], [12, 6, 7]].map(([ox, oy, r]) => `<circle cx="${50 + ox - dx * 10}" cy="${82 + oy}" r="${r}" fill="#ffffff" opacity=".85"/>`).join("")}</svg>`, 450, `--dx:${-dx};--dy:${-dy}`);
+    },
+    place(x, y) {
+      mood("m-happy", 650);
+      const ws = WORDS[L && L.theme] || ["Super!"], w = ws[Math.floor(Math.random() * ws.length)];
+      add("fx1-word", x, y, `<svg viewBox="-20 -20 140 140" overflow="visible"><path d="M50 2c10 0 12 10 22 12s20-4 24 6-6 16-4 26 10 18 2 26-18 0-26 6-10 18-20 18-12-12-20-18-20 2-26-6 4-18 2-26-10-16-4-26 16-2 24-6S40 2 50 2z" fill="#ffe680" stroke="${INK1}" stroke-width="2.6" stroke-linejoin="round"/>
+        <text x="50" y="57" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="${w.length > 6 ? 17 : 22}" fill="#e2402f">${w}</text></svg>`, 950);
+      if (!calm()) for (let i = 0; i < 5; i++) add("fx1-star", x, y, `<svg viewBox="0 0 100 100"><path d="M50 8l11 27 29 2-22 19 7 29-25-15-25 15 7-29-22-19 29-2z" fill="${COLS[i % COLS.length]}" stroke="${INK1}" stroke-width="5" stroke-linejoin="round"/></svg>`, 850, `--a:${-80 + i * 40}deg`);
+    },
+    bump() { mood("m-oops", 420); const now = Date.now(); if (now - lastBump > 2500) { lastBump = now; bubble("Hm?", "fx1-q", 900); } },
+    win() { bubble(["Juhu!", "Jaaa!", "Super!"][Math.floor(Math.random() * 3)], "fx1-win", 1600); }
+  };
+})();
+
+// ---------- Weltkarte: kleine Bilder neben den Inseln (nur sichtbar, wenn die Welt offen ist) ----------
+const MAP_PROPS = {
+  fussball: ["ball", "tor"], reiten: ["pluschpferd", "baum"], pokemon: ["pokeball", "welle"], lego: ["legostein", "baum"], steine: ["gem-amethyst", "berg"],
+  schlagzeug: ["kindertrommel", "note"], tennis: ["tennisball", "baum"], essen: ["geschenk", "ballon"], pokemon2: ["superball", "welle"], familie: ["familienherz", "baum"], garten: ["blume", "baum"]
+};
+const MAP_DOODLE = {
+  tor: `<path d="M14 80V34h72v46" fill="none" stroke="#ffffff" stroke-width="6"/><path d="M14 80V34h72v46" fill="none" stroke="#4a3728" stroke-width="2"/><path d="M26 36v44M40 36v44M54 36v44M68 36v44M16 50h68M16 64h68" stroke="#ffffff" stroke-width="1.6" opacity=".8"/>`,
+  baum: `<rect x="44" y="58" width="12" height="28" rx="4" fill="#8a5a2b" stroke="#4a3728" stroke-width="2.4"/><circle cx="50" cy="40" r="26" fill="#6cc65a" stroke="#4a3728" stroke-width="2.4"/><circle cx="40" cy="34" r="6" fill="#8fdc7c"/>`,
+  welle: `<path d="M8 60q10-10 20 0t20 0 20 0 20 0M8 76q10-10 20 0t20 0 20 0 20 0" fill="none" stroke="#5aa9e6" stroke-width="5" stroke-linecap="round"/><path d="M60 40l14-10 2 16z" fill="#ffffff" stroke="#4a3728" stroke-width="2.4"/><path d="M62 44h22l-4 6H66z" fill="#e2402f" stroke="#4a3728" stroke-width="2.4"/>`,
+  berg: `<path d="M8 86l30-52 14 22 10-14 30 44z" fill="#9aa3b1" stroke="#4a3728" stroke-width="2.4" stroke-linejoin="round"/><path d="M38 34l8 14-8-4-6 6z" fill="#ffffff"/>`,
+  note: `<path d="M40 70V26l32-8v44" fill="none" stroke="#4a3728" stroke-width="5"/><ellipse cx="34" cy="70" rx="10" ry="8" fill="#4a3728"/><ellipse cx="66" cy="62" rx="10" ry="8" fill="#4a3728"/>`,
+  ballon: `<path d="M50 62q-4 14 4 26" fill="none" stroke="#4a3728" stroke-width="2"/><ellipse cx="50" cy="38" rx="20" ry="24" fill="#ff8fb1" stroke="#4a3728" stroke-width="2.4"/><circle cx="42" cy="28" r="5" fill="#ffffff" opacity=".7"/>`
+};
+function mapDeco(shown, open, pts) {
+  return shown.map((w, i) => {
+    if (!open[i]) return "";
+    const [a, b] = MAP_PROPS[w.theme] || ["baum", "baum"], left = pts[i][0] < 50, x1 = left ? 80 : 20, x2 = left ? 64 : 36;
+    const icon = (id, x, y, s, k) => `<div class="mapdeco" style="left:${x}%;top:${y}px;width:${s}px;height:${s}px;animation-delay:${-k * .7}s">
+      <svg viewBox="0 0 100 100">${MAP_DOODLE[id] || `<use href="#${id}"/>`}</svg></div>`;
+    return icon(a, x1, pts[i][1] - 4, 48, i) + icon(b, x2, pts[i][1] + 62, 40, i + 3);
+  }).join("");
+}
 
 // ---------- Neutrale Welt (Platzhalter für Welten 3–10) ----------
 LASSE.neutral = `<svg viewBox="0 0 100 100">
@@ -3967,10 +4078,11 @@ function renderMap() {
           ${open[i] && th.prize && isSolved(p, i, NL(i) - 1) ? `<svg class="badge" viewBox="0 0 100 ${th.prize.symbol === "schleife" ? 128 : 100}"><use href="#${th.prize.symbol}"/></svg>` : ""}
         </button>
         <span class="wname">${w.bonus ? (open[i] ? esc(w.name) : "Bonus") : open[i] ? `${i + 1} · ${esc(w.name)}` : `Welt ${i + 1}`}</span>
-        ${open[i] ? `<span class="wprog${n === NL(i) ? " full" : ""}">${n} / ${NL(i)}</span>` : ""}
+        ${open[i] ? `<span class="wprog${n === NL(i) ? " full" : ""}">${n} / ${NL(i)}${(() => { const g = Array.from({ length: NL(i) }, (_, l) => isGold(p, i, l)).filter(Boolean).length; return g ? ` · <span class="wgold">★ ${g}</span>` : ""; })()}</span>` : ""}
         ${showCloud ? `<svg class="cloud" viewBox="0 0 170 120" aria-hidden="true"><use href="#wolke"/></svg>` : ""}
       </div>`;
     }).join("")}`;
+  if (typeof mapDeco === "function") map.insertAdjacentHTML("beforeend", mapDeco(shown, open, pts));
   if (typeof renderToolbox === "function") map.insertAdjacentHTML("beforeend", `<div class="world kit-entry" style="left:78%;top:58px">
     <button type="button" id="open-kit" aria-label="Werkzeugkoffer: Level bauen und spielen"><svg class="icon" viewBox="0 0 100 100"><use href="#werkzeugkoffer"/></svg></button>
     <span class="wname">Werkzeug&shy;koffer</span></div>`);
@@ -3983,6 +4095,18 @@ function renderMap() {
 // Sterne: Silber fürs Lösen, Gold für die kleinste mögliche Schrittzahl
 const optOf = (w, l) => (typeof OPTIMAL !== "undefined" && OPTIMAL[lk(w, l)]) || 0;
 const isGold = (p, w, l) => { const b = p.solved[lk(w, l)], o = optOf(w, l); return !!(b && o && b.m <= o); };
+// Kleine Vorschau eines Levels: Wände, Zielplätze, Kisten und Lasse als einfache Formen
+function miniLevel(rows) {
+  const H = rows.length, W = Math.max(...rows.map(r => r.length));
+  let s = "";
+  rows.forEach((r, y) => [...r].forEach((c, x) => {
+    if (c === "#") s += `<rect x="${x}" y="${y}" width="1" height="1" class="mw"/>`;
+    if (".*+".includes(c)) s += `<circle cx="${x + .5}" cy="${y + .5}" r=".3" class="mg"/>`;
+    if ("$*".includes(c)) s += `<rect x="${x + .18}" y="${y + .18}" width=".64" height=".64" rx=".18" class="mb"/>`;
+    if ("@+".includes(c)) s += `<circle cx="${x + .5}" cy="${y + .5}" r=".34" class="mp"/>`;
+  }));
+  return `<svg class="lvl-mini" viewBox="0 0 ${W} ${H}" aria-hidden="true">${s}</svg>`;
+}
 function renderLevels() {
   const p = P(), w = WORLDS[curWorld], th = THEMES[w.theme];
   document.getElementById("levels-title").innerHTML = `Welt ${curWorld + 1}${w.theme === "neutral" ? "" : ` · ${esc(w.name)}`}<small>${esc(p.name)} · ${solvedIn(p, curWorld)} von ${NL(curWorld)} geschafft</small>`;
@@ -3995,7 +4119,7 @@ function renderLevels() {
     const open = levelOpen(p, curWorld, l), done = isSolved(p, curWorld, l);
     const cls = ["lvl", done ? "done" : "", !open ? "locked" : "", l === next ? "next" : ""].join(" ");
     return row + `<button type="button" class="${cls}" data-l="${l}" ${open ? "" : "disabled"} aria-label="Level ${l + 1}${done ? ", geschafft" : open ? "" : ", gesperrt"}">
-      ${open ? l + 1 : `<svg viewBox="0 0 24 24"><use href="#schloss"/></svg>`}
+      ${open ? `<span class="lvl-num">${l + 1}</span>${miniLevel(w.levels[l].m)}` : `<svg viewBox="0 0 24 24"><use href="#schloss"/></svg>`}
       ${open && (th.levelIcon || th.levelBox) && !prize ? `<svg class="lvl-gem" viewBox="0 0 100 100"><use href="#${(th.levelIcon || th.levelBox)(l)}"/></svg>` : ""}
       ${prize ? `<svg class="prize-ico" viewBox="0 0 100 ${th.prize.symbol === "schleife" ? 128 : 100}"><use href="#${th.prize.symbol}"/></svg>`
         : ""}
@@ -4454,6 +4578,38 @@ document.addEventListener("selectstart", e => { if (!e.target.closest || !e.targ
   const upd = () => { b.classList.toggle("off", SND.muted); b.setAttribute("aria-pressed", !SND.muted); b.setAttribute("aria-label", SND.muted ? "Ton einschalten" : "Ton ausschalten"); };
   b.addEventListener("click", () => { SND.muted = !SND.muted; upd(); if (!SND.muted) SND.place(); });
   upd();
+})();
+
+// ---------- Spielstand sichern und laden (als Code zum Kopieren, z. B. für ein neues iPad) ----------
+(() => {
+  const panel = document.getElementById("bk-panel"); if (!panel) return;
+  const enc = (o) => "LW1-" + btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+  const dec = (c) => JSON.parse(decodeURIComponent(escape(atob(c.trim().replace(/^LW1-/, "")))));
+  const close = () => { panel.hidden = true; panel.innerHTML = ""; };
+  document.getElementById("bk-save").addEventListener("click", () => {
+    const code = enc(store);
+    panel.hidden = false;
+    panel.innerHTML = `<b>Dein Spielstand als Code</b><p>Kopiere den Code und bewahre ihn auf, z. B. in einer Notiz. Auf einem anderen Gerät tippst du dann auf „Spielstand laden“.</p>
+      <textarea readonly rows="4">${code}</textarea><div class="bk-btns"><button type="button" class="primary" data-bk="copy">Kopieren</button><button type="button" data-bk="close">Fertig</button></div><p class="bk-msg"></p>`;
+    const ta = panel.querySelector("textarea"); ta.focus(); ta.select();
+    panel.querySelector('[data-bk="copy"]').addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(code); panel.querySelector(".bk-msg").textContent = "Kopiert!"; }
+      catch (e) { ta.select(); document.execCommand && document.execCommand("copy"); panel.querySelector(".bk-msg").textContent = "Markiert – jetzt kopieren."; }
+    });
+    panel.querySelector('[data-bk="close"]').addEventListener("click", close);
+  });
+  document.getElementById("bk-load").addEventListener("click", () => {
+    panel.hidden = false;
+    panel.innerHTML = `<b>Spielstand laden</b><p>Füge hier den Code ein. Achtung: Der jetzige Spielstand auf diesem Gerät wird dabei ersetzt.</p>
+      <textarea rows="4" placeholder="LW1-…"></textarea><div class="bk-btns"><button type="button" class="primary" data-bk="load">Laden</button><button type="button" data-bk="close">Abbrechen</button></div><p class="bk-msg"></p>`;
+    const ta = panel.querySelector("textarea"); ta.focus();
+    panel.querySelector('[data-bk="load"]').addEventListener("click", () => {
+      try { const s = dec(ta.value); if (!s || !Array.isArray(s.players) || !s.players.length) throw 0;
+        store = s; save(); close(); renderPlayers(); }
+      catch (e) { panel.querySelector(".bk-msg").textContent = "Der Code passt nicht. Bitte genau so einfügen, wie er gesichert wurde."; }
+    });
+    panel.querySelector('[data-bk="close"]').addEventListener("click", close);
+  });
 })();
 // ===== Werkzeugkoffer: eigene Level bauen (Werkstatt) und spielen (Spielfach) =====
 // Ein Design ist ein Schauplatz (z. B. „Bolzplatz im Park“). Es ist frei, sobald ein Level dieses Schauplatzes geschafft ist.

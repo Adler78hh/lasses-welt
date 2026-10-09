@@ -476,6 +476,46 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .ed-actions { display: flex; gap: 10px; }
 .ed-actions button { padding: 12px 22px; font-size: 18px; }
 
+/* Spielstand sichern */
+.backup { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.backup button { padding: 8px 14px; font-size: 14px; }
+.bk-panel { width: 100%; max-width: 480px; background: var(--card); border-radius: 18px; padding: 14px; box-sizing: border-box; display: grid; gap: 8px; box-shadow: 0 4px 0 var(--edge); }
+.bk-panel p { margin: 0; color: var(--muted); font-weight: 700; font-size: 14px; }
+.bk-panel textarea { width: 100%; box-sizing: border-box; font: 12px/1.3 ui-monospace, monospace; border: 2px solid var(--edge); border-radius: 10px; padding: 8px; resize: vertical; -webkit-user-select: text; user-select: text; }
+.bk-btns { display: flex; gap: 8px; } .bk-btns button { padding: 8px 16px; }
+.bk-msg { color: var(--accent) !important; min-height: 1em; }
+/* Sterne auf der Weltkarte, Vorschau auf den Level-Knöpfen */
+.wgold { color: #d99a00; }
+.lvl { display: grid; grid-template-rows: 1fr auto; place-items: center; padding: 6px 6px 10px; box-sizing: border-box; }
+.lvl .lvl-num { line-height: 1; }
+.lvl .lvl-mini { width: 76%; height: 48px; }
+.lvl-mini .mw { fill: currentColor; opacity: .35; } .lvl-mini .mg { fill: none; stroke: currentColor; stroke-width: .12; opacity: .8; }
+.lvl-mini .mb { fill: #e8a21a; } .lvl-mini .mp { fill: #e2402f; }
+.lvl.locked { grid-template-rows: 1fr; }
+
+/* Teil 1: weiche Effekte */
+.fx1 { position: absolute; left: calc(var(--x) * var(--t)); top: calc(var(--y) * var(--t)); width: var(--t); height: var(--t); pointer-events: none; z-index: 5; }
+.fx1 svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.fx1-dust svg { animation: f1dust 450ms ease-out forwards; }
+@keyframes f1dust { from { opacity: .9; transform: scale(.5); } to { opacity: 0; transform: translate(calc(var(--dx) * 20%), calc(var(--dy) * 20% - 5%)) scale(1.1); } }
+.fx1-word { z-index: 6; } .fx1-word svg { animation: f1word 950ms cubic-bezier(.2, 1.5, .4, 1) forwards; }
+@keyframes f1word { 0% { transform: translateY(-40%) scale(0); } 30% { transform: translateY(-80%) scale(1.15); } 75% { opacity: 1; transform: translateY(-90%) scale(1); } 100% { opacity: 0; transform: translateY(-115%) scale(.95); } }
+.fx1-star svg { animation: f1star 850ms ease-out forwards; }
+@keyframes f1star { from { transform: rotate(var(--a)) translateY(0) scale(.2); opacity: 1; } to { transform: rotate(var(--a)) translateY(-100%) scale(.36); opacity: 0; } }
+.fx1-bubble { z-index: 7; } .fx1-bubble svg { animation: f1bub var(--life, 900ms) ease-out forwards; transform-origin: 30% 100%; }
+.fx1-win svg { --life: 1600ms; }
+@keyframes f1bub { 0% { transform: translate(25%, -95%) scale(0); opacity: 1; } 18% { transform: translate(25%, -125%) scale(1.08); } 30%, 80% { transform: translate(25%, -120%) scale(1); opacity: 1; } 100% { transform: translate(25%, -130%); opacity: 0; } }
+#lasse.m-happy .body { animation: f1happy 650ms cubic-bezier(.3, 1.6, .5, 1), idle 1.6s ease-in-out 650ms infinite; }
+#lasse.m-oops .body { animation: f1oops 420ms ease-in-out, idle 1.6s ease-in-out 420ms infinite; }
+@keyframes f1happy { 30% { transform: translateY(-16%) scale(1.05, .96); } 60% { transform: translateY(0) scale(1.04, .97); } }
+@keyframes f1oops { 20% { transform: rotate(-8deg); } 45% { transform: rotate(7deg); } 70% { transform: rotate(-4deg); } }
+@media (prefers-reduced-motion: reduce) { .fx1 svg, #lasse.m-happy .body, #lasse.m-oops .body { animation: none !important; } .fx1-word svg { transform: translateY(-85%); } .fx1-bubble svg { transform: translate(25%, -120%); } }
+
+.mapdeco { position: absolute; transform: translate(-50%, -50%); pointer-events: none; animation: mapbob 3.2s ease-in-out infinite; opacity: .95; }
+.mapdeco svg { width: 100%; height: 100%; overflow: visible; display: block; }
+@keyframes mapbob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -58%); } }
+@media (prefers-reduced-motion: reduce) { .mapdeco { animation: none; } }
+
 /* ===== Teil 2: Comic-Look (Notizbuch, Tusche, Marker) ===== */
 :root { --display: "Permanent Marker", "Gochi Hand", "Comic Sans MS", sans-serif; --body: "Patrick Hand", "Comic Sans MS", system-ui, sans-serif; --tape: #f3e6a6; --ink2: #2d3036; }
 body { font-size: 17px;
@@ -1022,6 +1062,11 @@ button:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 v
       <input id="new-name" name="new-name" maxlength="20" placeholder="Name" aria-label="Name des neuen Spielers">
       <button type="submit" class="primary">Anmelden</button>
     </form>
+    <div class="backup">
+      <button type="button" id="bk-save">Spielstand sichern</button>
+      <button type="button" id="bk-load">Spielstand laden</button>
+    </div>
+    <div class="bk-panel" id="bk-panel" hidden></div>
     <p class="credit">Level: Microban von David W. Skinner, frei weitergegeben mit Nennung des Autors.</p>
   </section>
 
@@ -3352,6 +3397,65 @@ for (const T of Object.values(THEMES)) for (const S of (T.scenes || [])) if (CIT
 }
 // Titelbild: Figuren bekommen eine flache Schattenseite (Cel-Shading)
 const COMIC_LOGO = true;
+
+// ---------- Neue Comic-Wandmotive je Schauplatz (mischen sich zu etwa 30 % unter die bisherigen Wände) ----------
+const NW1 = NK2, NWK = KI;
+const NEW_WALLS = {
+  // Reiten
+  "Reiterhof": [() => nTile("#c98f55", "#ad7540", `<path d="M20 50h60" stroke="${NWK}" stroke-width="5"/><path d="M28 50v34M72 50v34" stroke="${NWK}" stroke-width="4"/>
+      <path d="M30 50q2-18 20-18t20 18z" fill="#7a3f22" ${NW1}/><path d="M40 38q10-6 20 0" fill="none" stroke="#c8723a" stroke-width="3"/><path d="M50 50v18" stroke="${NWK}" stroke-width="2"/><circle cx="50" cy="70" r="4" fill="#d9d4c8" ${NW1}/>`),
+    () => nTile("#e8c76a", "#d1ad4d", `<path d="M30 28q0 34 20 34t20-34" fill="none" stroke="${NWK}" stroke-width="12" stroke-linecap="round"/><path d="M30 28q0 34 20 34t20-34" fill="none" stroke="#b9c2cc" stroke-width="7" stroke-linecap="round"/>
+      ${[[32, 36], [36, 50], [64, 36], [60, 50]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.6" fill="${NWK}"/>`).join("")}${nWord("GLÜCK", 50, 84, 16, "#e2402f", -4)}`)],
+  "Ausritt im Wald": [() => nTile("#6aa84f", "#55903c", `<path d="M50 90V30" stroke="${NWK}" stroke-width="6"/><path d="M50 90V30" stroke="#a8683a" stroke-width="3.4"/>
+      <path d="M24 30h44l8 8-8 8H24z" fill="#d9a066" ${NW1}/>${nWord("STALL", 48, 44, 13, "#ffffff", 0)}<path d="M76 54H32l-8 8 8 8h44z" fill="#d9a066" ${NW1}/>${nWord("SEE", 54, 68, 13, "#ffffff", 0)}`)],
+  "Springturnier": [() => nTile("#7cc3f0", "#62a8d6", `<path d="M16 86V40M84 86V40" stroke="${NWK}" stroke-width="5"/><path d="M16 86V40M84 86V40" stroke="#ffffff" stroke-width="3"/>
+      ${[48, 62].map(y => `<rect x="16" y="${y}" width="68" height="7" rx="3" fill="#e2402f" ${NW1}/>${[30, 50, 70].map(x => `<rect x="${x - 5}" y="${y}" width="10" height="7" fill="#ffffff"/>`).join("")}`).join("")}
+      <g transform="translate(50 24)"><circle r="12" fill="#2a6ae0" ${NW1}/><circle r="6" fill="#ffd23a" ${NW1}/><path d="M-6 10l-4 14 6-4 4 6 0-14z" fill="#2a6ae0" ${NW1}/></g>`)],
+  // Pokémon
+  "Route 1": [() => nTile("#8fd36b", "#73b852", `<path d="M14 50l36-24 36 24z" fill="#e2402f" ${NW1}/><rect x="20" y="50" width="60" height="36" fill="#ffffff" ${NW1}/>
+      <rect x="42" y="64" width="16" height="22" fill="#6fc3ff" ${NW1}/><path d="M50 32v12M44 38h12" stroke="#ffffff" stroke-width="4"/><rect x="24" y="56" width="12" height="10" fill="#6fc3ff" ${NW1}/><rect x="64" y="56" width="12" height="10" fill="#6fc3ff" ${NW1}/>`)],
+  "Vertania-Wald": [() => nTile("#4f9a4a", "#3e823a", `${[[30, 70, 16, "#e2402f"], [62, 60, 20, "#ff8a3d"], [72, 80, 10, "#e2402f"]].map(([x, y, r, c]) => `<rect x="${x - r * .3}" y="${y}" width="${r * .6}" height="${r * .9}" rx="3" fill="#f5e6c8" ${NW1}/><path d="M${x - r} ${y + 2}q0-${r}${r} -${r}t${r} ${r}z" fill="${c}" ${NW1}/><circle cx="${x - r * .35}" cy="${y - r * .35}" r="${r * .18}" fill="#ffffff"/>`).join("")}`)],
+  "Arena Marmoria": [() => nTile("#b9a68e", "#a08d75", `<rect x="22" y="22" width="56" height="56" rx="6" fill="#8a7a66" ${NW1}/><path d="M50 30l16 20-16 20-16-20z" fill="#9aa3b1" ${NW1}/><path d="M50 30l16 20H50z" fill="#c9ced8"/><path d="M50 30l16 20-16 20-16-20z" fill="none" ${NW1}/>${nWord("ORDEN", 50, 92, 12, "#ffd23a", 0)}`)],
+  // Lego
+  "Baustelle": [() => nTile("#ffd23a", "#e8b81a", `<path d="M30 90V16h6v74zM36 20h48v6H36z" fill="#e2402f" ${NW1}/>${[40, 52, 64, 76].map(x => `<path d="M${x} 20l6 6" stroke="${NWK}" stroke-width="1.4"/>`).join("")}
+      <path d="M74 26v26" stroke="${NWK}" stroke-width="1.6"/><rect x="64" y="52" width="20" height="12" rx="2" fill="#2a6ae0" ${NW1}/><circle cx="69" cy="52" r="2" fill="#2a6ae0" ${NW1}/><circle cx="79" cy="52" r="2" fill="#2a6ae0" ${NW1}/>`)],
+  "Lego-Stadt": [() => nTile("#9aa5b1", "#838e9a", `<rect x="38" y="14" width="24" height="56" rx="6" fill="#2d3036"/>${[["#e2402f", 26], ["#ffd23a", 42], ["#3fbf5a", 58]].map(([c, y]) => `<circle cx="50" cy="${y}" r="6.4" fill="${c}" stroke="#ffffff" stroke-width="1.4"/>`).join("")}<path d="M50 70v20" stroke="${NWK}" stroke-width="5"/>`)],
+  "Raumstation": [() => nTile("#2a3466", "#212a55", `${[[18, 20], [80, 30], [28, 80], [76, 84]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.6" fill="#ffffff"/>`).join("")}<rect x="40" y="40" width="20" height="20" rx="3" fill="#c9ced8" ${NW1}/>
+      <rect x="10" y="44" width="26" height="12" fill="#4fd1ff" ${NW1}/><rect x="64" y="44" width="26" height="12" fill="#4fd1ff" ${NW1}/><path d="M50 40V26" stroke="${NWK}" stroke-width="2"/><circle cx="50" cy="24" r="4" fill="#ff6fa8" ${NW1}/>`)],
+  // Edelsteine
+  "Bergkristall-Höhle": [() => nTile("#5b4f4a", "#4a403c", `<rect x="18" y="52" width="64" height="26" rx="4" fill="#8a5a3a" ${NW1}/><circle cx="32" cy="82" r="6" fill="#4a505c" ${NW1}/><circle cx="68" cy="82" r="6" fill="#4a505c" ${NW1}/>
+      ${[[32, 48], [46, 40], [60, 46]].map(([x, y]) => `<path d="M${x - 6} ${y + 6}l6-16 6 16z" fill="#bfefff" ${NW1}/>`).join("")}<path d="M78 20v14" stroke="${NWK}" stroke-width="2"/><rect x="72" y="34" width="12" height="14" rx="3" fill="#ffd23a" ${NW1}/>`)],
+  "Malachit-Mine": [() => nTile("#4a5a50", "#3d4c42", `<path d="M10 70q20-30 40-20t40-26" fill="none" stroke="#3fbf7a" stroke-width="9" stroke-linecap="round"/><path d="M10 70q20-30 40-20t40-26" fill="none" stroke="#7de0a6" stroke-width="3" stroke-linecap="round"/>
+      ${[[30, 54], [62, 42]].map(([x, y]) => `<path d="M${x - 7} ${y + 7}l7-18 7 18z" fill="#3fbf7a" ${NW1}/>`).join("")}`)],
+  "Türkis-Tempel": [() => nTile("#c9a66b", "#b08d52", `<path d="M44 90V40h12v50" fill="#8a6a3c" ${NW1}/><path d="M38 40h24l-4-8H42z" fill="#a8803c" ${NW1}/><path d="M50 30q-10-10 0-22 4 8 6 4 6 10-6 18z" fill="#ff8a3d" ${NW1}/><path d="M50 28q-4-6 0-12 4 6 0 12z" fill="#ffd23a"/>`)],
+  // Schlagzeug
+  "Konservatorium Hamburg": [() => nTile("#c98f55", "#ad7540", `<path d="M50 90V52" stroke="${NWK}" stroke-width="3"/><path d="M38 90l12-16 12 16" fill="none" stroke="${NWK}" stroke-width="3"/><path d="M28 26h44l-6 26H34z" fill="#2d3036" ${NW1}/>${[34, 40].map(y => `<path d="M34 ${y}h32" stroke="#ffffff" stroke-width="1"/>`).join("")}<ellipse cx="58" cy="44" rx="3" ry="2.4" fill="#ffffff"/><path d="M61 44V34" stroke="#ffffff" stroke-width="1.2"/>`)],
+  "Laeiszhalle": [() => nTile("#a8434a", "#8f363d", `<rect x="22" y="30" width="56" height="52" rx="6" fill="#2d3036" ${NW1}/><circle cx="50" cy="56" r="16" fill="#4a505c" ${NW1}/><circle cx="50" cy="56" r="7" fill="#2d3036"/>${[36, 42].map(x => `<circle cx="${x}" cy="38" r="2.4" fill="#ffd23a"/>`).join("")}<rect x="56" y="35" width="16" height="5" rx="2" fill="#c9ced8"/>`)],
+  "Elbphilharmonie": [() => nTile("#34507a", "#2a4266", `<path d="M30 90l10-34h20l10 34" fill="#4a505c" ${NW1}/><path d="M36 56l-6-20 20-14 20 14-6 20z" fill="#c9ced8" ${NW1}/><path d="M50 22v-8" stroke="${NWK}" stroke-width="2"/><path d="M40 60l-24 30h68L60 60z" fill="#fff6a0" opacity=".45"/>`)],
+  // Tennis
+  "Sandplatz-Turnier": [() => nTile("#2f7a4a", "#25643c", `<path d="M30 88V40M70 88V40" stroke="${NWK}" stroke-width="5"/><path d="M30 88V40M70 88V40" stroke="#ffffff" stroke-width="2.6"/><rect x="26" y="20" width="48" height="22" rx="4" fill="#ffffff" ${NW1}/><path d="M38 42v10M62 42v10" stroke="${NWK}" stroke-width="3"/><rect x="34" y="52" width="32" height="6" rx="2" fill="#ffffff" ${NW1}/>${nWord("REF", 50, 37, 14, "#2f7a4a", 0)}`)],
+  "Tennishalle": [() => nTile("#3d6fb3", "#325c96", `<rect x="26" y="34" width="48" height="40" rx="8" fill="#e2402f" ${NW1}/><circle cx="50" cy="54" r="10" fill="#2d3036" ${NW1}/><path d="M50 34V20" stroke="${NWK}" stroke-width="3"/>${[[38, 20], [52, 14], [62, 22]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#d7f03c" ${NW1}/>`).join("")}<circle cx="34" cy="80" r="4" fill="#2d3036"/><circle cx="66" cy="80" r="4" fill="#2d3036"/>`)],
+  "Center Court": [() => nTile("#1f4a3a", "#183c2f", `<rect x="14" y="24" width="72" height="44" rx="6" fill="#2d3036" ${NW1}/>${nWord("6 : 4", 50, 52, 22, "#ffd23a", 0)}<path d="M30 68v20M70 68v20" stroke="${NWK}" stroke-width="4"/>`)],
+  // Essen
+  "Foodtruck-Festival": [() => nTile("#ffcf8a", "#f0b866", `<rect x="10" y="34" width="70" height="40" rx="6" fill="#4fd1c5" ${NW1}/><rect x="18" y="42" width="34" height="16" rx="2" fill="#ffffff" ${NW1}/><path d="M80 48h8l4 12v14H80z" fill="#3cb5a9" ${NW1}/>
+      <path d="M14 34l6-10h52l6 10" fill="#ffd23a" ${NW1}/>${nWord("TACOS", 35, 55, 12, "#e2402f", 0)}<circle cx="28" cy="78" r="7" fill="#2d3036" ${NW1}/><circle cx="72" cy="78" r="7" fill="#2d3036" ${NW1}/>`)],
+  "Pizzeria": [() => nTile("#c9643e", "#ad5232", `<path d="M14 86V54q0-30 36-30t36 30v32z" fill="#b5651d" ${NW1}/>${[30, 42, 54, 66].map((x, i) => `<path d="M14 ${60 + i * 7}h72" stroke="${NWK}" stroke-width="1.2" opacity=".4"/>`).join("")}
+      <path d="M30 86V62q0-14 20-14t20 14v24z" fill="#2d3036" ${NW1}/><path d="M36 82q4-14 14-8 10-6 14 8" fill="#ff8a3d"/><path d="M42 82q3-8 8-4 5-4 8 4" fill="#ffd23a"/>`)],
+  "Burger-Diner": [() => nTile("#4fc3c9", "#3aa9af", `<path d="M34 36h32l-4 46H38z" fill="#ffffff" ${NW1}/><path d="M36 50h28l-2 30H38z" fill="#ff8fb1"/><path d="M34 36h32l-4 46H38z" fill="none" ${NW1}/>
+      <path d="M38 36q0-12 12-12t12 12" fill="#ffffff" ${NW1}/><circle cx="50" cy="20" r="4" fill="#e2402f" ${NW1}/><path d="M56 30l10-22" stroke="#e2402f" stroke-width="3" stroke-linecap="round"/>`)],
+  // Pokémon 2
+  "Kampf-Dojo": [() => nTile("#c9965c", "#b07c44", `<path d="M20 20h60" stroke="${NWK}" stroke-width="5"/><path d="M30 20v66M70 20v66" stroke="${NWK}" stroke-width="3"/><circle cx="50" cy="52" r="22" fill="#e8b81a" ${NW1}/><circle cx="50" cy="52" r="12" fill="none" stroke="#c99a12" stroke-width="2"/><path d="M50 30v-10" stroke="${NWK}" stroke-width="2"/>`)],
+  "Psycho-Arena": [() => nTile("#8a6bd1", "#7458b8", `<path d="M30 80h40l-6-10H36z" fill="#4a3a7a" ${NW1}/><circle cx="50" cy="50" r="20" fill="#e3d4ff" ${NW1}/><path d="M50 30a20 20 0 0 1 20 20" fill="none" stroke="#ffffff" stroke-width="3" opacity=".7"/><path d="M44 50q6-8 12 0-6 8-12 0z" fill="#b98cff"/>`)],
+  "Glumandas Vulkan": [() => nTile("#5a2a1e", "#481f16", `<path d="M14 88l22-44h28l22 44z" fill="#7a3a26" ${NW1}/><path d="M36 44q4-16 14-6 10-10 14 6" fill="#ff8a3d" ${NW1}/><path d="M42 44l4 20M58 44l-2 26" stroke="#ff8a3d" stroke-width="4" stroke-linecap="round"/><circle cx="48" cy="22" r="4" fill="#ffd23a"/><circle cx="58" cy="14" r="3" fill="#ff8a3d"/>`)],
+  // Familie
+  "Sörens Proberaum": [() => nTile("#6b5fa8", "#5a4f91", `<rect x="24" y="30" width="52" height="52" rx="6" fill="#2d3036" ${NW1}/><circle cx="50" cy="60" r="14" fill="#4a505c" ${NW1}/><rect x="30" y="36" width="40" height="8" rx="2" fill="#c9a66b" ${NW1}/>${[36, 44, 52, 60].map(x => `<circle cx="${x}" cy="40" r="1.6" fill="#2d3036"/>`).join("")}`)],
+  "Annas Klassenzimmer": [() => nTile("#f0c45a", "#d9ab3f", `<path d="M50 84V64" stroke="${NWK}" stroke-width="4"/><path d="M36 86h28" stroke="${NWK}" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="40" r="22" fill="#5aa9e6" ${NW1}/><path d="M36 30q8 6 6 14-6 4-2 12M58 22q-2 10 6 12 6 6 2 14" fill="#7dd36b" ${NW1}/><path d="M28 40a22 22 0 0 0 44 0" fill="none" stroke="${NWK}" stroke-width="2"/>`)],
+  "Idas Zimmer": [() => nTile("#f7a8c8", "#e88db2", `<rect x="14" y="56" width="72" height="8" rx="2" fill="#ffffff" ${NW1}/>${[[30, "#c9935a"], [52, "#ffd23a"], [72, "#9fd2ff"]].map(([x, c]) => `<circle cx="${x}" cy="44" r="10" fill="${c}" ${NW1}/><circle cx="${x - 7}" cy="36" r="4" fill="${c}" ${NW1}/><circle cx="${x + 7}" cy="36" r="4" fill="${c}" ${NW1}/><circle cx="${x - 3}" cy="43" r="1.4" fill="#2d3036"/><circle cx="${x + 3}" cy="43" r="1.4" fill="#2d3036"/>`).join("")}`)]
+};
+for (const T of Object.values(THEMES)) for (const S of (T.scenes || [])) if (NEW_WALLS[S.name]) {
+  const base = S.wall, list = NEW_WALLS[S.name];
+  S.wall = (x, y) => pick(x, y, 46, 100) < 30 ? list[pick(x, y, 47, list.length)](x, y) : base(x, y);
+}
 // ===== Bonus: Lasses Ehrenrunde =====
 // Microban Nr. 154 „Take the long way home“: eine Doppelspirale mit nur einer Kiste.
 // Lasse läuft die Ehrenrunde einmal durch alle zehn Welten und stellt die Meisterschale aufs Podest.
@@ -3857,28 +3961,39 @@ const shadeFig = (el, x, y, w, h) => {
   return `${el}<mask id="${id}" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="700" height="400">${m}</mask>
     <path d="M${(x + w * .6).toFixed(1)} ${y.toFixed(1)}H${(x + w).toFixed(1)}V${(y + h).toFixed(1)}H${(x + w * .52).toFixed(1)}z" mask="url(#${id})" fill="#2d3036" opacity=".13"/>`;
 };
-const placeFull = (svg, cx, g, s) => shadeFig(svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 196 * s).toFixed(1)}" width="${100 * s}" height="${200 * s}" overflow="visible" `), cx - 50 * s, g - 196 * s, 100 * s, 200 * s);
+// Comic-Look (Teil 2): Köpfe groß – der Kopf über dem Hals wird noch einmal vergrößert darübergelegt
+let bigN = 0;
+const bigHead = (svg, neck, k) => {
+  if (typeof COMIC_LOGO === "undefined") return svg;
+  const i = svg.indexOf(">") + 1, j = svg.lastIndexOf("</svg>"), inner = svg.slice(i, j), id = "bh" + (++bigN);
+  const [vx, vy] = (svg.match(/viewBox="([^"]+)"/) || [, "0 0"])[1].split(/\s+/).map(Number), cx = vx + 50, ny = vy + neck;
+  const copy = inner.replace(/ id="([^"]+)"/g, ' id="$1-' + id + '"').replace(/url\(#([^)]+)\)/g, "url(#$1-" + id + ")");
+  return svg.slice(0, i) + inner + `<clipPath id="${id}"><rect x="${vx - 60}" y="${vy - 80}" width="220" height="${neck + 80}"/></clipPath>` +
+    `<g transform="translate(${cx} ${ny}) scale(${k}) translate(${-cx} ${-ny})"><g clip-path="url(#${id})">${copy}</g></g></svg>`;
+};
+const FIG_NECK = { ENNI: [150, 1.25], IDA: [137, 1.25] };
+const placeFull = (svg, cx, g, s, name) => { const [n, k] = FIG_NECK[name] || [62, 1.32]; svg = bigHead(svg, n, k); return shadeFig(svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 196 * s).toFixed(1)}" width="${100 * s}" height="${200 * s}" overflow="visible" `), cx - 50 * s, g - 196 * s, 100 * s, 200 * s); };
 const LOGO_KIDS = FRIENDS.map(f => `<svg viewBox="0 -24 100 124" overflow="visible">${kidFigure({ ...f, shirt: pastel(f.shirt, .4), shorts: pastel(f.shorts, .4),
   socks: f.socks === "none" ? "none" : pastel(f.socks, .3), shoes: pastel(f.shoes, .35), hat: f.hat.map(c => pastel(c, .3)) })}</svg>`);
-const placeKid = (svg, cx, g, s) => shadeFig(svg.replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 118 * s).toFixed(1)}" width="${100 * s}" height="${124 * s}" `), cx - 50 * s, g - 118 * s, 100 * s, 124 * s);
+const placeKid = (svg, cx, g, s) => shadeFig(bigHead(svg, 29, 1.25).replace("<svg ", `<svg x="${(cx - 50 * s).toFixed(1)}" y="${(g - 118 * s).toFixed(1)}" width="${100 * s}" height="${124 * s}" `), cx - 50 * s, g - 118 * s, 100 * s, 124 * s);
 // Titelbild in beiden Teilen mit demselben Lasse (Teil 2 überschreibt LASSE.fussball mit der Comic-Figur)
 const LOGO_LASSE = (typeof LASSE_CLASSIC !== "undefined" ? LASSE_CLASSIC : LASSE.fussball).replace("<svg ", `<svg x="${280 - 96}" y="${318 - 186}" width="192" height="192" overflow="visible" `);
-const FAMILY_HERO = `<svg viewBox="34 54 506 270" role="img" aria-label="Lasse mit Familie und Freunden: Papa Sören, Mama Anna, Schwester Ida, Oma Ilse und Opa, Oma Gobi, Arne und Matze, Christian, Alex und Enni, Levi, Willem, Lucas, Miko und Ege">
+const FAMILY_HERO = `<svg viewBox="${typeof COMIC_LOGO === "undefined" ? "34 54 506 270" : "34 36 506 288"}" role="img" aria-label="Lasse mit Familie und Freunden: Papa Sören, Mama Anna, Schwester Ida, Oma Ilse und Opa, Oma Gobi, Arne und Matze, Christian, Alex und Enni, Levi, Willem, Lucas, Miko und Ege">
   <ellipse cx="287" cy="318" rx="248" ry="9" fill="#2a3f8414"/>
   <!-- hinten links: Oma Gobi, daneben Oma Ilse und Opa als Paar -->
-  ${placeFull(logoFig("GOBI"), 96, 244, .84)}${placeFull(logoFig("ILSE"), 138, 246, .84)}${placeFull(logoFig("OPA"), 180, 248, .86)}
+  ${placeFull(logoFig("GOBI"), 96, 244, .84, "GOBI")}${placeFull(logoFig("ILSE"), 138, 246, .84, "ILSE")}${placeFull(logoFig("OPA"), 180, 248, .86, "OPA")}
   <!-- hinten rechts: Arne und Matze, daneben Christian und Alex -->
-  ${placeFull(logoFig("ARNE"), 382, 246, .86)}${placeFull(logoFig("MATZE"), 424, 244, .86)}
-  ${placeFull(logoFig("CHRISTIAN"), 468, 248, .86)}${placeFull(logoFig("ALEX"), 510, 250, .86)}
+  ${placeFull(logoFig("ARNE"), 382, 246, .86, "ARNE")}${placeFull(logoFig("MATZE"), 424, 244, .86, "MATZE")}
+  ${placeFull(logoFig("CHRISTIAN"), 468, 248, .86, "CHRISTIAN")}${placeFull(logoFig("ALEX"), 510, 250, .86, "ALEX")}
   <!-- Mitte hinten: Sören und Anna direkt hinter Lasse -->
-  ${placeFull(logoFig("SOEREN"), 238, 246, .92)}${placeFull(logoFig("ANNA"), 322, 246, .92)}
+  ${placeFull(logoFig("SOEREN"), 238, 246, .92, "SOEREN")}${placeFull(logoFig("ANNA"), 322, 246, .92, "ANNA")}
   <!-- die fünf Freunde mit Partyhüten: hinten bei den Erwachsenen, aber vor ihnen -->
   ${placeKid(LOGO_KIDS[0], 88, 268, 1.12)}${placeKid(LOGO_KIDS[1], 134, 270, 1.12)}${placeKid(LOGO_KIDS[4], 180, 272, 1.12)}
   ${placeKid(LOGO_KIDS[2], 398, 270, 1.12)}${placeKid(LOGO_KIDS[3], 444, 272, 1.12)}
   <!-- Enni vor Christian und Alex -->
-  ${placeFull(logoFig("ENNI"), 492, 278, .9)}
+  ${placeFull(logoFig("ENNI"), 492, 278, .9, "ENNI")}
   <!-- Ida hinten vor Anna, neben Lasses Kopf; kleiner als die fünf Freunde -->
-  ${placeFull(logoFig("IDA"), 356, 270, .8)}
+  ${placeFull(logoFig("IDA"), 356, 270, .8, "IDA")}
   <!-- Lasse groß vorn in der Mitte -->
   ${LOGO_LASSE}
 </svg>`;
@@ -4210,10 +4325,11 @@ function renderMap() {
           ${open[i] && th.prize && isSolved(p, i, NL(i) - 1) ? `<svg class="badge" viewBox="0 0 100 ${th.prize.symbol === "schleife" ? 128 : 100}"><use href="#${th.prize.symbol}"/></svg>` : ""}
         </button>
         <span class="wname">${w.bonus ? (open[i] ? esc(w.name) : "Bonus") : open[i] ? `${i + 1} · ${esc(w.name)}` : `Welt ${i + 1}`}</span>
-        ${open[i] ? `<span class="wprog${n === NL(i) ? " full" : ""}">${n} / ${NL(i)}</span>` : ""}
+        ${open[i] ? `<span class="wprog${n === NL(i) ? " full" : ""}">${n} / ${NL(i)}${(() => { const g = Array.from({ length: NL(i) }, (_, l) => isGold(p, i, l)).filter(Boolean).length; return g ? ` · <span class="wgold">★ ${g}</span>` : ""; })()}</span>` : ""}
         ${showCloud ? `<svg class="cloud" viewBox="0 0 170 120" aria-hidden="true"><use href="#wolke"/></svg>` : ""}
       </div>`;
     }).join("")}`;
+  if (typeof mapDeco === "function") map.insertAdjacentHTML("beforeend", mapDeco(shown, open, pts));
   if (typeof renderToolbox === "function") map.insertAdjacentHTML("beforeend", `<div class="world kit-entry" style="left:78%;top:58px">
     <button type="button" id="open-kit" aria-label="Werkzeugkoffer: Level bauen und spielen"><svg class="icon" viewBox="0 0 100 100"><use href="#werkzeugkoffer"/></svg></button>
     <span class="wname">Werkzeug&shy;koffer</span></div>`);
@@ -4226,6 +4342,18 @@ function renderMap() {
 // Sterne: Silber fürs Lösen, Gold für die kleinste mögliche Schrittzahl
 const optOf = (w, l) => (typeof OPTIMAL !== "undefined" && OPTIMAL[lk(w, l)]) || 0;
 const isGold = (p, w, l) => { const b = p.solved[lk(w, l)], o = optOf(w, l); return !!(b && o && b.m <= o); };
+// Kleine Vorschau eines Levels: Wände, Zielplätze, Kisten und Lasse als einfache Formen
+function miniLevel(rows) {
+  const H = rows.length, W = Math.max(...rows.map(r => r.length));
+  let s = "";
+  rows.forEach((r, y) => [...r].forEach((c, x) => {
+    if (c === "#") s += `<rect x="${x}" y="${y}" width="1" height="1" class="mw"/>`;
+    if (".*+".includes(c)) s += `<circle cx="${x + .5}" cy="${y + .5}" r=".3" class="mg"/>`;
+    if ("$*".includes(c)) s += `<rect x="${x + .18}" y="${y + .18}" width=".64" height=".64" rx=".18" class="mb"/>`;
+    if ("@+".includes(c)) s += `<circle cx="${x + .5}" cy="${y + .5}" r=".34" class="mp"/>`;
+  }));
+  return `<svg class="lvl-mini" viewBox="0 0 ${W} ${H}" aria-hidden="true">${s}</svg>`;
+}
 function renderLevels() {
   const p = P(), w = WORLDS[curWorld], th = THEMES[w.theme];
   document.getElementById("levels-title").innerHTML = `Welt ${curWorld + 1}${w.theme === "neutral" ? "" : ` · ${esc(w.name)}`}<small>${esc(p.name)} · ${solvedIn(p, curWorld)} von ${NL(curWorld)} geschafft</small>`;
@@ -4238,7 +4366,7 @@ function renderLevels() {
     const open = levelOpen(p, curWorld, l), done = isSolved(p, curWorld, l);
     const cls = ["lvl", done ? "done" : "", !open ? "locked" : "", l === next ? "next" : ""].join(" ");
     return row + `<button type="button" class="${cls}" data-l="${l}" ${open ? "" : "disabled"} aria-label="Level ${l + 1}${done ? ", geschafft" : open ? "" : ", gesperrt"}">
-      ${open ? l + 1 : `<svg viewBox="0 0 24 24"><use href="#schloss"/></svg>`}
+      ${open ? `<span class="lvl-num">${l + 1}</span>${miniLevel(w.levels[l].m)}` : `<svg viewBox="0 0 24 24"><use href="#schloss"/></svg>`}
       ${open && (th.levelIcon || th.levelBox) && !prize ? `<svg class="lvl-gem" viewBox="0 0 100 100"><use href="#${(th.levelIcon || th.levelBox)(l)}"/></svg>` : ""}
       ${prize ? `<svg class="prize-ico" viewBox="0 0 100 ${th.prize.symbol === "schleife" ? 128 : 100}"><use href="#${th.prize.symbol}"/></svg>`
         : ""}
@@ -4697,6 +4825,38 @@ document.addEventListener("selectstart", e => { if (!e.target.closest || !e.targ
   const upd = () => { b.classList.toggle("off", SND.muted); b.setAttribute("aria-pressed", !SND.muted); b.setAttribute("aria-label", SND.muted ? "Ton einschalten" : "Ton ausschalten"); };
   b.addEventListener("click", () => { SND.muted = !SND.muted; upd(); if (!SND.muted) SND.place(); });
   upd();
+})();
+
+// ---------- Spielstand sichern und laden (als Code zum Kopieren, z. B. für ein neues iPad) ----------
+(() => {
+  const panel = document.getElementById("bk-panel"); if (!panel) return;
+  const enc = (o) => "LW1-" + btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+  const dec = (c) => JSON.parse(decodeURIComponent(escape(atob(c.trim().replace(/^LW1-/, "")))));
+  const close = () => { panel.hidden = true; panel.innerHTML = ""; };
+  document.getElementById("bk-save").addEventListener("click", () => {
+    const code = enc(store);
+    panel.hidden = false;
+    panel.innerHTML = `<b>Dein Spielstand als Code</b><p>Kopiere den Code und bewahre ihn auf, z. B. in einer Notiz. Auf einem anderen Gerät tippst du dann auf „Spielstand laden“.</p>
+      <textarea readonly rows="4">${code}</textarea><div class="bk-btns"><button type="button" class="primary" data-bk="copy">Kopieren</button><button type="button" data-bk="close">Fertig</button></div><p class="bk-msg"></p>`;
+    const ta = panel.querySelector("textarea"); ta.focus(); ta.select();
+    panel.querySelector('[data-bk="copy"]').addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(code); panel.querySelector(".bk-msg").textContent = "Kopiert!"; }
+      catch (e) { ta.select(); document.execCommand && document.execCommand("copy"); panel.querySelector(".bk-msg").textContent = "Markiert – jetzt kopieren."; }
+    });
+    panel.querySelector('[data-bk="close"]').addEventListener("click", close);
+  });
+  document.getElementById("bk-load").addEventListener("click", () => {
+    panel.hidden = false;
+    panel.innerHTML = `<b>Spielstand laden</b><p>Füge hier den Code ein. Achtung: Der jetzige Spielstand auf diesem Gerät wird dabei ersetzt.</p>
+      <textarea rows="4" placeholder="LW1-…"></textarea><div class="bk-btns"><button type="button" class="primary" data-bk="load">Laden</button><button type="button" data-bk="close">Abbrechen</button></div><p class="bk-msg"></p>`;
+    const ta = panel.querySelector("textarea"); ta.focus();
+    panel.querySelector('[data-bk="load"]').addEventListener("click", () => {
+      try { const s = dec(ta.value); if (!s || !Array.isArray(s.players) || !s.players.length) throw 0;
+        store = s; save(); close(); renderPlayers(); }
+      catch (e) { panel.querySelector(".bk-msg").textContent = "Der Code passt nicht. Bitte genau so einfügen, wie er gesichert wurde."; }
+    });
+    panel.querySelector('[data-bk="close"]').addEventListener("click", close);
+  });
 })();
 </script>
 
