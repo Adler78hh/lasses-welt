@@ -1793,13 +1793,11 @@ const bhFahrer = `<svg viewBox="0 0 100 100">${BH_BASE("#9fd8ff")}
   ${minifig(`<path d="M38 24q0-12 12-12t12 12z" fill="#16181f" ${LG_OL}/><rect x="34" y="21" width="32" height="6" rx="3" fill="#16181f" ${LG_OL}/><rect x="40" y="16" width="20" height="4" fill="${BH_LIME}"/>`, "#16181f", `<path d="M38 52h24" stroke="${BH_LIME}" stroke-width="4"/>`)}</svg>`;
 const BH_WALLS = [bhLok, bhWagen, bhRot, bhSignal, bhUhr, bhSchild, bhAutomat, bhWagen, bhLok, bhFahrer];
 const bhFloor = (x, y, ctx) => {
-  // eine Gleisreihe quer durch die Mitte, sonst Bahnsteig mit gelber Sicherheitslinie zum Gleis hin
+  // Gefängnisinsel mit Gleis: eine Gleisreihe quer durch die Mitte, sonst graue Felsplatten mit braunen Stegbrettern
   if (y === ctx.midY) return plate("#8b7a66", "#9b8a76", 3, x, y) +
     `${[14, 50, 86].map(cx => `<rect x="${cx - 6}" y="16" width="12" height="68" rx="2" fill="#6b5a46"/>`).join("")}
     <rect x="0" y="27" width="100" height="7" fill="#8b939f" stroke="#4a3728" stroke-width="1.6"/><rect x="0" y="66" width="100" height="7" fill="#8b939f" stroke="#4a3728" stroke-width="1.6"/></svg>`;
-  const edge = y === ctx.midY - 1 ? `<path d="M0 92h100" stroke="#ffcd03" stroke-width="5" stroke-dasharray="12 6"/>` : y === ctx.midY + 1 ? `<path d="M0 8h100" stroke="#ffcd03" stroke-width="5" stroke-dasharray="12 6"/>` : "";
-  if (y > ctx.midY) return (pick(x, y, 8, 5) === 0 ? plate("#8a4a2a", "#9c5a36", 3, x, y) : plate("#a0a5a9", "#b4b9be", 3, x, y)) + edge + "</svg>";
-  return plate("#c4c9ce", "#d3d7db", 3, x, y) + edge + "</svg>";
+  return (pick(x, y, 8, 5) === 0 ? plate("#8a4a2a", "#9c5a36", 3, x, y) : plate("#a0a5a9", "#b4b9be", 3, x, y)) + "</svg>";
 };
 // Lasse als Schaffner: dunkelblaue Jacke, rote Krawatte, Schaffnermütze mit rotem Band, Pfeife
 LASSE.schaffner = lasseBase("#1f3f8a", "#4a3728", "#16181f",
@@ -2006,10 +2004,9 @@ const iFlitzer = `<svg viewBox="0 0 100 100">${inBase(IN_RL)}
 const iWache = `<svg viewBox="0 0 100 100">${inBase(IN_T)}${inDach}
   ${minifig(`<path d="M40 22q0-10 10-10t10 10z" fill="${IN_N}" ${LG_OL}/><rect x="36" y="20" width="28" height="5" rx="2.5" fill="${IN_N}" ${LG_OL}/><circle cx="50" cy="16" r="2.4" fill="${IN_Y}"/>`, IN_N, `<path d="M36 56h28" stroke="${IN_Y}" stroke-width="3"/>`).replace('<g class="bob">', '<g class="bob" transform="translate(0 2)">')}</svg>`;
 const INSEL_WALLS = [iTurm, iZellen, iTuer, iZaun, iLeiter, iTreppe, iRohr, iSchild, iSteg, iRing, iPalme, iWasser, iBoot, iHeli, iFlitzer, iWache, iZellen, iZaun, iSteg, iRing];
-// Bahnhof und Insel gehören zusammen: über dem Gleis der Bahnhof, unter dem Gleis die Insel
-let bhMidCache = null;
-const bhMid = () => { if (!bhMidCache || bhMidCache.src !== inside) { const ys = [...inside].map(k => +k.split(",")[1]); bhMidCache = { src: inside, y: Math.round((Math.min(...ys) + Math.max(...ys)) / 2) }; } return bhMidCache.y; };
-const bhInselWall = (x, y) => { const m = bhMid(), list = y < m ? BH_WALLS : y > m ? INSEL_WALLS : (x % 2 ? BH_WALLS : INSEL_WALLS); return list[pick(x, y, 0, list.length)]; };
+// Gleise laufen über die Insel: zwischen den Inselmotiven ab und zu der Zug und ein Signal
+const INSEL_ZUG = [bhLok, bhWagen, bhRot, bhSignal];
+const bhInselWall = (x, y) => pick(x, y, 31, 100) < 22 ? INSEL_ZUG[pick(x, y, 32, INSEL_ZUG.length)] : INSEL_WALLS[pick(x, y, 0, INSEL_WALLS.length)];
 
 // ---------- Wasserexpedition: Lasses Forschungsschiff, U-Boot, Hubschrauber, Schlauchboot und die Tiere ----------
 const EXP_O = "#ff7e14", EXP_N = "#1f3a6a", EXP_T = "#3ec6d6";
@@ -2114,10 +2111,10 @@ LASSE.forscher = lasseBase(EXP_O, EXP_N, "#16181f",
     { name: "Duplo-Baustelle", lasse: "bauarbeiter", words: ["Klick!", "Passt!"],
       pal: { "--bg": "#fff4e0", "--bg-2": "#fffbf3", "--floor-a": "#c9a467", "--floor-b": "#c19c5f" },
       floor: bauFloor, wall: walls(BAU_WALLS), deco: () => "", extras: () => birdHTML() },
-    { name: "Lego City", lasse: "polizist", words: ["Tatü!", "Klick!"],
+    { name: "Lego City", lasse: "feuerwehr", words: ["Tatü!", "Klick!"],
       pal: oCity.pal, floor: oCity.floor, wall: walls(CITY_WALLS), deco: oCity.deco, extras: oCity.extras },
-    { name: "Bahnhof & Gefängnisinsel", lasse: "schaffner", words: ["Tuut!", "Einsteigen!"],
-      pal: { "--bg": "#eef1f5", "--bg-2": "#fbfcfd", "--floor-a": "#c4c9ce", "--floor-b": "#bcc1c6" },
+    { name: "Gefängnisinsel", lasse: "polizist", words: ["Tuut!", "Erwischt!"],
+      pal: { "--bg": "#dceefa", "--bg-2": "#f2f9fe", "--floor-a": "#a0a5a9", "--floor-b": "#989da1" },
       floor: bhFloor, wall: bhInselWall, deco: () => "", extras: () => birdHTML() },
     { name: "Wasserexpedition", lasse: "forscher", words: ["Platsch!", "Ahoi!"],
       pal: { "--bg": "#dff1fb", "--bg-2": "#f4fbff", "--floor-a": "#d8eef8", "--floor-b": "#cfe6f2" },
