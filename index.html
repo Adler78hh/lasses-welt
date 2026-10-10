@@ -4331,25 +4331,29 @@ const FX = (() => {
 })();
 
 // ---------- Weltkarte: kleine Bilder neben den Inseln (nur sichtbar, wenn die Welt offen ist) ----------
-const MAP_PROPS = {
-  fussball: ["ball", "tor"], reiten: ["pluschpferd", "baum"], pokemon: ["pokeball", "welle"], lego: ["legostein", "baum"], steine: ["gem-amethyst", "berg"],
-  schlagzeug: ["kindertrommel", "note"], tennis: ["tennisball", "baum"], essen: ["geschenk", "ballon"], pokemon2: ["superball", "welle"], familie: ["familienherz", "baum"], garten: ["blume", "baum"]
+// ----- Weltkarte: Familie und Freunde stehen neben den Inseln (jede Person genau einmal) -----
+const MAP_PEOPLE = {
+  fussball: ["SOEREN", "kid:0"], reiten: ["IDA", "kid:1"], pokemon: ["kid:2"], lego: ["ARNE"], steine: ["OPA"],
+  schlagzeug: ["MATZE"], tennis: ["ANNA"], essen: ["CHRISTIAN", "ALEX"], pokemon2: ["kid:3"], familie: ["ILSE", "GOBI"], garten: ["ENNI", "kid:4"]
 };
-const MAP_DOODLE = {
-  tor: `<path d="M14 80V34h72v46" fill="none" stroke="#ffffff" stroke-width="6"/><path d="M14 80V34h72v46" fill="none" stroke="#4a3728" stroke-width="2"/><path d="M26 36v44M40 36v44M54 36v44M68 36v44M16 50h68M16 64h68" stroke="#ffffff" stroke-width="1.6" opacity=".8"/>`,
-  baum: `<rect x="44" y="58" width="12" height="28" rx="4" fill="#8a5a2b" stroke="#4a3728" stroke-width="2.4"/><circle cx="50" cy="40" r="26" fill="#6cc65a" stroke="#4a3728" stroke-width="2.4"/><circle cx="40" cy="34" r="6" fill="#8fdc7c"/>`,
-  welle: `<path d="M8 60q10-10 20 0t20 0 20 0 20 0M8 76q10-10 20 0t20 0 20 0 20 0" fill="none" stroke="#5aa9e6" stroke-width="5" stroke-linecap="round"/><path d="M60 40l14-10 2 16z" fill="#ffffff" stroke="#4a3728" stroke-width="2.4"/><path d="M62 44h22l-4 6H66z" fill="#e2402f" stroke="#4a3728" stroke-width="2.4"/>`,
-  berg: `<path d="M8 86l30-52 14 22 10-14 30 44z" fill="#9aa3b1" stroke="#4a3728" stroke-width="2.4" stroke-linejoin="round"/><path d="M38 34l8 14-8-4-6 6z" fill="#ffffff"/>`,
-  note: `<path d="M40 70V26l32-8v44" fill="none" stroke="#4a3728" stroke-width="5"/><ellipse cx="34" cy="70" rx="10" ry="8" fill="#4a3728"/><ellipse cx="66" cy="62" rx="10" ry="8" fill="#4a3728"/>`,
-  ballon: `<path d="M50 62q-4 14 4 26" fill="none" stroke="#4a3728" stroke-width="2"/><ellipse cx="50" cy="38" rx="20" ry="24" fill="#ff8fb1" stroke="#4a3728" stroke-width="2.4"/><circle cx="42" cy="28" r="5" fill="#ffffff" opacity=".7"/>`
-};
+const MAP_FULL = () => ({ SOEREN: SOEREN_FULL, ANNA: ANNA_FULL, IDA: IDA_FULL, ARNE: ARNE_FULL, MATZE: MATZE_FULL, ILSE: ILSE_FULL, OPA: OPA_FULL, GOBI: GOBI_FULL, CHRISTIAN: CHRISTIAN_FULL, ALEX: ALEX_FULL, ENNI: ENNI_FULL });
+// Eigene Kennungen je Figur, damit clipPaths nicht mit dem Titelbild oder dem Spielfeld kollidieren
+const mapIds = (svg, tag) => [...svg.matchAll(/ id="([^"]+)"/g)].map(m => m[1])
+  .reduce((t, id) => t.split(`id="${id}"`).join(`id="${id}-${tag}"`).split(`url(#${id})`).join(`url(#${id}-${tag})`), svg);
 function mapDeco(shown, open, pts) {
+  const full = MAP_FULL();
   return shown.map((w, i) => {
-    if (!open[i]) return "";
-    const [a, b] = MAP_PROPS[w.theme] || ["baum", "baum"], left = pts[i][0] < 50, x1 = left ? 80 : 20, x2 = left ? 64 : 36;
-    const icon = (id, x, y, s, k) => `<div class="mapdeco" style="left:${x}%;top:${y}px;width:${s}px;height:${s}px;animation-delay:${-k * .7}s">
-      <svg viewBox="0 0 100 100">${MAP_DOODLE[id] || `<use href="#${id}"/>`}</svg></div>`;
-    return icon(a, x1, pts[i][1] - 4, 48, i) + icon(b, x2, pts[i][1] + 62, 40, i + 3);
+    const who = MAP_PEOPLE[w.theme] || [], left = pts[i][0] < 50;
+    return who.map((id, k) => {
+      const kid = id.startsWith("kid:"), tag = `map${i}${k}`;
+      const svg = kid ? `<svg viewBox="0 -24 100 124" overflow="visible">${kidFigure(FRIENDS[+id.slice(4)])}</svg>` : full[id].replace("<svg ", `<svg overflow="visible" `);
+      const h = kid ? 64 : id === "ENNI" ? 70 : 92, wd = kid ? h * 100 / 124 : h / 2;
+      // neben die Insel, zur Kartenmitte hin; zwei Personen stehen nebeneinander
+      let x = pts[i][0] + (left ? 1 : -1) * (24 + k * 12), y = pts[i][1] + 22 + (k ? 4 : 0);
+      // erste Welt: rechts daneben liegt der Werkzeugkoffer – die zweite Person steht dort etwas tiefer vorn
+      if (i === 0 && k === 1) { x = pts[i][0] + 14; y = pts[i][1] + 70; }
+      return `<div class="mapdeco mapfig" style="left:${x}%;top:${y}px;width:${wd}px;height:${h}px;animation-delay:${-(i + k) * .7}s">${mapIds(svg, tag)}</div>`;
+    }).join("");
   }).join("");
 }
 
