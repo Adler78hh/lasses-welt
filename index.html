@@ -4333,8 +4333,9 @@ const FX = (() => {
 // ---------- Weltkarte: kleine Bilder neben den Inseln (nur sichtbar, wenn die Welt offen ist) ----------
 // ----- Weltkarte: Familie und Freunde stehen neben den Inseln (jede Person genau einmal) -----
 const MAP_PEOPLE = {
-  fussball: ["SOEREN", "kid:0"], reiten: ["IDA", "kid:1"], pokemon: ["kid:2"], lego: ["ARNE"], steine: ["OPA"],
-  schlagzeug: ["MATZE"], tennis: ["ANNA"], essen: ["CHRISTIAN", "ALEX"], pokemon2: ["kid:3"], familie: ["ILSE", "GOBI"], garten: ["ENNI", "kid:4"]
+  // Paare stehen zusammen, die Töchter vorn zwischen den Eltern; Gobi und die fünf Freunde einzeln dazwischen
+  fussball: ["kid:0"], reiten: ["SOEREN", "ANNA", "IDA"], pokemon: ["kid:1"], lego: ["ARNE", "MATZE"], steine: ["kid:2"],
+  schlagzeug: ["ILSE", "OPA"], tennis: ["kid:3"], essen: ["CHRISTIAN", "ALEX", "ENNI"], pokemon2: ["GOBI"], familie: ["kid:4"], garten: []
 };
 const MAP_FULL = () => ({ SOEREN: SOEREN_FULL, ANNA: ANNA_FULL, IDA: IDA_FULL, ARNE: ARNE_FULL, MATZE: MATZE_FULL, ILSE: ILSE_FULL, OPA: OPA_FULL, GOBI: GOBI_FULL, CHRISTIAN: CHRISTIAN_FULL, ALEX: ALEX_FULL, ENNI: ENNI_FULL });
 // Eigene Kennungen je Figur, damit clipPaths nicht mit dem Titelbild oder dem Spielfeld kollidieren
@@ -4344,14 +4345,16 @@ function mapDeco(shown, open, pts) {
   const full = MAP_FULL();
   return shown.map((w, i) => {
     const who = MAP_PEOPLE[w.theme] || [], left = pts[i][0] < 50;
+    const kids = ["IDA", "ENNI"], adults = who.filter(id => !kids.includes(id)).length;
     return who.map((id, k) => {
-      const kid = id.startsWith("kid:"), tag = `map${i}${k}`;
+      const kid = id.startsWith("kid:"), tag = `map${i}${k}`, child = kids.includes(id);
       const svg = kid ? `<svg viewBox="0 -24 100 124" overflow="visible">${kidFigure(FRIENDS[+id.slice(4)])}</svg>` : full[id].replace("<svg ", `<svg overflow="visible" `);
-      const h = kid ? 64 : id === "ENNI" ? 70 : 92, wd = kid ? h * 100 / 124 : h / 2;
-      // neben die Insel, zur Kartenmitte hin; zwei Personen stehen nebeneinander
-      let x = pts[i][0] + (left ? 1 : -1) * (24 + k * 12), y = pts[i][1] + 22 + (k ? 4 : 0);
-      // erste Welt: rechts daneben liegt der Werkzeugkoffer – die zweite Person steht dort etwas tiefer vorn
-      if (i === 0 && k === 1) { x = pts[i][0] + 14; y = pts[i][1] + 70; }
+      const h = kid ? 64 : id === "ENNI" ? 66 : id === "IDA" ? 78 : 92, wd = kid ? h * 100 / 124 : h / 2;
+      // Paare dicht nebeneinander neben der Insel; eine Tochter steht vorn in der Mitte zwischen den Eltern
+      const off = child ? 22 + (adults - 1) * 5.5 : who.length === 1 ? 24 : 22 + k * 11;
+      let x = pts[i][0] + (left ? 1 : -1) * off, y = pts[i][1] + (child ? 40 : 22);
+      // erste Welt: rechts daneben liegt der Werkzeugkoffer – dort steht die Person etwas tiefer vorn
+      if (i === 0) { x = pts[i][0] + 14; y = pts[i][1] + 70; }
       return `<div class="mapdeco mapfig" style="left:${x}%;top:${y}px;width:${wd}px;height:${h}px;animation-delay:${-(i + k) * .7}s">${mapIds(svg, tag)}</div>`;
     }).join("");
   }).join("");
