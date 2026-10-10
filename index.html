@@ -1959,15 +1959,30 @@ const iSchild = `<svg viewBox="0 0 100 100">${inBase("#8a4a2a")}
   <rect x="46" y="44" width="8" height="40" fill="#5a3a22" ${LG_OL}/>
   <rect x="20" y="12" width="60" height="40" rx="4" fill="${IN_Y}" ${LG_OL}/><rect x="24" y="16" width="52" height="32" rx="2" fill="none" stroke="#4a3728" stroke-width="2"/>
   <path d="M28 40h44" stroke="${IN_W}" stroke-width="3"/><path d="M40 40l8-16 6 16z" fill="#4a3728"/><path d="M58 36q6-4 10 0" fill="none" stroke="#4a3728" stroke-width="2"/></svg>`;
-const iSteg = `<svg viewBox="0 0 100 100">${inBase(IN_W)}
-  <path d="M6 22q8-5 16 0t16 0 16 0 16 0 16 0" fill="none" stroke="#ffffff" stroke-width="2.4" opacity=".7"/>
-  <rect x="10" y="36" width="80" height="44" rx="4" fill="#8a4a2a" ${LG_OL}/>${[48, 60, 72].map(y => `<path d="M10 ${y}h80" stroke="#6a3418" stroke-width="2"/>`).join("")}
-  <g class="bob"><ellipse cx="50" cy="56" rx="11" ry="7" fill="#e3000b" ${LG_OL}/><path d="M40 52l-8-8M60 52l8-8M42 60l-8 6M58 60l8 6" stroke="#e3000b" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="46" cy="52" r="2.4" fill="#4a3728"/><circle cx="54" cy="52" r="2.4" fill="#4a3728"/></g></svg>`;
+// Rote Krabbe groß auf dem braunen Steg: Scheren, Stielaugen, sechs Beine
+const iSteg = `<svg viewBox="0 0 100 100">${inBase("#8a4a2a")}
+  ${[22, 46, 70].map(y => `<path d="M3 ${y}h94" stroke="#6a3418" stroke-width="2"/>`).join("")}
+  <g class="bob">
+  <path d="M30 60l-16 8-4 10M30 66l-14 14M70 60l16 8 4 10M70 66l14 14M34 70l-8 16M66 70l8 16" fill="none" stroke="#4a3728" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M30 60l-16 8-4 10M30 66l-14 14M70 60l16 8 4 10M70 66l14 14M34 70l-8 16M66 70l8 16" fill="none" stroke="#ff2a1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M32 50L18 36M68 50l14-14" stroke="#4a3728" stroke-width="7" stroke-linecap="round"/><path d="M32 50L18 36M68 50l14-14" stroke="#ff2a1a" stroke-width="4" stroke-linecap="round"/>
+  <path d="M18 36q-12-4-10-16 4 6 10 4-4-8 2-14 8 10-2 26z" fill="#ff2a1a" ${LG_OL}/><path d="M82 36q12-4 10-16-4 6-10 4 4-8-2-14-8 10 2 26z" fill="#ff2a1a" ${LG_OL}/>
+  <ellipse cx="50" cy="60" rx="24" ry="16" fill="#ff2a1a" ${LG_OL}/><ellipse cx="44" cy="54" rx="9" ry="4" fill="#ffffff" opacity=".35"/>
+  <path d="M42 46v-10M58 46v-10" stroke="#4a3728" stroke-width="3"/>
+  <circle cx="42" cy="34" r="5.4" fill="#ffffff" ${LG_OL}/><circle cx="58" cy="34" r="5.4" fill="#ffffff" ${LG_OL}/><circle cx="43" cy="35" r="2.6" fill="#4a3728"/><circle cx="59" cy="35" r="2.6" fill="#4a3728"/>
+  <path d="M44 66q6 4 12 0" fill="none" stroke="#4a3728" stroke-width="2.4" stroke-linecap="round"/></g></svg>`;
 const iPalme = `<svg viewBox="0 0 100 100">${inBase(IN_R)}
   <path d="M10 88V60l16-14 20 8 18-16 26 10v40z" fill="#a0a5a9" ${LG_OL}/>
-  ${[[30, 50], [66, 42]].map(([x, y]) => `<path d="M${x} ${y}q-14-16-22-10M${x} ${y}q-4-22 6-26M${x} ${y}q12-18 24-12M${x} ${y}q16-6 20 6M${x} ${y}q-18 0-20 12" fill="none" stroke="#2f9a3a" stroke-width="5" stroke-linecap="round"/>`).join("")}
-  <circle cx="82" cy="76" r="9" fill="none" stroke="#ff7e14" stroke-width="5"/></svg>`;
+  ${[[30, 50], [66, 42]].map(([x, y]) => `<path d="M${x} ${y}q-14-16-22-10M${x} ${y}q-4-22 6-26M${x} ${y}q12-18 24-12M${x} ${y}q16-6 20 6M${x} ${y}q-18 0-20 12" fill="none" stroke="#2f9a3a" stroke-width="5" stroke-linecap="round"/>`).join("")}</svg>`;
+// Oranger Rettungsring groß an der Felswand, mit weißen Streifen und Seil
+const iRing = `<svg viewBox="0 0 100 100">${inBase(IN_R)}
+  <path d="M8 30l16-10 18 6 20-14 28 12M10 76l14-6 20 8" fill="none" stroke="#6b7280" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="50" cy="16" r="4" fill="#5b6475" ${LG_OL}/><path d="M50 16v12" stroke="#c9a050" stroke-width="3"/>
+  <circle cx="50" cy="56" r="27" fill="none" stroke="#4a3728" stroke-width="20"/>
+  <circle cx="50" cy="56" r="27" fill="none" stroke="#ff7e14" stroke-width="15"/>
+  <circle cx="50" cy="56" r="27" fill="none" stroke="#ffffff" stroke-width="15" stroke-dasharray="14 28.4" stroke-dashoffset="7"/>
+  <path d="M34 40q8-8 18-8" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+  <path d="M24 56q-6 10 0 20M76 56q6 10 0 20" fill="none" stroke="#c9a050" stroke-width="3" stroke-linecap="round"/></svg>`;
 const iWasser = `<svg viewBox="0 0 100 100">${inBase(IN_W)}
   ${[20, 44, 68].map(y => `<path d="M8 ${y}q8-6 16 0t16 0 16 0 16 0 16 0" fill="none" stroke="#9fd8ff" stroke-width="3" stroke-linecap="round"/>`).join("")}
   <path d="M60 78l18-6-4 6 4 6z" fill="#8b939f" ${LG_OL}/><path d="M40 40l8-16 6 16z" fill="#8b939f" ${LG_OL}/></svg>`;
@@ -1990,7 +2005,7 @@ const iFlitzer = `<svg viewBox="0 0 100 100">${inBase(IN_RL)}
   <circle cx="24" cy="74" r="9" fill="#4a3728"/><circle cx="24" cy="74" r="3.4" fill="${IN_R}"/><circle cx="76" cy="74" r="9" fill="#4a3728"/><circle cx="76" cy="74" r="3.4" fill="${IN_R}"/></svg>`;
 const iWache = `<svg viewBox="0 0 100 100">${inBase(IN_T)}${inDach}
   ${minifig(`<path d="M40 22q0-10 10-10t10 10z" fill="${IN_N}" ${LG_OL}/><rect x="36" y="20" width="28" height="5" rx="2.5" fill="${IN_N}" ${LG_OL}/><circle cx="50" cy="16" r="2.4" fill="${IN_Y}"/>`, IN_N, `<path d="M36 56h28" stroke="${IN_Y}" stroke-width="3"/>`).replace('<g class="bob">', '<g class="bob" transform="translate(0 2)">')}</svg>`;
-const INSEL_WALLS = [iTurm, iZellen, iTuer, iZaun, iLeiter, iTreppe, iRohr, iSchild, iSteg, iPalme, iWasser, iBoot, iHeli, iFlitzer, iWache, iZellen, iZaun];
+const INSEL_WALLS = [iTurm, iZellen, iTuer, iZaun, iLeiter, iTreppe, iRohr, iSchild, iSteg, iRing, iPalme, iWasser, iBoot, iHeli, iFlitzer, iWache, iZellen, iZaun, iSteg, iRing];
 // Bahnhof und Insel gehören zusammen: über dem Gleis der Bahnhof, unter dem Gleis die Insel
 let bhMidCache = null;
 const bhMid = () => { if (!bhMidCache || bhMidCache.src !== inside) { const ys = [...inside].map(k => +k.split(",")[1]); bhMidCache = { src: inside, y: Math.round((Math.min(...ys) + Math.max(...ys)) / 2) }; } return bhMidCache.y; };
