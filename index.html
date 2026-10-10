@@ -4559,8 +4559,8 @@ function renderMap() {
     }).join("")}`;
   if (typeof mapDeco === "function") map.insertAdjacentHTML("beforeend", mapDeco(shown, open, pts));
   if (typeof renderToolbox === "function") map.insertAdjacentHTML("beforeend", `<div class="world kit-entry" style="left:78%;top:58px">
-    <button type="button" id="open-kit" aria-label="Werkzeugkoffer: Level bauen und spielen"><svg class="icon" viewBox="0 0 100 100"><use href="#werkzeugkoffer"/></svg></button>
-    <span class="wname">Werkzeug&shy;koffer</span></div>`);
+    <button type="button" id="open-kit" aria-label="${typeof KIT_NAME !== "undefined" ? KIT_NAME : "Werkzeugkoffer"}: Level bauen und spielen"><svg class="icon" viewBox="0 0 100 100"><use href="#${typeof KIT_ICON !== "undefined" ? KIT_ICON : "werkzeugkoffer"}"/></svg></button>
+    <span class="wname">${typeof KIT_NAME !== "undefined" ? KIT_NAME : "Werkzeug&shy;koffer"}</span></div>`);
   const kitBtn = document.getElementById("open-kit"); if (kitBtn) kitBtn.addEventListener("click", () => show("toolbox"));
   map.querySelectorAll("[data-w]").forEach(b => b.addEventListener("click", () => { curWorld = +b.dataset.w; if (NL(curWorld) === 1) loadLevel(curWorld, 0); else show("levels"); }));
   if (reveal) { p.seen = lastOpen + 1; save(); }
@@ -5353,7 +5353,7 @@ function withEditorGlobals(lv, fn) {
 function renderToolbox() {
   const p = P(), kit = kitOf(p), drafts = kit.levels.filter(l => !l.published), pub = kit.levels.filter(l => l.published);
   const anyOpen = DESIGNS.some(d => designOpen(p, d));
-  document.getElementById("kit-title").innerHTML = `Werkzeugkoffer<small>${esc(p.name)} · ${drafts.length} in der Werkstatt · ${pub.length} im Spielfach</small>`;
+  document.getElementById("kit-title").innerHTML = `${typeof KIT_NAME !== "undefined" ? KIT_NAME : "Werkzeugkoffer"}<small>${esc(p.name)} · ${drafts.length} in der Werkstatt · ${pub.length} im Spielfach</small>`;
   document.getElementById("tab-build").classList.toggle("on", kitTab === "build");
   document.getElementById("tab-play").classList.toggle("on", kitTab === "play");
   document.getElementById("tab-build").setAttribute("aria-selected", kitTab === "build");
