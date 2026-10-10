@@ -515,6 +515,26 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .mapdeco svg { width: 100%; height: 100%; overflow: visible; display: block; }
 @keyframes mapbob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -58%); } }
 @media (prefers-reduced-motion: reduce) { .mapdeco { animation: none; } }
+/* Lego-Welt: Schauplatz-Name im Level-Knopf */
+.lvl:has(.lvl-name) { grid-template-rows: auto 1fr auto; padding-top: 8px; }
+.lvl .lvl-name { font-size: 13px; line-height: 1.1; font-weight: 700; opacity: .75; letter-spacing: .01em; }
+/* Lego-Welt: Bewegung in den Wandbildern */
+.lg-sweep { transform-origin: 50px 22px; animation: lg-sweep 3.6s ease-in-out infinite alternate; }
+@keyframes lg-sweep { from { transform: rotate(-18deg); } to { transform: rotate(18deg); } }
+.lg-peek { animation: lg-peek 5s ease-in-out infinite; }
+@keyframes lg-peek { 0%, 35%, 100% { transform: translateX(-26px); } 50%, 80% { transform: translateX(0); } }
+.lg-spray { opacity: 0; transform-origin: 72px 30px; animation: lg-spray 4.2s ease-out infinite; }
+@keyframes lg-spray { 0%, 60% { opacity: 0; transform: translateY(6px) scale(.4); } 70% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-6px) scale(1.1); } }
+.lg-nod { transform-origin: 50px 28px; animation: lg-nod 3s ease-in-out infinite; }
+@keyframes lg-nod { 0%, 60%, 100% { transform: rotate(0); } 70% { transform: rotate(12deg); } 80% { transform: rotate(-4deg); } 90% { transform: rotate(8deg); } }
+.lg-launch { animation: lg-launch 6s ease-in infinite; }
+@keyframes lg-launch { 0%, 55% { transform: translateY(0); opacity: 1; } 85% { transform: translateY(-70px); opacity: 0; } 86% { transform: translateY(20px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+/* Gefängnisinsel: der Zug fährt ab und zu über das Gleis (unter Lasse und den Steinen) */
+.lg-train { position: absolute; left: 0; top: calc(var(--my) * var(--t)); width: calc(3 * var(--t)); height: var(--t); pointer-events: none;
+  animation: lg-train 16s linear infinite; animation-delay: 3s; transform: translateX(calc(-3.2 * var(--t))); }
+.lg-train svg { width: 100%; height: 100%; display: block; }
+@keyframes lg-train { 0% { transform: translateX(calc(-3.2 * var(--t))); } 40%, 100% { transform: translateX(calc((var(--bw) + .2) * var(--t))); } }
+@media (prefers-reduced-motion: reduce) { .lg-sweep, .lg-peek, .lg-spray, .lg-nod, .lg-launch, .lg-train { animation: none !important; } .lg-train { display: none; } }
 
 /* ===== Teil 2: Comic-Look (Notizbuch, Tusche, Marker) ===== */
 :root { --display: "Permanent Marker", "Gochi Hand", "Comic Sans MS", sans-serif; --body: "Patrick Hand", "Comic Sans MS", system-ui, sans-serif; --tape: #f3e6a6; --ink2: #2d3036; }
@@ -4070,6 +4090,26 @@ const SND = (() => {
       const o = c.createOscillator(), g2 = c.createGain(); o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(75, t + .1); env(g2, t, .005, .12, .22); o.connect(g2).connect(c.destination); o.start(t); o.stop(t + .14); },
     // Platz getroffen: helles Pling
     place() { const c = ac(); if (!c) return; const t = c.currentTime + .05; tone(c, 880, t, .25, .18); tone(c, 1320, t + .07, .35, .14); tone(c, 1760, t + .14, .4, .08, "triangle"); },
+    // Lego-Welt: eigener Ton je Schauplatz, wenn ein Stein sitzt
+    // Zoo: Elefant tröt – Sägezahn, der hochgleitet und leicht zittert
+    troete() { const c = ac(); if (!c) return; const t = c.currentTime + .03, o = c.createOscillator(), f = c.createBiquadFilter(), g = c.createGain(), l = c.createOscillator(), lg = c.createGain();
+      o.type = "sawtooth"; o.frequency.setValueAtTime(260, t); o.frequency.exponentialRampToValueAtTime(620, t + .18); o.frequency.exponentialRampToValueAtTime(540, t + .55);
+      l.frequency.value = 22; lg.gain.value = 18; l.connect(lg).connect(o.frequency);
+      f.type = "bandpass"; f.frequency.value = 1100; f.Q.value = 2; env(g, t, .04, .6, .16); o.connect(f).connect(g).connect(c.destination); o.start(t); l.start(t); o.stop(t + .65); l.stop(t + .65); },
+    // Baustelle: drei Hammerschläge
+    hammer() { const c = ac(); if (!c) return; const t0 = c.currentTime + .03;
+      [0, .16, .32].forEach((d, i) => { const t = t0 + d, s = noise(c, .06), f = c.createBiquadFilter(), g = c.createGain(); f.type = "bandpass"; f.frequency.value = 2400 - i * 300; f.Q.value = 3; env(g, t, .002, .06, .3); s.connect(f).connect(g).connect(c.destination); s.start(t);
+        tone(c, 180 - i * 15, t, .09, .2, "triangle"); }); },
+    // City: Martinshorn tatü-tata
+    tatue() { const c = ac(); if (!c) return; const t = c.currentTime + .03; [466, 622, 466, 622].forEach((f, i) => tone(c, f, t + i * .2, .19, .09, "square")); },
+    // Gefängnisinsel: Zugpfeife tuut-tuut (zweistimmig)
+    tuut() { const c = ac(); if (!c) return; const t = c.currentTime + .03; [0, .34].forEach(d => { tone(c, 330, t + d, .3, .14, "triangle"); tone(c, 415, t + d, .3, .1, "triangle"); tone(c, 494, t + d, .3, .06, "sine"); }); },
+    // Wasser: Platschen und Blubberblasen
+    platsch() { const c = ac(); if (!c) return; const t = c.currentTime + .03, s = noise(c, .4), f = c.createBiquadFilter(), g = c.createGain();
+      f.type = "lowpass"; f.frequency.setValueAtTime(3000, t); f.frequency.exponentialRampToValueAtTime(300, t + .35); env(g, t, .01, .38, .3); s.connect(f).connect(g).connect(c.destination); s.start(t);
+      [.2, .3, .38].forEach((d, i) => { const o = c.createOscillator(), g2 = c.createGain(); o.frequency.setValueAtTime(500 + i * 150, t + d); o.frequency.exponentialRampToValueAtTime(1100 + i * 200, t + d + .06); env(g2, t + d, .005, .07, .1); o.connect(g2).connect(c.destination); o.start(t + d); o.stop(t + d + .09); }); },
+    // Weltall: Computer-Piepen
+    piep() { const c = ac(); if (!c) return; const t = c.currentTime + .03; [1200, 1600, 2000, 2400].forEach((f, i) => tone(c, f, t + i * .07, .08, .1, "sine")); },
     // Applaus: viele kurze Klatscher über zwei Sekunden
     applause() { const c = ac(); if (!c) return; const t0 = c.currentTime + .05;
       for (let i = 0; i < 70; i++) { const t = t0 + Math.random() * 2.2 * Math.sqrt(Math.random()), s = noise(c, .04), f = c.createBiquadFilter(), g = c.createGain();
@@ -4121,7 +4161,7 @@ const FLOOR_BITS = {
 };
 // Stimmung je Welt und Schauplatz
 function moodOf(theme, sceneName = "") {
-  if (/Flutlicht|Weltraum|Konzert/.test(sceneName)) return "nacht";
+  if (/Flutlicht|Weltraum|Weltall|Konzert/.test(sceneName)) return "nacht";
   if (/Feuer/.test(sceneName)) return "feuer";
   if (theme === "steine") return "hoehle";
   if (/Halle|City|Küche|Restaurant|Stall|Psycho|Kampf|Schlagzeug|Flugzeug|Klassenzimmer|Bistro|Puppenecke|Kinderzimmer|Duplo|Kinderschlagzeug|Konservatorium/.test(sceneName)) return "drinnen";
@@ -4367,7 +4407,8 @@ function renderLevels() {
     const cls = ["lvl", done ? "done" : "", !open ? "locked" : "", l === next ? "next" : ""].join(" ");
     return row + `<button type="button" class="${cls}" data-l="${l}" ${open ? "" : "disabled"} aria-label="Level ${l + 1}${done ? ", geschafft" : open ? "" : ", gesperrt"}">
       ${open ? `<span class="lvl-num">${l + 1}</span>${miniLevel(w.levels[l].m)}` : `<svg viewBox="0 0 24 24"><use href="#schloss"/></svg>`}
-      ${open && (th.levelIcon || th.levelBox) && !prize ? `<svg class="lvl-gem" viewBox="0 0 100 100"><use href="#${(th.levelIcon || th.levelBox)(l)}"/></svg>` : ""}
+      ${th.levelNames && th.levelNames[l] ? `<span class="lvl-name">${esc(th.levelNames[l])}</span>` : ""}
+      ${open && (th.levelIcon || th.levelBox) && !th.levelNames && !prize ? `<svg class="lvl-gem" viewBox="0 0 100 100"><use href="#${(th.levelIcon || th.levelBox)(l)}"/></svg>` : ""}
       ${prize ? `<svg class="prize-ico" viewBox="0 0 100 ${th.prize.symbol === "schleife" ? 128 : 100}"><use href="#${th.prize.symbol}"/></svg>`
         : ""}
       ${done ? `<svg class="lvl-star" viewBox="0 0 100 100"><use href="#${isGold(p, curWorld, l) ? "stern" : "stern-silber"}"/></svg>` : ""}
@@ -4494,6 +4535,7 @@ function buildBoard() {
     if (goals.has(k)) html += `<div class="tile target" data-k="${k}" ${pos}>${T.targetAt ? T.targetAt(...k.split(",").map(Number)) : T.target(curLevel)}</div>`;
   }
   if (T.levelName) html += signHTML(T.levelName(curLevel));
+  if (S && S.boardExtras) html += S.boardExtras(ctx, W, H);
   board.innerHTML = html;
   const side = (S && S.side) || null, arena = document.querySelector(".arena");
   if (arena) {
@@ -4574,7 +4616,7 @@ function render() {
     el.style.setProperty("--x", b.x); el.style.setProperty("--y", b.y); el.style.setProperty("--rot", b.rot + "deg");
     const isIn = goals.has(k);
     if (isIn) { scored++; hit.add(k); }
-    if (isIn && !el.classList.contains("in") && el.dataset.ready) { SND.place(); if (typeof FX !== "undefined") FX.place(b.x, b.y); }
+    if (isIn && !el.classList.contains("in") && el.dataset.ready) { if (S && S.sound && SND[S.sound]) SND[S.sound](); else SND.place(); if (typeof FX !== "undefined") FX.place(b.x, b.y); }
     el.dataset.ready = "1";
     el.classList.toggle("in", isIn);
     if (T.boxIn) el.querySelector("use").setAttribute("href", "#" + (isIn ? T.boxIn : boxId()));

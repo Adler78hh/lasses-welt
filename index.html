@@ -515,6 +515,26 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .mapdeco svg { width: 100%; height: 100%; overflow: visible; display: block; }
 @keyframes mapbob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -58%); } }
 @media (prefers-reduced-motion: reduce) { .mapdeco { animation: none; } }
+/* Lego-Welt: Schauplatz-Name im Level-Knopf */
+.lvl:has(.lvl-name) { grid-template-rows: auto 1fr auto; padding-top: 8px; }
+.lvl .lvl-name { font-size: 13px; line-height: 1.1; font-weight: 700; opacity: .75; letter-spacing: .01em; }
+/* Lego-Welt: Bewegung in den Wandbildern */
+.lg-sweep { transform-origin: 50px 22px; animation: lg-sweep 3.6s ease-in-out infinite alternate; }
+@keyframes lg-sweep { from { transform: rotate(-18deg); } to { transform: rotate(18deg); } }
+.lg-peek { animation: lg-peek 5s ease-in-out infinite; }
+@keyframes lg-peek { 0%, 35%, 100% { transform: translateX(-26px); } 50%, 80% { transform: translateX(0); } }
+.lg-spray { opacity: 0; transform-origin: 72px 30px; animation: lg-spray 4.2s ease-out infinite; }
+@keyframes lg-spray { 0%, 60% { opacity: 0; transform: translateY(6px) scale(.4); } 70% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-6px) scale(1.1); } }
+.lg-nod { transform-origin: 50px 28px; animation: lg-nod 3s ease-in-out infinite; }
+@keyframes lg-nod { 0%, 60%, 100% { transform: rotate(0); } 70% { transform: rotate(12deg); } 80% { transform: rotate(-4deg); } 90% { transform: rotate(8deg); } }
+.lg-launch { animation: lg-launch 6s ease-in infinite; }
+@keyframes lg-launch { 0%, 55% { transform: translateY(0); opacity: 1; } 85% { transform: translateY(-70px); opacity: 0; } 86% { transform: translateY(20px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+/* Gefängnisinsel: der Zug fährt ab und zu über das Gleis (unter Lasse und den Steinen) */
+.lg-train { position: absolute; left: 0; top: calc(var(--my) * var(--t)); width: calc(3 * var(--t)); height: var(--t); pointer-events: none;
+  animation: lg-train 16s linear infinite; animation-delay: 3s; transform: translateX(calc(-3.2 * var(--t))); }
+.lg-train svg { width: 100%; height: 100%; display: block; }
+@keyframes lg-train { 0% { transform: translateX(calc(-3.2 * var(--t))); } 40%, 100% { transform: translateX(calc((var(--bw) + .2) * var(--t))); } }
+@media (prefers-reduced-motion: reduce) { .lg-sweep, .lg-peek, .lg-spray, .lg-nod, .lg-launch, .lg-train { animation: none !important; } .lg-train { display: none; } }
 </style>
 
 <!-- Gemeinsame Verläufe und Symbole -->
@@ -1810,13 +1830,25 @@ LASSE.schaffner = lasseBase("#1f3f8a", "#4a3728", "#16181f",
    <circle cx="50" cy="16" r="3.4" fill="#ffcd03" stroke="${INK}" stroke-width="1.6"/>`);
 
 
+document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
+  <symbol id="duplostein" viewBox="0 0 100 100">
+    <!-- dicker Duplo-Stein von oben: vier große, hohle Noppen; Farbe aus --c1, Kante aus --c2 -->
+    <ellipse cx="50" cy="92" rx="38" ry="5" fill="#00000024"/>
+    <rect x="6" y="14" width="88" height="78" rx="16" fill="var(--c2, #9a0b0c)" stroke="#4a3728" stroke-width="3"/>
+    <rect x="6" y="8" width="88" height="76" rx="16" fill="var(--c1, #e3000b)" stroke="#4a3728" stroke-width="3"/>
+    ${[[30, 30], [70, 30], [30, 62], [70, 62]].map(([x, y]) => `<circle cx="${x}" cy="${y + 4}" r="15" fill="var(--c2, #9a0b0c)"/>
+      <circle cx="${x}" cy="${y}" r="15" fill="var(--c1, #e3000b)" stroke="#4a3728" stroke-width="2.4"/>
+      <circle cx="${x}" cy="${y}" r="7.5" fill="var(--c2, #9a0b0c)" stroke="#4a3728" stroke-width="1.6"/>
+      <path d="M${x - 10} ${y - 6}q4-6 10-7" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity=".5"/>`).join("")}
+  </symbol>`);
+
 // ---------- Duplo-Zoo: dicke Duplo-Steine, darauf typische Zootiere ----------
 const dz = (c, inner) => `<svg viewBox="0 0 100 100">${duploBrick(c)}<g class="bob">${inner}</g></svg>`;
 const EYE = (x, y) => `<circle cx="${x}" cy="${y}" r="2.6" fill="#4a3728"/><circle cx="${x + .9}" cy="${y - .9}" r=".9" fill="#ffffff"/>`;
 const zGiraffe = dz("#00852b", `<path d="M44 66l4-40h10l-2 40z" fill="#ffcd03" ${LG_OL}/>
-  <ellipse cx="54" cy="22" rx="14" ry="10" fill="#ffcd03" ${LG_OL}/><path d="M46 14l-2-8M58 13l1-8" stroke="#4a3728" stroke-width="2.4" stroke-linecap="round"/>
+  <g class="lg-nod"><ellipse cx="54" cy="22" rx="14" ry="10" fill="#ffcd03" ${LG_OL}/><path d="M46 14l-2-8M58 13l1-8" stroke="#4a3728" stroke-width="2.4" stroke-linecap="round"/>
   <circle cx="44" cy="5" r="3" fill="#8a5a2b" ${LG_OL}/><circle cx="59" cy="4" r="3" fill="#8a5a2b" ${LG_OL}/>
-  <ellipse cx="64" cy="25" rx="6" ry="4.5" fill="#f2c27a" ${LG_OL}/>${EYE(53, 19)}
+  <ellipse cx="64" cy="25" rx="6" ry="4.5" fill="#f2c27a" ${LG_OL}/>${EYE(53, 19)}</g>
   <circle cx="50" cy="40" r="3.4" fill="#c27a2c"/><circle cx="53" cy="54" r="3" fill="#c27a2c"/><circle cx="48" cy="60" r="2.4" fill="#c27a2c"/>`);
 const zElefant = dz("#0055bf", `<path d="M30 34q-12 2-10 18 8 6 14-4z" fill="#a9b1bd" ${LG_OL}/><path d="M70 34q12 2 10 18-8 6-14-4z" fill="#a9b1bd" ${LG_OL}/>
   <circle cx="50" cy="36" r="20" fill="#b8c0cb" ${LG_OL}/><path d="M50 44q-4 14 2 22 5 2 6-2-4-6-2-20z" fill="#b8c0cb" ${LG_OL}/>
@@ -1923,7 +1955,7 @@ const iTurm = `<svg viewBox="0 0 100 100">${inBase("#9fd8ff")}
   <path d="M22 40l10-14h36l10 14z" fill="${IN_N}" ${LG_OL}/><path d="M24 39h52" stroke="${IN_Y}" stroke-width="3"/>
   <rect x="36" y="18" width="28" height="9" fill="#fff6a8" ${LG_OL}/><path d="M50 18V8" stroke="#4a3728" stroke-width="2.4"/>
   <path d="M42 8a8 5 0 0016 0z" fill="#e9eaee" ${LG_OL}/><path d="M62 18V2" stroke="#4a3728" stroke-width="1.6"/>
-  <path class="flame" d="M36 22L6 10v16zM64 22l30-12v16z" fill="#fff6a8" opacity=".6"/></svg>`;
+  <g class="lg-sweep"><path class="flame" d="M36 22L6 10v16zM64 22l30-12v16z" fill="#fff6a8" opacity=".6"/></g></svg>`;
 const iZellen = `<svg viewBox="0 0 100 100">${inBase(IN_T)}${inDach}
   ${[10, 38, 66].map(x => `<rect x="${x}" y="26" width="24" height="44" rx="2" fill="#ffffff" ${LG_OL}/><rect x="${x + 3}" y="29" width="18" height="38" fill="#7a3a3a"/>
     <path d="M${x + 9} 29v38M${x + 15} 29v38M${x + 3} 42h18M${x + 3} 55h18" stroke="#ffffff" stroke-width="2.4"/>`).join("")}
@@ -1948,9 +1980,9 @@ const iTreppe = `<svg viewBox="0 0 100 100">${inBase(IN_R)}
 const iRohr = `<svg viewBox="0 0 100 100">${inBase(IN_R)}
   <path d="M10 40l16-10 18 6 20-14 26 12" fill="none" stroke="#6b7280" stroke-width="3" stroke-linecap="round"/>
   <ellipse cx="30" cy="56" rx="20" ry="22" fill="#e8742a" ${LG_OL}/><ellipse cx="30" cy="56" rx="13" ry="15" fill="#5a2a10"/>
-  <g class="bob"><rect x="36" y="58" width="34" height="14" rx="5" fill="#ff8a1f" ${LG_OL}/><path d="M44 58v14M54 58v14" stroke="#4a3728" stroke-width="1.6"/>
+  <clipPath id="lg-rohr"><rect x="30" y="0" width="70" height="100"/></clipPath><g clip-path="url(#lg-rohr)"><g class="lg-peek"><g class="bob"><rect x="36" y="58" width="34" height="14" rx="5" fill="#ff8a1f" ${LG_OL}/><path d="M44 58v14M54 58v14" stroke="#4a3728" stroke-width="1.6"/>
   <rect x="68" y="52" width="16" height="18" rx="6" fill="${MINI}" ${LG_OL}/><circle cx="74" cy="59" r="1.6" fill="#4a3728"/><circle cx="80" cy="59" r="1.6" fill="#4a3728"/>
-  <path d="M73 65q4 2 8 0" fill="none" stroke="#4a3728" stroke-width="1.4"/><path d="M68 52q8-6 16 0z" fill="#4a3728"/></g>
+  <path d="M73 65q4 2 8 0" fill="none" stroke="#4a3728" stroke-width="1.4"/><path d="M68 52q8-6 16 0z" fill="#4a3728"/></g></g></g>
   <path d="M8 86h84" stroke="${IN_W}" stroke-width="6"/></svg>`;
 const iSchild = `<svg viewBox="0 0 100 100">${inBase("#8a4a2a")}
   ${[22, 46, 70].map(y => `<path d="M3 ${y}h94" stroke="#6a3418" stroke-width="2"/>`).join("")}
@@ -2004,6 +2036,12 @@ const iFlitzer = `<svg viewBox="0 0 100 100">${inBase(IN_RL)}
 const iWache = `<svg viewBox="0 0 100 100">${inBase(IN_T)}${inDach}
   ${minifig(`<path d="M40 22q0-10 10-10t10 10z" fill="${IN_N}" ${LG_OL}/><rect x="36" y="20" width="28" height="5" rx="2.5" fill="${IN_N}" ${LG_OL}/><circle cx="50" cy="16" r="2.4" fill="${IN_Y}"/>`, IN_N, `<path d="M36 56h28" stroke="${IN_Y}" stroke-width="3"/>`).replace('<g class="bob">', '<g class="bob" transform="translate(0 2)">')}</svg>`;
 const INSEL_WALLS = [iTurm, iZellen, iTuer, iZaun, iLeiter, iTreppe, iRohr, iSchild, iSteg, iRing, iPalme, iWasser, iBoot, iHeli, iFlitzer, iWache, iZellen, iZaun, iSteg, iRing];
+const LG_TRAIN = `<svg viewBox="0 0 300 100">
+  ${[0, 100].map(x => `<rect x="${x + 4}" y="22" width="92" height="58" rx="8" fill="#16181f" ${LG_OL}/>${[14, 40, 66].map(w => `<rect x="${x + w}" y="32" width="20" height="18" rx="3" fill="#3a4a5a" ${LG_OL}/>`).join("")}
+    <path d="M${x + 4} 60h92" stroke="${BH_LIME}" stroke-width="5"/><circle cx="${x + 24}" cy="84" r="8" fill="#2b2d33" ${LG_OL}/><circle cx="${x + 76}" cy="84" r="8" fill="#2b2d33" ${LG_OL}/>`).join("")}
+  <path d="M204 80V30q0-8 8-8h46q22 0 34 30l4 28z" fill="#16181f" ${LG_OL}/><path d="M260 28q16 2 26 24h-26z" fill="#3a4a5a" ${LG_OL}/>
+  <path d="M262 66h34l-2 14h-32z" fill="#f2f3f5" ${LG_OL}/><path d="M204 60h92" stroke="${BH_LIME}" stroke-width="5"/>
+  <circle cx="286" cy="72" r="4" fill="#fff6a8" ${LG_OL}/><circle cx="224" cy="84" r="8" fill="#2b2d33" ${LG_OL}/><circle cx="276" cy="84" r="8" fill="#2b2d33" ${LG_OL}/></svg>`;
 // Gleise laufen über die Insel: zwischen den Inselmotiven ab und zu der Zug und ein Signal
 const INSEL_ZUG = [bhLok, bhWagen, bhRot, bhSignal];
 const bhInselWall = (x, y) => pick(x, y, 31, 100) < 22 ? INSEL_ZUG[pick(x, y, 32, INSEL_ZUG.length)] : INSEL_WALLS[pick(x, y, 0, INSEL_WALLS.length)];
@@ -2037,7 +2075,9 @@ const wBoot = `<svg viewBox="0 0 100 100">${WX("#2f7ae5")}
 const wOrca = `<svg viewBox="0 0 100 100">${WX("#2f7ae5")}<g class="bob">
   <path d="M8 56q10-24 46-24 30 0 38 18-8 12-30 16H30q-16 0-22-10z" fill="#16181f" ${LG_OL}/><path d="M50 34l8-20 6 20z" fill="#16181f" ${LG_OL}/>
   <path d="M14 58q20 10 48 6-14 4-20 0-14 4-28-6z" fill="#ffffff"/><ellipse cx="72" cy="40" rx="7" ry="4" fill="#ffffff"/>
-  <path d="M84 50l12-10-2 18z" fill="#16181f" ${LG_OL}/>${EYE(22, 46)}</g></svg>`;
+  <path d="M84 50l12-10-2 18z" fill="#16181f" ${LG_OL}/>${EYE(22, 46)}
+  <g class="lg-spray"><path d="M72 30q-2-10-8-16M72 30q0-12 0-20M72 30q2-10 8-16" fill="none" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round"/>
+  <circle cx="62" cy="12" r="2.6" fill="#ffffff"/><circle cx="72" cy="6" r="2.6" fill="#ffffff"/><circle cx="82" cy="12" r="2.6" fill="#ffffff"/></g></g></svg>`;
 const wHai = `<svg viewBox="0 0 100 100">${WX("#2f7ae5")}<g class="bob">
   <path d="M8 52q16-18 46-18 26 0 36 12l8-10-2 16 4 14-10-8q-12 10-38 10-28 0-44-16z" fill="#8b939f" ${LG_OL}/>
   <path d="M44 36l10-20 8 20z" fill="#8b939f" ${LG_OL}/><path d="M12 56q30 14 60 6-24 10-48 6z" fill="#e9eaee"/>
@@ -2062,10 +2102,10 @@ const WASSER_WALLS = [wSchiff, wUboot, wHeli, wBoot, wOrca, wHai, wRochen, wEisb
 const wasserFloor = (x, y) => plate("#d8eef8", "#e8f6fc", 3, x, y) + (pick(x, y, 6, 8) === 0 ? `<path d="M16 70q8-5 16 0t16 0" fill="none" stroke="#7fc8f0" stroke-width="2.4" stroke-linecap="round"/>` : "") + "</svg>";
 
 // ---------- Weltall: dazu das Shuttle und der weiße Roboter-Astronaut aus dem Regal ----------
-const sShuttle = `<svg viewBox="0 0 100 100">${spaceWall("#3a4566")}
+const sShuttle = `<svg viewBox="0 0 100 100">${spaceWall("#3a4566")}<g class="lg-launch">
   <path d="M50 6q10 10 10 34v34H40V40q0-24 10-34z" fill="#f2f3f5" ${LG_OL}/><path d="M44 18q6-6 12 0v6H44z" fill="#2b3a67"/>
   <path d="M40 54L18 80h22zM60 54l22 26H60z" fill="#f2f3f5" ${LG_OL}/><path d="M24 76h14M62 76h14" stroke="#e3000b" stroke-width="3"/>
-  <path d="M44 38h12" stroke="#e3000b" stroke-width="3"/><path class="flame" d="M42 76q8 20 16 0z" fill="#ffb02e"/></svg>`;
+  <path d="M44 38h12" stroke="#e3000b" stroke-width="3"/><path class="flame" d="M42 76q8 20 16 0z" fill="#ffb02e"/></g></svg>`;
 const sRoboter = `<svg viewBox="0 0 100 100">${spaceWall()}<g class="bob">
   <rect x="34" y="8" width="32" height="26" rx="6" fill="#ffffff" ${LG_OL}/><rect x="38" y="13" width="24" height="12" rx="3" fill="#4a3728"/>
   <circle cx="45" cy="19" r="2.6" fill="#7fe3ff"/><circle cx="55" cy="19" r="2.6" fill="#7fe3ff"/>
@@ -2103,26 +2143,46 @@ LASSE.forscher = lasseBase(EXP_O, EXP_N, "#16181f",
 // ---------- Zuordnung: ein Schauplatz pro Level ----------
 {
   const T = THEMES.lego, [oDuplo, oCity, oSpace] = T.scenes;
-  const walls = (list) => (x, y) => list[pick(x, y, 0, list.length)];
+  const pickFrom = (list) => (x, y) => list[pick(x, y, 0, list.length)];
+  // Jedes Wandbild höchstens max-mal pro Level, gleiche nie direkt nebeneinander. Die Verteilung wird beim ersten Aufruf
+  // für alle sichtbaren Wandfelder festgelegt und bleibt beim Neuzeichnen (Zoomen, Drehen) gleich.
+  const limited = (fn, max = 3) => { let src = null, plan;
+    return (x, y) => {
+      if (src !== inside) { src = inside; plan = new Map(); const count = new Map();
+        const ks = [...walls].map(k => k.split(",").map(Number)).filter(([a, b]) => touchesInside(a, b)).sort((p, q) => p[1] - q[1] || p[0] - q[0]);
+        for (const [a, b] of ks) {
+          const ok = (w) => (count.get(w) || 0) < max && plan.get((a - 1) + "," + b) !== w && plan.get(a + "," + (b - 1)) !== w;
+          // erst ein passendes Bild suchen; reicht die Auswahl nicht, das bisher seltenste nehmen
+          let w = fn(a, b), best = null;
+          for (let i = 1; i < 90 && !ok(w); i++) {
+            if (plan.get((a - 1) + "," + b) !== w && plan.get(a + "," + (b - 1)) !== w && (!best || (count.get(w) || 0) < (count.get(best) || 0))) best = w;
+            w = fn(a + i * 17, b + i * 11); }
+          if (!ok(w) && best) w = best;
+          count.set(w, (count.get(w) || 0) + 1); plan.set(a + "," + b, w);
+        } }
+      return plan.get(x + "," + y) || fn(x, y); }; };
   T.levelScenes = [
-    { name: "Duplo-Zoo", lasse: "zoowaerter", words: ["Mampf!", "Toll!"],
+    { name: "Duplo-Zoo", lasse: "zoowaerter", sound: "troete", box: "duplostein", words: ["Mampf!", "Toll!"],
       pal: { "--bg": "#eaf7dc", "--bg-2": "#f8fdf2", "--floor-a": "#5cb85c", "--floor-b": "#55ad55" },
-      floor: zooFloor, wall: walls(ZOO_WALLS), deco: () => "", extras: () => birdHTML() },
-    { name: "Duplo-Baustelle", lasse: "bauarbeiter", words: ["Klick!", "Passt!"],
+      floor: zooFloor, wall: limited(pickFrom(ZOO_WALLS)), deco: () => "", extras: () => birdHTML() },
+    { name: "Duplo-Baustelle", lasse: "bauarbeiter", sound: "hammer", box: "duplostein", words: ["Klick!", "Passt!"],
       pal: { "--bg": "#fff4e0", "--bg-2": "#fffbf3", "--floor-a": "#c9a467", "--floor-b": "#c19c5f" },
-      floor: bauFloor, wall: walls(BAU_WALLS), deco: () => "", extras: () => birdHTML() },
-    { name: "Lego City", lasse: "feuerwehr", words: ["Tatü!", "Klick!"],
-      pal: oCity.pal, floor: oCity.floor, wall: walls(CITY_WALLS), deco: oCity.deco, extras: oCity.extras },
-    { name: "Gefängnisinsel", lasse: "polizist", words: ["Tuut!", "Erwischt!"],
+      floor: bauFloor, wall: limited(pickFrom(BAU_WALLS)), deco: () => "", extras: () => birdHTML() },
+    { name: "Lego City", lasse: "feuerwehr", sound: "tatue", words: ["Tatü!", "Klick!"],
+      pal: oCity.pal, floor: oCity.floor, wall: limited(pickFrom(CITY_WALLS)), deco: oCity.deco, extras: oCity.extras },
+    { name: "Gefängnisinsel", lasse: "polizist", sound: "tuut",
+      boardExtras: (ctx, W) => `<div class="lg-train" style="--my:${ctx.midY};--bw:${W}">${LG_TRAIN}</div>`, words: ["Tuut!", "Erwischt!"],
       pal: { "--bg": "#dceefa", "--bg-2": "#f2f9fe", "--floor-a": "#a0a5a9", "--floor-b": "#989da1" },
-      floor: bhFloor, wall: bhInselWall, deco: () => "", extras: () => birdHTML() },
-    { name: "Wasserexpedition", lasse: "forscher", words: ["Platsch!", "Ahoi!"],
+      floor: bhFloor, wall: limited(bhInselWall, 2), deco: () => "", extras: () => birdHTML() },
+    { name: "Wasserexpedition", lasse: "forscher", sound: "platsch", words: ["Platsch!", "Ahoi!"],
       pal: { "--bg": "#dff1fb", "--bg-2": "#f4fbff", "--floor-a": "#d8eef8", "--floor-b": "#cfe6f2" },
-      floor: wasserFloor, wall: walls(WASSER_WALLS), deco: () => "", extras: () => birdHTML() },
-    { name: "Weltall", lasse: "astronaut", words: ["Klick!", "Wow!"],
+      floor: wasserFloor, wall: limited(pickFrom(WASSER_WALLS)), deco: () => "", extras: () => birdHTML() },
+    { name: "Weltall", lasse: "astronaut", sound: "piep", words: ["Klick!", "Wow!"],
       pal: oSpace.pal, floor: oSpace.floor, deco: oSpace.deco, extras: oSpace.extras,
-      wall: (x, y) => pick(x, y, 11, 7) === 0 ? [sShuttle, sRoboter][pick(x, y, 12, 2)] : oSpace.wall(x, y) }
+      wall: limited((x, y) => pick(x, y, 11, 7) === 0 ? [sShuttle, sRoboter][pick(x, y, 12, 2)] : oSpace.wall(x, y)) }
   ];
+  T.levelNames = ["Zoo", "Baustelle", "City", "Insel", "Expedition", "Weltall"];
+  T.levelBox = (l) => (T.levelScenes[l] && T.levelScenes[l].box) || T.box;
   delete T.scenes;
 }
 
@@ -4211,6 +4271,26 @@ const SND = (() => {
       const o = c.createOscillator(), g2 = c.createGain(); o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(75, t + .1); env(g2, t, .005, .12, .22); o.connect(g2).connect(c.destination); o.start(t); o.stop(t + .14); },
     // Platz getroffen: helles Pling
     place() { const c = ac(); if (!c) return; const t = c.currentTime + .05; tone(c, 880, t, .25, .18); tone(c, 1320, t + .07, .35, .14); tone(c, 1760, t + .14, .4, .08, "triangle"); },
+    // Lego-Welt: eigener Ton je Schauplatz, wenn ein Stein sitzt
+    // Zoo: Elefant tröt – Sägezahn, der hochgleitet und leicht zittert
+    troete() { const c = ac(); if (!c) return; const t = c.currentTime + .03, o = c.createOscillator(), f = c.createBiquadFilter(), g = c.createGain(), l = c.createOscillator(), lg = c.createGain();
+      o.type = "sawtooth"; o.frequency.setValueAtTime(260, t); o.frequency.exponentialRampToValueAtTime(620, t + .18); o.frequency.exponentialRampToValueAtTime(540, t + .55);
+      l.frequency.value = 22; lg.gain.value = 18; l.connect(lg).connect(o.frequency);
+      f.type = "bandpass"; f.frequency.value = 1100; f.Q.value = 2; env(g, t, .04, .6, .16); o.connect(f).connect(g).connect(c.destination); o.start(t); l.start(t); o.stop(t + .65); l.stop(t + .65); },
+    // Baustelle: drei Hammerschläge
+    hammer() { const c = ac(); if (!c) return; const t0 = c.currentTime + .03;
+      [0, .16, .32].forEach((d, i) => { const t = t0 + d, s = noise(c, .06), f = c.createBiquadFilter(), g = c.createGain(); f.type = "bandpass"; f.frequency.value = 2400 - i * 300; f.Q.value = 3; env(g, t, .002, .06, .3); s.connect(f).connect(g).connect(c.destination); s.start(t);
+        tone(c, 180 - i * 15, t, .09, .2, "triangle"); }); },
+    // City: Martinshorn tatü-tata
+    tatue() { const c = ac(); if (!c) return; const t = c.currentTime + .03; [466, 622, 466, 622].forEach((f, i) => tone(c, f, t + i * .2, .19, .09, "square")); },
+    // Gefängnisinsel: Zugpfeife tuut-tuut (zweistimmig)
+    tuut() { const c = ac(); if (!c) return; const t = c.currentTime + .03; [0, .34].forEach(d => { tone(c, 330, t + d, .3, .14, "triangle"); tone(c, 415, t + d, .3, .1, "triangle"); tone(c, 494, t + d, .3, .06, "sine"); }); },
+    // Wasser: Platschen und Blubberblasen
+    platsch() { const c = ac(); if (!c) return; const t = c.currentTime + .03, s = noise(c, .4), f = c.createBiquadFilter(), g = c.createGain();
+      f.type = "lowpass"; f.frequency.setValueAtTime(3000, t); f.frequency.exponentialRampToValueAtTime(300, t + .35); env(g, t, .01, .38, .3); s.connect(f).connect(g).connect(c.destination); s.start(t);
+      [.2, .3, .38].forEach((d, i) => { const o = c.createOscillator(), g2 = c.createGain(); o.frequency.setValueAtTime(500 + i * 150, t + d); o.frequency.exponentialRampToValueAtTime(1100 + i * 200, t + d + .06); env(g2, t + d, .005, .07, .1); o.connect(g2).connect(c.destination); o.start(t + d); o.stop(t + d + .09); }); },
+    // Weltall: Computer-Piepen
+    piep() { const c = ac(); if (!c) return; const t = c.currentTime + .03; [1200, 1600, 2000, 2400].forEach((f, i) => tone(c, f, t + i * .07, .08, .1, "sine")); },
     // Applaus: viele kurze Klatscher über zwei Sekunden
     applause() { const c = ac(); if (!c) return; const t0 = c.currentTime + .05;
       for (let i = 0; i < 70; i++) { const t = t0 + Math.random() * 2.2 * Math.sqrt(Math.random()), s = noise(c, .04), f = c.createBiquadFilter(), g = c.createGain();
@@ -4499,7 +4579,8 @@ function renderLevels() {
     const cls = ["lvl", done ? "done" : "", !open ? "locked" : "", l === next ? "next" : ""].join(" ");
     return row + `<button type="button" class="${cls}" data-l="${l}" ${open ? "" : "disabled"} aria-label="Level ${l + 1}${done ? ", geschafft" : open ? "" : ", gesperrt"}">
       ${open ? `<span class="lvl-num">${l + 1}</span>${miniLevel(w.levels[l].m)}` : `<svg viewBox="0 0 24 24"><use href="#schloss"/></svg>`}
-      ${open && (th.levelIcon || th.levelBox) && !prize ? `<svg class="lvl-gem" viewBox="0 0 100 100"><use href="#${(th.levelIcon || th.levelBox)(l)}"/></svg>` : ""}
+      ${th.levelNames && th.levelNames[l] ? `<span class="lvl-name">${esc(th.levelNames[l])}</span>` : ""}
+      ${open && (th.levelIcon || th.levelBox) && !th.levelNames && !prize ? `<svg class="lvl-gem" viewBox="0 0 100 100"><use href="#${(th.levelIcon || th.levelBox)(l)}"/></svg>` : ""}
       ${prize ? `<svg class="prize-ico" viewBox="0 0 100 ${th.prize.symbol === "schleife" ? 128 : 100}"><use href="#${th.prize.symbol}"/></svg>`
         : ""}
       ${done ? `<svg class="lvl-star" viewBox="0 0 100 100"><use href="#${isGold(p, curWorld, l) ? "stern" : "stern-silber"}"/></svg>` : ""}
@@ -4626,6 +4707,7 @@ function buildBoard() {
     if (goals.has(k)) html += `<div class="tile target" data-k="${k}" ${pos}>${T.targetAt ? T.targetAt(...k.split(",").map(Number)) : T.target(curLevel)}</div>`;
   }
   if (T.levelName) html += signHTML(T.levelName(curLevel));
+  if (S && S.boardExtras) html += S.boardExtras(ctx, W, H);
   board.innerHTML = html;
   const side = (S && S.side) || null, arena = document.querySelector(".arena");
   if (arena) {
@@ -4706,7 +4788,7 @@ function render() {
     el.style.setProperty("--x", b.x); el.style.setProperty("--y", b.y); el.style.setProperty("--rot", b.rot + "deg");
     const isIn = goals.has(k);
     if (isIn) { scored++; hit.add(k); }
-    if (isIn && !el.classList.contains("in") && el.dataset.ready) { SND.place(); if (typeof FX !== "undefined") FX.place(b.x, b.y); }
+    if (isIn && !el.classList.contains("in") && el.dataset.ready) { if (S && S.sound && SND[S.sound]) SND[S.sound](); else SND.place(); if (typeof FX !== "undefined") FX.place(b.x, b.y); }
     el.dataset.ready = "1";
     el.classList.toggle("in", isIn);
     if (T.boxIn) el.querySelector("use").setAttribute("href", "#" + (isIn ? T.boxIn : boxId()));
