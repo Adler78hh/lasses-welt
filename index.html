@@ -1746,6 +1746,293 @@ LASSE.astronaut = lasseBase("#f2f3f5", "#f2f3f5", "#8b939f",
   `<rect x="42" y="56" width="16" height="10" rx="2" fill="#0055bf" stroke="${INK}" stroke-width="1.6"/><circle cx="46" cy="61" r="1.8" fill="#e3000b"/><circle cx="54" cy="61" r="1.8" fill="#ffcd03"/>`,
   `${HAIR_STRUBBEL}<circle cx="50" cy="32" r="30" fill="#9fd8ff" fill-opacity=".28" stroke="#ffffff" stroke-width="4"/><circle cx="50" cy="32" r="30" fill="none" stroke="${INK}" stroke-width="2"/>
    <path d="M30 18q8-10 20-10" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity=".8"/>`);
+// ----- Lego-Welt neu: sechs Schauplätze, ein Level pro Schauplatz -----
+// Zoo (Duplo), Baustelle (Duplo), City, Wasserexpedition, Bahnhof, Weltall – nach Lasses eigenen Sets.
+// Geschoben werden überall Legosteine auf Bauplätze; nur Wände, Boden, Lasse und das Jubelwort wechseln.
+
+// Bahnhof: der schwarze Schnellzug mit hellgrünen Streifen, der rote Wagen mit türkisen Sitzen, Signal, Uhr, Bahnsteig
+const BH_BASE = (top = "#c4c9ce") => `<rect x="3" y="9" width="94" height="88" rx="10" fill="#00000033"/><rect x="3" y="3" width="94" height="86" rx="10" fill="${top}" ${LG_OL}/>`;
+const BH_LIME = "#b5e61d";
+const bhLok = `<svg viewBox="0 0 100 100">${BH_BASE("#8b939f")}
+  <path d="M16 86V40q0-26 34-26t34 26v46z" fill="#16181f" ${LG_OL}/>
+  <path d="M22 44q2-20 28-20t28 20l-2 10H24z" fill="#3a4a5a" ${LG_OL}/><path d="M30 34q8-6 18-6" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+  <path d="M16 62h68v24H16z" fill="#f2f3f5" ${LG_OL}/>
+  <path d="M16 60h68" stroke="${BH_LIME}" stroke-width="5"/>
+  <circle cx="28" cy="74" r="5" fill="#fff6a8" ${LG_OL}/><circle cx="72" cy="74" r="5" fill="#fff6a8" ${LG_OL}/>
+  <rect x="40" y="70" width="20" height="8" rx="3" fill="#16181f"/></svg>`;
+const bhWagen = `<svg viewBox="0 0 100 100">${BH_BASE("#8b939f")}
+  <rect x="8" y="18" width="84" height="60" rx="8" fill="#16181f" ${LG_OL}/>
+  <rect x="8" y="14" width="84" height="10" rx="5" fill="#2b2d33" ${LG_OL}/>
+  ${[16, 40, 64].map(x => `<rect x="${x}" y="30" width="20" height="18" rx="3" fill="#3a4a5a" ${LG_OL}/><path d="M${x + 4} ${36}l6-4" stroke="#ffffff" stroke-width="2" opacity=".5"/>`).join("")}
+  <path d="M8 58h84" stroke="${BH_LIME}" stroke-width="5"/><path d="M8 66h84" stroke="#f2f3f5" stroke-width="3"/>
+  <circle cx="26" cy="82" r="7" fill="#2b2d33" ${LG_OL}/><circle cx="74" cy="82" r="7" fill="#2b2d33" ${LG_OL}/></svg>`;
+const bhRot = `<svg viewBox="0 0 100 100">${BH_BASE("#8b939f")}
+  <rect x="22" y="6" width="56" height="86" rx="6" fill="#e3000b" ${LG_OL}/>
+  <rect x="30" y="12" width="40" height="74" rx="3" fill="#2b2d33" ${LG_OL}/>
+  ${[18, 38, 58].map(y => `<rect x="36" y="${y}" width="28" height="12" rx="3" fill="#18a6a0" ${LG_OL}/><rect x="36" y="${y + 9}" width="28" height="4" rx="2" fill="#0f7d78"/>`).join("")}
+  <path d="M26 8v82M74 8v82" stroke="#16181f" stroke-width="2.4"/></svg>`;
+const bhSignal = `<svg viewBox="0 0 100 100">${BH_BASE()}
+  <rect x="46" y="44" width="8" height="46" fill="#8b939f" ${LG_OL}/><rect x="36" y="86" width="28" height="6" rx="2" fill="#5b6475" ${LG_OL}/>
+  <rect x="34" y="8" width="32" height="44" rx="10" fill="#16181f" ${LG_OL}/>
+  <circle class="blinklight" cx="50" cy="20" r="7" fill="#ff4b3b"/><circle cx="50" cy="39" r="7" fill="#00c853" opacity=".9"/></svg>`;
+const bhUhr = `<svg viewBox="0 0 100 100">${BH_BASE()}
+  <rect x="46" y="58" width="8" height="32" fill="#8b939f" ${LG_OL}/><rect x="36" y="86" width="28" height="6" rx="2" fill="#5b6475" ${LG_OL}/>
+  <circle cx="50" cy="36" r="27" fill="#ffffff" stroke="#16181f" stroke-width="5"/>
+  ${Array.from({ length: 12 }, (_, i) => `<path d="M50 13v5" stroke="#16181f" stroke-width="${i % 3 ? 1.6 : 3}" transform="rotate(${i * 30} 50 36)"/>`).join("")}
+  <path d="M50 36V20M50 36l10 6" stroke="#16181f" stroke-width="3.4" stroke-linecap="round"/><circle cx="50" cy="36" r="3" fill="#e3000b"/></svg>`;
+const bhSchild = `<svg viewBox="0 0 100 100">${BH_BASE()}
+  <rect x="24" y="46" width="6" height="44" fill="#8b939f" ${LG_OL}/><rect x="70" y="46" width="6" height="44" fill="#8b939f" ${LG_OL}/>
+  <rect x="8" y="16" width="84" height="36" rx="6" fill="#0055bf" ${LG_OL}/><rect x="13" y="21" width="74" height="26" rx="3" fill="none" stroke="#ffffff" stroke-width="2"/>
+  <text x="50" y="41" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="17" fill="#ffffff">Gleis 1</text></svg>`;
+const bhAutomat = `<svg viewBox="0 0 100 100">${BH_BASE()}
+  <rect x="24" y="8" width="52" height="82" rx="8" fill="#e3000b" ${LG_OL}/>
+  <rect x="32" y="16" width="36" height="24" rx="3" fill="#9fd8ff" ${LG_OL}/><text x="50" y="33" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="10" fill="#0055bf">TICKET</text>
+  ${[0, 1, 2].map(i => `<circle cx="${38 + i * 12}" cy="50" r="4" fill="#ffcd03" ${LG_OL}/>`).join("")}
+  <rect x="36" y="62" width="28" height="7" rx="3" fill="#16181f"/><rect x="40" y="72" width="20" height="12" rx="2" fill="#ffffff" ${LG_OL}/></svg>`;
+const bhFahrer = `<svg viewBox="0 0 100 100">${BH_BASE("#9fd8ff")}
+  ${minifig(`<path d="M38 24q0-12 12-12t12 12z" fill="#16181f" ${LG_OL}/><rect x="34" y="21" width="32" height="6" rx="3" fill="#16181f" ${LG_OL}/><rect x="40" y="16" width="20" height="4" fill="${BH_LIME}"/>`, "#16181f", `<path d="M38 52h24" stroke="${BH_LIME}" stroke-width="4"/>`)}</svg>`;
+const BH_WALLS = [bhLok, bhWagen, bhRot, bhSignal, bhUhr, bhSchild, bhAutomat, bhWagen, bhLok, bhFahrer];
+const bhFloor = (x, y, ctx) => {
+  // eine Gleisreihe quer durch die Mitte, sonst Bahnsteig mit gelber Sicherheitslinie zum Gleis hin
+  if (y === ctx.midY) return plate("#8b7a66", "#9b8a76", 3, x, y) +
+    `${[14, 50, 86].map(cx => `<rect x="${cx - 6}" y="16" width="12" height="68" rx="2" fill="#6b5a46"/>`).join("")}
+    <rect x="0" y="27" width="100" height="7" fill="#8b939f" stroke="#4a3728" stroke-width="1.6"/><rect x="0" y="66" width="100" height="7" fill="#8b939f" stroke="#4a3728" stroke-width="1.6"/></svg>`;
+  const edge = y === ctx.midY - 1 ? `<path d="M0 92h100" stroke="#ffcd03" stroke-width="5" stroke-dasharray="12 6"/>` : y === ctx.midY + 1 ? `<path d="M0 8h100" stroke="#ffcd03" stroke-width="5" stroke-dasharray="12 6"/>` : "";
+  return plate("#c4c9ce", "#d3d7db", 3, x, y) + edge + "</svg>";
+};
+// Lasse als Schaffner: dunkelblaue Jacke, rote Krawatte, Schaffnermütze mit rotem Band, Pfeife
+LASSE.schaffner = lasseBase("#1f3f8a", "#4a3728", "#16181f",
+  `<path d="M46 50l4 4 4-4-2 16h-4z" fill="#e3000b" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/>
+   <circle cx="40" cy="62" r="1.8" fill="#ffcd03"/><circle cx="40" cy="70" r="1.8" fill="#ffcd03"/><circle cx="60" cy="62" r="1.8" fill="#ffcd03"/><circle cx="60" cy="70" r="1.8" fill="#ffcd03"/>`,
+  `<path d="M26 33q-3 6 1 10 1-6 4-8zM74 33q3 6-1 10-1-6-4-8z" fill="${HAIR}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
+   <path d="M24 26q2-18 26-18t26 18z" fill="#1f3f8a" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
+   <rect x="24" y="22" width="52" height="8" rx="2" fill="#e3000b" stroke="${INK}" stroke-width="2"/>
+   <path d="M30 30q20 8 40 0l-2 6q-18-5-36 0z" fill="#16181f" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
+   <circle cx="50" cy="16" r="3.4" fill="#ffcd03" stroke="${INK}" stroke-width="1.6"/>`);
+
+
+// ---------- Duplo-Zoo: dicke Duplo-Steine, darauf typische Zootiere ----------
+const dz = (c, inner) => `<svg viewBox="0 0 100 100">${duploBrick(c)}<g class="bob">${inner}</g></svg>`;
+const EYE = (x, y) => `<circle cx="${x}" cy="${y}" r="2.6" fill="#4a3728"/><circle cx="${x + .9}" cy="${y - .9}" r=".9" fill="#ffffff"/>`;
+const zGiraffe = dz("#00852b", `<path d="M44 66l4-40h10l-2 40z" fill="#ffcd03" ${LG_OL}/>
+  <ellipse cx="54" cy="22" rx="14" ry="10" fill="#ffcd03" ${LG_OL}/><path d="M46 14l-2-8M58 13l1-8" stroke="#4a3728" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="44" cy="5" r="3" fill="#8a5a2b" ${LG_OL}/><circle cx="59" cy="4" r="3" fill="#8a5a2b" ${LG_OL}/>
+  <ellipse cx="64" cy="25" rx="6" ry="4.5" fill="#f2c27a" ${LG_OL}/>${EYE(53, 19)}
+  <circle cx="50" cy="40" r="3.4" fill="#c27a2c"/><circle cx="53" cy="54" r="3" fill="#c27a2c"/><circle cx="48" cy="60" r="2.4" fill="#c27a2c"/>`);
+const zElefant = dz("#0055bf", `<path d="M30 34q-12 2-10 18 8 6 14-4z" fill="#a9b1bd" ${LG_OL}/><path d="M70 34q12 2 10 18-8 6-14-4z" fill="#a9b1bd" ${LG_OL}/>
+  <circle cx="50" cy="36" r="20" fill="#b8c0cb" ${LG_OL}/><path d="M50 44q-4 14 2 22 5 2 6-2-4-6-2-20z" fill="#b8c0cb" ${LG_OL}/>
+  ${EYE(42, 33)}${EYE(58, 33)}<circle cx="38" cy="42" r="3" fill="#ff9db0" opacity=".6"/><circle cx="62" cy="42" r="3" fill="#ff9db0" opacity=".6"/>`);
+const zLoewe = dz("#ff7e14", `${Array.from({ length: 12 }, (_, i) => `<circle cx="${50 + 20 * Math.cos(i * Math.PI / 6)}" cy="${38 + 20 * Math.sin(i * Math.PI / 6)}" r="9" fill="#c25a14" ${LG_OL}/>`).join("")}
+  <circle cx="50" cy="38" r="18" fill="#ffc53d" ${LG_OL}/>${EYE(43, 35)}${EYE(57, 35)}
+  <path d="M46 43h8l-4 4z" fill="#8a4a2b"/><path d="M50 47q-3 4-7 2M50 47q3 4 7 2" fill="none" stroke="#4a3728" stroke-width="2" stroke-linecap="round"/>`);
+const zZebra = dz("#ffcd03", `<path d="M38 18q-4-10 2-12 4 4 4 12zM62 18q4-10-2-12-4 4-4 12z" fill="#ffffff" ${LG_OL}/>
+  <path d="M34 34q0-20 16-20t16 20q0 24-16 30-16-6-16-30z" fill="#ffffff" ${LG_OL}/>
+  <path d="M36 26h10M54 26h10M35 36h8M57 36h8M38 46h6M56 46h6" stroke="#4a3728" stroke-width="3.4" stroke-linecap="round"/>
+  <path d="M44 14q6-6 12 0" fill="none" stroke="#4a3728" stroke-width="6" stroke-linecap="round"/>
+  <ellipse cx="50" cy="56" rx="10" ry="7" fill="#5b6475" ${LG_OL}/>${EYE(43, 32)}${EYE(57, 32)}`);
+const zAffe = dz("#8a5a2b", `<circle cx="30" cy="36" r="8" fill="#8a5a2b" ${LG_OL}/><circle cx="70" cy="36" r="8" fill="#8a5a2b" ${LG_OL}/>
+  <circle cx="50" cy="34" r="20" fill="#8a5a2b" ${LG_OL}/><path d="M36 38q0-12 14-8 14-4 14 8 0 14-14 14t-14-14z" fill="#f2c9a0" ${LG_OL}/>
+  ${EYE(44, 34)}${EYE(56, 34)}<path d="M44 44q6 5 12 0" fill="none" stroke="#4a3728" stroke-width="2.2" stroke-linecap="round"/>`);
+const zPinguin = dz("#9fd8ff", `<ellipse cx="50" cy="40" rx="18" ry="24" fill="#4a3728" ${LG_OL}/><ellipse cx="50" cy="46" rx="12" ry="17" fill="#ffffff"/>
+  ${EYE(44, 28)}${EYE(56, 28)}<path d="M45 34l5 5 5-5z" fill="#ff7e14" ${LG_OL}/><path d="M42 64h7M51 64h7" stroke="#ff7e14" stroke-width="4" stroke-linecap="round"/>`);
+const zZaun = `<svg viewBox="0 0 100 100">${duploBrick("#00852b")}
+  ${[16, 38, 60, 82].map(x => `<path d="M${x - 6} 70V26l6-8 6 8v44z" fill="#c98a4a" ${LG_OL}/>`).join("")}
+  <rect x="6" y="34" width="88" height="8" rx="3" fill="#a96a2a" ${LG_OL}/><rect x="6" y="54" width="88" height="8" rx="3" fill="#a96a2a" ${LG_OL}/></svg>`;
+const zSchild = `<svg viewBox="0 0 100 100">${duploBrick("#e3000b")}
+  <rect x="46" y="46" width="8" height="30" fill="#8a5a2b" ${LG_OL}/>
+  <rect x="16" y="14" width="68" height="36" rx="10" fill="#ffcd03" ${LG_OL}/>
+  <text x="50" y="42" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="24" fill="#4a3728">ZOO</text></svg>`;
+const ZOO_WALLS = [zGiraffe, zElefant, zLoewe, zZebra, zAffe, zPinguin, zZaun, zSchild, `<svg viewBox="0 0 100 100">${duploTree}</svg>`, zZaun];
+const zooFloor = (x, y, ctx) => (y === ctx.midY ? plate("#e8c27a", "#f2d394", 2, x, y) : plate("#5cb85c", "#6fcf6f", 2, x, y)) + "</svg>";
+
+// ---------- Duplo-Baustelle: gelbe Raupe und Radlader, Kran, Baken, Betonmischer ----------
+const dbStripes = (x, y, w, h) => `<clipPath id="dbs${x}${y}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2"/></clipPath><g clip-path="url(#dbs${x}${y})"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#ffcd03"/>${Array.from({ length: 8 }, (_, i) => `<path d="M${x + i * 8 - 6} ${y + h}l${h} -${h}" stroke="#4a3728" stroke-width="3.4"/>`).join("")}</g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="none" ${LG_OL}/>`;
+const bRaupe = dz("#ff7e14", `<rect x="14" y="52" width="60" height="16" rx="8" fill="#4a3728" ${LG_OL}/>${[24, 38, 52, 64].map(x => `<circle cx="${x}" cy="60" r="4" fill="#ffcd03"/>`).join("")}
+  <rect x="20" y="30" width="48" height="22" rx="5" fill="#ffcd03" ${LG_OL}/>${dbStripes(24, 34, 22, 8)}
+  <rect x="48" y="16" width="18" height="16" rx="3" fill="#0055bf" ${LG_OL}/><rect x="52" y="19" width="10" height="8" rx="2" fill="#9fd8ff"/>
+  <path d="M74 40l12 6v20H74z" fill="#5b6475" ${LG_OL}/><path d="M76 66h12" stroke="#4a3728" stroke-width="3"/>`);
+const bLader = dz("#0055bf", `<rect x="22" y="28" width="46" height="24" rx="6" fill="#ffcd03" ${LG_OL}/>
+  <rect x="26" y="12" width="22" height="18" rx="3" fill="#ff9f1a" ${LG_OL}/><rect x="30" y="15" width="14" height="10" rx="2" fill="#9fd8ff"/>
+  <path d="M66 36l14 4" stroke="#4a3728" stroke-width="5" stroke-linecap="round"/><path d="M76 30h14v24l-16-4z" fill="#5b6475" ${LG_OL}/>
+  <circle cx="32" cy="58" r="11" fill="#4a3728" ${LG_OL}/><circle cx="32" cy="58" r="4" fill="#ffcd03"/><circle cx="60" cy="58" r="11" fill="#4a3728" ${LG_OL}/><circle cx="60" cy="58" r="4" fill="#ffcd03"/>`);
+const bKran = dz("#ffcd03", `<rect x="22" y="6" width="9" height="60" fill="#ffcd03" ${LG_OL}/>${[14, 26, 38, 50].map(y => `<path d="M23 ${y}l7 10" stroke="#4a3728" stroke-width="1.8"/>`).join("")}
+  <rect x="14" y="6" width="74" height="8" fill="#ffcd03" ${LG_OL}/><path d="M78 14v22" stroke="#4a3728" stroke-width="2"/>
+  <rect x="70" y="36" width="16" height="12" rx="3" fill="#e3000b" ${LG_OL}/><rect x="8" y="14" width="12" height="10" fill="#5b6475" ${LG_OL}/>`);
+const bBake = `<svg viewBox="0 0 100 100">${duploBrick("#00852b")}
+  ${[30, 70].map(x => `<path d="M${x - 10} 74l6-56h8l6 56z" fill="#ffffff" ${LG_OL}/><path d="M${x - 6} 34h12M${x - 8} 54h16" stroke="#e3000b" stroke-width="7"/><circle class="blinklight" cx="${x}" cy="14" r="5" fill="#ffcd03" ${LG_OL}/>`).join("")}
+  <rect x="10" y="40" width="80" height="10" rx="3" fill="#e3000b" ${LG_OL}/></svg>`;
+const bMischer = dz("#e3000b", `<ellipse cx="44" cy="36" rx="24" ry="17" fill="#ff7e14" ${LG_OL}/><path d="M28 28l30 18M36 22l26 16" stroke="#ffffff" stroke-width="3" opacity=".7"/>
+  <rect x="66" y="28" width="20" height="26" rx="4" fill="#0055bf" ${LG_OL}/><rect x="70" y="32" width="12" height="9" rx="2" fill="#9fd8ff"/>
+  <rect x="14" y="52" width="74" height="8" rx="3" fill="#5b6475" ${LG_OL}/>
+  <circle cx="26" cy="64" r="8" fill="#4a3728"/><circle cx="56" cy="64" r="8" fill="#4a3728"/><circle cx="76" cy="64" r="8" fill="#4a3728"/>`);
+const bSand = dz("#0055bf", `<path d="M12 66q14-40 38-40t38 40z" fill="#e8c27a" ${LG_OL}/><circle cx="40" cy="44" r="2" fill="#c9a050"/><circle cx="58" cy="52" r="2" fill="#c9a050"/>
+  <path d="M60 18l14 30" stroke="#8a5a2b" stroke-width="4" stroke-linecap="round"/><path d="M70 44l10 4-4 12-10-4z" fill="#8b939f" ${LG_OL}/>`);
+const bStapel = `<svg viewBox="0 0 100 100">${duploBrick("#8b939f")}
+  <g transform="translate(14 30) scale(.36)">${duploBrick("#e3000b")}</g><g transform="translate(50 30) scale(.36)">${duploBrick("#0055bf")}</g>
+  <g transform="translate(32 4) scale(.36)">${duploBrick("#ffcd03")}</g></svg>`;
+const BAU_WALLS = [bRaupe, bLader, bKran, bBake, bMischer, bSand, bStapel, bBake, bStapel];
+const bauFloor = (x, y) => plate("#c9a467", "#d8b57a", 2, x, y) + (pick(x, y, 5, 9) === 0 ? `<circle cx="30" cy="70" r="6" fill="#a8844a" opacity=".6"/><circle cx="70" cy="30" r="4" fill="#a8844a" opacity=".6"/>` : "") + "</svg>";
+
+// ---------- City mit Polizei-Gefängnisinsel: Turm mit Scheinwerfern, Gitter, Hubschrauber, Boot, Flitzer ----------
+const CW = (top) => cityWall(top);
+const cTurm = `<svg viewBox="0 0 100 100">${CW("#8b939f")}
+  <rect x="32" y="34" width="36" height="54" fill="#c8743a" ${LG_OL}/><rect x="40" y="46" width="20" height="16" rx="2" fill="#9fd8ff" ${LG_OL}/><path d="M50 46v16" stroke="#ffffff" stroke-width="2"/>
+  <path d="M26 34l8-16h32l8 16z" fill="#1f3f8a" ${LG_OL}/><path d="M28 32h44" stroke="#ffe11a" stroke-width="3"/>
+  <rect x="38" y="20" width="24" height="10" fill="#fff6a8" opacity=".9" ${LG_OL}/>
+  <path class="flame" d="M38 22L10 6v14zM62 22l28-16v14z" fill="#fff6a8" opacity=".55"/>
+  <path d="M50 18V4" stroke="#4a3728" stroke-width="2.4"/><circle cx="50" cy="4" r="3" fill="#ffffff" ${LG_OL}/></svg>`;
+const cGitter = `<svg viewBox="0 0 100 100">${CW("#c8743a")}
+  <rect x="3" y="3" width="94" height="14" rx="8" fill="#1f3f8a"/><path d="M3 15h94" stroke="#ffe11a" stroke-width="3"/>
+  <rect x="16" y="26" width="68" height="54" rx="3" fill="#5b4a6a" ${LG_OL}/>
+  ${[28, 42, 58, 72].map(x => `<path d="M${x} 26v54" stroke="#f2f3f5" stroke-width="4"/>`).join("")}<path d="M16 44h68M16 62h68" stroke="#f2f3f5" stroke-width="4"/></svg>`;
+const cHeli = `<svg viewBox="0 0 100 100">${CW("#9fd8ff")}
+  <path d="M8 22h84" stroke="#4a3728" stroke-width="4" stroke-linecap="round"/><rect x="46" y="22" width="8" height="10" fill="#4a3728"/>
+  <path d="M60 44h30l4-10h-6l-6 6H60z" fill="#16181f" ${LG_OL}/>
+  <path d="M18 56q0-24 24-24h18q8 0 8 12v12q0 10-10 10H28q-10 0-10-10z" fill="#1f3f8a" ${LG_OL}/>
+  <path d="M20 52q2-16 18-16v16z" fill="#9fd8ff" ${LG_OL}/><path d="M40 56h28" stroke="#ffe11a" stroke-width="4"/>
+  <circle cx="54" cy="46" r="5" fill="#ffffff" ${LG_OL}/><path d="M24 76h44M30 66v10M60 66v10" stroke="#4a3728" stroke-width="3" stroke-linecap="round"/></svg>`;
+const cBoot = `<svg viewBox="0 0 100 100">${CW("#2f7ae5")}
+  <path d="M8 70q0 10 12 14h62l12-24H8z" fill="#1f3f8a" ${LG_OL}/><path d="M10 66h82" stroke="#ffe11a" stroke-width="3"/>
+  <path d="M34 60l6-22h22l8 22z" fill="#f2f3f5" ${LG_OL}/><path d="M42 56l4-14h14l4 14z" fill="#9fd8ff"/>
+  <rect class="siren blue" x="46" y="30" width="12" height="7" rx="3" fill="#2f7ae5" ${LG_OL}/>
+  <path d="M6 90q8-5 16 0t16 0 16 0 16 0 16 0 16 0" fill="none" stroke="#ffffff" stroke-width="2.4" opacity=".8"/></svg>`;
+const cFlitzer = `<svg viewBox="0 0 100 100">${CW("#8b939f")}
+  <path d="M8 66q0-12 14-14l16-14h26l20 14q10 2 10 14v6H8z" fill="#f2f3f5" ${LG_OL}/>
+  <path d="M40 40h22l14 12H28z" fill="#9fd8ff" ${LG_OL}/><path d="M8 62h86" stroke="#1f3f8a" stroke-width="6"/><path d="M8 62h86" stroke="#ffe11a" stroke-width="1.6"/>
+  <rect class="siren red2" x="46" y="32" width="10" height="6" rx="3" fill="#ff4b3b" ${LG_OL}/>
+  <circle cx="26" cy="74" r="9" fill="#4a3728"/><circle cx="76" cy="74" r="9" fill="#4a3728"/></svg>`;
+const cBlau = `<svg viewBox="0 0 100 100">${CW("#8b939f")}
+  <rect x="10" y="40" width="80" height="34" rx="10" fill="#1f5fd0" ${LG_OL}/>
+  <path d="M24 40l8-16h36l8 16z" fill="#1f5fd0" ${LG_OL}/><path d="M32 38l5-10h26l5 10z" fill="#9fd8ff" ${LG_OL}/>
+  <path d="M44 24v50M56 24v50" stroke="#ffffff" stroke-width="5"/>
+  <rect class="siren blue" x="40" y="16" width="20" height="8" rx="3" fill="#2f7ae5" ${LG_OL}/>
+  <rect x="14" y="70" width="18" height="16" rx="5" fill="#4a3728"/><rect x="68" y="70" width="18" height="16" rx="5" fill="#4a3728"/></svg>`;
+const cFels = `<svg viewBox="0 0 100 100">${CW("#7d8590")}
+  <path d="M10 80l10-30 16-8 14 12 18-20 22 18v28z" fill="#a0a5a9" ${LG_OL}/><path d="M36 42l4 12M68 34l-2 14" stroke="#4a3728" stroke-width="2"/>
+  <g class="bob"><ellipse cx="34" cy="76" rx="9" ry="6" fill="#e3000b" ${LG_OL}/><path d="M26 72l-6-6M42 72l6-6M28 80l-6 4M40 80l6 4" stroke="#e3000b" stroke-width="2.4" stroke-linecap="round"/>${EYE(31, 73)}${EYE(37, 73)}</g>
+  <path d="M70 80q0-14 4-20M74 60q-8-2-12 4M74 60q8-4 12 2" fill="none" stroke="#2f9a3a" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="16" cy="20" r="9" fill="none" stroke="#ff7e14" stroke-width="5"/></svg>`;
+const CITY_WALLS = [cFlitzer, cBlau, policeStation, policeman, fireStation, fireTruck, firefighter, policeCar];
+// Bahnhof und Polizei-Gefängnisinsel gehören zusammen: der Zug fährt an der Insel vorbei
+const BH_INSEL = [...BH_WALLS, cTurm, cGitter, cHeli, cBoot, cFels, cGitter, cTurm];
+
+// ---------- Wasserexpedition: Lasses Forschungsschiff, U-Boot, Hubschrauber, Schlauchboot und die Tiere ----------
+const EXP_O = "#ff7e14", EXP_N = "#1f3a6a", EXP_T = "#3ec6d6";
+const WX = (top = "#cfeeff") => `<rect x="3" y="9" width="94" height="88" rx="12" fill="#5a8fb8"/><rect x="3" y="3" width="94" height="86" rx="12" fill="${top}" ${LG_OL}/>`;
+const wSchiff = `<svg viewBox="0 0 100 100">${WX("#7fc8f0")}
+  <path d="M4 58h92l-10 22H14z" fill="${EXP_N}" ${LG_OL}/><path d="M8 64h86" stroke="${EXP_T}" stroke-width="3"/>
+  <text x="74" y="76" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="9" fill="${EXP_T}">60368</text>
+  <path d="M50 58V22l18 12v24z" fill="${EXP_O}" ${LG_OL}/><rect x="60" y="34" width="30" height="24" rx="2" fill="#f2f3f5" ${LG_OL}/>
+  ${[64, 72, 80].map(x => `<rect x="${x}" y="40" width="5" height="5" fill="#4a3728"/>`).join("")}<rect x="62" y="28" width="22" height="6" fill="${EXP_T}" ${LG_OL}/>
+  <path d="M14 58V40l20-18" fill="none" stroke="#4a3728" stroke-width="4" stroke-linecap="round"/><path d="M34 22v10" stroke="#4a3728" stroke-width="2"/><path d="M30 34h8" stroke="#4a3728" stroke-width="3"/>
+  <path d="M4 90q8-5 16 0t16 0 16 0 16 0 16 0 16 0" fill="none" stroke="#ffffff" stroke-width="2.4" opacity=".8"/></svg>`;
+const wUboot = `<svg viewBox="0 0 100 100">${WX("#2f7ae5")}
+  <path d="M12 52q0-20 30-20h30q18 0 18 20t-18 20H42q-30 0-30-20z" fill="#f2f3f5" ${LG_OL}/>
+  <path d="M30 34h44q10 0 14 10H24q2-10 6-10z" fill="${EXP_O}" ${LG_OL}/><path d="M24 64h62" stroke="${EXP_N}" stroke-width="6"/>
+  <circle cx="26" cy="52" r="13" fill="#9fd8ff" fill-opacity=".85" ${LG_OL}/><path d="M20 46q4-4 8-3" stroke="#ffffff" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <path d="M90 44l6-6v28l-6-6z" fill="${EXP_N}" ${LG_OL}/><path d="M14 66l-8 10M18 68l-4 12" stroke="${EXP_O}" stroke-width="3" stroke-linecap="round"/>
+  ${[[60, 20], [70, 14], [64, 8]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="none" stroke="#ffffff" stroke-width="1.8" opacity=".8"/>`).join("")}</svg>`;
+const wHeli = `<svg viewBox="0 0 100 100">${WX()}
+  <path d="M6 20h88" stroke="#4a3728" stroke-width="4" stroke-linecap="round"/><rect x="46" y="20" width="8" height="10" fill="#4a3728"/>
+  <path d="M14 56q0-26 30-26h20q20 0 24 18l2 14H20q-6 0-6-6z" fill="${EXP_N}" ${LG_OL}/>
+  <path d="M64 30q20 0 24 18l2 14H64z" fill="#f2f3f5" ${LG_OL}/><path d="M66 36q14 2 18 14H66z" fill="#9fd8ff"/>
+  <rect x="24" y="40" width="26" height="14" rx="4" fill="${EXP_O}" ${LG_OL}/><circle cx="30" cy="62" r="6" fill="#4a3728"/><circle cx="74" cy="64" r="6" fill="#4a3728"/></svg>`;
+const wBoot = `<svg viewBox="0 0 100 100">${WX("#2f7ae5")}
+  <path d="M10 56q0-10 12-10h56q12 0 12 10t-12 10H22q-12 0-12-10z" fill="#7ad63a" ${LG_OL}/><path d="M16 56h68" stroke="#4aa61a" stroke-width="4"/>
+  <rect x="78" y="40" width="10" height="16" rx="2" fill="#4a3728" ${LG_OL}/>
+  ${minifig(`<rect x="40" y="18" width="20" height="8" rx="3" fill="${EXP_O}" ${LG_OL}/>`, EXP_O, "").replace('<g class="bob">', '<g class="bob" transform="translate(-6 -18) scale(.8)">')}
+  <path d="M6 82q8-5 16 0t16 0 16 0 16 0 16 0 16 0" fill="none" stroke="#ffffff" stroke-width="2.4" opacity=".8"/></svg>`;
+const wOrca = `<svg viewBox="0 0 100 100">${WX("#2f7ae5")}<g class="bob">
+  <path d="M8 56q10-24 46-24 30 0 38 18-8 12-30 16H30q-16 0-22-10z" fill="#16181f" ${LG_OL}/><path d="M50 34l8-20 6 20z" fill="#16181f" ${LG_OL}/>
+  <path d="M14 58q20 10 48 6-14 4-20 0-14 4-28-6z" fill="#ffffff"/><ellipse cx="72" cy="40" rx="7" ry="4" fill="#ffffff"/>
+  <path d="M84 50l12-10-2 18z" fill="#16181f" ${LG_OL}/>${EYE(22, 46)}</g></svg>`;
+const wHai = `<svg viewBox="0 0 100 100">${WX("#2f7ae5")}<g class="bob">
+  <path d="M8 52q16-18 46-18 26 0 36 12l8-10-2 16 4 14-10-8q-12 10-38 10-28 0-44-16z" fill="#8b939f" ${LG_OL}/>
+  <path d="M44 36l10-20 8 20z" fill="#8b939f" ${LG_OL}/><path d="M12 56q30 14 60 6-24 10-48 6z" fill="#e9eaee"/>
+  <path d="M16 58l4 3 4-3 4 3 4-3" fill="none" stroke="#4a3728" stroke-width="1.6"/>${EYE(22, 48)}</g></svg>`;
+const wRochen = `<svg viewBox="0 0 100 100">${WX("#7fc8f0")}<g class="bob">
+  <path d="M50 26q12 14 40 18-14 12-32 12l-8 6-8-6q-18 0-32-12 28-4 40-18z" fill="#e897c8" ${LG_OL}/>
+  <path d="M50 62q2 14 12 24" fill="none" stroke="#4a3728" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M44 30q-4-8-10-8M56 30q4-8 10-8" fill="none" stroke="#4a3728" stroke-width="2.4" stroke-linecap="round"/>${EYE(44, 40)}${EYE(56, 40)}</g></svg>`;
+const wEisbaer = `<svg viewBox="0 0 100 100">${WX("#eaf6ff")}<g class="bob">
+  <path d="M14 66q0-24 30-24h20q22 0 22 16v12q0 6-6 6H20q-6 0-6-10z" fill="#ffffff" ${LG_OL}/>
+  <circle cx="76" cy="40" r="14" fill="#ffffff" ${LG_OL}/><circle cx="70" cy="28" r="4" fill="#ffffff" ${LG_OL}/>
+  <ellipse cx="86" cy="44" rx="5" ry="4" fill="#ffffff" ${LG_OL}/><circle cx="90" cy="43" r="2" fill="#4a3728"/>${EYE(76, 38)}
+  <path d="M28 76v6M44 76v6M62 76v6M76 76v6" stroke="#4a3728" stroke-width="2.4"/></g></svg>`;
+const wRobbe = `<svg viewBox="0 0 100 100">${WX("#eaf6ff")}<g class="bob">
+  <path d="M18 74q-4-20 14-34 14-10 30-6 14 4 14 18 0 8-8 12-10 4-20 10z" fill="#a9b1bd" ${LG_OL}/>
+  <path d="M30 72q-10 4-16 0 6-2 8-8" fill="#a9b1bd" ${LG_OL}/>${EYE(56, 42)}${EYE(66, 44)}
+  <ellipse cx="64" cy="52" rx="5" ry="3.4" fill="#4a3728"/><path d="M58 54l-12-2M70 56l10 2" stroke="#4a3728" stroke-width="1.4"/></g></svg>`;
+const wTaucher = `<svg viewBox="0 0 100 100">${WX("#2f7ae5")}
+  ${minifig(`<rect x="40" y="26" width="20" height="10" rx="4" fill="#9fd8ff" fill-opacity=".7" ${LG_OL}/><path d="M60 30q8 0 8 10v8" fill="none" stroke="#4a3728" stroke-width="2.4"/>`, "#4a3728", `<rect x="58" y="46" width="10" height="20" rx="4" fill="${EXP_T}" ${LG_OL}/>`)}
+  ${[[22, 30], [28, 18], [20, 10]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="none" stroke="#ffffff" stroke-width="1.8"/>`).join("")}</svg>`;
+const WASSER_WALLS = [wSchiff, wUboot, wHeli, wBoot, wOrca, wHai, wRochen, wEisbaer, wRobbe, wTaucher, wSchiff, wUboot];
+const wasserFloor = (x, y) => plate("#d8eef8", "#e8f6fc", 3, x, y) + (pick(x, y, 6, 8) === 0 ? `<path d="M16 70q8-5 16 0t16 0" fill="none" stroke="#7fc8f0" stroke-width="2.4" stroke-linecap="round"/>` : "") + "</svg>";
+
+// ---------- Weltall: dazu das Shuttle und der weiße Roboter-Astronaut aus dem Regal ----------
+const sShuttle = `<svg viewBox="0 0 100 100">${spaceWall("#3a4566")}
+  <path d="M50 6q10 10 10 34v34H40V40q0-24 10-34z" fill="#f2f3f5" ${LG_OL}/><path d="M44 18q6-6 12 0v6H44z" fill="#2b3a67"/>
+  <path d="M40 54L18 80h22zM60 54l22 26H60z" fill="#f2f3f5" ${LG_OL}/><path d="M24 76h14M62 76h14" stroke="#e3000b" stroke-width="3"/>
+  <path d="M44 38h12" stroke="#e3000b" stroke-width="3"/><path class="flame" d="M42 76q8 20 16 0z" fill="#ffb02e"/></svg>`;
+const sRoboter = `<svg viewBox="0 0 100 100">${spaceWall()}<g class="bob">
+  <rect x="34" y="8" width="32" height="26" rx="6" fill="#ffffff" ${LG_OL}/><rect x="38" y="13" width="24" height="12" rx="3" fill="#4a3728"/>
+  <circle cx="45" cy="19" r="2.6" fill="#7fe3ff"/><circle cx="55" cy="19" r="2.6" fill="#7fe3ff"/>
+  <rect x="30" y="36" width="40" height="30" rx="4" fill="#ffffff" ${LG_OL}/><rect x="40" y="42" width="8" height="8" fill="#e3000b"/><rect x="52" y="42" width="8" height="8" fill="#0055bf"/>
+  <rect x="16" y="36" width="12" height="28" rx="5" fill="#ffffff" ${LG_OL}/><rect x="72" y="36" width="12" height="28" rx="5" fill="#ffffff" ${LG_OL}/>
+  <rect x="34" y="66" width="13" height="22" rx="3" fill="#ffffff" ${LG_OL}/><rect x="53" y="66" width="13" height="22" rx="3" fill="#ffffff" ${LG_OL}/></g></svg>`;
+
+// ---------- Lasse je Schauplatz ----------
+// Zoowärter und Bauarbeiter als Duplo-Lasse mit gelbem Lego-Kopf
+LASSE.zoowaerter = lasseBase("#c9a86a", "#4f7a3a", "#8a5a2b",
+  `<rect x="54" y="58" width="9" height="8" rx="1.5" fill="#b08f52" stroke="${INK}" stroke-width="1.4"/><path d="M50 50v26" stroke="${INK}" stroke-width="1.4" opacity=".5"/>`,
+  `<ellipse cx="50" cy="20" rx="34" ry="6" fill="#d9c08a" stroke="${INK}" stroke-width="2.4"/>
+   <path d="M30 20q0-16 20-16t20 16z" fill="#d9c08a" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
+   <path d="M31 16q19 5 38 0" fill="none" stroke="#4f7a3a" stroke-width="4"/>`).replaceAll(SKIN, LEGO_YELLOW);
+LASSE.bauarbeiter = lasseBase("#0055bf", "#0055bf", "#8a5a2b",
+  `<path d="M34 56q0-6 8-8l4 28H33zM66 56q0-6-8-8l-4 28h13z" fill="#ff7e14" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"/>
+   <path d="M34 66h12M54 66h12" stroke="#e9f0f6" stroke-width="3"/>`,
+  `<path d="M24 24q0-20 26-20t26 20z" fill="#ffcd03" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
+   <rect x="20" y="22" width="60" height="6" rx="3" fill="#ffcd03" stroke="${INK}" stroke-width="2.2"/><path d="M50 5v17" stroke="#e8b400" stroke-width="4"/>`).replaceAll(SKIN, LEGO_YELLOW);
+LASSE.polizist = lasseBase("#2f6fd6", "#4a3728", "#16181f",
+  `<rect x="54" y="57" width="8" height="8" rx="1.5" fill="#ffcd03" stroke="${INK}" stroke-width="1.4"/><path d="M50 50v26" stroke="${INK}" stroke-width="1.4" opacity=".5"/>`,
+  `<path d="M26 33q-3 6 1 10 1-6 4-8zM74 33q3 6-1 10-1-6-4-8z" fill="${HAIR}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
+   <path d="M22 22q2-16 28-16t28 16l-4 6H26z" fill="#4a3728" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
+   <rect x="25" y="24" width="50" height="6" fill="#ffffff" stroke="${INK}" stroke-width="1.8"/>
+   <path d="M30 30q20 8 40 0l-2 6q-18-5-36 0z" fill="#16181f" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
+   <path d="M50 10l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z" fill="#ffcd03" stroke="${INK}" stroke-width="1.2"/>`);
+LASSE.forscher = lasseBase(EXP_O, EXP_N, "#16181f",
+  `<path d="M33 66h34" stroke="${EXP_N}" stroke-width="6"/><path d="M33 66h34" stroke="${EXP_T}" stroke-width="2"/><path d="M50 50v26" stroke="${INK}" stroke-width="1.6"/>
+   <circle cx="58" cy="58" r="3.4" fill="#ffffff" stroke="${INK}" stroke-width="1.2"/>`,
+  `<path d="M26 33q-3 6 1 10 1-6 4-8zM74 33q3 6-1 10-1-6-4-8z" fill="${HAIR}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
+   <path d="M24 28q0-24 26-24t26 24z" fill="${EXP_N}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
+   <rect x="23" y="24" width="54" height="8" rx="4" fill="${EXP_O}" stroke="${INK}" stroke-width="2"/>
+   <circle cx="50" cy="4" r="5" fill="${EXP_O}" stroke="${INK}" stroke-width="2"/>`);
+
+// ---------- Zuordnung: ein Schauplatz pro Level ----------
+{
+  const T = THEMES.lego, [oDuplo, oCity, oSpace] = T.scenes;
+  const walls = (list) => (x, y) => list[pick(x, y, 0, list.length)];
+  T.levelScenes = [
+    { name: "Duplo-Zoo", lasse: "zoowaerter", words: ["Mampf!", "Toll!"],
+      pal: { "--bg": "#eaf7dc", "--bg-2": "#f8fdf2", "--floor-a": "#5cb85c", "--floor-b": "#55ad55" },
+      floor: zooFloor, wall: walls(ZOO_WALLS), deco: () => "", extras: () => birdHTML() },
+    { name: "Duplo-Baustelle", lasse: "bauarbeiter", words: ["Klick!", "Passt!"],
+      pal: { "--bg": "#fff4e0", "--bg-2": "#fffbf3", "--floor-a": "#c9a467", "--floor-b": "#c19c5f" },
+      floor: bauFloor, wall: walls(BAU_WALLS), deco: () => "", extras: () => birdHTML() },
+    { name: "Lego City", lasse: "polizist", words: ["Tatü!", "Klick!"],
+      pal: oCity.pal, floor: oCity.floor, wall: walls(CITY_WALLS), deco: oCity.deco, extras: oCity.extras },
+    { name: "Wasserexpedition", lasse: "forscher", words: ["Platsch!", "Ahoi!"],
+      pal: { "--bg": "#dff1fb", "--bg-2": "#f4fbff", "--floor-a": "#d8eef8", "--floor-b": "#cfe6f2" },
+      floor: wasserFloor, wall: walls(WASSER_WALLS), deco: () => "", extras: () => birdHTML() },
+    { name: "Bahnhof & Gefängnisinsel", lasse: "schaffner", words: ["Tuut!", "Einsteigen!"],
+      pal: { "--bg": "#eef1f5", "--bg-2": "#fbfcfd", "--floor-a": "#c4c9ce", "--floor-b": "#bcc1c6" },
+      floor: bhFloor, wall: walls(BH_INSEL), deco: () => "", extras: () => birdHTML() },
+    { name: "Weltall", lasse: "astronaut", words: ["Klick!", "Wow!"],
+      pal: oSpace.pal, floor: oSpace.floor, deco: oSpace.deco, extras: oSpace.extras,
+      wall: (x, y) => pick(x, y, 11, 7) === 0 ? [sShuttle, sRoboter][pick(x, y, 12, 2)] : oSpace.wall(x, y) }
+  ];
+  delete T.scenes;
+}
 
 // ----- Steine und Halbedelsteine (Welt 5) -----
 // Jedes Level hat seinen eigenen Stein, ungefähr nach Wert aufsteigend. Geschoben wird der Stein des Levels;
@@ -3861,7 +4148,7 @@ const FX = (() => {
     },
     place(x, y) {
       mood("m-happy", 650);
-      const ws = WORDS[L && L.theme] || ["Super!"], w = ws[Math.floor(Math.random() * ws.length)];
+      const ws = (typeof S !== "undefined" && S && S.words) || WORDS[L && L.theme] || ["Super!"], w = ws[Math.floor(Math.random() * ws.length)];
       add("fx1-word", x, y, `<svg viewBox="-20 -20 140 140" overflow="visible"><path d="M50 2c10 0 12 10 22 12s20-4 24 6-6 16-4 26 10 18 2 26-18 0-26 6-10 18-20 18-12-12-20-18-20 2-26-6 4-18 2-26-10-16-4-26 16-2 24-6S40 2 50 2z" fill="#ffe680" stroke="${INK1}" stroke-width="2.6" stroke-linejoin="round"/>
         <text x="50" y="57" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="${w.length > 6 ? 17 : 22}" fill="#e2402f">${w}</text></svg>`, 950);
       if (!calm()) for (let i = 0; i < 5; i++) add("fx1-star", x, y, `<svg viewBox="0 0 100 100"><path d="M50 8l11 27 29 2-22 19 7 29-25-15-25 15 7-29-22-19 29-2z" fill="${COLS[i % COLS.length]}" stroke="${INK1}" stroke-width="5" stroke-linejoin="round"/></svg>`, 850, `--a:${-80 + i * 40}deg`);
