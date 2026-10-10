@@ -543,6 +543,9 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .vchip .vtile > svg, .vchip .vtile .dv > svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .vchip.mix .vtile { color: var(--muted); padding: 4px; box-sizing: border-box; }
 .vchip.on { outline: 3px solid var(--accent); outline-offset: -3px; background: var(--white, #fff); }
+.ed-variants { min-height: 72px; align-items: center; }
+.vchip.single { display: grid; place-items: center; background: var(--white, #fff); }
+.ed-variants .vnote { align-self: center; padding: 0 8px; font-size: 13px; font-weight: 700; color: var(--muted); }
 </style>
 
 <!-- Gemeinsame Verläufe und Symbole -->
@@ -5390,7 +5393,8 @@ document.getElementById("tab-play").addEventListener("click", () => { kitTab = "
 function newLevel(size) {
   const p = P(), kit = kitOf(p), [w, h] = SIZES[size];
   const open = DESIGNS.filter(d => designOpen(p, d)), d = open[open.length - 1];
-  const cells = Array.from({ length: w * h }, (_, i) => { const x = i % w, y = Math.floor(i / w); return x === 0 || y === 0 || x === w - 1 || y === h - 1 ? ["w", d.key] : ["f", d.key]; });
+  // Neues Level: überall Boden, keine Wände – den offenen Rand schließt das Spiel beim Spielen automatisch
+  const cells = Array.from({ length: w * h }, () => ["f", d.key]);
   kit.seq = (kit.seq || 0) + 1;
   const lv = { id: "k" + Date.now().toString(36), name: `${genitiv(p.name)} Level ${kit.seq}`, w, h, cells, box: {}, goal: {}, start: { i: w + 1, d: d.key }, published: false };
   kit.levels.push(lv); save();
@@ -5432,7 +5436,7 @@ function publishLevel(lv) {
 }
 
 // ---------- Werkstatt: Baufeld ----------
-let edLevel = null, edDesign = null, edTool = "wall", edVarOpen = true;
+let edLevel = null, edDesign = null, edTool = "wall";
 // gewählte Variante je Design und Werkzeug (im Spielerprofil gemerkt)
 const vSel = () => { const k = kitOf(P()); return (k.vsel = k.vsel || {}); };
 const curVar = (kind) => (vSel()[edDesign] || {})[kind] || null;
@@ -5466,13 +5470,14 @@ function renderEditor() {
   };
   document.getElementById("ed-tools").innerHTML = TOOLS.map(([k, n]) => `<button type="button" class="tool${edTool === k ? " on" : ""}" data-t="${k}" aria-pressed="${edTool === k}"><span class="ticon">${withEditorGlobals(lv, () => icon[k])}</span>${n}</button>`).join("");
   document.querySelectorAll("#ed-tools [data-t]").forEach(b => b.addEventListener("click", () => {
-    // nochmal auf dasselbe Werkzeug: Variantenzeile auf- oder zuklappen
-    if (edTool === b.dataset.t) edVarOpen = !edVarOpen; else { edTool = b.dataset.t; edVarOpen = true; }
-    renderEditor(); }));
+    edTool = b.dataset.t; renderEditor(); }));
   // Variantenzeile unter den Werkzeugen
   const vrow = document.getElementById("ed-variants"), vlist = VKINDS[edTool] ? withEditorGlobals(lv, () => variantsOf(cur, edTool)) : [];
-  vrow.hidden = !(edVarOpen && vlist.length > 1);
-  if (!vrow.hidden) {
+  // Die Zeile ist immer da (ruhiger); ohne Auswahl zeigt sie das eine Element mit einem kurzen Hinweis
+  vrow.hidden = false;
+  if (vlist.length < 2) {
+    vrow.innerHTML = `<span class="vchip on single"><span class="vtile">${withEditorGlobals(lv, () => icon[edTool])}</span></span><span class="vnote">Nur eine Variante</span>`;
+  } else {
     const sel = curVar(edTool), wrapV = (h) => edTool === "box" ? h : dWrap(h, cur);
     vrow.innerHTML = `<button type="button" class="vchip mix${sel ? "" : " on"}" data-v="-1" aria-label="Gemischt"><span class="vtile">${DICE}</span><span class="vname">Gemischt</span></button>` +
       vlist.map((o, n) => `<button type="button" class="vchip${sameV(sel, o.v) ? " on" : ""}" data-v="${n}" aria-label="Variante ${n + 1}"><span class="vtile">${wrapV(o.html)}</span></button>`).join("");
