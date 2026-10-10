@@ -1798,6 +1798,7 @@ const bhFloor = (x, y, ctx) => {
     `${[14, 50, 86].map(cx => `<rect x="${cx - 6}" y="16" width="12" height="68" rx="2" fill="#6b5a46"/>`).join("")}
     <rect x="0" y="27" width="100" height="7" fill="#8b939f" stroke="#4a3728" stroke-width="1.6"/><rect x="0" y="66" width="100" height="7" fill="#8b939f" stroke="#4a3728" stroke-width="1.6"/></svg>`;
   const edge = y === ctx.midY - 1 ? `<path d="M0 92h100" stroke="#ffcd03" stroke-width="5" stroke-dasharray="12 6"/>` : y === ctx.midY + 1 ? `<path d="M0 8h100" stroke="#ffcd03" stroke-width="5" stroke-dasharray="12 6"/>` : "";
+  if (y > ctx.midY) return (pick(x, y, 8, 5) === 0 ? plate("#8a4a2a", "#9c5a36", 3, x, y) : plate("#a0a5a9", "#b4b9be", 3, x, y)) + edge + "</svg>";
   return plate("#c4c9ce", "#d3d7db", 3, x, y) + edge + "</svg>";
 };
 // Lasse als Schaffner: dunkelblaue Jacke, rote Krawatte, Schaffnermütze mit rotem Band, Pfeife
@@ -1913,8 +1914,87 @@ const cFels = `<svg viewBox="0 0 100 100">${CW("#7d8590")}
   <path d="M70 80q0-14 4-20M74 60q-8-2-12 4M74 60q8-4 12 2" fill="none" stroke="#2f9a3a" stroke-width="3" stroke-linecap="round"/>
   <circle cx="16" cy="20" r="9" fill="none" stroke="#ff7e14" stroke-width="5"/></svg>`;
 const CITY_WALLS = [cFlitzer, cBlau, policeStation, policeman, fireStation, fireTruck, firefighter, policeCar];
-// Bahnhof und Polizei-Gefängnisinsel gehören zusammen: der Zug fährt an der Insel vorbei
-const BH_INSEL = [...BH_WALLS, cTurm, cGitter, cHeli, cBoot, cFels, cGitter, cTurm];
+// ---------- Polizei-Gefängnisinsel nach Lasses Set: Terrakotta-Mauern, Navy-Dächer mit gelber Kante, Gitter, Felsen, Wasser ----------
+const IN_T = "#c8743a", IN_TD = "#9c5428", IN_N = "#1f3f8a", IN_Y = "#ffe11a", IN_R = "#8b939f", IN_RL = "#c4c9ce", IN_W = "#2f7ae5";
+const inBase = (top) => `<rect x="3" y="9" width="94" height="88" rx="10" fill="#00000033"/><rect x="3" y="3" width="94" height="86" rx="10" fill="${top}" ${LG_OL}/>`;
+const inDach = `<rect x="3" y="3" width="94" height="14" rx="8" fill="${IN_N}"/><path d="M3 16h94" stroke="${IN_Y}" stroke-width="3.4"/>`;
+const inStein = (n) => Array.from({ length: n }, (_, i) => `<path d="M${10 + (i * 37) % 76} ${24 + (i * 23) % 56}h7" stroke="${IN_TD}" stroke-width="2" stroke-linecap="round"/>`).join("");
+const iTurm = `<svg viewBox="0 0 100 100">${inBase("#9fd8ff")}
+  <rect x="30" y="40" width="40" height="49" fill="${IN_T}" ${LG_OL}/>${inStein(3).replace(/M(\d+) /g, (m, x) => `M${30 + (+x % 30)} `)}
+  <rect x="40" y="52" width="20" height="18" rx="2" fill="#ffffff" ${LG_OL}/><rect x="43" y="55" width="14" height="12" fill="#5b4a6a"/><circle cx="50" cy="61" r="4" fill="#c25a5a"/>
+  <path d="M22 40l10-14h36l10 14z" fill="${IN_N}" ${LG_OL}/><path d="M24 39h52" stroke="${IN_Y}" stroke-width="3"/>
+  <rect x="36" y="18" width="28" height="9" fill="#fff6a8" ${LG_OL}/><path d="M50 18V8" stroke="#4a3728" stroke-width="2.4"/>
+  <path d="M42 8a8 5 0 0016 0z" fill="#e9eaee" ${LG_OL}/><path d="M62 18V2" stroke="#4a3728" stroke-width="1.6"/>
+  <path class="flame" d="M36 22L6 10v16zM64 22l30-12v16z" fill="#fff6a8" opacity=".6"/></svg>`;
+const iZellen = `<svg viewBox="0 0 100 100">${inBase(IN_T)}${inDach}
+  ${[10, 38, 66].map(x => `<rect x="${x}" y="26" width="24" height="44" rx="2" fill="#ffffff" ${LG_OL}/><rect x="${x + 3}" y="29" width="18" height="38" fill="#7a3a3a"/>
+    <path d="M${x + 9} 29v38M${x + 15} 29v38M${x + 3} 42h18M${x + 3} 55h18" stroke="#ffffff" stroke-width="2.4"/>`).join("")}
+  <rect x="3" y="74" width="94" height="15" rx="4" fill="${IN_RL}" ${LG_OL}/>${[16, 40, 64, 88].map(x => `<circle cx="${x}" cy="81" r="3" fill="#e9eaee" stroke="#4a3728" stroke-width="1"/>`).join("")}</svg>`;
+const iTuer = `<svg viewBox="0 0 100 100">${inBase(IN_T)}${inDach}${inStein(4)}
+  <rect x="24" y="26" width="52" height="60" rx="3" fill="#ffffff" ${LG_OL}/>
+  <rect x="29" y="31" width="19" height="52" fill="#b8e4ff"/><rect x="52" y="31" width="19" height="52" fill="#b8e4ff"/>
+  <path d="M32 40l10-6M55 40l10-6" stroke="#ffffff" stroke-width="3" opacity=".8"/>
+  <circle cx="45" cy="60" r="3" fill="#e9eaee" ${LG_OL}/><circle cx="55" cy="60" r="3" fill="#e9eaee" ${LG_OL}/>
+  <rect x="40" y="18" width="20" height="5" rx="2" fill="${IN_R}" ${LG_OL}/></svg>`;
+const iZaun = `<svg viewBox="0 0 100 100">${inBase(IN_T)}${inDach}
+  <rect x="12" y="24" width="76" height="60" rx="3" fill="#6b7280" ${LG_OL}/>
+  <g stroke="#b8bec8" stroke-width="2">${Array.from({ length: 9 }, (_, i) => `<path d="M${12 + i * 10} 24l-14 60M${12 + i * 10 - 10} 24l14 60"/>`).join("")}</g>
+  <rect x="12" y="24" width="76" height="60" rx="3" fill="none" ${LG_OL}/><path d="M50 24v60" stroke="#4b5563" stroke-width="4"/></svg>`;
+const iLeiter = `<svg viewBox="0 0 100 100">${inBase(IN_T)}${inDach}${inStein(5)}
+  <path d="M30 88l26-70M54 88l26-70" stroke="#16181f" stroke-width="5" stroke-linecap="round"/>
+  ${[0, 1, 2, 3, 4].map(i => `<path d="M${33 + i * 5} ${80 - i * 13}h24" stroke="#16181f" stroke-width="5" stroke-linecap="round"/>`).join("")}</svg>`;
+const iTreppe = `<svg viewBox="0 0 100 100">${inBase(IN_R)}
+  <path d="M8 30l14-12 12 8 10-10" fill="none" stroke="#6b7280" stroke-width="3" stroke-linecap="round"/>
+  ${[0, 1, 2, 3, 4].map(i => `<path d="M${34 - i * 3} ${78 - i * 12}h${32 + i * 6}l-4 -8h-${24 + i * 6}z" fill="${IN_RL}" stroke="#4a3728" stroke-width="1.8" stroke-linejoin="round"/>`).join("")}
+  <path d="M80 50l10 4v20l-12 4z" fill="#a0a5a9" ${LG_OL}/><path d="M12 60l12-4 6 16-14 6z" fill="#a0a5a9" ${LG_OL}/></svg>`;
+const iRohr = `<svg viewBox="0 0 100 100">${inBase(IN_R)}
+  <path d="M10 40l16-10 18 6 20-14 26 12" fill="none" stroke="#6b7280" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="30" cy="56" rx="20" ry="22" fill="#e8742a" ${LG_OL}/><ellipse cx="30" cy="56" rx="13" ry="15" fill="#5a2a10"/>
+  <g class="bob"><rect x="36" y="58" width="34" height="14" rx="5" fill="#ff8a1f" ${LG_OL}/><path d="M44 58v14M54 58v14" stroke="#4a3728" stroke-width="1.6"/>
+  <rect x="68" y="52" width="16" height="18" rx="6" fill="${MINI}" ${LG_OL}/><circle cx="74" cy="59" r="1.6" fill="#4a3728"/><circle cx="80" cy="59" r="1.6" fill="#4a3728"/>
+  <path d="M73 65q4 2 8 0" fill="none" stroke="#4a3728" stroke-width="1.4"/><path d="M68 52q8-6 16 0z" fill="#4a3728"/></g>
+  <path d="M8 86h84" stroke="${IN_W}" stroke-width="6"/></svg>`;
+const iSchild = `<svg viewBox="0 0 100 100">${inBase("#8a4a2a")}
+  ${[22, 46, 70].map(y => `<path d="M3 ${y}h94" stroke="#6a3418" stroke-width="2"/>`).join("")}
+  <rect x="46" y="44" width="8" height="40" fill="#5a3a22" ${LG_OL}/>
+  <rect x="20" y="12" width="60" height="40" rx="4" fill="${IN_Y}" ${LG_OL}/><rect x="24" y="16" width="52" height="32" rx="2" fill="none" stroke="#4a3728" stroke-width="2"/>
+  <path d="M28 40h44" stroke="${IN_W}" stroke-width="3"/><path d="M40 40l8-16 6 16z" fill="#4a3728"/><path d="M58 36q6-4 10 0" fill="none" stroke="#4a3728" stroke-width="2"/></svg>`;
+const iSteg = `<svg viewBox="0 0 100 100">${inBase(IN_W)}
+  <path d="M6 22q8-5 16 0t16 0 16 0 16 0 16 0" fill="none" stroke="#ffffff" stroke-width="2.4" opacity=".7"/>
+  <rect x="10" y="36" width="80" height="44" rx="4" fill="#8a4a2a" ${LG_OL}/>${[48, 60, 72].map(y => `<path d="M10 ${y}h80" stroke="#6a3418" stroke-width="2"/>`).join("")}
+  <g class="bob"><ellipse cx="50" cy="56" rx="11" ry="7" fill="#e3000b" ${LG_OL}/><path d="M40 52l-8-8M60 52l8-8M42 60l-8 6M58 60l8 6" stroke="#e3000b" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="46" cy="52" r="2.4" fill="#4a3728"/><circle cx="54" cy="52" r="2.4" fill="#4a3728"/></g></svg>`;
+const iPalme = `<svg viewBox="0 0 100 100">${inBase(IN_R)}
+  <path d="M10 88V60l16-14 20 8 18-16 26 10v40z" fill="#a0a5a9" ${LG_OL}/>
+  ${[[30, 50], [66, 42]].map(([x, y]) => `<path d="M${x} ${y}q-14-16-22-10M${x} ${y}q-4-22 6-26M${x} ${y}q12-18 24-12M${x} ${y}q16-6 20 6M${x} ${y}q-18 0-20 12" fill="none" stroke="#2f9a3a" stroke-width="5" stroke-linecap="round"/>`).join("")}
+  <circle cx="82" cy="76" r="9" fill="none" stroke="#ff7e14" stroke-width="5"/></svg>`;
+const iWasser = `<svg viewBox="0 0 100 100">${inBase(IN_W)}
+  ${[20, 44, 68].map(y => `<path d="M8 ${y}q8-6 16 0t16 0 16 0 16 0 16 0" fill="none" stroke="#9fd8ff" stroke-width="3" stroke-linecap="round"/>`).join("")}
+  <path d="M60 78l18-6-4 6 4 6z" fill="#8b939f" ${LG_OL}/><path d="M40 40l8-16 6 16z" fill="#8b939f" ${LG_OL}/></svg>`;
+const iBoot = `<svg viewBox="0 0 100 100">${inBase(IN_W)}
+  <path d="M6 64q0 12 14 16h66l10-22H6z" fill="${IN_N}" ${LG_OL}/><path d="M8 62h86" stroke="#c6f000" stroke-width="3"/>
+  <path d="M30 58l8-20h28l10 20z" fill="#f2f3f5" ${LG_OL}/><path d="M40 54l5-12h18l6 12z" fill="#9fd8ff"/>
+  <circle cx="54" cy="46" r="4" fill="${IN_N}" stroke="#ffffff" stroke-width="1.4"/>
+  <rect class="siren blue" x="46" y="30" width="12" height="7" rx="3" fill="#2f7ae5" ${LG_OL}/>
+  <path d="M84 70q6 4 12 2M80 76q8 6 16 4" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/></svg>`;
+const iHeli = `<svg viewBox="0 0 100 100">${inBase("#9fd8ff")}
+  <path d="M6 20h88" stroke="#4a3728" stroke-width="4" stroke-linecap="round"/><rect x="46" y="20" width="8" height="10" fill="#4a3728"/>
+  <path d="M60 44h26l6-14h6l-4 20H60z" fill="${IN_N}" ${LG_OL}/><path d="M86 30l6 2" stroke="#ffffff" stroke-width="2"/>
+  <path d="M14 56q0-26 26-26h18q12 0 12 14v10q0 12-12 12H26q-12 0-12-10z" fill="${IN_N}" ${LG_OL}/>
+  <path d="M16 52q2-16 18-18v18z" fill="#9fd8ff" ${LG_OL}/><path d="M38 40h14v6h-8v6h8v6H38z" fill="${IN_Y}"/>
+  <circle cx="60" cy="48" r="5" fill="#ffffff" ${LG_OL}/><path d="M22 76h44M28 66v10M58 66v10" stroke="#4a3728" stroke-width="3" stroke-linecap="round"/></svg>`;
+const iFlitzer = `<svg viewBox="0 0 100 100">${inBase(IN_RL)}
+  <path d="M6 66q0-12 14-14l16-14h26l22 14q10 2 10 14v6H6z" fill="#ffffff" ${LG_OL}/>
+  <path d="M6 60h88v12H6z" fill="${IN_N}"/><path d="M6 62h88" stroke="#c6f000" stroke-width="2.4"/>
+  <path d="M40 40h20l14 12H28z" fill="#cfe9ff" ${LG_OL}/><circle cx="52" cy="46" r="3" fill="${MINI}" ${LG_OL}/>
+  <circle cx="24" cy="74" r="9" fill="#4a3728"/><circle cx="24" cy="74" r="3.4" fill="${IN_R}"/><circle cx="76" cy="74" r="9" fill="#4a3728"/><circle cx="76" cy="74" r="3.4" fill="${IN_R}"/></svg>`;
+const iWache = `<svg viewBox="0 0 100 100">${inBase(IN_T)}${inDach}
+  ${minifig(`<path d="M40 22q0-10 10-10t10 10z" fill="${IN_N}" ${LG_OL}/><rect x="36" y="20" width="28" height="5" rx="2.5" fill="${IN_N}" ${LG_OL}/><circle cx="50" cy="16" r="2.4" fill="${IN_Y}"/>`, IN_N, `<path d="M36 56h28" stroke="${IN_Y}" stroke-width="3"/>`).replace('<g class="bob">', '<g class="bob" transform="translate(0 2)">')}</svg>`;
+const INSEL_WALLS = [iTurm, iZellen, iTuer, iZaun, iLeiter, iTreppe, iRohr, iSchild, iSteg, iPalme, iWasser, iBoot, iHeli, iFlitzer, iWache, iZellen, iZaun];
+// Bahnhof und Insel gehören zusammen: über dem Gleis der Bahnhof, unter dem Gleis die Insel
+let bhMidCache = null;
+const bhMid = () => { if (!bhMidCache || bhMidCache.src !== inside) { const ys = [...inside].map(k => +k.split(",")[1]); bhMidCache = { src: inside, y: Math.round((Math.min(...ys) + Math.max(...ys)) / 2) }; } return bhMidCache.y; };
+const bhInselWall = (x, y) => { const m = bhMid(), list = y < m ? BH_WALLS : y > m ? INSEL_WALLS : (x % 2 ? BH_WALLS : INSEL_WALLS); return list[pick(x, y, 0, list.length)]; };
 
 // ---------- Wasserexpedition: Lasses Forschungsschiff, U-Boot, Hubschrauber, Schlauchboot und die Tiere ----------
 const EXP_O = "#ff7e14", EXP_N = "#1f3a6a", EXP_T = "#3ec6d6";
@@ -2026,7 +2106,7 @@ LASSE.forscher = lasseBase(EXP_O, EXP_N, "#16181f",
       floor: wasserFloor, wall: walls(WASSER_WALLS), deco: () => "", extras: () => birdHTML() },
     { name: "Bahnhof & Gefängnisinsel", lasse: "schaffner", words: ["Tuut!", "Einsteigen!"],
       pal: { "--bg": "#eef1f5", "--bg-2": "#fbfcfd", "--floor-a": "#c4c9ce", "--floor-b": "#bcc1c6" },
-      floor: bhFloor, wall: walls(BH_INSEL), deco: () => "", extras: () => birdHTML() },
+      floor: bhFloor, wall: bhInselWall, deco: () => "", extras: () => birdHTML() },
     { name: "Weltall", lasse: "astronaut", words: ["Klick!", "Wow!"],
       pal: oSpace.pal, floor: oSpace.floor, deco: oSpace.deco, extras: oSpace.extras,
       wall: (x, y) => pick(x, y, 11, 7) === 0 ? [sShuttle, sRoboter][pick(x, y, 12, 2)] : oSpace.wall(x, y) }
@@ -3959,7 +4039,7 @@ const FLOOR_BITS = {
 };
 // Stimmung je Welt und Schauplatz
 function moodOf(theme, sceneName = "") {
-  if (/Flutlicht|Weltraum|Konzert/.test(sceneName)) return "nacht";
+  if (/Flutlicht|Weltraum|Weltall|Konzert/.test(sceneName)) return "nacht";
   if (/Feuer/.test(sceneName)) return "feuer";
   if (theme === "steine") return "hoehle";
   if (/Halle|City|Küche|Restaurant|Stall|Psycho|Kampf|Schlagzeug|Flugzeug|Klassenzimmer|Bistro|Puppenecke|Kinderzimmer|Duplo|Kinderschlagzeug|Konservatorium/.test(sceneName)) return "drinnen";
