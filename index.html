@@ -548,6 +548,36 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .ed-variants { height: 72px; align-items: center; }
 .vchip.single { display: grid; place-items: center; background: var(--white, #fff); }
 .ed-variants .vnote { align-self: center; padding: 0 8px; font-size: 13px; font-weight: 700; color: var(--muted); }
+/* Lösungsbuch (Cheat-Profil) und goldener Weltstern */
+.world button svg.goldworld { position: absolute; inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); z-index: 0; filter: drop-shadow(0 1px 0 #c99a0055); }
+.world button svg.icon { position: relative; z-index: 1; }
+.mapfig[data-who="ANNA"] { pointer-events: auto; touch-action: none; -webkit-touch-callout: none; user-select: none; }
+.lb-spot { position: absolute; left: 66px; top: 186px; width: 108px; height: 108px; touch-action: none; -webkit-touch-callout: none; user-select: none; }
+.lb-hold { filter: brightness(1.08); }
+#scr-loesung { max-width: 900px; margin: 0 auto; }
+.lb-lead { margin: 4px 0 10px; color: var(--muted); font-weight: 700; }
+.lb-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.lb-chip { font-size: 13px; padding: 4px 10px; border-radius: 10px; }
+.lb-list { display: grid; gap: 18px; }
+.lb-world { display: grid; gap: 10px; scroll-margin-top: 12px; }
+.lb-world h3 { margin: 6px 0 0; font-size: 20px; }
+.lb-lv { background: var(--white, #fff); color: var(--ink); border-radius: 16px; padding: 12px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: start; box-shadow: 0 3px 0 var(--edge); }
+.lb-lv h4 { margin: 0; font-size: 16px; }
+.lb-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; color: var(--muted); font-size: 13px; margin-top: 2px; }
+.lb-gold { color: #c98400; }
+.lb-turn { font-size: 12px; padding: 2px 9px; border-radius: 8px; box-shadow: none; }
+.lb-turn[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.lb-plan { display: inline-grid; gap: 1px; justify-content: start; justify-self: start; }
+.lb-plan i { width: 9px; height: 9px; display: block; border-radius: 2px; }
+.lb-plan .w { background: #8a96ad; } .lb-plan .f { background: #e9eef6; }
+.lb-plan .g { background: #e9eef6; box-shadow: inset 0 0 0 2px #2fa84f; border-radius: 50%; }
+.lb-plan .b { background: #e8862a; } .lb-plan .bg { background: #2fa84f; } .lb-plan .p { background: var(--accent); border-radius: 50%; }
+.lb-steps { display: grid; gap: 4px; margin-top: 8px; }
+.lb-row { display: flex; flex-wrap: wrap; gap: 3px; align-items: center; }
+.lb-n { width: 2em; text-align: right; margin-right: 6px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.lb-a { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 7px; background: #e3ebf7; color: #4a3728; font: 700 17px/1 system-ui, sans-serif; }
+.lb-a.s { background: #e8862a; color: #fff; }
+@media (max-width: 520px) { .lb-lv { grid-template-columns: minmax(0, 1fr); } }
 </style>
 
 <!-- Gemeinsame Verläufe und Symbole -->
@@ -4503,7 +4533,7 @@ function mapDeco(shown, open, pts) {
       let x = pts[i][0] + (left ? 1 : -1) * off, y = pts[i][1] + (child ? 40 : 22);
       // erste Welt: rechts daneben liegt der Werkzeugkoffer – dort steht die Person etwas tiefer vorn
       if (i === 0) { x = pts[i][0] + 14; y = pts[i][1] + 70; }
-      return `<div class="mapdeco mapfig" style="left:${x}%;top:${y}px;width:${wd}px;height:${h}px;animation-delay:${-(i + k) * .7}s">${mapIds(svg, tag)}</div>`;
+      return `<div class="mapdeco mapfig" data-who="${id}" style="left:${x}%;top:${y}px;width:${wd}px;height:${h}px;animation-delay:${-(i + k) * .7}s">${mapIds(svg, tag)}</div>`;
     }).join("");
   }).join("");
 }
@@ -4687,7 +4717,8 @@ function renderMap() {
       const cls = ["world", open[i] ? "" : "locked", i === lastOpen ? "current" : "", reveal && i === lastOpen ? "reveal" : ""].join(" ");
       const showCloud = !open[i] || (reveal && i === lastOpen);
       return `<div class="${cls}" style="left:${pts[i][0]}%;top:${pts[i][1] + 10}px">
-        <button type="button" data-w="${i}" ${open[i] ? "" : "disabled"} aria-label="${open[i] ? `Welt ${i + 1}: ${w.name}, ${n} von ${NL(i)} geschafft` : `Welt ${i + 1}: noch verdeckt`}">
+        <button type="button" data-w="${i}" ${open[i] ? "" : "disabled"} aria-label="${open[i] ? `Welt ${i + 1}: ${w.name}, ${n} von ${NL(i)} geschafft${Array.from({ length: NL(i) }, (_, l) => isGold(p, i, l)).every(Boolean) ? ", alles golden" : ""}` : `Welt ${i + 1}: noch verdeckt`}">
+          ${open[i] && Array.from({ length: NL(i) }, (_, l) => isGold(p, i, l)).every(Boolean) ? `<svg class="goldworld" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 1l13.6 30.3 33 3.3-24.6 22.2 7.2 32.4L50 72.6 20.8 89.2 28 56.8 3.4 34.6l33-3.3z" fill="url(#gold)" stroke="#c99a00" stroke-width="2" stroke-linejoin="round"/></svg>` : ""}
           ${open[i] ? `<svg class="icon" viewBox="0 0 100 100"><use href="#${th.box === "kiste" ? "welt" : th.box}"/></svg>` : ""}
           ${open[i] && th.prize && isSolved(p, i, NL(i) - 1) ? `<svg class="badge" viewBox="0 0 100 ${th.prize.symbol === "schleife" ? 128 : 100}"><use href="#${th.prize.symbol}"/></svg>` : ""}
         </button>
@@ -5696,6 +5727,69 @@ document.getElementById("ed-name").addEventListener("input", (e) => { if (edLeve
 document.getElementById("ed-test").addEventListener("click", () => { save(); testLevel(edLevel, "editor"); });
 document.getElementById("ed-publish").addEventListener("click", () => { save(); publishLevel(edLevel); });
 window.addEventListener("resize", () => { if (screen === "editor" && edLevel) drawEdBoard(); });
+// Kürzeste Lösungen aller Level (klein = laufen, groß = schieben), für das Lösungsbuch im Cheat-Profil
+const LOESUNGEN = {"0-0":"LLulD","0-2":"uulLulldRurDrddllURuulD","0-1":"rddLruulDuullddR","0-5":"urrDulldRdRluurDrDDlUruLdlUruL","0-4":"uulllldddrrUlluurrrrddLLLrrruullDurrddlLdllURRuullD","1-1":"rDulldRddrruLdlUUluurrdDldRuuulDD","1-0":"rddllulURuLdlluurDldRRurDlddrrruuL","1-2":"ruulluRdrdddllUUdrruululldRddrruuruLLrdddlluuRurDDullluR","1-3":"DuRurDDrddlluUluR","1-4":"llluuurrrdDuurrrrddllLrrrddlllULLrURR","1-5":"urrdLulluurDldRlddrUrruuLLulD","0-3":"dlUrrrdLullddrUluRuulDrddrruLdlUU","2-2":"ullDullddrUrurrdLLLddrUluRuulDrrrdL","2-4":"UdlluRuurrdDuLDuulDD","2-1":"ullDDlddrruLuuurrdLulDDDullddrRuulD","2-5":"luluurDRDulldRddrruruuLLLdddrruLUddlUrrruulL","3-0":"ruuuulllddrRDrUUdllluuurrrrdLdddddlUUruuuLulldddrRdrUUdllluuurrdLurrrdL","3-1":"drddlUdrddlUUlldRurrddlUruLruuulldRDuurDD","3-2":"urDurrDLrrddlUruulldRurDulllldRRRdRdlllUluRRurDurD","2-0":"uurrdDrdLuuullddRRdrrddllUlURuuullddR","2-3":"drDullDRddrruLUddlUUddlUU","4-0":"urDDDrrruulLLLrddlddrUUUdrrruullulldRRRlulllldRRRR","4-2":"llulDDulldRRurrrrrdddlllllUURurrdLLuLDlluRRRdrrurrdddlllllUUruRRRldlllluRRRR","3-4":"drrruulDLdlUUUluRRdlddrrrdLLdlUUUUruLdddrruruuL","4-1":"ulLrrddlLUdLuluurDldDrrrruulLLrddlluUrrdL","4-3":"ddLruulDlDRllddrUluRddRdrU","5-0":"urrDDDlddrUUUUruLLLdRurDDDlddrUUUUlllluRR","3-3":"luluuurrrdLullddddrrruLUUruLdddLdlUUURlddrruU","5-3":"rrruuulldRRddlllluuRRRurDDullllddrrrRRRdrruLLLLLLrruuurrdLulDDulllldddrrurRlldlluRR","5-2":"urDDuulllddddddrrrrrrrrrruuuuulllddllldlluRRRRdrUUdlllluuullldRRurDDullldddddrrrrrrrrrruuuuullulldRRRllddllldlluRRRRdrUU","4-4":"lUluuRurrDrddLUUdddlluUURldddrruLdlUU","4-5":"rddDLruuullddlddrUUdrrurDrddlUruLLLruuulllddrDrrrddlUruLLruuullD","5-4":"dddrdrruLLdLUlldRRRulUUruulDDDDldRurrrddlUruLLLdRurDlllluRRR","6-1":"rddrruuLLddrrrruuuuurrdddLruuullddDLLddrrUUUUddddlllluuRRRlddrruUUdddlllllluuRRRRRlddrruU","5-5":"rrdrrruulDLrrdLLuLLullllddrrURRlldlluRRRlluRR","6-4":"drrrrddlUdrddlUUruuLLLulldRRRRurDDDlUddRRluuuLLLulldRRRRurDDDldR","3-5":"LuRllDrdRdrruuLLdlUddlluR","6-3":"rDlDDRddlUUUUruLddddrrruLLdlUUUlUdrrDDrdLdlUUUruLruL","6-2":"ulLulDrrrddllULrdddlluRdrUlURuUlDDD","7-0":"dddllLDLdlluurRRRRdrUUdllldlddrUUluRRRurDlllddllUluRRRRRuuurD","7-1":"lDDlDDrrULdlUruuuruullllldddddrRRdrUUUddlllluuuuurrrrrddLLrdddlluRdrUUddlllluuuuurrrrrddLdddrruLdlUU","5-1":"uUlluurRDDlUdlddrUdrrUruuL","6-0":"DDDDDDDDuuuuuulldlddddrdRdRUUUluurDDDDuuuuuurrdrddddldLDLddrUluUUUUUU","8-0":"llDDDDDDldddrruuLuuuuuuurrdLulDDDDDDlllddrrUdlluurRdddrruuLUUUUUUluRdddddddrddlluUdlluurRdrUUUUUU","6-5":"lUruuurrdLullluurDldddlluRdrUURuulDrdRDrruLdlDLddrU","7-3":"drrrdrruUruulldllDurrRdddlluUluRdRlddrruUlllLdlluRRdRUrrrddllUU","7-4":"rrurruulllulldRRlldlluRRurrddLDuLulldRRuurrdLLrrRRurrdLddlldlLuUrurRllulldRRdldddlluRdrU","8-3":"uulllluurDDDurruLdrrruLLdrddddlllluuRuuluurDldRRRuLrrDDDDuuulllddlddrrrdrruLLLLdlUUdrrrruuuulllluurDDD","8-4":"ulldllllulDulldRRRRRRdrrruullDurrddlLLLulllllddrUluRRRRRRdrrruullDurrddlLLulllllddrUluRRRRRdrrruullDurrddlL","7-2":"ruulllldDllddrrUrrUUdrruuuulLuullddRddRRlddrrrruUrruullDllDDullddddrRddrruuLuuL","9-0":"ldlluulUluurrrddLLrruulDrdLdddrrurrdLLLdlUUUUruulDDDDDuuuuulldRurDDDDulUruulldRurDDDuullldRRurD","8-5":"drrrUrruullDlDururrddlLdLLdlluurDldRuuuRRDrdLLrurrruullDurrddlLullldDuuruRdDrdLLrurrruululDDurrddlLulDrdL","9-2":"LLLLullDRRRlldLLLrruulDLddlluuRRRRRRllllddlUluRRRRRdlLLdlUluRRRR","7-5":"ddRDuuurrDLrrrddLUdddllUR","9-3":"drrrrddlUruLLLdRulullddRDDDuuuluurDDDDldRuuuurrdLulDDDrDulldRuuuurrrrdLLLulDDD","9-5":"ddlluLuLLdRRdrrruulLLLdlUUluRRRlldddrrdrrUruLLLLdlUUluRRldddrrdrUruLLLdlUUluRdlldRRdrruLdlUU","8-2":"uulDrdrruLdlddrUluUluurDDDRddlULUlldRRuUrrdLDlluRuruulDDrrddlUdrddlUruuurrdL","9-1":"rddLLrruullldllluRuurrrrDulllldddrruLdllddrrrUrrruuLuulllldDuurrrrddLLLdLUrrrruullllDDlDRurrrrrddlUruLLLLLrrrrddllUdrruulLLrrruulllldD","9-4":"drURuulDrRRRdrUUdllllddlluluRRRRRRRllllddlUluRRRRRdrrUUlDurruulDrdLdlllllddrUluRRR","8-1":"uuuLDlluRdrruuullDDuulllddRRdRUllluurD","10-0":"uulldRRRRRRRRdrUUUruLLLLLLLLLLLLulDDDrdLLLLLLLLLLLulllddrrUdlluurRluurrdDldRRRRRRRRRRdrUUUluRRRRRRRRRdrUUUUUUruLLLulDDDrdLLLdlUUUruLLLulDDDrdLLLLdlUUUUdrruulLLrddlluUUluRRRRRRRRRRRRRRRRRRRurDDDDDDlddrUUUUUUruLLLLLLLLLLLLLLLLLLLLulDrdLLLLLulldRurDDDDDrddlluRdrUluRRurDDDDrrddllUUUUUU"};
+// ===== Lösungsbuch (nur im Cheat-Profil) =====
+// Teil 1: 3 Sekunden auf Anna auf der Weltkarte drücken. Teil 2: 3 Sekunden auf das grüne Häuserquadrat unter Welt 1 neben dem Weg zu Welt 2.
+// Jede Zeile ist ein Abschnitt: hinlaufen, dann schieben. „Gedreht“ dreht Plan und Pfeile so, wie das Spiel ein Level hochkant zeigt.
+(() => {
+  const sec = document.createElement("section");
+  sec.className = "screen"; sec.id = "scr-loesung"; sec.hidden = true;
+  sec.innerHTML = `<div class="topbar"><button type="button" class="back" data-lb-back><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Welten</button><h2>Lösungsbuch</h2></div>
+    <p class="lb-lead">Der kürzeste Weg für den goldenen Stern. Jede Zeile: erst hinlaufen, dann schieben. <span class="lb-a">→</span> laufen, <span class="lb-a s">→</span> schieben.</p>
+    <nav class="lb-chips" id="lb-chips" aria-label="Welten"></nav><div class="lb-list" id="lb-list"></div>`;
+  document.getElementById("scr-map").after(sec);
+  screens.loesung = "scr-loesung";
+  sec.querySelector("[data-lb-back]").addEventListener("click", () => show("map"));
+
+  const ARROW = { u: "↑", d: "↓", l: "←", r: "→" }, WORD = { u: "hoch", d: "runter", l: "links", r: "rechts" };
+  const TURN = { l: "u", u: "r", r: "d", d: "l" }; // das Spiel dreht im Uhrzeigersinn
+  const groups = (sol) => { const out = []; let cur = "";
+    for (let i = 0; i < sol.length; i++) { const c = sol[i], nx = sol[i + 1]; cur += c;
+      if (c === c.toUpperCase() && (!nx || nx === nx.toLowerCase())) { out.push(cur); cur = ""; } }
+    if (cur) out.push(cur); return out; };
+  const turnRows = (rows) => { const h = rows.length, w = Math.max(...rows.map(r => r.length)), p = rows.map(r => r.padEnd(w));
+    return Array.from({ length: w }, (_, y) => Array.from({ length: h }, (_, x) => p[h - 1 - x][y]).join("")); };
+  const plan = (rows) => { const w = Math.max(...rows.map(r => r.length)), cls = { "#": "w", ".": "g", "$": "b", "*": "bg", "@": "p", "+": "p" };
+    return `<div class="lb-plan" style="grid-template-columns:repeat(${w},auto)" aria-hidden="true">${rows.map(r => [...r.padEnd(w)].map((c, x) =>
+      c === " " && !(r.slice(0, x).includes("#") && r.slice(x).includes("#")) ? "<i></i>" : `<i class="${cls[c] || "f"}"></i>`).join("")).join("")}</div>`; };
+  const steps = (sol, turned) => groups(sol).map((g, i) => `<div class="lb-row"><span class="lb-n">${i + 1}</span>${[...g].map(c => {
+    let d = c.toLowerCase(); if (turned) d = TURN[d]; const push = c === c.toUpperCase();
+    return `<span class="lb-a${push ? " s" : ""}" aria-label="${push ? "schieben" : "laufen"} ${WORD[d]}">${ARROW[d]}</span>`; }).join("")}</div>`).join("");
+  const rowsOf = (w, l) => WORLDS[w].levels[l].m.filter(r => !r.startsWith("'"));
+
+  function render() {
+    const shown = WORLDS.map((w, i) => [w, i]).filter(([w]) => !w.custom && !w.hidden);
+    document.getElementById("lb-chips").innerHTML = shown.map(([w, i]) => `<button type="button" class="lb-chip" data-lbw="${i}">${w.bonus ? esc(w.name) : `${i + 1} · ${esc(w.name)}`}</button>`).join("");
+    document.getElementById("lb-list").innerHTML = shown.map(([w, i]) => `<section class="lb-world" id="lb-w${i}"><h3>${w.bonus ? esc(w.name) : `Welt ${i + 1} · ${esc(w.name)}`}</h3>
+      ${w.levels.map((_, l) => { const sol = LOESUNGEN[`${i}-${l}`]; if (!sol) return "";
+        const T = THEMES[w.theme], S = T.levelScenes ? T.levelScenes[l] : T.scenes ? T.scenes[Math.min(T.scenes.length - 1, Math.floor(l / PER_DESIGN))] : null;
+        const name = (T.levelName && T.levelName(l)) || (S && S.name) || w.name, pushes = [...sol].filter(c => c === c.toUpperCase()).length;
+        return `<article class="lb-lv" data-w="${i}" data-l="${l}"><div class="lb-pl">${plan(rowsOf(i, l))}</div><div class="lb-body">
+          <h4>${w.bonus ? esc(name) : `Level ${l + 1} · ${esc(name)}`}</h4>
+          <div class="lb-meta"><span class="lb-gold">★ ${sol.length} Schritte</span><span>${pushes} Schübe</span><button type="button" class="lb-turn" aria-pressed="false">Gedreht</button></div>
+          <div class="lb-steps">${steps(sol, false)}</div></div></article>`; }).join("")}</section>`).join("");
+    document.querySelectorAll("#lb-chips [data-lbw]").forEach(b => b.addEventListener("click", () => document.getElementById("lb-w" + b.dataset.lbw).scrollIntoView({ behavior: "smooth", block: "start" })));
+    document.querySelectorAll("#lb-list .lb-turn").forEach(b => b.addEventListener("click", () => {
+      const card = b.closest(".lb-lv"), w = +card.dataset.w, l = +card.dataset.l, on = b.getAttribute("aria-pressed") !== "true";
+      b.setAttribute("aria-pressed", on);
+      card.querySelector(".lb-pl").innerHTML = plan(on ? turnRows(rowsOf(w, l)) : rowsOf(w, l));
+      card.querySelector(".lb-steps").innerHTML = steps(LOESUNGEN[`${w}-${l}`], on); }));
+  }
+  const baseShow = show;
+  show = (name) => { baseShow(name); if (name === "loesung") render(); };
+
+  // 3 Sekunden gedrückt halten (nur im Cheat-Profil); Bewegen oder Loslassen bricht ab
+  const map = document.getElementById("map"); let timer = null, start = null;
+  const stop = () => { clearTimeout(timer); timer = null; document.querySelectorAll(".lb-hold").forEach(e => e.classList.remove("lb-hold")); };
+  map.addEventListener("pointerdown", (e) => {
+    const t = e.target.closest('[data-who="ANNA"], .lb-spot'); if (!t || !P().unlockAll) return;
+    start = [e.clientX, e.clientY]; t.classList.add("lb-hold");
+    timer = setTimeout(() => { stop(); show("loesung"); }, 3000);
+  });
+  map.addEventListener("pointermove", (e) => { if (timer && Math.hypot(e.clientX - start[0], e.clientY - start[1]) > 12) stop(); });
+  for (const ev of ["pointerup", "pointercancel", "pointerleave"]) map.addEventListener(ev, stop);
+})();
 </script>
 
 <script>if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});</script>
