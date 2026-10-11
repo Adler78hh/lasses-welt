@@ -1167,6 +1167,9 @@ const LASSE = {
 
 // ---------- Themen und Schauplätze ----------
 const THEMES = {};
+// Personen und Pokémon in Wandbildern tragen eine Kennung; das Spiel setzt jede höchstens viermal pro Level und gut verteilt
+const personId = (s) => { let h = 5381; for (let i = 0; i < s.length; i++) h = (h * 33 + s.charCodeAt(i)) >>> 0; return h.toString(36); };
+const asPerson = (svg, id) => svg.replace("<svg", `<svg data-person="${id}"`);
 // Jede Welt hat drei Schauplätze (Level 1–3, 4–6, 7–9). Kiste und Ziel bleiben in der Welt gleich,
 // Boden, Wände, Deko am Rand und kleine Animationen wechseln. Level 9 ist das Finale mit Preis.
 const hash = (x, y, s = 0) => (((x + 11) * 73856093) ^ ((y + 7) * 19349663) ^ ((s + 3) * 83492791)) >>> 0;
@@ -1532,7 +1535,7 @@ const MAGNETILO = `<g class="poke float">
   <path d="M50 34v-14" stroke="#4a3728" stroke-width="3"/><path d="M44 18h12" stroke="#4a3728" stroke-width="4" stroke-linecap="round"/>
   <circle cx="50" cy="56" r="10" fill="#ffffff" ${OL}/><circle class="blink" cx="50" cy="56" r="4" fill="#1a1a22"/></g>`;
 
-const pokeTile = (padSvg, mon) => `<svg viewBox="0 0 100 100" class="pokewall">${padSvg}<g transform="translate(6 2) scale(.88)">${mon}</g></svg>`;
+const pokeTile = (padSvg, mon) => `<svg data-person="pk${personId(mon)}" viewBox="0 0 100 100" class="pokewall">${padSvg}<g transform="translate(6 2) scale(.88)">${mon}</g></svg>`;
 
 THEMES.pokemon = {
   title: "Pokémon", emblem: "pokeball", box: "pokeball", rolls: true,
@@ -2705,7 +2708,7 @@ const IDA = `<g class="bob"><path d="M30 92q0-18 20-18t20 18z" fill="#c78bff" ${
   <path d="M43 56q7 7 14 0z" fill="#c0392b" ${K}/><rect x="45" y="56" width="4" height="3.4" fill="#ffffff"/><rect x="51" y="56" width="4" height="3.4" fill="#ffffff"/>
   <ellipse cx="37" cy="54" rx="3.4" ry="2.2" fill="#ff8f8f" opacity=".6"/><ellipse cx="63" cy="54" rx="3.4" ry="2.2" fill="#ff8f8f" opacity=".6"/></g>`;
 const famPad = (c, side, inner) => svgT(`${pad(c, side)}<g transform="translate(6 4) scale(.88)">${inner}</g>`);
-const portrait = (who, c = "#f4e9d8", side = "#d8c7ad") => famPad(c, side, who);
+const portrait = (who, c = "#f4e9d8", side = "#d8c7ad") => asPerson(famPad(c, side, who), personId(who));
 const drumkit = svgT(`${pad("#3a3550", "#24203a")}<ellipse cx="50" cy="66" rx="26" ry="18" fill="#ef4b4b" ${K}/><ellipse cx="50" cy="60" rx="26" ry="10" fill="#f4f4f4" ${K}/><circle cx="24" cy="36" r="12" fill="#ffd36b" ${K}/><circle cx="76" cy="34" r="12" fill="#ffd36b" ${K}/><path d="M24 48v40M76 46v42" stroke="#9aa3b1" stroke-width="3"/><path d="M40 36l14 20M64 32l-10 24" stroke="#8a5a2b" stroke-width="4" stroke-linecap="round"/>`);
 const grill = svgT(`${pad("#8fd16f", "#4e9a40")}<path d="M22 46h56q0 24-28 24t-28-24z" fill="#4a3728" ${K}/><path d="M24 46h52" stroke="#9aa3b1" stroke-width="3"/><path d="M34 70l-8 20M66 70l8 20M50 70v20" stroke="#4a3728" stroke-width="4"/>
   ${[30, 42, 54, 66].map(x => `<rect x="${x - 4}" y="34" width="8" height="14" rx="4" fill="#c0612b" ${K}/>`).join("")}<path class="steam" d="M36 28q4-6 0-12M50 28q4-6 0-12M64 28q4-6 0-12" stroke="#ffffff" stroke-width="2.6" fill="none" stroke-linecap="round"/>`);
@@ -2722,11 +2725,11 @@ const teacherBoard = svgT(`${pad("#f4e9d8", "#d8c7ad")}${chalkboard("Hallo!", 18
 const DOLL_COLORS = ["#ff8fb1", "#c78bff", "#7ab8ff", "#ffcc33"];
 const doll = (x, y) => svgT(`${pad("#ffe3f1", "#f2b6d3")}<g class="bob"><path d="M34 92q0-24 16-24t16 24z" fill="${DOLL_COLORS[pick(x, y, 2, 4)]}" ${K}/><circle cx="50" cy="48" r="16" fill="#ffd9bf" ${K}/><path d="M34 46q0-18 16-18t16 18q-2-6-16-8-14 2-16 8z" fill="${["#ffd54a", "#7a4a22", "#c9631f"][pick(x, y, 3, 3)]}" ${K}/><path d="M34 46q-4 14 2 22M66 46q4 14-2 22" stroke="${["#ffd54a", "#7a4a22", "#c9631f"][pick(x, y, 3, 3)]}" stroke-width="5" fill="none"/>
   <circle cx="44" cy="48" r="2.4" fill="#4a3728"/><circle cx="56" cy="48" r="2.4" fill="#4a3728"/><path d="M46 56q4 3 8 0" stroke="#e53935" stroke-width="2" fill="none"/><path d="M58 30l8-6-2 8z" fill="#ef4b4b"/></g>`);
-const BIBI = svgT(`${pad("#e6f5d8", "#a9cf8f")}<g class="bob"><path d="M50 8q6 0 6 12" stroke="#ffd54a" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M32 92q0-22 18-22t18 22z" fill="#5fbf4a" ${K}/><circle cx="50" cy="46" r="18" fill="#ffd9bf" ${K}/>
+const BIBI = asPerson(svgT(`${pad("#e6f5d8", "#a9cf8f")}<g class="bob"><path d="M50 8q6 0 6 12" stroke="#ffd54a" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M32 92q0-22 18-22t18 22z" fill="#5fbf4a" ${K}/><circle cx="50" cy="46" r="18" fill="#ffd9bf" ${K}/>
   <path d="M32 42q0-18 18-18t18 18q-6-6-18-6t-18 6z" fill="#ffd54a" ${K}/><circle cx="44" cy="46" r="2.4" fill="#4a3728"/><circle cx="56" cy="46" r="2.4" fill="#4a3728"/><path d="M44 54q6 6 12 0" fill="none" stroke="#4a3728" stroke-width="2.2"/><circle cx="40" cy="52" r="1.2" fill="#c9631f"/><circle cx="60" cy="52" r="1.2" fill="#c9631f"/>
-  <path d="M10 84l40-14" stroke="#8a5a2b" stroke-width="4"/><path d="M10 84l-6 6 4 2 6-4z" fill="#d9b36b"/><path d="M72 22l2 4 4 1-4 1-2 4-1-4-4-1 4-1z" fill="#ffcc33"/></g>`);
-const TINA = svgT(`${pad("#e6f5d8", "#a9cf8f")}<g class="bob"><path d="M32 92q0-22 18-22t18 22z" fill="#ef4b4b" ${K}/><path d="M30 70V44q0-20 20-20t20 20v26" fill="#5a3416" ${K}/><circle cx="50" cy="48" r="17" fill="#ffd9bf" ${K}/>
-  <path d="M33 44q2-14 17-14t17 14q-6-6-17-6t-17 6z" fill="#5a3416"/><circle cx="44" cy="48" r="2.4" fill="#4a3728"/><circle cx="56" cy="48" r="2.4" fill="#4a3728"/><path d="M44 56q6 6 12 0" fill="none" stroke="#4a3728" stroke-width="2.2"/></g>`);
+  <path d="M10 84l40-14" stroke="#8a5a2b" stroke-width="4"/><path d="M10 84l-6 6 4 2 6-4z" fill="#d9b36b"/><path d="M72 22l2 4 4 1-4 1-2 4-1-4-4-1 4-1z" fill="#ffcc33"/></g>`), "bibi");
+const TINA = asPerson(svgT(`${pad("#e6f5d8", "#a9cf8f")}<g class="bob"><path d="M32 92q0-22 18-22t18 22z" fill="#ef4b4b" ${K}/><path d="M30 70V44q0-20 20-20t20 20v26" fill="#5a3416" ${K}/><circle cx="50" cy="48" r="17" fill="#ffd9bf" ${K}/>
+  <path d="M33 44q2-14 17-14t17 14q-6-6-17-6t-17 6z" fill="#5a3416"/><circle cx="44" cy="48" r="2.4" fill="#4a3728"/><circle cx="56" cy="48" r="2.4" fill="#4a3728"/><path d="M44 56q6 6 12 0" fill="none" stroke="#4a3728" stroke-width="2.2"/></g>`), "tina");
 const teddy = svgT(`${pad("#ffe3f1", "#f2b6d3")}<g class="bob"><circle cx="32" cy="30" r="9" fill="#b8865a" ${K}/><circle cx="68" cy="30" r="9" fill="#b8865a" ${K}/><ellipse cx="50" cy="76" rx="22" ry="16" fill="#b8865a" ${K}/><circle cx="50" cy="46" r="20" fill="#b8865a" ${K}/>
   <ellipse cx="50" cy="54" rx="9" ry="7" fill="#e8c9a2"/><circle cx="50" cy="51" r="3" fill="#4a3728"/><circle cx="42" cy="42" r="2.6" fill="#4a3728"/><circle cx="58" cy="42" r="2.6" fill="#4a3728"/><path d="M42 70q8 6 16 0" fill="none" stroke="#ef4b4b" stroke-width="5"/></g>`);
 const letterStack = svgT(`${pad("#ffe3f1", "#f2b6d3")}${[["I", "#ef4b4b", 14, 54], ["d", "#2a6ae0", 50, 54], ["a", "#ffcc33", 32, 18]].map(([ch, c, x, y]) => `<rect x="${x}" y="${y}" width="34" height="34" rx="4" fill="${c}" ${K}/><text x="${x + 17}" y="${y + 26}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="24" fill="#ffffff">${ch}</text>`).join("")}`);
@@ -2877,10 +2880,10 @@ const lehrerKopf = (withPhones = true) => `
   <circle cx="44" cy="42" r="2.4" fill="#4a3728"/><circle cx="56" cy="42" r="2.4" fill="#4a3728"/>
   <path d="M43 51q7 6 14 0" fill="none" stroke="#4a3728" stroke-width="2.2"/><ellipse cx="38" cy="48" rx="3.4" ry="2.2" fill="#ff8f8f" opacity=".5"/><ellipse cx="62" cy="48" rx="3.4" ry="2.2" fill="#ff8f8f" opacity=".5"/>
   ${withPhones ? `<path d="M30 40q0-30 20-30t20 30" fill="none" stroke="#4a3728" stroke-width="5"/><rect x="25" y="36" width="10" height="16" rx="5" fill="#e0483a" ${DK}/><rect x="65" y="36" width="10" height="16" rx="5" fill="#e0483a" ${DK}/>` : ""}`;
-const lehrerBongos = (padFn) => padFn(`<g class="bob"><path d="M30 92q0-22 20-22t20 22z" fill="#3d7fd6" ${DK}/>${lehrerKopf(true)}</g>
-  <g class="drumhit"><ellipse cx="34" cy="80" rx="12" ry="5" fill="#f6ead2" ${DK}/><path d="M22 80v10q12 6 24 0V80" fill="#c9935a" ${DK}/><ellipse cx="64" cy="82" rx="10" ry="4" fill="#f6ead2" ${DK}/><path d="M54 82v8q10 5 20 0v-8" fill="#c9935a" ${DK}/></g>`);
-const lehrerShaker = (padFn) => padFn(`<g class="bob"><path d="M30 92q0-22 20-22t20 22z" fill="#2fa84f" ${DK}/>${lehrerKopf(true)}</g>
-  <g class="shake"><ellipse cx="80" cy="70" rx="7" ry="10" fill="#ffd35a" ${DK}/><path d="M80 80v10" stroke="#8a5a2b" stroke-width="3"/></g>`);
+const lehrerBongos = (padFn) => asPerson(padFn(`<g class="bob"><path d="M30 92q0-22 20-22t20 22z" fill="#3d7fd6" ${DK}/>${lehrerKopf(true)}</g>
+  <g class="drumhit"><ellipse cx="34" cy="80" rx="12" ry="5" fill="#f6ead2" ${DK}/><path d="M22 80v10q12 6 24 0V80" fill="#c9935a" ${DK}/><ellipse cx="64" cy="82" rx="10" ry="4" fill="#f6ead2" ${DK}/><path d="M54 82v8q10 5 20 0v-8" fill="#c9935a" ${DK}/></g>`), "manuel");
+const lehrerShaker = (padFn) => asPerson(padFn(`<g class="bob"><path d="M30 92q0-22 20-22t20 22z" fill="#2fa84f" ${DK}/>${lehrerKopf(true)}</g>
+  <g class="shake"><ellipse cx="80" cy="70" rx="7" ry="10" fill="#ffd35a" ${DK}/><path d="M80 80v10" stroke="#8a5a2b" stroke-width="3"/></g>`), "manuel");
 
 // Instrumente
 const kidKit = (padFn) => padFn(`<ellipse cx="50" cy="66" rx="20" ry="14" fill="#ff8fab" ${DK}/><ellipse cx="50" cy="60" rx="20" ry="7" fill="#fff6e6" ${DK}/><path d="M34 66l6 6M66 66l-6 6" stroke="#ffd35a" stroke-width="3"/>
@@ -4080,6 +4083,135 @@ const NO_ROTATE = new Set(["5-5"]); // Lasses Konzert bleibt eine breite Bühne
 // Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Pokémon-Welten mit Superball-Varianten
 THEMES.fussball.boxColors = [["#4a3728", "url(#ballShade)"], ["#4a3728", "#ffd3e4"], ["#4a3728", "#cfe6ff"]];
 THEMES.pokemon.box = "superball"; // gleiche Bälle wie in Pokémon 2: Superball, Meisterball, Premierball, Heilball
+// ===== Mehr Vielfalt: neue, kräftige Wandmotive für eintönige Schauplätze (Teil 1) =====
+// Wird an EXTRA_WALLS angehängt; bei diesen Schauplätzen kommen die Zusatzwände häufiger dran (EXTRA_SHARE, in Zehnteln).
+const P1 = (top, side) => (inner) => svgT(`${pad(top, side)}${inner}`);
+const E2 = `stroke="#4a3728" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
+const pGrill = P1("#8fd16f", "#4e9a40"), pHalle = P1("#cfd8e6", "#9aa7bd"), pRosa = P1("#ffe3f1", "#f2b6d3"), pTennis = P1("#e6f2e6", "#a9cfa9"),
+  pWiese = P1("#e6f5d8", "#a9cf8f"), pSand = P1("#e9b48a", "#c98a5a"), pRasen = P1("#5fae54", "#3f8a3a"), pGruft = P1("#6a5a8a", "#4a3d66"),
+  pKons = P1("#f4e9d8", "#d8c7ad"), pNavy = P1("#2e4f9a", "#1c346e"), pXmas = P1("#8f2a2e", "#5e1a1d"), pParty = P1("#fff0f6", "#f2b8cf"),
+  pDojo = P1("#c9a06a", "#8a6a3c"), pPsy = P1("#b07ad6", "#7a4aa6"), pLava = P1("#5a3a34", "#3a2420"), pWasser = P1("#4aa8f0", "#2a78c8"),
+  pBusch = P1("#4fb058", "#2f8a3a"), pVolt = P1("#ffd84a", "#d9a90c"), pStein = P1("#a59a8c", "#6f655a");
+const cup = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-14 -16h28v8q0 14-14 16-14-2-14-16z" fill="#ffd23a" ${E2}/><path d="M-14 -12q-8 0-8 6t8 6M14 -12q8 0 8 6t-8 6" fill="none" ${E2}/><rect x="-4" y="8" width="8" height="8" fill="#ffd23a" ${E2}/><rect x="-10" y="16" width="20" height="6" rx="2" fill="#8a5a2b" ${E2}/></g>`;
+const ballon = (x, y, c) => `<path d="M${x} ${y + 16}q-3 10 2 20" fill="none" stroke="#4a3728" stroke-width="1.6"/><ellipse cx="${x}" cy="${y}" rx="11" ry="14" fill="${c}" ${E2}/><circle cx="${x - 4}" cy="${y - 5}" r="3" fill="#fff" opacity=".7"/>`;
+const NEUE_WAENDE = {
+  // --- Familie ---
+  "Sörens Grillparty": [
+    () => pGrill(`<ellipse cx="50" cy="62" rx="34" ry="14" fill="#ffffff" ${E2}/>${[36, 50, 64].map(x => `<rect x="${x - 6}" y="44" width="12" height="22" rx="6" fill="#c8562a" ${E2} transform="rotate(20 ${x} 55)"/>`).join("")}`),
+    () => pGrill(`<rect x="22" y="34" width="22" height="50" rx="8" fill="#e2402f" ${E2}/><rect x="56" y="34" width="22" height="50" rx="8" fill="#ffd23a" ${E2}/><rect x="28" y="22" width="10" height="14" fill="#e2402f" ${E2}/><rect x="62" y="22" width="10" height="14" fill="#ffd23a" ${E2}/>`),
+    () => pGrill(`<path d="M6 26q22 16 44 6t44 8" fill="none" stroke="#4a3728" stroke-width="2"/>${[[16, 32, "#ff8fb1"], [32, 38, "#ffd23a"], [50, 33, "#7ad6ff"], [68, 34, "#8fdc7c"], [84, 38, "#ff8a3d"]].map(([x, y, c]) => `<ellipse cx="${x}" cy="${y + 10}" rx="6" ry="8" fill="${c}" ${E2}/>`).join("")}<path d="M20 86l16-26h28l16 26" fill="#2b5fd9" ${E2}/><path d="M36 60l-6-14h40l-6 14" fill="#f2f3f5" ${E2}/>`),
+    () => pGrill(`<path d="M30 30h40l-4 54H34z" fill="#bfe8ff" ${E2}/><path d="M32 46h36l-3 36H35z" fill="#ffd23a" opacity=".85"/><circle cx="42" cy="56" r="4" fill="#fff" opacity=".8"/><path d="M70 40q12 4 4 22" fill="none" ${E2}/><circle cx="62" cy="26" r="8" fill="#ffd23a" ${E2}/>`)
+  ],
+  "Sörens Flugzeughalle": [
+    () => pHalle(`<circle cx="50" cy="50" r="8" fill="#5b6475" ${E2}/>${[0, 120, 240].map(a => `<path d="M50 50l-6-34q6-6 12 0z" fill="#e2402f" ${E2} transform="rotate(${a} 50 50)"/>`).join("")}`),
+    () => pHalle(`<path d="M24 90V16" stroke="#5b6475" stroke-width="5"/><path d="M26 18l56 10v22l-56 10z" fill="#ff8a1a" ${E2}/>${[38, 54, 70].map(x => `<path d="M${x} ${20 + (x - 26) * .18}v${40 - (x - 26) * .36}" stroke="#fff" stroke-width="6"/>`).join("")}`),
+    () => pHalle(`<rect x="36" y="40" width="28" height="48" fill="#e9eaee" ${E2}/><path d="M28 40h44l-6-18H34z" fill="#9fd8ff" ${E2}/><path d="M50 22V8" stroke="#4a3728" stroke-width="3"/><circle cx="50" cy="8" r="4" fill="#e2402f" class="blinklight"/>`),
+    () => pHalle(`<rect x="18" y="44" width="40" height="34" rx="6" fill="#2b5fd9" ${E2}/><path d="M30 44v-8h16v8" fill="none" ${E2}/><rect x="56" y="30" width="28" height="48" rx="6" fill="#e2402f" ${E2}/><path d="M64 30v-8h12v8" fill="none" ${E2}/><rect x="22" y="56" width="10" height="6" fill="#fff"/>`)
+  ],
+  "Annas Regenbogenland": [
+    () => pRosa(`${ballon(34, 34, "#ff8fb1")}${ballon(54, 28, "#ffd23a")}${ballon(70, 40, "#7ad6ff")}`),
+    () => pRosa(`<g class="bob"><ellipse cx="34" cy="40" rx="18" ry="14" fill="#c9a0ff" ${E2}/><ellipse cx="66" cy="40" rx="18" ry="14" fill="#c9a0ff" ${E2}/><ellipse cx="36" cy="64" rx="14" ry="11" fill="#ff8fb1" ${E2}/><ellipse cx="64" cy="64" rx="14" ry="11" fill="#ff8fb1" ${E2}/><rect x="46" y="30" width="8" height="46" rx="4" fill="#4a3728"/></g>`),
+    () => pRosa(`<use href="#cupcake" x="18" y="14" width="64" height="70"/>`),
+    () => pRosa(`<path d="M20 86V42h12v-10h8v10h20v-10h8v10h12v44z" fill="#fff" ${E2}/><path d="M16 42l10-16 10 16M64 42l10-16 10 16" fill="#ff8fb1" ${E2}/><path d="M42 86V64q8-10 16 0v22" fill="#c9a0ff" ${E2}/><path d="M50 30l3 6 6 1-5 4 1 6-5-3-5 3 1-6-5-4 6-1z" fill="#ffd23a" ${E2}/>`)
+  ],
+  "Annas Tennisplatz": [
+    () => pTennis(cup(50, 56, 1.5)),
+    () => pTennis(`<path d="M26 40h48l-6 46H32z" fill="#c9935a" ${E2}/><path d="M28 52h44M30 66h40" stroke="#8a5a2b" stroke-width="2"/>${[[38, 34], [50, 30], [62, 34], [44, 40], [56, 40]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="7" fill="#d7f03c" ${E2}/>`).join("")}`),
+    () => pTennis(`<path d="M30 90V36M70 90V36M30 60h40" stroke="#4a3728" stroke-width="4"/><rect x="26" y="20" width="48" height="20" rx="4" fill="#3fae4a" ${E2}/><rect x="36" y="44" width="28" height="14" rx="3" fill="#fff" ${E2}/>`),
+    () => pTennis(`<rect x="38" y="26" width="24" height="60" rx="10" fill="#7ad6ff" ${E2}/><rect x="42" y="14" width="16" height="14" rx="3" fill="#2b5fd9" ${E2}/><path d="M42 50h16" stroke="#fff" stroke-width="5"/>`)
+  ],
+  "Bibi und Tina": [
+    () => pWiese(`<path d="M20 84L76 22" stroke="#8a5a2b" stroke-width="6" stroke-linecap="round"/><path d="M18 86l-10 6 6-16 10-4 4 8z" fill="#e8c27a" ${E2}/><path d="M66 22l14-10M70 30l16-6" stroke="#ffd23a" stroke-width="3"/>`),
+    () => pWiese(`<use href="#hufeisen" x="18" y="16" width="64" height="64"/>`),
+    () => pWiese(`<rect x="18" y="40" width="64" height="40" rx="6" fill="#e8c27a" ${E2}/><path d="M18 52h64M18 66h64M34 40v40M66 40v40" stroke="#c9a050" stroke-width="2"/><path d="M16 40q34-20 68 0" fill="none" stroke="#c9a050" stroke-width="4"/>`),
+    () => pWiese(`<path d="M50 14l30 22v48H20V36z" fill="#e2402f" ${E2}/><path d="M38 84V56h24v28" fill="#8a5a2b" ${E2}/><path d="M38 56l24 28M62 56L38 84" stroke="#fff" stroke-width="3"/><circle cx="50" cy="38" r="7" fill="#fff" ${E2}/>`)
+  ],
+  "Idas Kinderzimmer": [
+    () => pRosa(`<path d="M18 86V44l32-26 32 26v42z" fill="#fff" ${E2}/><path d="M12 46l38-32 38 32" fill="#ff8fb1" ${E2}/><rect x="28" y="54" width="16" height="14" fill="#9fd8ff" ${E2}/><rect x="56" y="54" width="16" height="14" fill="#9fd8ff" ${E2}/><rect x="42" y="70" width="16" height="16" fill="#c9a0ff" ${E2}/>`),
+    () => pRosa(`<use href="#einhorn" x="14" y="12" width="72" height="72"/>`),
+    () => pRosa(`<path d="M50 30v52M50 30q-20-10-34-4v52q14-6 34 4M50 30q20-10 34-4v52q-14-6-34 4" fill="#fff" ${E2}/><path d="M24 40q10-4 20 0M24 50q10-4 20 0M56 40q10-4 20 0M56 50q10-4 20 0" stroke="#ff8fb1" stroke-width="3"/>`),
+    () => pRosa(`<path d="M50 10v14" stroke="#4a3728" stroke-width="2"/><path d="M26 24h48" stroke="#4a3728" stroke-width="3"/>${[[30, "#ff8fb1"], [50, "#ffd23a"], [70, "#7ad6ff"]].map(([x, c]) => `<path d="M${x} 24v20" stroke="#4a3728" stroke-width="1.6"/><path d="M${x} 44l6 10h-12z" fill="${c}" ${E2}/>`).join("")}<g class="bob"><path d="M50 60l4 10 11 1-8 7 3 11-10-6-10 6 3-11-8-7 11-1z" fill="#ffd23a" ${E2}/></g>`)
+  ],
+  // --- Tennis ---
+  "Sandplatz": [
+    () => pSand(cup(50, 56, 1.5)),
+    () => pSand(`<g transform="rotate(-30 50 50)"><ellipse cx="50" cy="32" rx="16" ry="20" fill="none" stroke="#2b5fd9" stroke-width="6"/><path d="M50 52v34" stroke="#4a3728" stroke-width="7" stroke-linecap="round"/></g><g transform="rotate(30 50 50)"><ellipse cx="50" cy="32" rx="16" ry="20" fill="none" stroke="#e2402f" stroke-width="6"/><path d="M50 52v34" stroke="#4a3728" stroke-width="7" stroke-linecap="round"/></g><circle cx="50" cy="80" r="7" fill="#d7f03c" ${E2}/>`),
+    () => pSand(`<rect x="12" y="20" width="76" height="44" rx="6" fill="#2d3036" ${E2}/><text x="50" y="52" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="24" fill="#ffd23a">40:15</text><path d="M30 64v24M70 64v24" stroke="#4a3728" stroke-width="5"/>`),
+    () => pSand(`<rect x="38" y="26" width="24" height="60" rx="10" fill="#7ad6ff" ${E2}/><rect x="42" y="14" width="16" height="14" rx="3" fill="#2b5fd9" ${E2}/><path d="M42 50h16" stroke="#fff" stroke-width="5"/>`)
+  ],
+  "Rasenplatz": [
+    () => pRasen(cup(50, 56, 1.5)),
+    () => pRasen(`<path d="M20 30h60l-8 56H28z" fill="#f2f3f5" ${E2}/>${[[36, 44], [52, 50], [64, 40], [44, 62], [60, 66]].map(([x, y]) => `<path d="M${x} ${y - 7}q8 0 7 8-1 8-7 9-6-1-7-9-1-8 7-8z" fill="#e2402f" ${E2}/>`).join("")}`),
+    () => pRasen(`<path d="M50 12l8 14h14l-10 10 4 16-16-8-16 8 4-16-10-10h14z" fill="#ffd23a" ${E2}/><rect x="22" y="58" width="56" height="26" rx="5" fill="#7a3fa0" ${E2}/><path d="M22 70h56" stroke="#ffd23a" stroke-width="3"/>`),
+    () => pRasen(`<path d="M24 84h52l-6-30H30z" fill="#c9935a" ${E2}/>${[[34, 44, "#ff8fb1"], [50, 36, "#ffd23a"], [66, 44, "#fff"], [42, 30, "#c9a0ff"], [58, 28, "#ff8fb1"]].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="7" fill="${c}" ${E2}/>`).join("")}<path d="M34 50v4M50 42v12M66 50v4" stroke="#3f8a3a" stroke-width="3"/>`)
+  ],
+  // --- Edelsteine ---
+  "Gewölbe": [
+    () => pGruft(`<path d="M18 86V56h64v30z" fill="#8a5a2b" ${E2}/><path d="M16 56q34-30 68 0z" fill="#a8743f" ${E2}/>${[[34, 48], [50, 42], [64, 48]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="7" fill="#ffd23a" ${E2}/>`).join("")}<rect x="44" y="62" width="12" height="10" rx="2" fill="#ffd23a" ${E2}/>`),
+    () => pGruft(`<path d="M50 90V60" stroke="#4a3728" stroke-width="5"/><path d="M40 60h20l-4-12H44z" fill="#8a5a2b" ${E2}/><path class="flame" d="M50 48q-14-14 0-34 14 20 0 34z" fill="#ff8a1a" ${E2}/><path d="M50 44q-6-8 0-18 6 10 0 18z" fill="#ffd23a"/>`),
+    () => pGruft(`${[0, 45, 90, 135].map(a => `<path d="M50 50L50 10" stroke="#e9eaee" stroke-width="1.4" transform="rotate(${a} 50 50)"/><path d="M50 50L50 10" stroke="#e9eaee" stroke-width="1.4" transform="rotate(${a + 180} 50 50)"/>`).join("")}${[14, 26, 38].map(r => `<circle cx="50" cy="50" r="${r}" fill="none" stroke="#e9eaee" stroke-width="1.4"/>`).join("")}<circle cx="64" cy="40" r="5" fill="#2d3036"/>`),
+    () => pGruft(`<path d="M50 14l22 30-22 42-22-42z" fill="#ff4fa3" ${E2}/><path d="M28 44h44M50 14l-8 30 8 42 8-42z" fill="none" stroke="#ffffff" stroke-width="2" opacity=".7"/>`)
+  ],
+  // --- Schlagzeug ---
+  "Konservatorium": [
+    () => pKons(`<path d="M36 18q-14 30 4 50 6 8 0 18h24q-6-10 0-18 18-20 4-50z" fill="#c8743a" ${E2}/><circle cx="50" cy="52" r="8" fill="#4a3728"/><path d="M50 18V4" stroke="#4a3728" stroke-width="5"/><path d="M44 4h12" stroke="#4a3728" stroke-width="5"/>`),
+    () => pKons(`<path d="M20 50h44l14-12v28l-14-12H20z" fill="#ffd23a" ${E2}/><rect x="28" y="40" width="6" height="12" fill="#ffd23a" ${E2}/><rect x="38" y="40" width="6" height="12" fill="#ffd23a" ${E2}/><rect x="48" y="40" width="6" height="12" fill="#ffd23a" ${E2}/>`),
+    () => pKons(`${[[28, 30, 20, "#e2402f"], [52, 26, 24, "#ffd23a"], [74, 34, 16, "#2b5fd9"]].map(([x, y, r, c]) => `<path d="M${x - r * .7} ${y}h${r * 1.4}l-${r * .2} ${r * 1.8}h-${r}z" fill="${c}" ${E2}/><path d="M${x} ${y + r * 1.8}v8" stroke="#4a3728" stroke-width="3"/>`).join("")}`),
+    () => pKons(`<rect x="16" y="24" width="68" height="52" rx="4" fill="#fff" ${E2}/>${[36, 44, 52, 60, 68].map(y => `<path d="M20 ${y}h60" stroke="#4a3728" stroke-width="1.2"/>`).join("")}<ellipse cx="34" cy="60" rx="5" ry="4" fill="#4a3728"/><path d="M39 60V40" stroke="#4a3728" stroke-width="2"/><ellipse cx="56" cy="52" rx="5" ry="4" fill="#4a3728"/><path d="M61 52V32" stroke="#4a3728" stroke-width="2"/><path d="M39 40l22-8" stroke="#4a3728" stroke-width="4"/>`)
+  ],
+  // --- Fußball ---
+  "Stadion bei Flutlicht": [
+    () => pNavy(cup(50, 56, 1.5)),
+    () => pNavy(`<path d="M10 40q20-10 40 0t40 0v16q-20 10-40 0t-40 0z" fill="#fff" ${E2}/><path d="M10 48q20-10 40 0t40 0" stroke="#2b5fd9" stroke-width="6" fill="none"/><path d="M14 56v18M22 60v16M78 56v18M86 52v18" stroke="#fff" stroke-width="3"/>`),
+    () => pNavy(`<ellipse cx="50" cy="60" rx="24" ry="20" fill="#e2402f" ${E2}/><ellipse cx="50" cy="52" rx="24" ry="10" fill="#f6ead2" ${E2}/><path d="M20 28l18 22M80 28L62 50" stroke="#c8743a" stroke-width="5" stroke-linecap="round"/>`)
+  ],
+  // --- Feiern ---
+  "Weihnachten": [
+    () => pXmas(`<rect x="16" y="50" width="34" height="34" rx="3" fill="#2b5fd9" ${E2}/><rect x="50" y="40" width="34" height="44" rx="3" fill="#ffd23a" ${E2}/><path d="M33 50v34M16 66h34M67 40v44M50 60h34" stroke="#e2402f" stroke-width="4"/><path d="M60 40q7-12 7 0q0-12 7 0" fill="none" stroke="#e2402f" stroke-width="3"/>`),
+    () => pXmas(`<circle cx="50" cy="66" r="20" fill="#fff" ${E2}/><circle cx="50" cy="36" r="14" fill="#fff" ${E2}/><path d="M50 38l12 4-12 3z" fill="#ff8a1a"/><circle cx="45" cy="33" r="2" fill="#4a3728"/><circle cx="55" cy="33" r="2" fill="#4a3728"/><path d="M36 24h28l-4-10H40z" fill="#2d3036" ${E2}/><path d="M38 48h24" stroke="#e2402f" stroke-width="5"/>`),
+    () => pXmas(`<path d="M18 86V48l32-26 32 26v38z" fill="#c8743a" ${E2}/><path d="M12 50l38-32 38 32" fill="#fff" ${E2}/><rect x="42" y="62" width="16" height="24" fill="#8a5a2b" ${E2}/>${[[28, 58], [72, 58]].map(([x, y]) => `<rect x="${x - 6}" y="${y}" width="12" height="12" fill="#ffd23a" ${E2}/>`).join("")}<path d="M22 50q6 6 12 0t12 0 12 0 12 0 12 0" fill="none" stroke="#fff" stroke-width="3"/>`),
+    () => pXmas(`<path d="M34 14h24v40q20 4 20 22v10H34z" fill="#e2402f" ${E2}/><rect x="30" y="12" width="32" height="12" rx="4" fill="#fff" ${E2}/><path d="M48 40l-6 10" stroke="#fff" stroke-width="2"/><circle cx="66" cy="32" r="5" fill="#ffd23a" ${E2}/>`)
+  ],
+  "Geburtstag": [
+    () => pParty(`${ballon(30, 34, "#ff8fb1")}${ballon(50, 28, "#7ad6ff")}${ballon(70, 34, "#ffd23a")}`),
+    () => pParty(`<use href="#geschenk" x="16" y="14" width="68" height="72"/>`),
+    () => pParty(`<path d="M50 12l26 72H24z" fill="#7ad6ff" ${E2}/><path d="M38 44h24M32 62h36" stroke="#ff8fb1" stroke-width="5"/><circle cx="50" cy="12" r="7" fill="#ffd23a" ${E2}/>`),
+    () => pParty(`<text x="50" y="74" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="64" fill="#ff8fb1" stroke="#4a3728" stroke-width="2.4">7</text><path d="M60 14v10" stroke="#4a3728" stroke-width="3"/><path class="flame" d="M60 4q-6 8 0 12 6-4 0-12z" fill="#ff8a1a"/>`)
+  ],
+  // --- Pokémon (nur Gegenstände; Pokémon selbst zählen wie Personen) ---
+  "Wasser-Pokémon": [
+    () => pWasser(`<use href="#tauchball" x="22" y="18" width="56" height="56"/>`),
+    () => pWasser(`<path d="M20 70q10-30 30-30t30 30z" fill="#a59a8c" ${E2}/><path d="M60 40l8-24 6 4-6 22" fill="#8a5a2b" ${E2}/><path d="M66 18q14 6 20 22" fill="none" stroke="#4a3728" stroke-width="1.6"/>`),
+    () => pWasser(`<ellipse cx="50" cy="62" rx="30" ry="12" fill="#3fae4a" ${E2}/><path d="M50 50l-4-20M50 50l8-18M50 50l-14-12" stroke="#3fae4a" stroke-width="4"/><circle cx="58" cy="40" r="7" fill="#ff8fb1" ${E2}/>`)
+  ],
+  "Pflanzen-Pokémon": [
+    () => pBusch(`<use href="#netzball" x="22" y="18" width="56" height="56"/>`),
+    () => pBusch(`<path d="M50 86V40" stroke="#8a5a2b" stroke-width="6"/><circle cx="50" cy="36" r="26" fill="#3fae4a" ${E2}/>${[[38, 30], [58, 26], [52, 46], [36, 46]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#2b5fd9" ${E2}/>`).join("")}`),
+    () => pBusch(`<rect x="22" y="22" width="56" height="40" rx="4" fill="#d9a066" ${E2}/><path d="M50 62v24" stroke="#8a5a2b" stroke-width="6"/><text x="50" y="48" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="14" fill="#4a3728">ROUTE 2</text>`)
+  ],
+  "Blitz-Pokémon": [
+    () => pVolt(`<use href="#hyperball" x="22" y="14" width="56" height="56"/>`),
+    () => pVolt(`<path d="M50 10l-20 40h16l-8 38 28-48H50l10-30z" fill="#fff" ${E2}/>`),
+    () => pVolt(`<rect x="24" y="22" width="52" height="44" rx="6" fill="#2d3036" ${E2}/><path d="M30 46l8-10 8 14 8-20 8 16h8" fill="none" stroke="#3fbf7a" stroke-width="3"/><circle cx="34" cy="60" r="3" fill="#e2402f"/><circle cx="44" cy="60" r="3" fill="#ffd23a"/>`)
+  ],
+  "Kampf-Pokémon": [
+    () => pDojo(`${[[36, "#e2402f"], [64, "#2b5fd9"]].map(([x, c]) => `<path d="M${x - 14} 30q0-12 14-12t14 12v30q0 12-14 12t-14-12z" fill="${c}" ${E2}/><rect x="${x - 12}" y="66" width="24" height="12" rx="3" fill="#fff" ${E2}/>`).join("")}`),
+    () => pDojo(`<rect x="10" y="44" width="80" height="10" rx="4" fill="#5b6475" ${E2}/>${[16, 26, 74, 84].map((x, i) => `<rect x="${x - 4}" y="${i % 3 ? 34 : 28}" width="8" height="${i % 3 ? 30 : 42}" rx="3" fill="#2d3036" ${E2}/>`).join("")}`),
+    () => pDojo(`<use href="#orden" x="18" y="14" width="64" height="64"/>`)
+  ],
+  "Psycho-Pokémon": [
+    () => pPsy(`<circle cx="50" cy="44" r="24" fill="#e3d4ff" ${E2}/><path d="M38 34q8-8 16-2" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M34 70h32l-6 14H40z" fill="#4a3a7a" ${E2}/>`),
+    () => pPsy(`<path d="M40 86V50q0-6 6-6" fill="none" stroke="#e9eaee" stroke-width="7" stroke-linecap="round"/><path d="M46 44q4-28 18-30" fill="none" stroke="#e9eaee" stroke-width="7" stroke-linecap="round"/><ellipse cx="66" cy="16" rx="8" ry="10" fill="#e9eaee" ${E2}/>`),
+    () => pPsy(`<path d="M62 18a28 28 0 1 0 0 64 22 22 0 1 1 0-64z" fill="#ffd23a" ${E2}/>${[[30, 26], [40, 52], [24, 70]].map(([x, y]) => `<path d="M${x} ${y - 5}l2 3 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z" fill="#fff"/>`).join("")}`)
+  ],
+  "Feuer-Pokémon": [
+    () => pLava(`<path d="M24 82l52-12M24 70l52 12" stroke="#8a5a2b" stroke-width="7" stroke-linecap="round"/><path class="flame" d="M50 74q-22-18-6-46 4 12 10 8 2-12 10-18 12 26-14 56z" fill="#ff8a1a" ${E2}/><path d="M50 72q-8-8-2-20 6 8 8 2 6 10-6 18z" fill="#ffd23a"/>`),
+    () => pLava(`<use href="#superball" x="22" y="18" width="56" height="56"/>`),
+    () => pLava(`<path d="M50 20l12 22-12 40-12-40z" fill="#e2402f" ${E2}/><path d="M38 42h24M50 20v62" stroke="#ffd23a" stroke-width="2" opacity=".8"/>`)
+  ]
+};
+const EXTRA_SHARE = {};
+for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (EXTRA_WALLS[name] || []).concat(list); EXTRA_SHARE[name] = 6; }
 
 // ===== Kinderbuch-Details =====
 // Kleine Dinge, die auf Wände und Böden gestreut werden, damit sich nichts wiederholt.
@@ -4651,7 +4783,7 @@ function loadLevel(w, l, data) {
   curWorld = w; curLevel = l;
   L = WORLDS[w]; T = THEMES[L.theme]; S = T.levelScenes ? T.levelScenes[l] : T.scenes ? T.scenes[Math.min(T.scenes.length - 1, Math.floor(l / PER_DESIGN))] : null;
   // Zusätzliche Wandteile untermischen (rund 40 %), damit sich kein Schauplatz wiederholt
-  if (S && EXTRA_WALLS[S.name]) { const base = S, ex = EXTRA_WALLS[S.name]; S = { ...base, wall: (x, y) => pick(x, y, 77, 10) < 4 ? ex[pick(x, y, 78, ex.length)](x, y) : base.wall(x, y) }; }
+  if (S && EXTRA_WALLS[S.name]) { const base = S, ex = EXTRA_WALLS[S.name]; S = { ...base, wall: (x, y) => pick(x, y, 77, 10) < ((typeof EXTRA_SHARE !== "undefined" && EXTRA_SHARE[S.name]) || 4) ? ex[pick(x, y, 78, ex.length)](x, y) : base.wall(x, y) }; }
   show("game");
   applyPal({ ...T.pal, ...(S ? S.pal : {}) }, "theme-" + L.theme);
   const finale = !!T.prize && l === L.levels.length - 1;
@@ -4708,18 +4840,33 @@ function buildBoard() {
     if (best) html = html.replace(new RegExp(`<div class="tile deco" style="--x:${best[0]};--y:${best[1]}">.*?</svg></div>`), "")
       + `<div class="tile deco" style="--x:${best[0]};--y:${best[1]}">${TRAINER}</div>`;
   }
-  const wallHtml = {};
+  const wallHtml = {}; const persons = {}, used = {}; let plainN = 0;
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
     const k = key(x, y), pos = `style="--x:${x};--y:${y}"`;
     // Nur Wände zeigen, die an das Spielfeld grenzen; abgeschlossene Wandinseln außen weglassen
     if (walls.has(k) && touchesInside(x, y)) {
       // Gleiche Wandteile nicht direkt neben- oder übereinander: notfalls eine andere Variante ziehen
       const fn = S ? S.wall : T.wall;
-      let w = fn(x, y);
-      for (const [dx, dy] of [[13, 7], [29, 17], [41, 3], [57, 23]]) {
-        if (w !== wallHtml[key(x - 1, y)] && w !== wallHtml[key(x, y - 1)]) break;
-        w = fn(x + dx, y + dy);
+      // Auswahl unter mehreren Kandidaten (fest je Feld, daher bei jedem Neuaufbau gleich):
+      // Personen und Pokémon höchstens viermal und mit mindestens drei Feldern Abstand, gleiche Bilder nicht direkt nebeneinander,
+      // höchstens drei leere Flächen ohne Motiv, und ein Motiv möglichst nicht öfter als fünfmal
+      const pid = (h) => (h.match(/data-person="([^"]+)"/) || [])[1];
+      const plain = (h) => !/<(path|circle|ellipse|g|text|use|polygon|polyline|line|image)\b/.test(h.replace(/<g[^>]*class="(detail)?"/g, ""));
+      const score = (h) => { let v = 0; const id = pid(h);
+        if (id) { const at = persons[id] || []; if (at.length >= 4 || at.some(([a, b]) => Math.max(Math.abs(a - x), Math.abs(b - y)) < 3)) v += 1000; }
+        if (h === wallHtml[key(x - 1, y)] || h === wallHtml[key(x, y - 1)]) v += 100;
+        if (plain(h) && plainN >= 3) v += 50;
+        const n = used[h] || 0; if (n >= 5) v += 10 * (n - 4);
+        return v; };
+      let w = fn(x, y), bestV = score(w);
+      for (const [dx, dy] of [[13, 7], [29, 17], [41, 3], [57, 23], [71, 11], [83, 31], [97, 5], [109, 43], [127, 19], [139, 61], [151, 37], [163, 89]]) {
+        if (!bestV) break;
+        const c = fn(x + dx, y + dy), v = score(c);
+        if (v < bestV) { w = c; bestV = v; }
       }
+      { const id = pid(w); if (id) (persons[id] = persons[id] || []).push([x, y]); }
+      if (plain(w)) plainN++;
+      used[w] = (used[w] || 0) + 1;
       wallHtml[k] = w;
       html += `<div class="tile wall" ${pos}>${w}</div>`;
       const wd = wallDetail(mood, x, y);
@@ -5143,7 +5290,7 @@ function dVars(d) {
 }
 const dWrap = (html, d) => html ? `<div class="dv" style="${dVars(d)}">${html}</div>` : "";
 const dWall = (d, x, y) => { const S = d.S, ex = S && EXTRA_WALLS[S.name], base = S ? S.wall : d.T.wall;
-  return ex && pick(x, y, 77, 10) < 4 ? ex[pick(x, y, 78, ex.length)](x, y) : base(x, y); };
+  return ex && pick(x, y, 77, 10) < ((typeof EXTRA_SHARE !== "undefined" && EXTRA_SHARE[S.name]) || 4) ? ex[pick(x, y, 78, ex.length)](x, y) : base(x, y); };
 const dFloor = (d, x, y, ctx) => d.S ? d.S.floor(x, y, ctx) : `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${(x + y) % 2 ? "var(--floor-b)" : "var(--floor-a)"}"/></svg>`;
 const dTarget = (d) => d.T.target(d.l);
 const dBoxes = (d) => (d.T.boxCycle && d.T.boxCycle(d.l)) || [d.T.levelBox ? d.T.levelBox(d.l) : d.T.box];

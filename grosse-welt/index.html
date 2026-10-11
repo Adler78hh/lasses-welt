@@ -1282,6 +1282,9 @@ const LASSE = {
 
 // ---------- Themen und Schauplätze ----------
 const THEMES = {};
+// Personen und Pokémon in Wandbildern tragen eine Kennung; das Spiel setzt jede höchstens viermal pro Level und gut verteilt
+const personId = (s) => { let h = 5381; for (let i = 0; i < s.length; i++) h = (h * 33 + s.charCodeAt(i)) >>> 0; return h.toString(36); };
+const asPerson = (svg, id) => svg.replace("<svg", `<svg data-person="${id}"`);
 // Jede Welt hat drei Schauplätze (Level 1–3, 4–6, 7–9). Kiste und Ziel bleiben in der Welt gleich,
 // Boden, Wände, Deko am Rand und kleine Animationen wechseln. Level 9 ist das Finale mit Preis.
 const hash = (x, y, s = 0) => (((x + 11) * 73856093) ^ ((y + 7) * 19349663) ^ ((s + 3) * 83492791)) >>> 0;
@@ -1647,7 +1650,7 @@ const MAGNETILO = `<g class="poke float">
   <path d="M50 34v-14" stroke="#2d3036" stroke-width="3"/><path d="M44 18h12" stroke="#2d3036" stroke-width="4" stroke-linecap="round"/>
   <circle cx="50" cy="56" r="10" fill="#ffffff" ${OL}/><circle class="blink" cx="50" cy="56" r="4" fill="#1a1a22"/></g>`;
 
-const pokeTile = (padSvg, mon) => `<svg viewBox="0 0 100 100" class="pokewall">${padSvg}<g transform="translate(6 2) scale(.88)">${mon}</g></svg>`;
+const pokeTile = (padSvg, mon) => `<svg data-person="pk${personId(mon)}" viewBox="0 0 100 100" class="pokewall">${padSvg}<g transform="translate(6 2) scale(.88)">${mon}</g></svg>`;
 
 THEMES.pokemon = {
   title: "Pokémon", emblem: "pokeball", box: "pokeball", rolls: true,
@@ -2401,7 +2404,7 @@ const IDA = `<g class="bob"><path d="M30 92q0-18 20-18t20 18z" fill="#c78bff" ${
   <path d="M43 56q7 7 14 0z" fill="#c0392b" ${K}/><rect x="45" y="56" width="4" height="3.4" fill="#ffffff"/><rect x="51" y="56" width="4" height="3.4" fill="#ffffff"/>
   <ellipse cx="37" cy="54" rx="3.4" ry="2.2" fill="#ff8f8f" opacity=".6"/><ellipse cx="63" cy="54" rx="3.4" ry="2.2" fill="#ff8f8f" opacity=".6"/></g>`;
 const famPad = (c, side, inner) => svgT(`${pad(c, side)}<g transform="translate(6 4) scale(.88)">${inner}</g>`);
-const portrait = (who, c = "#f4e9d8", side = "#d8c7ad") => famPad(c, side, who);
+const portrait = (who, c = "#f4e9d8", side = "#d8c7ad") => asPerson(famPad(c, side, who), personId(who));
 const drumkit = svgT(`${pad("#3a3550", "#24203a")}<ellipse cx="50" cy="66" rx="26" ry="18" fill="#ef4b4b" ${K}/><ellipse cx="50" cy="60" rx="26" ry="10" fill="#f4f4f4" ${K}/><circle cx="24" cy="36" r="12" fill="#ffd36b" ${K}/><circle cx="76" cy="34" r="12" fill="#ffd36b" ${K}/><path d="M24 48v40M76 46v42" stroke="#9aa3b1" stroke-width="3"/><path d="M40 36l14 20M64 32l-10 24" stroke="#8a5a2b" stroke-width="4" stroke-linecap="round"/>`);
 const grill = svgT(`${pad("#8fd16f", "#4e9a40")}<path d="M22 46h56q0 24-28 24t-28-24z" fill="#2d3036" ${K}/><path d="M24 46h52" stroke="#9aa3b1" stroke-width="3"/><path d="M34 70l-8 20M66 70l8 20M50 70v20" stroke="#2d3036" stroke-width="4"/>
   ${[30, 42, 54, 66].map(x => `<rect x="${x - 4}" y="34" width="8" height="14" rx="4" fill="#c0612b" ${K}/>`).join("")}<path class="steam" d="M36 28q4-6 0-12M50 28q4-6 0-12M64 28q4-6 0-12" stroke="#ffffff" stroke-width="2.6" fill="none" stroke-linecap="round"/>`);
@@ -2418,11 +2421,11 @@ const teacherBoard = svgT(`${pad("#f4e9d8", "#d8c7ad")}${chalkboard("Hallo!", 18
 const DOLL_COLORS = ["#ff8fb1", "#c78bff", "#7ab8ff", "#ffcc33"];
 const doll = (x, y) => svgT(`${pad("#ffe3f1", "#f2b6d3")}<g class="bob"><path d="M34 92q0-24 16-24t16 24z" fill="${DOLL_COLORS[pick(x, y, 2, 4)]}" ${K}/><circle cx="50" cy="48" r="16" fill="#ffd9bf" ${K}/><path d="M34 46q0-18 16-18t16 18q-2-6-16-8-14 2-16 8z" fill="${["#ffd54a", "#7a4a22", "#c9631f"][pick(x, y, 3, 3)]}" ${K}/><path d="M34 46q-4 14 2 22M66 46q4 14-2 22" stroke="${["#ffd54a", "#7a4a22", "#c9631f"][pick(x, y, 3, 3)]}" stroke-width="5" fill="none"/>
   <circle cx="44" cy="48" r="2.4" fill="#2d3036"/><circle cx="56" cy="48" r="2.4" fill="#2d3036"/><path d="M46 56q4 3 8 0" stroke="#e53935" stroke-width="2" fill="none"/><path d="M58 30l8-6-2 8z" fill="#ef4b4b"/></g>`);
-const BIBI = svgT(`${pad("#e6f5d8", "#a9cf8f")}<g class="bob"><path d="M50 8q6 0 6 12" stroke="#ffd54a" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M32 92q0-22 18-22t18 22z" fill="#5fbf4a" ${K}/><circle cx="50" cy="46" r="18" fill="#ffd9bf" ${K}/>
+const BIBI = asPerson(svgT(`${pad("#e6f5d8", "#a9cf8f")}<g class="bob"><path d="M50 8q6 0 6 12" stroke="#ffd54a" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M32 92q0-22 18-22t18 22z" fill="#5fbf4a" ${K}/><circle cx="50" cy="46" r="18" fill="#ffd9bf" ${K}/>
   <path d="M32 42q0-18 18-18t18 18q-6-6-18-6t-18 6z" fill="#ffd54a" ${K}/><circle cx="44" cy="46" r="2.4" fill="#2d3036"/><circle cx="56" cy="46" r="2.4" fill="#2d3036"/><path d="M44 54q6 6 12 0" fill="none" stroke="#2d3036" stroke-width="2.2"/><circle cx="40" cy="52" r="1.2" fill="#c9631f"/><circle cx="60" cy="52" r="1.2" fill="#c9631f"/>
-  <path d="M10 84l40-14" stroke="#8a5a2b" stroke-width="4"/><path d="M10 84l-6 6 4 2 6-4z" fill="#d9b36b"/><path d="M72 22l2 4 4 1-4 1-2 4-1-4-4-1 4-1z" fill="#ffcc33"/></g>`);
-const TINA = svgT(`${pad("#e6f5d8", "#a9cf8f")}<g class="bob"><path d="M32 92q0-22 18-22t18 22z" fill="#ef4b4b" ${K}/><path d="M30 70V44q0-20 20-20t20 20v26" fill="#5a3416" ${K}/><circle cx="50" cy="48" r="17" fill="#ffd9bf" ${K}/>
-  <path d="M33 44q2-14 17-14t17 14q-6-6-17-6t-17 6z" fill="#5a3416"/><circle cx="44" cy="48" r="2.4" fill="#2d3036"/><circle cx="56" cy="48" r="2.4" fill="#2d3036"/><path d="M44 56q6 6 12 0" fill="none" stroke="#2d3036" stroke-width="2.2"/></g>`);
+  <path d="M10 84l40-14" stroke="#8a5a2b" stroke-width="4"/><path d="M10 84l-6 6 4 2 6-4z" fill="#d9b36b"/><path d="M72 22l2 4 4 1-4 1-2 4-1-4-4-1 4-1z" fill="#ffcc33"/></g>`), "bibi");
+const TINA = asPerson(svgT(`${pad("#e6f5d8", "#a9cf8f")}<g class="bob"><path d="M32 92q0-22 18-22t18 22z" fill="#ef4b4b" ${K}/><path d="M30 70V44q0-20 20-20t20 20v26" fill="#5a3416" ${K}/><circle cx="50" cy="48" r="17" fill="#ffd9bf" ${K}/>
+  <path d="M33 44q2-14 17-14t17 14q-6-6-17-6t-17 6z" fill="#5a3416"/><circle cx="44" cy="48" r="2.4" fill="#2d3036"/><circle cx="56" cy="48" r="2.4" fill="#2d3036"/><path d="M44 56q6 6 12 0" fill="none" stroke="#2d3036" stroke-width="2.2"/></g>`), "tina");
 const teddy = svgT(`${pad("#ffe3f1", "#f2b6d3")}<g class="bob"><circle cx="32" cy="30" r="9" fill="#b8865a" ${K}/><circle cx="68" cy="30" r="9" fill="#b8865a" ${K}/><ellipse cx="50" cy="76" rx="22" ry="16" fill="#b8865a" ${K}/><circle cx="50" cy="46" r="20" fill="#b8865a" ${K}/>
   <ellipse cx="50" cy="54" rx="9" ry="7" fill="#e8c9a2"/><circle cx="50" cy="51" r="3" fill="#2d3036"/><circle cx="42" cy="42" r="2.6" fill="#2d3036"/><circle cx="58" cy="42" r="2.6" fill="#2d3036"/><path d="M42 70q8 6 16 0" fill="none" stroke="#ef4b4b" stroke-width="5"/></g>`);
 const letterStack = svgT(`${pad("#ffe3f1", "#f2b6d3")}${[["I", "#ef4b4b", 14, 54], ["d", "#2a6ae0", 50, 54], ["a", "#ffcc33", 32, 18]].map(([ch, c, x, y]) => `<rect x="${x}" y="${y}" width="34" height="34" rx="4" fill="${c}" ${K}/><text x="${x + 17}" y="${y + 26}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="24" fill="#ffffff">${ch}</text>`).join("")}`);
@@ -2490,10 +2493,10 @@ const lehrerKopf = (withPhones = true) => `
   <circle cx="44" cy="42" r="2.4" fill="#2d3036"/><circle cx="56" cy="42" r="2.4" fill="#2d3036"/>
   <path d="M43 51q7 6 14 0" fill="none" stroke="#2d3036" stroke-width="2.2"/><ellipse cx="38" cy="48" rx="3.4" ry="2.2" fill="#ff8f8f" opacity=".5"/><ellipse cx="62" cy="48" rx="3.4" ry="2.2" fill="#ff8f8f" opacity=".5"/>
   ${withPhones ? `<path d="M30 40q0-30 20-30t20 30" fill="none" stroke="#2d3036" stroke-width="5"/><rect x="25" y="36" width="10" height="16" rx="5" fill="#e0483a" ${DK}/><rect x="65" y="36" width="10" height="16" rx="5" fill="#e0483a" ${DK}/>` : ""}`;
-const lehrerBongos = (padFn) => padFn(`<g class="bob"><path d="M30 92q0-22 20-22t20 22z" fill="#3d7fd6" ${DK}/>${lehrerKopf(true)}</g>
-  <g class="drumhit"><ellipse cx="34" cy="80" rx="12" ry="5" fill="#f6ead2" ${DK}/><path d="M22 80v10q12 6 24 0V80" fill="#c9935a" ${DK}/><ellipse cx="64" cy="82" rx="10" ry="4" fill="#f6ead2" ${DK}/><path d="M54 82v8q10 5 20 0v-8" fill="#c9935a" ${DK}/></g>`);
-const lehrerShaker = (padFn) => padFn(`<g class="bob"><path d="M30 92q0-22 20-22t20 22z" fill="#2fa84f" ${DK}/>${lehrerKopf(true)}</g>
-  <g class="shake"><ellipse cx="80" cy="70" rx="7" ry="10" fill="#ffd35a" ${DK}/><path d="M80 80v10" stroke="#8a5a2b" stroke-width="3"/></g>`);
+const lehrerBongos = (padFn) => asPerson(padFn(`<g class="bob"><path d="M30 92q0-22 20-22t20 22z" fill="#3d7fd6" ${DK}/>${lehrerKopf(true)}</g>
+  <g class="drumhit"><ellipse cx="34" cy="80" rx="12" ry="5" fill="#f6ead2" ${DK}/><path d="M22 80v10q12 6 24 0V80" fill="#c9935a" ${DK}/><ellipse cx="64" cy="82" rx="10" ry="4" fill="#f6ead2" ${DK}/><path d="M54 82v8q10 5 20 0v-8" fill="#c9935a" ${DK}/></g>`), "manuel");
+const lehrerShaker = (padFn) => asPerson(padFn(`<g class="bob"><path d="M30 92q0-22 20-22t20 22z" fill="#2fa84f" ${DK}/>${lehrerKopf(true)}</g>
+  <g class="shake"><ellipse cx="80" cy="70" rx="7" ry="10" fill="#ffd35a" ${DK}/><path d="M80 80v10" stroke="#8a5a2b" stroke-width="3"/></g>`), "manuel");
 
 // Instrumente
 const kidKit = (padFn) => padFn(`<ellipse cx="50" cy="66" rx="20" ry="14" fill="#ff8fab" ${DK}/><ellipse cx="50" cy="60" rx="20" ry="7" fill="#fff6e6" ${DK}/><path d="M34 66l6 6M66 66l-6 6" stroke="#ffd35a" stroke-width="3"/>
@@ -2707,7 +2710,7 @@ const PK = {
 };
 
 // Kachel: farbiger Hintergrund (Gras, Fels, Dojo …) + Pokémon im Vordergrund
-const kMon = (bg, name, back = "") => () => kB(bg, `${back}<g class="poke">${PK[name]()}</g>`);
+const kMon = (bg, name, back = "") => () => asPerson(kB(bg, `${back}<g class="poke">${PK[name]()}</g>`), "pk-" + name);
 // Hintergründe
 const bgGrass = `<path d="M4 72q24-8 46 0t46 0v24H4z" fill="#3f9a4a"/><path d="M10 74l4-10 4 10M80 72l4-10 4 10" fill="#2f7a3a"/>`;
 const bgForest = `<path d="M4 60h92v36H4z" fill="#2f5a2a"/><path d="M14 10l10 20H4zM86 6l10 22H76z" fill="#1f4a2a" opacity=".7"/>`;
@@ -3039,7 +3042,11 @@ THEMES.lego = theme2({
   target: kTarget(`${kGlow(`<rect x="12" y="16" width="76" height="70" opacity="0"/>`)}<rect x="12" y="16" width="76" height="70" rx="5" fill="none" stroke="#fff" stroke-width="5" stroke-dasharray="10 7"/>${[[32, 36], [68, 36], [32, 66], [68, 66]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="8" fill="none" stroke="#fff" stroke-width="2.4" stroke-dasharray="3 3"/>`).join("")}`),
   scenes: [
     kScene("Baustelle", "lego", PAL("#fff3df", "#fffaf2"), kFloor("#c2c6cc", "#b8bcc2", (x, y) => [[30, 30], [70, 30], [30, 70], [70, 70]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="11" fill="#d0d4da" stroke="#9aa0a8" stroke-width="2"/>`).join("")), [
-      (x, y) => kB(legoCols[pick(x, y, 4, 5)], [[30, 30], [70, 30], [30, 66], [70, 66]].map(([a, b]) => kStud(a, b)).join("")),
+      // keine Legosteine als Wand (sonst verwechselt man sie mit den Steinen zum Schieben): Bagger, Mischer, Schild, Sandhaufen
+      () => kB("#9fd2ff", `<rect x="10" y="62" width="56" height="16" rx="8" fill="${KI}"/>${[20, 34, 48, 58].map(x => `<circle cx="${x}" cy="70" r="4" fill="#ffd23a"/>`).join("")}<rect x="14" y="40" width="48" height="22" rx="4" fill="#ffd23a" ${kO}/><rect x="40" y="22" width="20" height="20" rx="3" fill="#ffd23a" ${kO}/><rect x="44" y="26" width="12" height="10" fill="#9fd2ff" ${kO2}/><path d="M60 44l18-18 10 6" fill="none" stroke="#ffd23a" stroke-width="7" stroke-linejoin="round"/><path d="M60 44l18-18 10 6" fill="none" stroke="${KI}" stroke-width="2"/><path d="M82 30l10 4-2 16-14-4z" fill="#8b939f" ${kO2}/>`),
+      () => kB("#c8e6a0", `<ellipse cx="42" cy="44" rx="26" ry="18" fill="#ff8a1a" ${kO}/><path d="M24 36l34 18M30 28l30 16" stroke="#fff" stroke-width="3"/><rect x="66" y="34" width="22" height="26" rx="3" fill="#e2402f" ${kO}/><rect x="70" y="38" width="14" height="9" fill="#9fd2ff" ${kO2}/><rect x="10" y="60" width="80" height="10" rx="3" fill="#5b6475" ${kO2}/>${[24, 56, 78].map(x => `<circle cx="${x}" cy="76" r="8" fill="${KI}"/><circle cx="${x}" cy="76" r="3" fill="#c2c6cc"/>`).join("")}`),
+      () => kB("#c2c6cc", `<path d="M50 10l40 70H10z" fill="#ffd23a" stroke="#e2402f" stroke-width="6" stroke-linejoin="round"/><path d="M38 64q4-16 12-18 6 0 6 8M46 46l4-10M56 52l8 6" fill="none" stroke="${KI}" stroke-width="4" stroke-linecap="round"/><circle cx="52" cy="32" r="4" fill="${KI}"/><path d="M30 66h40" stroke="${KI}" stroke-width="3"/>${kHand("BAUSTELLE", KI, 11, 94)}`),
+      () => kB("#9fd2ff", `<path d="M8 90q16-50 42-50t42 50z" fill="#e8c27a" ${kO}/><circle cx="36" cy="66" r="2.4" fill="#b08a40"/><circle cx="58" cy="74" r="2.4" fill="#b08a40"/><path d="M62 14l14 40" stroke="#8a5a2b" stroke-width="5" stroke-linecap="round"/><path d="M70 50l14 4-4 14-14-4z" fill="#8b939f" ${kO2}/>`),
       () => kB("#ffd23a", `<path d="M20 90V20h8v70M20 24h60M28 24l20 20" stroke="${KI}" stroke-width="5" fill="none"/><path d="M72 24v30" stroke="${KI}" stroke-width="2"/><rect x="64" y="54" width="16" height="10" fill="#e2402f" ${kO2}/>`),
       () => kB("#ff8a1a", `${[18, 38, 58, 78].map((x, i) => `<path d="M${x - 8} 10l16 80" stroke="${i % 2 ? KI : "#fff"}" stroke-width="10"/>`).join("")}`),
       () => kB("#c2c6cc", `<path d="M30 84l8-40h24l8 40z" fill="#ff8a1a" ${kO2}/><path d="M34 64h32" stroke="#fff" stroke-width="5"/>`),
@@ -3117,7 +3124,7 @@ THEMES.schlagzeug = theme2({
   scenes: [
     kScene("Konservatorium Hamburg", "schlagzeug", PAL("#f3ece2", "#fbf8f2"), kFloor("#c9935a", "#bf8a52", (x, y) => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#a8743f" stroke-width="1.4"/><path d="M${pick(x, y, 1, 3) * 30 + 10} 0v25M${pick(x, y, 2, 3) * 30 + 20} 25v25M${pick(x, y, 3, 3) * 30 + 10} 50v25" stroke="#a8743f" stroke-width="1.4"/>`), [
       () => kBricks("#b5523b", kWindowRed), () => kBricks("#a84a35", kWindowRed),
-      () => kB("#e8dccb", kTeacher()),
+      () => asPerson(kB("#e8dccb", kTeacher()), "manuel"),
       () => kB("#e8dccb", `<rect x="26" y="20" width="48" height="66" rx="3" fill="#c9935a" ${kO}/><circle cx="50" cy="46" r="10" fill="${KI}"/><path d="M30 24h40" stroke="#8a5a2b" stroke-width="3"/>${kHand("Cajón", KI, 13, 76)}`),
       () => kB("#e8dccb", `<path d="M20 50q0 34 30 34t30-34z" fill="url(#gold)" ${kO}/><ellipse cx="50" cy="50" rx="30" ry="9" fill="#f6ead2" ${kO2}/><path d="M30 84l-6 10M70 84l6 10" stroke="${KI}" stroke-width="3"/>${kHand("Pauke", KI, 11, 72)}`),
       () => kB("#e8dccb", `<path d="M50 92V52M38 92h24" stroke="${KI}" stroke-width="3"/><path d="M24 20h52l-6 32H30z" fill="#fff" ${kO2}/>${[28, 34, 40].map(y => `<path d="M30 ${y}h40" stroke="${KI}" stroke-width="1"/>`).join("")}<circle cx="38" cy="34" r="2.4" fill="${KI}"/><circle cx="52" cy="28" r="2.4" fill="${KI}"/><circle cx="62" cy="40" r="2.4" fill="${KI}"/><path d="M40 34V22M54 28V18M64 40V30" stroke="${KI}" stroke-width="1.4"/>`),
@@ -3245,20 +3252,20 @@ THEMES.familie = theme2({
   scenes: [
     kScene("Sörens Proberaum", "schlagzeug", PAL("#ece8f6", "#faf8ff"), kFloor("#645d7a", "#5b5470"), [
       () => kB("#3a3550", `<ellipse cx="50" cy="66" rx="24" ry="16" fill="#e2402f" ${kO2}/><ellipse cx="50" cy="60" rx="24" ry="9" fill="#f4f4f4" ${kO2}/><circle cx="22" cy="34" r="12" fill="url(#gold)" ${kO2}/><circle cx="78" cy="30" r="12" fill="url(#gold)" ${kO2}/>`),
-      () => kB("#f2d0d8", kSoeren), (x, y) => kBricks("#5a5450", kGraffiti(x, y, ["PAPA", "ROCK"], ["#ffd23a", "#4fd1ff"])),
+      () => asPerson(kB("#f2d0d8", kSoeren), "soeren"), (x, y) => kBricks("#5a5450", kGraffiti(x, y, ["PAPA", "ROCK"], ["#ffd23a", "#4fd1ff"])),
       () => kB("#cfd8e6", `<path d="M10 50q0-6 8-6h50l16-14h6l-6 18q2 8-6 8H18q-8 0-8-6z" fill="#fff" ${kO}/><path d="M38 52l14 22h8l-6-22zM40 44l10-16h8l-4 16z" fill="#2b5fd9" ${kO2}/>`),
       () => kB("#d9c39a", `<rect x="10" y="10" width="80" height="80" fill="#c9a875" ${kO2}/><path d="M24 28v26M40 26l6 24M58 30l-4 22M74 26v20" stroke="${KI}" stroke-width="3"/><path d="M20 70h60" stroke="#8a5a2b" stroke-width="6"/>`)
     ]),
     kScene("Annas Klassenzimmer", "familie", PAL("#fff6dc", "#fffcf2"), kFloor("#e8c795", "#e2bf8c"), [
       () => kB("#2f6b4f", `<rect x="10" y="12" width="80" height="60" fill="#2f6b4f" stroke="#8a5a2b" stroke-width="5"/>${kHand("Hallo Klasse!", "#fff", 13, 46)}`),
-      () => kB("#ffe3f1", kAnna), () => kB("#fff0e0", `<path d="M30 20h40l-6 34q-2 10-14 10t-14-10z" fill="#ff7a1a" fill-opacity=".85" ${kO2}/><path d="M50 64v20M38 86h24" stroke="${KI}" stroke-width="3"/><circle cx="66" cy="24" r="10" fill="#ffb02e" ${kO2}/>`),
+      () => asPerson(kB("#ffe3f1", kAnna), "anna"), () => kB("#fff0e0", `<path d="M30 20h40l-6 34q-2 10-14 10t-14-10z" fill="#ff7a1a" fill-opacity=".85" ${kO2}/><path d="M50 64v20M38 86h24" stroke="${KI}" stroke-width="3"/><circle cx="66" cy="24" r="10" fill="#ffb02e" ${kO2}/>`),
       () => kB("#ffe3f1", `${["#e2402f", "#ff8a1a", "#ffd23a", "#3fae4a", "#2b5fd9", "#8b5cf6"].map((c, i) => `<path d="M${12 + i * 5} 76a${38 - i * 5} ${38 - i * 5} 0 01${76 - i * 10} 0" fill="none" stroke="${c}" stroke-width="5"/>`).join("")}`),
       () => kB("#e6f2e6", `<path d="M40 88L52 56" stroke="${KI}" stroke-width="6"/><ellipse cx="60" cy="34" rx="18" ry="24" fill="#d7f03c33" stroke="#ff8fb1" stroke-width="5" transform="rotate(20 60 34)"/>`)
     ]),
     kScene("Idas Zimmer", "familie", PAL("#fff0f6", "#fffafc"), kFloor("#ffe3ee", "#ffd7e6", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M50 62c-14-10-14-24-4-24 4 0 4 4 4 4s0-4 4-4c10 0 10 14-4 24z" fill="#ff8fb1" opacity=".6"/>` : ""), [
-      () => kB("#ffe3f1", kIda), () => kB("#ffe3f1", `<g class="bob"><circle cx="32" cy="30" r="9" fill="#b8865a" ${kO2}/><circle cx="68" cy="30" r="9" fill="#b8865a" ${kO2}/><ellipse cx="50" cy="76" rx="22" ry="16" fill="#b8865a" ${kO2}/><circle cx="50" cy="46" r="20" fill="#b8865a" ${kO}/><circle cx="42" cy="42" r="2.6" fill="${KI}"/><circle cx="58" cy="42" r="2.6" fill="${KI}"/></g>`),
+      () => asPerson(kB("#ffe3f1", kIda), "ida"), () => kB("#ffe3f1", `<g class="bob"><circle cx="32" cy="30" r="9" fill="#b8865a" ${kO2}/><circle cx="68" cy="30" r="9" fill="#b8865a" ${kO2}/><ellipse cx="50" cy="76" rx="22" ry="16" fill="#b8865a" ${kO2}/><circle cx="50" cy="46" r="20" fill="#b8865a" ${kO}/><circle cx="42" cy="42" r="2.6" fill="${KI}"/><circle cx="58" cy="42" r="2.6" fill="${KI}"/></g>`),
       () => kB("#ffe3f1", `${[["I", "#e2402f", 14, 54], ["d", "#2b5fd9", 50, 54], ["a", "#ffd23a", 32, 18]].map(([ch, c, x, y]) => `<rect x="${x}" y="${y}" width="34" height="34" rx="4" fill="${c}" ${kO2}/><text x="${x + 17}" y="${y + 26}" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="22" fill="#fff">${ch}</text>`).join("")}`),
-      () => kB("#e6f5d8", `<path d="M50 8q6 0 6 12" stroke="#f3c93f" stroke-width="7" fill="none"/><path d="M32 92q0-22 18-22t18 22z" fill="#3fae4a" ${kO2}/><circle cx="50" cy="46" r="18" fill="${SKIN10}" ${kO}/><path d="M32 42q0-18 18-18t18 18q-6-6-18-6t-18 6z" fill="#f3c93f" ${kO2}/><path d="M10 84l40-14" stroke="#8a5a2b" stroke-width="4"/>`),
+      () => asPerson(kB("#e6f5d8", `<path d="M50 8q6 0 6 12" stroke="#f3c93f" stroke-width="7" fill="none"/><path d="M32 92q0-22 18-22t18 22z" fill="#3fae4a" ${kO2}/><circle cx="50" cy="46" r="18" fill="${SKIN10}" ${kO}/><path d="M32 42q0-18 18-18t18 18q-6-6-18-6t-18 6z" fill="#f3c93f" ${kO2}/><path d="M10 84l40-14" stroke="#8a5a2b" stroke-width="4"/>`), "bibi"),
       () => kB("#ffe3f1", `<path d="M24 86V40l26-20 26 20v46z" fill="#fff" ${kO2}/><path d="M18 42l32-26 32 26" fill="#ff8fb1" ${kO2}/><rect x="34" y="50" width="12" height="12" fill="#9fd2ff" ${kO2}/><rect x="54" y="50" width="12" height="12" fill="#9fd2ff" ${kO2}/>`)
     ])
   ]
@@ -3510,6 +3517,161 @@ document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
     <path d="M42 36l10-8M50 26a4 4 0 1 0 5 5" fill="none" stroke="#2d3036" stroke-width="3" stroke-linecap="round"/>
     <circle cx="60" cy="32" r="2.4" fill="#2d3036"/>
   </symbol>`);
+// ===== Mehr Vielfalt in Teil 2: neue, kräftige Comic-Wandmotive für eintönige Schauplätze =====
+// Mischen sich zu 40 % unter die bisherigen Wände. Pokémon kommen hier nicht vor (sie zählen wie Personen).
+const MO = NK2, MI = NI;
+const mUse = (id, x = 20, y = 18, s = 60) => `<use href="#${id}" x="${x}" y="${y}" width="${s}" height="${s}"/>`;
+const mCup = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-14 -16h28v8q0 14-14 16-14-2-14-16z" fill="#ffd23a" ${MO}/><path d="M-14 -12q-8 0-8 6t8 6M14 -12q8 0 8 6t-8 6" fill="none" ${MO}/><rect x="-4" y="8" width="8" height="8" fill="#ffd23a" ${MO}/><rect x="-10" y="16" width="20" height="6" rx="2" fill="#8a5a2b" ${MO}/></g>`;
+const mBottle = (c) => `<rect x="38" y="28" width="24" height="58" rx="10" fill="${c}" ${MO}/><rect x="42" y="14" width="16" height="16" rx="3" fill="#2d3036" ${MO}/><path d="M42 52h16" stroke="#fff" stroke-width="5"/>`;
+const mGem = (x, y, c, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 -18l14 14-14 22-14-22z" fill="${c}" ${MO}/><path d="M-14 -4h28M0 -18v40" stroke="#fff" stroke-width="1.6" opacity=".7"/></g>`;
+const mLamp = `<path d="M50 6v16" stroke="${MI}" stroke-width="2"/><path d="M36 22h28l6 18H30z" fill="#ffd23a" ${MO}/><path d="M38 40l-14 46h52L62 40z" fill="#fff6a8" opacity=".35"/>`;
+const MEHR_WAENDE = {
+  // --- Fußball ---
+  "Volksparkstadion": [
+    () => nTile("#2b5fd9", "#2350b8", mCup(50, 56, 1.6)),
+    () => nTile("#2b5fd9", "#2350b8", `<path d="M8 38q21-12 42 0t42 0v18q-21 12-42 0t-42 0z" fill="#fff" ${MO}/><path d="M8 47q21-12 42 0t42 0" stroke="#2b5fd9" stroke-width="7" fill="none"/>${nWord("HSV", 50, 80, 20, "#fff", -4)}`),
+    () => nTile("#1a3f99", "#163583", `<ellipse cx="50" cy="60" rx="26" ry="22" fill="#e2402f" ${MO}/><ellipse cx="50" cy="50" rx="26" ry="11" fill="#f6ead2" ${MO}/><path d="M18 24l20 24M82 24L62 48" stroke="#c8743a" stroke-width="5" stroke-linecap="round"/>`)
+  ],
+  // --- Reiten ---
+  "Ausritt im Wald": [
+    () => nTile("#4f9a4a", "#3e823a", `<path d="M14 86q10-40 36-40t36 40z" fill="#a8743f" ${MO}/><path d="M24 60q8-10 14 0M54 54q8-10 16 0" fill="none" stroke="#7a4f22" stroke-width="3"/><circle cx="30" cy="40" r="10" fill="#e2402f" ${MO}/><circle cx="28" cy="38" r="3" fill="#fff"/><path d="M26 50h8v10h-8z" fill="#f6ead2" ${MO}/>`),
+    () => nTile("#6aa84f", "#55903c", `<path d="M10 70q20-8 40 0t40 0v20H10z" fill="#5fb8f0" ${MO}/><path d="M20 78q6-4 12 0M56 80q6-4 12 0" stroke="#fff" stroke-width="2.4"/><path d="M60 52q8-14 20-4-6 4-10 8z" fill="#fff" ${MO}/>`),
+    () => nTile("#4f9a4a", "#3e823a", `<path d="M50 16q-26 8-26 32 0 18 26 18t26-18q0-24-26-32z" fill="#3fae4a" ${MO}/>${[[38, 40], [56, 32], [60, 52], [42, 56]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#e2402f" ${MO}/>`).join("")}<path d="M50 66v22" stroke="#8a5a2b" stroke-width="7"/>`)
+  ],
+  "Reiterhof": [
+    () => nTile("#d9b07a", "#c49a62", `<path d="M14 86V44l36-26 36 26v42z" fill="#e2402f" ${MO}/><path d="M36 86V58h28v28" fill="#8a5a2b" ${MO}/><path d="M36 58l28 28M64 58L36 86" stroke="#fff" stroke-width="3"/><circle cx="50" cy="42" r="7" fill="#fff" ${MO}/>`),
+    () => nTile("#9fd36b", "#86ba52", mUse("hufeisen", 18, 14, 64)),
+    () => nTile("#d9b07a", "#c49a62", `<rect x="16" y="42" width="68" height="40" rx="6" fill="#ffd23a" ${MO}/><path d="M16 56h68M16 70h68M34 42v40M66 42v40" stroke="#c9a050" stroke-width="2"/>`)
+  ],
+  "Springturnier": [
+    () => nTile("#7cc3f0", "#62a8d6", `<use href="#schleife" x="22" y="10" width="56" height="72"/>`),
+    () => nTile("#7cc3f0", "#62a8d6", mCup(50, 56, 1.6)),
+    () => nTile("#8fd36b", "#73b852", `<path d="M20 86V30M80 86V30" stroke="${MI}" stroke-width="4"/>${[36, 50, 64].map((y, i) => `<rect x="20" y="${y}" width="60" height="7" rx="3" fill="${["#e2402f", "#fff", "#2b5fd9"][i]}" ${MO}/>`).join("")}`)
+  ],
+  // --- Pokémon (nur Gegenstände) ---
+  "Route 1": [
+    () => nTile("#8fd36b", "#73b852", mUse("pokeball", 22, 18, 56)),
+    () => nTile("#8fd36b", "#73b852", `<rect x="20" y="20" width="60" height="40" rx="4" fill="#d9a066" ${MO}/><path d="M50 60v26" stroke="#8a5a2b" stroke-width="7"/>${nWord("ROUTE 1", 50, 46, 16, "#fff", 0)}`),
+    () => nTile("#8fd36b", "#73b852", `<path d="M50 86V40" stroke="#8a5a2b" stroke-width="7"/><circle cx="50" cy="36" r="26" fill="#3fae4a" ${MO}/>${[[38, 30], [58, 26], [52, 46], [36, 46]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#2b5fd9" ${MO}/>`).join("")}`)
+  ],
+  "Vertania-Wald": [
+    () => nTile("#4f9a4a", "#3e823a", mUse("netzball", 22, 18, 56)),
+    () => nTile("#5f8a4a", "#4c7239", `<path d="M14 80h72" stroke="#8a5a2b" stroke-width="8" stroke-linecap="round"/>${[[30, 60, "#e2402f"], [50, 52, "#ff8a3d"], [70, 62, "#e2402f"]].map(([x, y, c]) => `<path d="M${x - 12} ${y + 18}q0-22 12-22t12 22z" fill="${c}" ${MO}/><circle cx="${x - 4}" cy="${y + 6}" r="2.4" fill="#fff"/><circle cx="${x + 5}" cy="${y + 10}" r="2" fill="#fff"/>`).join("")}`),
+    () => nTile("#4f9a4a", "#3e823a", `<path d="M30 20h40v50l-20 16-20-16z" fill="#f6ead2" ${MO}/>${nWord("ACHTUNG", 50, 46, 12, "#e2402f", 0)}<path d="M40 56l10-8 10 8" fill="none" stroke="${MI}" stroke-width="3"/>`)
+  ],
+  "Arena Marmoria": [
+    () => nTile("#b9a68e", "#a08d75", `<use href="#orden" x="18" y="14" width="64" height="64"/>`),
+    () => nTile("#b9a68e", "#a08d75", `<path d="M30 86V30h40v56" fill="#8a7a66" ${MO}/><path d="M24 30h52l-6-12H30z" fill="#e2402f" ${MO}/>${nWord("ARENA", 50, 58, 16, "#ffd23a", 0)}`),
+    () => nTile("#cfc6b6", "#b8ae9c", `<path d="M14 86l20-40 14 18 12-28 26 50z" fill="#8a7a66" ${MO}/><path d="M34 46l4 8M60 36l3 8" stroke="#fff" stroke-width="2"/>`)
+  ],
+  // --- Lego ---
+  "Raumstation": [
+    () => nTile("#2a3466", "#212a55", `<circle cx="50" cy="50" r="24" fill="#ffd23a" ${MO}/><ellipse cx="50" cy="50" rx="38" ry="10" fill="none" stroke="#ff8a3d" stroke-width="5" transform="rotate(-18 50 50)"/><circle cx="42" cy="42" r="5" fill="#ffe680"/>`),
+    () => nTile("#2a3466", "#212a55", `<rect x="34" y="20" width="32" height="40" rx="8" fill="#fff" ${MO}/><rect x="40" y="28" width="20" height="14" rx="4" fill="#4fd1ff" ${MO}/><rect x="38" y="60" width="10" height="22" fill="#fff" ${MO}/><rect x="52" y="60" width="10" height="22" fill="#fff" ${MO}/><path d="M34 34l-12 14M66 34l12 14" stroke="#fff" stroke-width="7" stroke-linecap="round"/>`),
+    () => nTile("#2a3466", "#212a55", `${[[22, 24], [78, 18], [30, 74], [72, 70], [50, 46]].map(([x, y], i) => `<path d="M${x} ${y - 7}l2 5 6 1-5 3 2 6-5-3-5 3 2-6-5-3 6-1z" fill="${i % 2 ? "#ffd23a" : "#fff"}"/>`).join("")}<path d="M60 40l20-14" stroke="#ff8a3d" stroke-width="3"/>`)
+  ],
+  // --- Edelsteine ---
+  "Bergkristall-Höhle": [
+    () => nTile("#5b4f4a", "#4a403c", `${mGem(34, 54, "#bfefff", 1.2)}${mGem(64, 44, "#e3d4ff", 1.4)}`),
+    () => nTile("#5b4f4a", "#4a403c", mLamp),
+    () => nTile("#5b4f4a", "#4a403c", mUse("schatztruhe", 16, 14, 68)),
+    () => nTile("#6b5f5a", "#5a4f4a", mUse("spitzhacke", 18, 14, 64))
+  ],
+  "Malachit-Mine": [
+    () => nTile("#4a5a50", "#3d4c42", mLamp),
+    () => nTile("#4a5a50", "#3d4c42", `${mGem(32, 58, "#3fbf7a", 1.2)}${mGem(66, 48, "#2fa860", 1.5)}`),
+    () => nTile("#4a5a50", "#3d4c42", mUse("spitzhacke", 18, 14, 64)),
+    () => nTile("#5a4a3a", "#4a3a2a", `<rect x="18" y="30" width="64" height="50" rx="4" fill="#c9935a" ${MO}/><path d="M18 44h64M18 60h64" stroke="#8a5a2b" stroke-width="2"/>${nWord("TNT", 50, 70, 22, "#e2402f", -6)}`)
+  ],
+  "Türkis-Tempel": [
+    () => nTile("#c9a66b", "#b08d52", mUse("schatztruhe", 16, 14, 68)),
+    () => nTile("#c9a66b", "#b08d52", `<circle cx="50" cy="44" r="24" fill="#3fc7c7" ${MO}/><circle cx="42" cy="40" r="4" fill="${MI}"/><circle cx="58" cy="40" r="4" fill="${MI}"/><path d="M40 54q10 6 20 0" fill="none" stroke="${MI}" stroke-width="3"/><path d="M26 70h48v14H26z" fill="#a8803c" ${MO}/>`),
+    () => nTile("#b08d52", "#9a7a44", `<path d="M14 86V30l36-18 36 18v56z" fill="#d9b77a" ${MO}/>${[34, 50, 66].map(x => `<path d="M${x} 36v50" stroke="#a8803c" stroke-width="5"/>`).join("")}${mGem(50, 26, "#3fc7c7", .7)}`)
+  ],
+  // --- Schlagzeug ---
+  "Konservatorium Hamburg": [
+    () => nTile("#e8dccb", "#d5c6b0", `<path d="M36 18q-14 30 4 50 6 8 0 18h24q-6-10 0-18 18-20 4-50z" fill="#c8743a" ${MO}/><circle cx="50" cy="52" r="8" fill="${MI}"/><path d="M50 18V4M44 4h12" stroke="${MI}" stroke-width="5"/>`),
+    () => nTile("#e8dccb", "#d5c6b0", `<path d="M20 50h44l14-12v28l-14-12H20z" fill="#ffd23a" ${MO}/>${[30, 40, 50].map(x => `<rect x="${x - 2}" y="40" width="6" height="12" fill="#ffd23a" ${MO}/>`).join("")}`),
+    () => nTile("#e8dccb", "#d5c6b0", mUse("snare", 18, 16, 64))
+  ],
+  "Laeiszhalle": [
+    () => nTile("#a8434a", "#8f363d", `<rect x="12" y="20" width="76" height="50" rx="4" fill="#ffd23a" ${MO}/><path d="M20 30h60" stroke="#e2402f" stroke-width="3"/>${nWord("KONZERT", 50, 54, 16, "#e2402f", 0)}<path d="M30 70v16M70 70v16" stroke="${MI}" stroke-width="4"/>`),
+    () => nTile("#a8434a", "#8f363d", `<path d="M30 20h40v66H30z" fill="#e2402f" ${MO}/><path d="M30 20q20 30 0 66M70 20q-20 30 0 66" fill="#c0392b" ${MO}/><path d="M24 20h52" stroke="#ffd23a" stroke-width="6"/>`),
+    () => nTile("#efe6da", "#ddd1c1", mUse("pauke", 16, 16, 68))
+  ],
+  // --- Tennis ---
+  "Sandplatz-Turnier": [
+    () => nTile("#d9773f", "#c2652f", mCup(50, 56, 1.6)),
+    () => nTile("#d9773f", "#c2652f", `<g transform="rotate(-25 50 50)"><ellipse cx="50" cy="32" rx="16" ry="20" fill="none" stroke="#fff" stroke-width="6"/><path d="M50 52v34" stroke="${MI}" stroke-width="7" stroke-linecap="round"/></g><circle cx="68" cy="74" r="8" fill="#d7f03c" ${MO}/>`),
+    () => nTile("#2f7a4a", "#25643c", mBottle("#4fd1ff")),
+    () => nTile("#d9773f", "#c2652f", `<path d="M26 40h48l-6 46H32z" fill="#c9935a" ${MO}/>${[[38, 34], [50, 30], [62, 34], [44, 40], [56, 40]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="7" fill="#d7f03c" ${MO}/>`).join("")}`)
+  ],
+  "Tennishalle": [
+    () => nTile("#3d6fb3", "#325c96", mCup(50, 56, 1.6)),
+    () => nTile("#3d6fb3", "#325c96", mBottle("#ff8fb1")),
+    () => nTile("#3d6fb3", "#325c96", `<rect x="14" y="36" width="72" height="22" rx="6" fill="#fff" ${MO}/><path d="M14 47h72" stroke="#e2402f" stroke-width="5"/><path d="M24 58v24M76 58v24" stroke="${MI}" stroke-width="4"/>`),
+    () => nTile("#2a5590", "#22477a", `<g transform="rotate(25 50 50)"><ellipse cx="50" cy="32" rx="16" ry="20" fill="none" stroke="#ffd23a" stroke-width="6"/><path d="M50 52v34" stroke="#fff" stroke-width="7" stroke-linecap="round"/></g>`)
+  ],
+  "Center Court": [
+    () => nTile("#1f4a3a", "#183c2f", mCup(50, 56, 1.6)),
+    () => nTile("#1f4a3a", "#183c2f", `<path d="M20 30h60l-8 56H28z" fill="#f2f3f5" ${MO}/>${[[36, 44], [52, 50], [64, 40], [44, 62], [60, 66]].map(([x, y]) => `<path d="M${x} ${y - 7}q8 0 7 8-1 8-7 9-6-1-7-9-1-8 7-8z" fill="#e2402f" ${MO}/>`).join("")}`),
+    () => nTile("#7a3fa0", "#653386", `<path d="M50 12l8 14h14l-10 10 4 16-16-8-16 8 4-16-10-10h14z" fill="#ffd23a" ${MO}/>${nWord("FINALE", 50, 78, 18, "#fff", 0)}`),
+    () => nTile("#1f4a3a", "#183c2f", `<path d="M24 84h52l-6-30H30z" fill="#c9935a" ${MO}/>${[[34, 44, "#ff8fb1"], [50, 36, "#ffd23a"], [66, 44, "#fff"], [42, 30, "#c9a0ff"], [58, 28, "#ff8fb1"]].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="7" fill="${c}" ${MO}/>`).join("")}`)
+  ],
+  // --- Essen ---
+  "Pizzeria": [
+    () => nTile("#f6ead2", "#e3d4b8", `<circle cx="50" cy="50" r="34" fill="#ffd23a" ${MO}/><circle cx="50" cy="50" r="28" fill="#e2402f"/>${[[38, 40], [60, 38], [50, 58], [36, 60], [64, 60]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#c0392b" ${MO}/>`).join("")}<path d="M42 30l4 6M58 64l4 4" stroke="#3fae4a" stroke-width="4" stroke-linecap="round"/>`),
+    () => nTile("#3fae4a", "#34953e", `<path d="M30 86V24h10l4-10h12l4 10h10v62z" fill="#3fae4a" ${MO}/><rect x="34" y="40" width="32" height="22" fill="#fff" ${MO}/>${nWord("OLIO", 50, 56, 14, "#3fae4a", 0)}`),
+    () => nTile("#f6ead2", "#e3d4b8", `<path d="M20 30h60" stroke="${MI}" stroke-width="3"/>${[[30, "#e2402f"], [50, "#fff"], [70, "#3fae4a"]].map(([x, c]) => `<path d="M${x - 10} 30h20v40h-20z" fill="${c}" ${MO}/>`).join("")}${nWord("MENU", 50, 88, 14, MI, 0)}`),
+    () => nTile("#c9643e", "#ad5232", `<path d="M26 20q24-8 48 0l-6 66H32z" fill="#fff" ${MO}/><path d="M50 30v40M40 40q10 10 20 0" stroke="#e2402f" stroke-width="3" fill="none"/><path d="M38 74h24" stroke="${MI}" stroke-width="3"/>`)
+  ],
+  "Burger-Diner": [
+    () => nTile("#ffd23a", "#e8b81a", `<path d="M22 50q0-26 28-26t28 26z" fill="#e8a24a" ${MO}/><rect x="20" y="50" width="60" height="8" rx="3" fill="#3fae4a" ${MO}/><rect x="22" y="58" width="56" height="10" rx="4" fill="#8a4a2a" ${MO}/><path d="M22 70h56q0 12-28 12t-28-12z" fill="#e8a24a" ${MO}/>`),
+    () => nTile("#e2402f", "#c0392b", `<path d="M30 30h40l-6 56H36z" fill="#e2402f" ${MO}/><path d="M30 30h40l-2 14H32z" fill="#fff"/>${[36, 44, 52, 60].map(x => `<path d="M${x} 30l-2-18" stroke="#ffd23a" stroke-width="5" stroke-linecap="round"/>`).join("")}`),
+    () => nTile("#4fc3c9", "#3aa9af", `<rect x="16" y="20" width="68" height="46" rx="20" fill="#ff8fb1" ${MO}/>${nWord("OPEN", 50, 52, 22, "#fff", 0)}<path d="M50 66v20" stroke="${MI}" stroke-width="4"/>`),
+    () => nTile("#ffd23a", "#e8b81a", `<rect x="36" y="20" width="14" height="66" rx="5" fill="#e2402f" ${MO}/><rect x="54" y="26" width="14" height="60" rx="5" fill="#ffd23a" ${MO}/><rect x="38" y="12" width="10" height="10" fill="#e2402f" ${MO}/><rect x="56" y="18" width="10" height="10" fill="#ffd23a" ${MO}/>`)
+  ],
+  // --- Pokémon 2 (nur Gegenstände) ---
+  "Kampf-Dojo": [
+    () => nTile("#c9965c", "#b07c44", `${[[36, "#e2402f"], [64, "#2b5fd9"]].map(([x, c]) => `<path d="M${x - 14} 30q0-12 14-12t14 12v30q0 12-14 12t-14-12z" fill="${c}" ${MO}/><rect x="${x - 12}" y="66" width="24" height="12" rx="3" fill="#fff" ${MO}/>`).join("")}`),
+    () => nTile("#c9965c", "#b07c44", `<rect x="10" y="44" width="80" height="10" rx="4" fill="#5b6475" ${MO}/>${[16, 26, 74, 84].map((x, i) => `<rect x="${x - 4}" y="${i % 3 ? 34 : 28}" width="8" height="${i % 3 ? 30 : 42}" rx="3" fill="#2d3036" ${MO}/>`).join("")}`),
+    () => nTile("#c9965c", "#b07c44", mUse("meisterorden", 18, 14, 64))
+  ],
+  "Psycho-Arena": [
+    () => nTile("#8a6bd1", "#7458b8", `<circle cx="50" cy="44" r="24" fill="#e3d4ff" ${MO}/><path d="M38 34q8-8 16-2" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M34 70h32l-6 14H40z" fill="#4a3a7a" ${MO}/>`),
+    () => nTile("#8a6bd1", "#7458b8", `<path d="M40 86V50q0-6 6-6" fill="none" stroke="#e9eaee" stroke-width="7" stroke-linecap="round"/><path d="M46 44q4-28 18-30" fill="none" stroke="#e9eaee" stroke-width="7" stroke-linecap="round"/><ellipse cx="66" cy="16" rx="8" ry="10" fill="#e9eaee" ${MO}/>`),
+    () => nTile("#4a3a7a", "#3d3066", `<path d="M62 18a28 28 0 1 0 0 64 22 22 0 1 1 0-64z" fill="#ffd23a" ${MO}/>${[[30, 26], [40, 52], [24, 70]].map(([x, y]) => `<path d="M${x} ${y - 5}l2 3 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z" fill="#fff"/>`).join("")}`),
+    () => nTile("#8a6bd1", "#7458b8", mUse("hyperball", 22, 18, 56))
+  ],
+  "Glumandas Vulkan": [
+    () => nTile("#6a2a1a", "#55211a", `<path d="M24 82l52-12M24 70l52 12" stroke="#8a5a2b" stroke-width="7" stroke-linecap="round"/><path class="flame" d="M50 74q-22-18-6-46 4 12 10 8 2-12 10-18 12 26-14 56z" fill="#ff8a1a" ${MO}/><path d="M50 72q-8-8-2-20 6 8 8 2 6 10-6 18z" fill="#ffd23a"/>`),
+    () => nTile("#6a2a1a", "#55211a", mUse("superball", 22, 18, 56)),
+    () => nTile("#6a2a1a", "#55211a", `${mGem(50, 50, "#e2402f", 1.6)}`)
+  ],
+  // --- Familie ---
+  "Sörens Proberaum": [
+    () => nTile("#3a3550", "#2e2a42", `<path d="M38 14q-12 30 2 52 6 8 0 20h20q-6-12 0-20 14-22 2-52z" fill="#e2402f" ${MO}/><circle cx="50" cy="52" r="7" fill="${MI}"/><path d="M50 14V4" stroke="${MI}" stroke-width="5"/>`),
+    () => nTile("#3a3550", "#2e2a42", `<path d="M50 90V40" stroke="#9aa3b1" stroke-width="4"/><circle cx="50" cy="28" r="12" fill="#5b6475" ${MO}/><path d="M42 24h16M42 30h16" stroke="#9aa3b1" stroke-width="2"/><path d="M36 90h28" stroke="#9aa3b1" stroke-width="5"/>`),
+    () => nTile("#6b5fa8", "#5a4f91", `<path d="M24 20h52v60H24z" fill="#ffd23a" ${MO}/>${nWord("ROCK", 50, 56, 22, "#e2402f", -8)}<path d="M50 20v-8" stroke="${MI}" stroke-width="2"/>`),
+    () => nTile("#3a3550", "#2e2a42", mUse("drumsticks", 18, 14, 64))
+  ],
+  "Annas Klassenzimmer": [
+    () => nTile("#fff6dc", "#f0e4c0", `<rect x="22" y="20" width="56" height="64" rx="4" fill="#2b5fd9" ${MO}/><rect x="30" y="28" width="40" height="30" fill="#fff" ${MO}/><path d="M34 36h32M34 44h24" stroke="${MI}" stroke-width="2"/>`),
+    () => nTile("#fff6dc", "#f0e4c0", `${[[28, "#e2402f"], [42, "#ffd23a"], [56, "#3fae4a"], [70, "#2b5fd9"]].map(([x, c]) => `<path d="M${x - 5} 84V30l5-14 5 14v54z" fill="${c}" ${MO}/>`).join("")}`),
+    () => nTile("#fff6dc", "#f0e4c0", `<path d="M10 70h80l-40 16z" fill="#c9935a" ${MO}/><circle cx="34" cy="50" r="12" fill="#e2402f" ${MO}/><path d="M34 38q2-8 8-8" fill="none" stroke="#3fae4a" stroke-width="3"/><rect x="54" y="40" width="24" height="26" rx="3" fill="#fff" ${MO}/><text x="66" y="58" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="14" fill="${MI}">ABC</text>`),
+    () => nTile("#fff6dc", "#f0e4c0", mUse("schultuete", 20, 12, 64))
+  ],
+  "Idas Zimmer": [
+    () => nTile("#ffe3f1", "#f2c6dc", mUse("einhorn", 14, 12, 72)),
+    () => nTile("#ffe3f1", "#f2c6dc", `<path d="M50 10v14M26 24h48" stroke="${MI}" stroke-width="3"/>${[[30, "#ff8fb1"], [50, "#ffd23a"], [70, "#7ad6ff"]].map(([x, c]) => `<path d="M${x} 24v20" stroke="${MI}" stroke-width="1.6"/><path d="M${x} 44l6 10h-12z" fill="${c}" ${MO}/>`).join("")}<path d="M50 60l4 10 11 1-8 7 3 11-10-6-10 6 3-11-8-7 11-1z" fill="#ffd23a" ${MO}/>`),
+    () => nTile("#ffe3f1", "#f2c6dc", `<path d="M50 30v52M50 30q-20-10-34-4v52q14-6 34 4M50 30q20-10 34-4v52q-14-6-34 4" fill="#fff" ${MO}/><path d="M24 40q10-4 20 0M24 50q10-4 20 0M56 40q10-4 20 0M56 50q10-4 20 0" stroke="#ff8fb1" stroke-width="3"/>`),
+    () => nTile("#c9a0ff", "#b38ae8", `${[[34, 40, "#ff8fb1"], [54, 32, "#ffd23a"], [68, 46, "#7ad6ff"]].map(([x, y, c]) => `<path d="M${x} ${y + 16}q-3 10 2 22" fill="none" stroke="${MI}" stroke-width="1.6"/><ellipse cx="${x}" cy="${y}" rx="11" ry="14" fill="${c}" ${MO}/>`).join("")}`)
+  ]
+};
+for (const T of Object.values(THEMES)) for (const S of (T.scenes || [])) if (MEHR_WAENDE[S.name]) {
+  const base = S.wall, list = MEHR_WAENDE[S.name];
+  S.wall = (x, y) => pick(x, y, 48, 100) < 40 ? list[pick(x, y, 49, list.length)](x, y) : base(x, y);
+}
 // ===== Bonus: Lasses Ehrenrunde =====
 // Microban Nr. 154 „Take the long way home“: eine Doppelspirale mit nur einer Kiste.
 // Lasse läuft die Ehrenrunde einmal durch alle zehn Welten und stellt die Meisterschale aufs Podest.
@@ -4492,7 +4654,7 @@ function loadLevel(w, l, data) {
   curWorld = w; curLevel = l;
   L = WORLDS[w]; T = THEMES[L.theme]; S = T.levelScenes ? T.levelScenes[l] : T.scenes ? T.scenes[Math.min(T.scenes.length - 1, Math.floor(l / PER_DESIGN))] : null;
   // Zusätzliche Wandteile untermischen (rund 40 %), damit sich kein Schauplatz wiederholt
-  if (S && EXTRA_WALLS[S.name]) { const base = S, ex = EXTRA_WALLS[S.name]; S = { ...base, wall: (x, y) => pick(x, y, 77, 10) < 4 ? ex[pick(x, y, 78, ex.length)](x, y) : base.wall(x, y) }; }
+  if (S && EXTRA_WALLS[S.name]) { const base = S, ex = EXTRA_WALLS[S.name]; S = { ...base, wall: (x, y) => pick(x, y, 77, 10) < ((typeof EXTRA_SHARE !== "undefined" && EXTRA_SHARE[S.name]) || 4) ? ex[pick(x, y, 78, ex.length)](x, y) : base.wall(x, y) }; }
   show("game");
   applyPal({ ...T.pal, ...(S ? S.pal : {}) }, "theme-" + L.theme);
   const finale = !!T.prize && l === L.levels.length - 1;
@@ -4549,18 +4711,33 @@ function buildBoard() {
     if (best) html = html.replace(new RegExp(`<div class="tile deco" style="--x:${best[0]};--y:${best[1]}">.*?</svg></div>`), "")
       + `<div class="tile deco" style="--x:${best[0]};--y:${best[1]}">${TRAINER}</div>`;
   }
-  const wallHtml = {};
+  const wallHtml = {}; const persons = {}, used = {}; let plainN = 0;
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
     const k = key(x, y), pos = `style="--x:${x};--y:${y}"`;
     // Nur Wände zeigen, die an das Spielfeld grenzen; abgeschlossene Wandinseln außen weglassen
     if (walls.has(k) && touchesInside(x, y)) {
       // Gleiche Wandteile nicht direkt neben- oder übereinander: notfalls eine andere Variante ziehen
       const fn = S ? S.wall : T.wall;
-      let w = fn(x, y);
-      for (const [dx, dy] of [[13, 7], [29, 17], [41, 3], [57, 23]]) {
-        if (w !== wallHtml[key(x - 1, y)] && w !== wallHtml[key(x, y - 1)]) break;
-        w = fn(x + dx, y + dy);
+      // Auswahl unter mehreren Kandidaten (fest je Feld, daher bei jedem Neuaufbau gleich):
+      // Personen und Pokémon höchstens viermal und mit mindestens drei Feldern Abstand, gleiche Bilder nicht direkt nebeneinander,
+      // höchstens drei leere Flächen ohne Motiv, und ein Motiv möglichst nicht öfter als fünfmal
+      const pid = (h) => (h.match(/data-person="([^"]+)"/) || [])[1];
+      const plain = (h) => !/<(path|circle|ellipse|g|text|use|polygon|polyline|line|image)\b/.test(h.replace(/<g[^>]*class="(detail)?"/g, ""));
+      const score = (h) => { let v = 0; const id = pid(h);
+        if (id) { const at = persons[id] || []; if (at.length >= 4 || at.some(([a, b]) => Math.max(Math.abs(a - x), Math.abs(b - y)) < 3)) v += 1000; }
+        if (h === wallHtml[key(x - 1, y)] || h === wallHtml[key(x, y - 1)]) v += 100;
+        if (plain(h) && plainN >= 3) v += 50;
+        const n = used[h] || 0; if (n >= 5) v += 10 * (n - 4);
+        return v; };
+      let w = fn(x, y), bestV = score(w);
+      for (const [dx, dy] of [[13, 7], [29, 17], [41, 3], [57, 23], [71, 11], [83, 31], [97, 5], [109, 43], [127, 19], [139, 61], [151, 37], [163, 89]]) {
+        if (!bestV) break;
+        const c = fn(x + dx, y + dy), v = score(c);
+        if (v < bestV) { w = c; bestV = v; }
       }
+      { const id = pid(w); if (id) (persons[id] = persons[id] || []).push([x, y]); }
+      if (plain(w)) plainN++;
+      used[w] = (used[w] || 0) + 1;
       wallHtml[k] = w;
       html += `<div class="tile wall" ${pos}>${w}</div>`;
       const wd = wallDetail(mood, x, y);
@@ -4984,7 +5161,7 @@ function dVars(d) {
 }
 const dWrap = (html, d) => html ? `<div class="dv" style="${dVars(d)}">${html}</div>` : "";
 const dWall = (d, x, y) => { const S = d.S, ex = S && EXTRA_WALLS[S.name], base = S ? S.wall : d.T.wall;
-  return ex && pick(x, y, 77, 10) < 4 ? ex[pick(x, y, 78, ex.length)](x, y) : base(x, y); };
+  return ex && pick(x, y, 77, 10) < ((typeof EXTRA_SHARE !== "undefined" && EXTRA_SHARE[S.name]) || 4) ? ex[pick(x, y, 78, ex.length)](x, y) : base(x, y); };
 const dFloor = (d, x, y, ctx) => d.S ? d.S.floor(x, y, ctx) : `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${(x + y) % 2 ? "var(--floor-b)" : "var(--floor-a)"}"/></svg>`;
 const dTarget = (d) => d.T.target(d.l);
 const dBoxes = (d) => (d.T.boxCycle && d.T.boxCycle(d.l)) || [d.T.levelBox ? d.T.levelBox(d.l) : d.T.box];
