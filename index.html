@@ -578,6 +578,29 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .lb-a { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 7px; background: #e3ebf7; color: #4a3728; font: 700 17px/1 system-ui, sans-serif; }
 .lb-a.s { background: #e8862a; color: #fff; }
 @media (max-width: 520px) { .lb-lv { grid-template-columns: minmax(0, 1fr); } }
+/* Belohnung: einfliegender Goldstern, funkelnde Goldwelt, Levelauftritt, Lasse auf der Karte */
+.fly-star { position: fixed; z-index: 60; pointer-events: none; filter: drop-shadow(0 6px 14px #c9940066); }
+.fly-star svg { width: 100%; height: 100%; display: block; }
+.world button.gold-new svg.goldworld { animation: goldIn 1.1s cubic-bezier(.2, 1.4, .4, 1) .3s backwards; }
+@keyframes goldIn { from { transform: scale(0) rotate(-120deg); } to { transform: scale(1) rotate(0); } }
+.gold-spark { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: #ffe066; box-shadow: 0 0 8px #ffd23a; pointer-events: none;
+  animation: goldSpark 1.2s ease-out calc(.6s + var(--d)) both; }
+@keyframes goldSpark { 0% { transform: rotate(var(--a)) translateY(0) scale(.3); opacity: 0; } 25% { opacity: 1; } 100% { transform: rotate(var(--a)) translateY(-78px) scale(1); opacity: 0; } }
+.lv-intro { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; pointer-events: none; }
+.lv-card { display: grid; justify-items: center; gap: 2px; padding: 16px 30px 18px; min-width: 220px; max-width: calc(100vw - 48px); text-align: center;
+  background: repeating-linear-gradient(0deg, #b9824a 0 22px, #a8733e 22px 24px); color: #fff8ec; border: 3px solid #6b4423; border-radius: 14px;
+  box-shadow: 0 8px 0 #6b4423, 0 16px 30px #0000003a; text-shadow: 0 2px 0 #6b4423; animation: introIn .55s cubic-bezier(.2, 1.4, .4, 1) both; position: relative; }
+.lv-card::before, .lv-card::after { content: ""; position: absolute; top: 10px; width: 8px; height: 8px; border-radius: 50%; background: #6b4423; }
+.lv-card::before { left: 10px; } .lv-card::after { right: 10px; }
+.lv-card small { font: 700 14px var(--display, "Fredoka", sans-serif); letter-spacing: .04em; opacity: .9; }
+.lv-card b { font: 700 30px/1.1 var(--display, "Fredoka", sans-serif); text-wrap: balance; }
+.lv-intro.out .lv-card { animation: introOut .45s ease-in both; }
+@keyframes introIn { from { transform: translateY(-40px) scale(.6) rotate(-6deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes introOut { to { transform: translateY(20px) scale(.9); opacity: 0; } }
+.map-lasse { position: absolute; width: 54px; height: 54px; margin-left: -27px; margin-top: -10px; z-index: 3; pointer-events: none; }
+.map-lasse .ml-in { width: 100%; height: 100%; animation: mapbob 2.6s ease-in-out infinite; }
+.map-lasse svg { width: 100%; height: 100%; overflow: visible; display: block; }
+@media (prefers-reduced-motion: reduce) { .lv-card, .map-lasse .ml-in, .world button.gold-new svg.goldworld { animation: none; } }
 </style>
 
 <!-- Gemeinsame Verläufe und Symbole -->
@@ -5789,6 +5812,94 @@ const LOESUNGEN = {"0-0":"LLulD","0-2":"uulLulldRurDrddllURuulD","0-1":"rddLruul
   });
   map.addEventListener("pointermove", (e) => { if (timer && Math.hypot(e.clientX - start[0], e.clientY - start[1]) > 12) stop(); });
   for (const ev of ["pointerup", "pointercancel", "pointerleave"]) map.addEventListener(ev, stop);
+})();
+// ===== Belohnung und Auftritt (beide Teile) =====
+// 1. Goldener Stern fliegt beim Gold-Sieg groß über das Bild und landet im Gewinnfenster.
+// 2. Welt ganz golden: beim nächsten Öffnen der Karte funkelt der große Weltstern einmal.
+// 3. Levelstart: kurz erscheint groß „Level 3 · Trainingsplatz“ (Teil 1 Holzschild, Teil 2 Comic-Kasten).
+// 4. Lasse steht auf der Karte an der aktuellen Welt und hüpft beim Freischalten zur nächsten.
+(() => {
+  const calm = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const STAR = `<svg viewBox="0 0 100 100"><use href="#stern"/></svg>`;
+
+  // --- 1. Goldstern fliegt ein ---
+  function flyStar() {
+    const ws = document.getElementById("win-star"), target = ws && ws.querySelector("svg");
+    if (!target || calm()) return;
+    const r = target.getBoundingClientRect(), size = Math.min(innerWidth, innerHeight) * .55;
+    const el = document.createElement("div"); el.className = "fly-star"; el.innerHTML = STAR;
+    el.style.cssText = `left:${innerWidth / 2 - size / 2}px;top:${innerHeight / 2 - size / 2}px;width:${size}px;height:${size}px`;
+    document.body.appendChild(el); target.style.visibility = "hidden";
+    const dx = r.left + r.width / 2 - innerWidth / 2, dy = r.top + r.height / 2 - innerHeight / 2, s = r.width / size;
+    const a = el.animate([
+      { transform: "translate(0,0) scale(0) rotate(-180deg)", opacity: 0 },
+      { transform: "translate(0,0) scale(1.1) rotate(10deg)", opacity: 1, offset: .35 },
+      { transform: "translate(0,0) scale(1) rotate(0deg)", opacity: 1, offset: .55 },
+      { transform: `translate(${dx}px,${dy}px) scale(${s}) rotate(360deg)`, opacity: 1 }
+    ], { duration: 1400, easing: "cubic-bezier(.3,.7,.4,1)" });
+    a.onfinish = () => { el.remove(); target.style.visibility = ""; target.animate([{ transform: "scale(1.6)" }, { transform: "scale(1)" }], { duration: 350, easing: "ease-out" }); };
+  }
+  // Das Gewinnfenster öffnet sich 450 ms nach dem Sieg; danach prüfen, ob es Gold war
+  const win = document.getElementById("win");
+  new MutationObserver(() => {
+    if (win.hidden) return;
+    const ws = document.getElementById("win-star");
+    if (ws && ws.querySelector('use[href="#stern"]')) setTimeout(flyStar, 120);
+  }).observe(win, { attributes: true, attributeFilter: ["hidden"] });
+
+  // --- 3. Auftritt am Levelstart ---
+  const sceneName = (w, l) => { const W = WORLDS[w]; if (!W) return ""; const T = THEMES[W.theme] || {};
+    const S = T.levelScenes ? T.levelScenes[l] : T.scenes ? T.scenes[Math.min(T.scenes.length - 1, Math.floor(l / PER_DESIGN))] : null;
+    return (T.levelName && T.levelName(l)) || (S && S.name) || W.name; };
+  let introT = null;
+  function intro(w, l) {
+    const W = WORLDS[w]; if (!W) return;
+    document.querySelectorAll(".lv-intro").forEach(e => e.remove()); clearTimeout(introT);
+    const el = document.createElement("div"); el.className = "lv-intro";
+    const top = W.custom ? "Eigenes Level" : W.bonus ? "Bonus" : `Welt ${w + 1} · Level ${l + 1}`;
+    el.innerHTML = `<div class="lv-card"><small>${esc(top)}</small><b>${esc(W.custom ? (THEMES.custom && THEMES.custom.title) || "" : sceneName(w, l))}</b></div>`;
+    document.getElementById("scr-game").appendChild(el);
+    introT = setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 450); }, calm() ? 1200 : 1500);
+  }
+  const baseLoad = loadLevel;
+  loadLevel = function (w, l, ...rest) { const r = baseLoad(w, l, ...rest); intro(w, l); return r; };
+
+  // --- 2. und 4. auf der Karte ---
+  const baseMap = renderMap;
+  renderMap = function (...args) {
+    const p = P(), seenBefore = p.seen || 1;
+    const r = baseMap(...args);
+    const map = document.getElementById("map");
+    const shown = WORLDS.filter((w, i) => !w.hidden && (!w.bonus || worldOpen(p, i)));
+    const open = shown.map((_, i) => worldOpen(p, i)), cur = open.lastIndexOf(true);
+    // goldene Welten, die neu sind, funkeln einmal
+    p.goldSeen = p.goldSeen || [];
+    let changed = false;
+    map.querySelectorAll(".world button[data-w]").forEach(b => {
+      const i = +b.dataset.w; if (!b.querySelector("svg.goldworld") || p.goldSeen.includes(i)) return;
+      b.classList.add("gold-new"); p.goldSeen.push(i); changed = true;
+      if (!calm()) for (let k = 0; k < 8; k++) b.insertAdjacentHTML("beforeend", `<span class="gold-spark" style="--a:${k * 45}deg;--d:${k * 60}ms"></span>`);
+    });
+    if (changed) save();
+    // Lasse an der aktuellen Welt; beim Freischalten hüpft er von der vorigen Welt herüber
+    if (cur >= 0) {
+      const pt = (i) => [MAP_X[i], i * ROW + 60], [x, y] = pt(cur), left = x < 50;
+      const el = document.createElement("div"); el.className = "map-lasse";
+      const side = (i) => Math.max(9, Math.min(91, MAP_X[i] + (MAP_X[i] < 50 ? -21 : 21)));
+      el.style.cssText = `left:${side(cur)}%;top:${y + 30}px`;
+      el.innerHTML = `<div class="ml-in">${LASSE.fussball || LASSE.neutral}</div>`;
+      map.appendChild(el);
+      const reveal = cur > 0 && seenBefore < cur + 1;
+      if (reveal && !calm()) {
+        const W = map.clientWidth, dx = (side(cur - 1) - side(cur)) / 100 * W, dy = -ROW, hops = 4, frames = [];
+        for (let k = 0; k <= hops; k++) { const f = 1 - k / hops;
+          frames.push({ transform: `translate(${dx * f}px,${dy * f}px)`, offset: k / hops });
+          if (k < hops) frames.push({ transform: `translate(${dx * (f - .5 / hops)}px,${dy * (f - .5 / hops) - 26}px)`, offset: (k + .5) / hops }); }
+        el.animate(frames, { duration: 1600, delay: 900, easing: "ease-in-out", fill: "backwards" });
+      }
+    }
+    return r;
+  };
 })();
 </script>
 
