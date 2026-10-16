@@ -5914,45 +5914,50 @@ const LOESUNGEN = {"0-0":"LLulD","0-2":"uulLulldRurDrddllURuulD","0-1":"rddLruul
 // Schlapfel: runder Apfelkuchen-Drache – rote Apfelschale mit Teiggitter auf dem Rücken, cremefarbener Bauch,
 // hellgrüner Hals und Kopf mit Blätterkragen. Verschiedene Haltungen in den Wänden, dazu Apfelkuchen;
 // Schlapfel läuft als Begleiter hinter Lasse her, ein großer Schlapfel schläft am Rand und wacht beim Sieg auf.
-const SL = { ink: "#4a3728", red: "#e8423a", redD: "#b92a24", crust: "#ecc77e", crustD: "#c99a4c", cream: "#fff1d0", neck: "#d6ea8c", neckD: "#b4cf62", leaf: "#5fb54a", leafD: "#3f8a3a" };
-const SLK = `stroke="${SL.ink}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
+const SL = { ink: "#4a3728", red: "#c8384a", redL: "#e8607a", crust: "#f0b04a", crustL: "#ffd98a", crustD: "#c98a2c", cream: "#fff1d0",
+  green: "#6fa64a", greenD: "#4f8a36", yellow: "#f4cf6a", leafG: "#b6dc7a", leafR: "#d8455a" };
+const SLK = `stroke="${SL.ink}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"`;
 let slN = 0;
-// face: "auf" (Augen offen), "zu" (schläft), "mampf" (kaut), "jubel" (Mund offen)
-function schlapfel({ face = "auf", extra = "", front = "", head = [74, 30] } = {}) {
-  const id = "slc" + (++slN), [hx, hy] = head;
-  const eyes = face === "zu" ? `<path d="M${hx - 6} ${hy - 1}q3 3 6 0M${hx + 4} ${hy - 1}q3 3 6 0" fill="none" ${SLK}/>`
-    : `<circle cx="${hx - 3}" cy="${hy - 2}" r="2.6" fill="${SL.ink}"/><circle cx="${hx + 7}" cy="${hy - 2}" r="2.6" fill="${SL.ink}"/><circle cx="${hx - 2}" cy="${hy - 3}" r=".9" fill="#fff"/><circle cx="${hx + 8}" cy="${hy - 3}" r=".9" fill="#fff"/>`;
-  const mouth = face === "jubel" ? `<path d="M${hx - 2} ${hy + 6}q5 8 10 0z" fill="#c0392b" ${SLK}/>`
-    : face === "mampf" ? `<ellipse cx="${hx + 3}" cy="${hy + 7}" rx="4" ry="3" fill="#c0392b" ${SLK}/>`
-    : `<path d="M${hx - 1} ${hy + 6}q4 4 8 0" fill="none" ${SLK}/>`;
-  return `<g class="slap">
-    <ellipse cx="48" cy="90" rx="34" ry="5" fill="#00000022"/>
-    ${[[24, 80], [38, 84], [58, 84], [70, 80]].map(([x, y]) => `<rect x="${x - 6}" y="${y - 6}" width="12" height="12" rx="5" fill="${SL.neck}" ${SLK}/>`).join("")}
-    <path d="M${hx - 8} ${hy + 8}q-2 22-14 30" fill="none" stroke="${SL.ink}" stroke-width="16" stroke-linecap="round"/>
-    <path d="M${hx - 8} ${hy + 8}q-2 22-14 30" fill="none" stroke="${SL.neck}" stroke-width="11" stroke-linecap="round"/>
-    <clipPath id="${id}"><ellipse cx="44" cy="64" rx="34" ry="22"/></clipPath>
-    <ellipse cx="44" cy="64" rx="34" ry="22" fill="${SL.red}"/>
-    <g clip-path="url(#${id})"><ellipse cx="44" cy="76" rx="30" ry="10" fill="${SL.cream}"/>
-      ${[16, 28, 40, 52, 64].map(x => `<path d="M${x} 40l12 22" stroke="${SL.crust}" stroke-width="5"/><path d="M${x + 12} 40l-12 22" stroke="${SL.crust}" stroke-width="5"/>`).join("")}
-      <path d="M10 62q34 6 68 0" fill="none" stroke="${SL.crustD}" stroke-width="5"/></g>
-    <ellipse cx="44" cy="64" rx="34" ry="22" fill="none" ${SLK}/>
-    <path d="M22 50q6-8 14-6" fill="none" stroke="#fff" stroke-width="3" opacity=".55"/>
-    ${[[-10, 4], [0, 10], [10, 6], [-4, -2]].map(([dx, dy]) => `<path d="M${hx - 8 + dx} ${hy + 14 + dy}q-8-6-4-14 8 4 4 14z" fill="${SL.leaf}" ${SLK}/>`).join("")}
-    <circle cx="${hx}" cy="${hy}" r="12" fill="${SL.neck}" ${SLK}/>
-    <path d="M${hx - 6} ${hy - 10}q2-8 8-8M${hx + 2} ${hy - 11}q4-7 10-5" fill="none" stroke="${SL.leafD}" stroke-width="3"/>
-    ${eyes}${mouth}<circle cx="${hx - 7}" cy="${hy + 4}" r="2.4" fill="#ff9db0" opacity=".7"/>${extra}</g>${front}`;
+// Schlapfel nach Vorlage: riesiger runder Körper (unten grün, oben gelb) mit Kuchengitter, oben ein rotes und ein grünes Blatt,
+// vorn unten ein kleiner, tief hängender grüner Kopf mit roter Apfelkappe, kurze Stummelbeine.
+// face: "auf", "zu" (schläft), "mampf" (kaut), "jubel" (Kopf gehoben, Mund offen)
+function schlapfel({ face = "auf", extra = "", front = "", head } = {}) {
+  const id = "slc" + (++slN), [hx, hy] = head || (face === "jubel" ? [20, 64] : [19, 79]);
+  const eye = face === "zu" ? `<path d="M${hx - 8} ${hy + 1.5}q3 2.4 6 0" fill="none" ${SLK}/>`
+    : `<ellipse cx="${hx - 5}" cy="${hy + 1.5}" rx="1.9" ry="2.3" fill="${SL.ink}"/><circle cx="${hx - 4.4}" cy="${hy + .6}" r=".8" fill="#fff"/>`;
+  const mouth = face === "jubel" ? `<path d="M${hx - 13} ${hy + 3}q4 6 10 2z" fill="#a8263a" ${SLK}/>`
+    : face === "mampf" ? `<ellipse cx="${hx - 11}" cy="${hy + 4}" rx="3.4" ry="2.4" fill="#a8263a" ${SLK}/>`
+    : `<path d="M${hx - 13} ${hy + 3}q5 3 9 0" fill="none" ${SLK}/>`;
+  return `<g class="slap"><defs>
+      <linearGradient id="${id}g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${SL.yellow}"/><stop offset=".55" stop-color="#d9cf62"/><stop offset=".8" stop-color="${SL.green}"/><stop offset="1" stop-color="${SL.greenD}"/></linearGradient>
+      <clipPath id="${id}c"><path d="M30 86q-16-6-16-32 0-40 42-42 42 2 42 42 0 26-16 32z"/></clipPath></defs>
+    <ellipse cx="56" cy="92" rx="38" ry="4.5" fill="#00000024"/>
+    <path d="M88 82l10 6-12 2z" fill="${SL.green}" ${SLK}/>
+    ${[[34, 86], [76, 86]].map(([x, y]) => `<path d="M${x - 8} ${y - 8}h16v8q0 4-4 4h-8q-4 0-4-4z" fill="${SL.green}" ${SLK}/><path d="M${x - 4} ${y + 2}v2M${x} ${y + 2}v2M${x + 4} ${y + 2}v2" stroke="${SL.ink}" stroke-width="1.2"/>`).join("")}
+    <path d="M30 86q-16-6-16-32 0-40 42-42 42 2 42 42 0 26-16 32z" fill="url(#${id}g)"/>
+    <g clip-path="url(#${id}c)">
+      <path d="M18 40q38-14 76 0" fill="none" stroke="${SL.crustD}" stroke-width="2"/>
+      ${[[14, 40, 58, 6], [32, 52, 88, 14], [56, 58, 104, 30], [98, 40, 54, 6], [80, 52, 24, 14], [56, 58, 8, 30]].map(([x1, y1, x2, y2]) => `<path d="M${x1} ${y1}L${x2} ${y2}" stroke="${SL.ink}" stroke-width="12.6" stroke-linecap="round"/><path d="M${x1} ${y1}L${x2} ${y2}" stroke="${SL.crust}" stroke-width="10" stroke-linecap="round"/><path d="M${x1} ${y1}L${x2} ${y2}" stroke="${SL.crustL}" stroke-width="3" stroke-linecap="round" opacity=".9" transform="translate(0 -2.4)"/>`).join("")}
+      <path d="M22 66q34 10 70 0" fill="none" stroke="#ffffff" stroke-width="3" opacity=".18"/>
+    </g>
+    <path d="M30 86q-16-6-16-32 0-40 42-42 42 2 42 42 0 26-16 32z" fill="none" ${SLK}/>
+    <path d="M54 14q-14-12-10-22 12 6 10 22z" fill="${SL.leafR}" ${SLK}/><path d="M58 14q4-16 18-16-2 14-18 16z" fill="${SL.leafG}" ${SLK}/><path d="M56 14v-6" stroke="${SL.ink}" stroke-width="2"/>
+    <path d="M24 78q-4 2-6 ${hy < 72 ? -8 : 0}" fill="none" stroke="${SL.ink}" stroke-width="13" stroke-linecap="round"/><path d="M24 78q-4 2-6 ${hy < 72 ? -8 : 0}" fill="none" stroke="${SL.green}" stroke-width="9.4" stroke-linecap="round"/>
+    <ellipse cx="${hx - 6}" cy="${hy + 2}" rx="12" ry="7.4" fill="${SL.green}" ${SLK}/>
+    <path d="M${hx - 17} ${hy}q2-11 12-11t11 8q-12 2-23 3z" fill="${SL.red}" ${SLK}/><path d="M${hx - 12} ${hy - 6}q4-3 9-2" fill="none" stroke="${SL.redL}" stroke-width="2.4" stroke-linecap="round"/>
+    ${eye}${mouth}${extra}</g>${front}`;
 }
 const slPie = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="6" rx="22" ry="8" fill="#e9eaee" ${SLK}/><path d="M-18 2q18-14 36 0v4q-18 10-36 0z" fill="${SL.crust}" ${SLK}/>
   ${[-10, 0, 10].map(d => `<path d="M${d - 4} -6l8 12M${d + 4} -6l-8 12" stroke="${SL.crustD}" stroke-width="2.4"/>`).join("")}<circle cx="-6" cy="-2" r="2" fill="${SL.red}"/><circle cx="7" cy="0" r="2" fill="${SL.red}"/></g>`;
 const SL_VARIANTS = [
   schlapfel(),
-  schlapfel({ face: "zu", extra: `<text x="84" y="14" font-family="Fredoka, sans-serif" font-weight="700" font-size="13" fill="${SL.ink}">z</text><text x="90" y="6" font-family="Fredoka, sans-serif" font-weight="700" font-size="10" fill="${SL.ink}">z</text>`, head: [70, 34] }),
-  schlapfel({ face: "mampf", front: `<g transform="rotate(-12 86 40)"><path d="M78 36l16-6 2 10z" fill="${SL.crust}" ${SLK}/><path d="M80 36l14-5" stroke="${SL.red}" stroke-width="2"/></g>${[[90, 50], [84, 56]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.6" fill="${SL.crustD}"/>`).join("")}` }),
-  schlapfel({ face: "jubel", head: [76, 24], extra: `${[[90, 10], [60, 10], [94, 34]].map(([x, y]) => `<path d="M${x} ${y - 5}l1.6 3.4 3.6.4-2.6 2.4.8 3.6-3.4-1.8-3.4 1.8.8-3.6-2.6-2.4 3.6-.4z" fill="#ffd23a" stroke="${SL.ink}" stroke-width="1"/>`).join("")}` }),
-  schlapfel({ extra: `<path d="M30 46q-2 10 2 14q4-4 2-14z" fill="#f2b632" ${SLK}/><path d="M52 44q-2 8 2 12q4-4 2-12z" fill="#f2b632" ${SLK}/>`, front: `<g transform="translate(6 70)"><path d="M0 0h16l-2 18H2z" fill="#c8743a" ${SLK}/><path d="M-1 0h18" stroke="${SL.ink}" stroke-width="3"/><path d="M4 0q4-6 8 0" fill="#f2b632"/></g>` }),
-  schlapfel({ extra: `<path d="M86 12c-6-6-12 0-6 6l6 6 6-6c6-6 0-12-6-6z" fill="#ff8fb1" ${SLK}/>` })
+  schlapfel({ face: "zu", extra: `<text x="4" y="62" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="${SL.ink}">z</text><text x="10" y="52" font-family="Fredoka, sans-serif" font-weight="700" font-size="9" fill="${SL.ink}">z</text>` }),
+  schlapfel({ face: "mampf", front: `<g transform="rotate(10 6 84)"><path d="M0 86l14-8 2 9z" fill="${SL.crust}" ${SLK}/><path d="M2 85l12-6" stroke="${SL.red}" stroke-width="2"/></g><circle cx="10" cy="92" r="1.4" fill="${SL.crustD}"/><circle cx="16" cy="94" r="1.4" fill="${SL.crustD}"/>` }),
+  schlapfel({ face: "jubel", extra: `${[[8, 44], [28, 40], [6, 60]].map(([x, y]) => `<path d="M${x} ${y - 5}l1.6 3.4 3.6.4-2.6 2.4.8 3.6-3.4-1.8-3.4 1.8.8-3.6-2.6-2.4 3.6-.4z" fill="#ffd23a" stroke="${SL.ink}" stroke-width="1"/>`).join("")}` }),
+  schlapfel({ front: `<g transform="translate(78 74)"><path d="M0 0h16l-2 16H2z" fill="#c8743a" ${SLK}/><path d="M-1 0h18" stroke="${SL.ink}" stroke-width="3"/><path d="M4 0q4-6 8 0" fill="#f2b632"/></g>` }),
+  schlapfel({ extra: `<path d="M12 56c-5-5-10 0-5 5l5 5 5-5c5-5 0-10-5-5z" fill="#ff8fb1" ${SLK}/>` })
 ];
-const slPad = `${pad("#8fd06a", "#5e9e4a")}<path d="M10 80q10-4 20 0M60 84q10-4 20 0" stroke="#5e9e4a" stroke-width="2" fill="none"/>`;
+const slPad = `${pad("#fbefd2", "#d9c296")}<path d="M3 74q24-6 47 0t47 0v14q0 3-3 3H6q-3 0-3-3z" fill="#9ccf6e"/><path d="M14 80q4-6 8 0M70 82q4-6 8 0" stroke="#6faa4a" stroke-width="2" fill="none"/>`;
 const slTile = (inner) => `<svg viewBox="0 0 100 100">${slPad}<g transform="translate(4 4) scale(.92)">${inner}</g></svg>`;
 // Jede Haltung zählt als eigenes Bild (höchstens viermal pro Level, gut verteilt)
 const SL_WALLS = SL_VARIANTS.map((v, i) => () => asPerson(slTile(v), "schlapfel" + i));
@@ -5964,13 +5969,14 @@ const SL_PIES = [
   () => slTile(`<rect x="18" y="20" width="64" height="40" rx="5" fill="#d9a066" ${SLK}/><path d="M50 60v28" stroke="#8a5a2b" stroke-width="7"/><text x="50" y="38" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="${SL.ink}">SCHLAPFELS</text><text x="50" y="53" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="${SL.ink}">GARTEN</text>`)
 ];
 // Lasse im Schlapfel-Look: apfelrote Jacke mit Teiggitter-Mütze und Blättern
-LASSE.schlapfel = lasseBase(SL.red, "#4f8a3a", "#ffffff",
-  `<path d="M36 60h28" stroke="${SL.crust}" stroke-width="4"/><path d="M50 52q-4 6 0 10 4-4 0-10z" fill="${SL.leaf}" stroke="${INK}" stroke-width="1.4"/>`,
-  `${HAIR_STRUBBEL}<path d="M24 30q0-24 26-24t26 24z" fill="${SL.red}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
-   <path d="M30 18l10 12M40 10l12 20M54 8l10 22M66 12l8 18M30 28l14-18M42 30l14-22M56 30l12-20" stroke="${SL.crust}" stroke-width="2.6"/>
-   <path d="M22 30h56" stroke="${INK}" stroke-width="3"/><path d="M50 6V-2" stroke="#8a5a2b" stroke-width="3"/><path d="M50 0q10-8 16 0-8 6-16 0z" fill="${SL.leaf}" stroke="${INK}" stroke-width="1.6"/>`);
+LASSE.schlapfel = lasseBase(SL.green, "#3f6a2a", "#ffffff",
+  `<path d="M36 58h28" stroke="${SL.yellow}" stroke-width="4"/><path d="M48 50q-3 6 0 9 3-3 0-9z" fill="${SL.leafR}" stroke="${INK}" stroke-width="1.4"/>`,
+  `${HAIR_STRUBBEL}<path d="M24 30q0-24 26-24t26 24z" fill="${SL.yellow}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
+   <path d="M30 26l16-18M44 30l18-22M58 30l14-16M32 14l20 16M48 8l22 22" stroke="${SL.crust}" stroke-width="4.4" stroke-linecap="round"/>
+   <path d="M22 30h56" stroke="${INK}" stroke-width="3"/>
+   <path d="M48 8q-10-8-8-16 9 5 8 16z" fill="${SL.leafR}" stroke="${INK}" stroke-width="1.6"/><path d="M52 8q3-12 13-12-1 10-13 12z" fill="${SL.leafG}" stroke="${INK}" stroke-width="1.6"/>`);
 // Großer Schlapfel am Rand: schläft, beim Sieg (Klasse „jubel“) wacht er auf und jubelt
-const SL_SIDE = `<svg viewBox="0 0 100 200" data-slside="1"><g transform="translate(-30 66) scale(1.5)"><g class="sl-sleep">${schlapfel({ face: "zu", head: [70, 36], extra: `<text x="82" y="16" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="${SL.ink}">z</text>` })}</g><g class="sl-awake">${schlapfel({ face: "jubel", head: [76, 24] })}</g></g></svg>`;
+const SL_SIDE = `<svg viewBox="0 0 100 200" data-slside="1"><g transform="translate(0 96) scale(1)"><g class="sl-sleep">${schlapfel({ face: "zu", extra: `<text x="4" y="62" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="${SL.ink}">z</text>` })}</g><g class="sl-awake">${schlapfel({ face: "jubel" })}</g></g></svg>`;
 
 {
   const S = THEMES.pokemon.scenes.find(s => s.name === "Pflanzen-Pokémon");
@@ -5982,7 +5988,7 @@ const SL_SIDE = `<svg viewBox="0 0 100 200" data-slside="1"><g transform="transl
   S.lasse = "schlapfel"; S.words = ["Lecker!", "Mampf!"]; S.winTitle = "Schlapfel ist satt!";
   S.side = { l: [SL_SIDE], r: [] };
   S.introIcon = slTile(SL_VARIANTS[3]);
-  S.companion = schlapfel({ head: [74, 30] });
+  S.companion = schlapfel();
 }
 // Die neuen Wandbilder ersetzen die alten Zusatzwände dieses Schauplatzes
 EXTRA_WALLS["Pflanzen-Pokémon"] = [...SL_PIES];
