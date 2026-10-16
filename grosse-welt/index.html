@@ -602,7 +602,7 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .map-lasse svg { width: 100%; height: 100%; overflow: visible; display: block; }
 @media (prefers-reduced-motion: reduce) { .lv-card, .map-lasse .ml-in, .world button.gold-new svg.goldworld { animation: none; } }
 /* Schlapfel: Begleiter, großer Schlapfel am Rand, Bild im Levelauftritt */
-.sprite.companion { z-index: 2; pointer-events: none; transition: left .22s ease, top .22s ease; }
+.sprite.companion { z-index: 2; pointer-events: none; transition: transform 260ms ease; }
 .sprite.companion .face-dir { transform-origin: 50% 80%; }
 .sprite.companion svg { transform: scale(.82) translateY(6%); }
 .sprite.companion.same { opacity: 0; }
@@ -1050,6 +1050,7 @@ button:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 v
     <symbol id="klotz-I" viewBox="0 0 100 100"><ellipse cx="50" cy="90" rx="32" ry="5" fill="#00000024"/><rect x="14" y="18" width="72" height="70" rx="8" fill="#c22f2f" stroke="#2d3036" stroke-width="3"/><rect x="14" y="14" width="72" height="66" rx="8" fill="#ef4b4b" stroke="#2d3036" stroke-width="3"/><text x="50" y="66" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="50" fill="#ffffff">I</text></symbol>
     <symbol id="klotz-d" viewBox="0 0 100 100"><ellipse cx="50" cy="90" rx="32" ry="5" fill="#00000024"/><rect x="14" y="18" width="72" height="70" rx="8" fill="#1f4fae" stroke="#2d3036" stroke-width="3"/><rect x="14" y="14" width="72" height="66" rx="8" fill="#2a6ae0" stroke="#2d3036" stroke-width="3"/><text x="50" y="66" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="50" fill="#ffffff">d</text></symbol>
     <symbol id="klotz-a" viewBox="0 0 100 100"><ellipse cx="50" cy="90" rx="32" ry="5" fill="#00000024"/><rect x="14" y="18" width="72" height="70" rx="8" fill="#c99a00" stroke="#2d3036" stroke-width="3"/><rect x="14" y="14" width="72" height="66" rx="8" fill="#ffcc33" stroke="#2d3036" stroke-width="3"/><text x="50" y="66" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="50" fill="#ffffff">a</text></symbol>
+    <symbol id="klotz-I2" viewBox="0 0 100 100"><ellipse cx="50" cy="90" rx="32" ry="5" fill="#00000024"/><rect x="14" y="18" width="72" height="70" rx="8" fill="#c96a0e" stroke="#2d3036" stroke-width="3"/><rect x="14" y="14" width="72" height="66" rx="8" fill="#ff8c1a" stroke="#2d3036" stroke-width="3"/><text x="50" y="66" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="50" fill="#ffffff">I</text></symbol>
     <symbol id="familienherz" viewBox="0 0 100 100">
       <path d="M50 92C8 64 2 28 26 18c12-5 20 2 24 10 4-8 12-15 24-10 24 10 18 46-24 74z" fill="url(#gold)" stroke="#9a6404" stroke-width="3.4" stroke-linejoin="round"/>
       <path d="M50 80C20 60 16 34 32 28c8-3 14 2 18 8 4-6 10-11 18-8 16 6 12 32-18 52z" fill="#ff8fb1" stroke="#9a6404" stroke-width="2"/>
@@ -2522,7 +2523,7 @@ const FAMILY_LEVELS = [
 THEMES.familie = {
   title: "Familie", emblem: "familienherz", box: "trommel", rolls: false, squish: true,
   levelBox: (l) => FAMILY_LEVELS[l].cycle ? "klotz-I" : "" + FAMILY_LEVELS[l].box,
-  boxCycle: (l) => FAMILY_LEVELS[l].cycle ? ["klotz-I", "klotz-d", "klotz-a"] : null,
+  boxCycle: (l) => FAMILY_LEVELS[l].cycle ? ["klotz-I", "klotz-d", "klotz-a", "klotz-I2"] : null,
   levelName: (l) => FAMILY_LEVELS[l].name,
   boxWord: "Sachen", pushWord: "Schübe",
   hint: "Schieb alles auf die Herzchen-Plätze. Es lässt sich nur schieben, nicht ziehen.",
@@ -2595,7 +2596,7 @@ const woodWall = (inner) => svgT(`${pad("#d9a86a", "#a87440")}<path d="M5 30h90M
 THEMES.schlagzeug = {
   title: "Schlagzeug", emblem: "drumsticks", box: "kindertrommel", rolls: false, squish: true,
   levelBox: (l) => l < 3 ? "kindertrommel" : l < 6 ? "snare" : "pauke",
-  boxColors: [["#ff8fab", "#ffd35a"], ["#7ab8ff", "#ffffff"], ["#ffd35a", "#e0483a"], ["#7fd18a", "#ffffff"], ["#c9a0ff", "#ffd35a"]],
+  boxColors: [["#ff8fab", "#ffd35a"], ["#7ab8ff", "#ffffff"], ["#ffd35a", "#e0483a"], ["#7fd18a", "#ffffff"], ["#c9a0ff", "#ffd35a"], ["#4fd6d0", "#ffffff"]],
   levelName: (l) => l < 3 ? "Lasses Kinderzimmer" : l < 6 ? "Konservatorium Hamburg" : "Lasses Konzert",
   boxWord: "Trommeln", pushWord: "Schläge",
   hint: "Schieb jedes Instrument auf seinen Platz. Instrumente lassen sich nur schieben, nicht ziehen.",
@@ -3103,7 +3104,7 @@ const kStud = (cx, cy, r = 11) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="
 const legoCols = ["#e2402f", "#2b5fd9", "#ffd23a", "#3fae4a", "#ff8a1a"];
 THEMES.lego = theme2({
   title: "Lego", emblem: "legostein", box: "k2lego", boxWord: "Steine",
-  boxColors: [["#ffd23a", ""], ["#e2402f", ""], ["#2b5fd9", ""], ["#3fae4a", ""]],
+  boxColors: [["#ffd23a", ""], ["#e2402f", ""], ["#2b5fd9", ""], ["#3fae4a", ""], ["#ff8a1a", ""], ["#2ec4b6", ""]],
   hint: "Schieb jeden Riesenstein auf seinen Bauplatz. Steine lassen sich nur schieben, nicht ziehen.",
   winTitle: "Klick!", winText: (m, p) => `Alles verbaut. ${m} Schritte, ${p} Schübe.`,
   prize: { symbol: "goldstein", title: "Goldener Stein!", text: (m) => `Meisterbaumeister! Finale in ${m} Schritten.` },
@@ -3183,7 +3184,7 @@ const kGlassWave = (x, y) => kB("#9fc6e0", `<path d="M4 ${30 + pick(x, y, 1, 10)
 const kWeisseHaut = (x, y) => kB("#efe9df", `${Array.from({ length: 16 }, (_, i) => { const cx = 14 + (i % 4) * 24 + (Math.floor(i / 4) % 2) * 6, cy = 14 + Math.floor(i / 4) * 22; return `<ellipse cx="${cx}" cy="${cy}" rx="${5 + (i + pick(x, y, 1, 4)) % 4}" ry="${4 + (i + pick(x, y, 2, 3)) % 3}" fill="#d9d0c2"/>`; }).join("")}`);
 THEMES.schlagzeug = theme2({
   title: "Schlagzeug", emblem: "drumsticks", box: "k2snare", squish: true, boxWord: "Snares", pushWord: "Schläge",
-  boxColors: [["#e2402f", ""], ["#2b5fd9", ""], ["#ffd23a", ""], ["#3fae4a", ""]],
+  boxColors: [["#e2402f", ""], ["#2b5fd9", ""], ["#ffd23a", ""], ["#3fae4a", ""], ["#ff8a1a", ""], ["#2ec4b6", ""], ["#8b5cf6", ""]],
   levelName: (l) => ["Konservatorium Hamburg", "Konservatorium Hamburg", "Laeiszhalle", "Laeiszhalle", "Elbphilharmonie", "Elbphilharmonie"][l],
   hint: "Schieb jede Snare auf ihr Klebeband-Kreuz. Snares lassen sich nur schieben, nicht ziehen.",
   winTitle: "BÄM!", winText: (m, p) => `Soundcheck läuft. ${m} Schritte, ${p} Schläge.`,
@@ -3341,7 +3342,7 @@ THEMES.familie = theme2({
 });
 
 // Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Pokémon-Welten mit Superball-Varianten
-THEMES.fussball.boxColors = [["#2d3036", "#ffffff"], ["#2d3036", "#ffd3e4"], ["#2d3036", "#cfe6ff"]];
+THEMES.fussball.boxColors = [["#2d3036", "#ffffff"], ["#2d3036", "#ffd3e4"], ["#2d3036", "#cfe6ff"], ["#2d3036", "#ffd2a8"], ["#2d3036", "#bff3ee"]];
 THEMES.pokemon.box = "k2super"; // gleiche Bälle wie in Pokémon 2: Superball, Meisterball, Premierball, Heilball
 // ===== Lasses große Welt – Comic-Ebene: Bolzplatz mit Graffiti, Ball, Tor, Farbstimmungen und Effekte =====
 // Linien: sehr dunkles Grau, ca. 2 px, runde Enden. Flächen: kräftig, Cel-Shading mit einer zweiten dunkleren Fläche, keine Verläufe.
@@ -3819,6 +3820,80 @@ THEMES.garten = theme2({
 
 // Level, die vorerst nie automatisch gedreht werden (Welt-Index-Level-Index)
 const NO_ROTATE = new Set();
+// ===== Edelsteine: ein Stein pro Level, in immer derselben Farbe, aber jeder geschobene Stein in eigener Form =====
+// Formen der Reihe nach: Quadrat (geschliffener Würfel), Trommel (rund gerollt), Roh (ungeschliffen), Kugel, Herz.
+// Der Stein ist der, nach dem das Level heißt. Teil 2 zeichnet flacher und mit kräftigerer Tusche (Comic).
+(() => {
+  const COMIC = typeof kO !== "undefined", INK = "#2d3036", SW = COMIC ? 3.4 : 3;
+  // Name, dunkel, mittel, hell, Muster
+  const ST = {
+    rosen: ["Rosenquarz", "#c25a7c", "#f2a5bd", "#ffe3ec", "cloud"],
+    tiger: ["Tigerauge", "#5a3410", "#b8741f", "#f0b84a", "fibers"],
+    falke: ["Falkenauge", "#14233a", "#2f5a8a", "#8fb6e0", "fibers"],
+    rotti: ["Rotes Tigerauge", "#4a1410", "#a8321f", "#e88a5a", "fibers"],
+    amethyst: ["Amethyst", "#4a2085", "#9b5de5", "#dcc2ff", "lines"],
+    citrin: ["Citrin", "#b37a00", "#f5c518", "#fff2a8", "lines"],
+    mond: ["Mondstein", "#8a9ab8", "#dfe6f3", "#ffffff", "sheen"],
+    malachit: ["Malachit", "#0b4a2c", "#2fa36b", "#8ee6b8", "rings"],
+    lapis: ["Lapislazuli", "#0f2a6e", "#2453c4", "#6f93ea", "flecks"],
+    bernstein: ["Bernstein", "#8a3c00", "#e8861a", "#ffd27a", "bubbles"],
+    opal: ["Opal", "#a6b8d8", "#eef3fb", "#ffffff", "rainbow"],
+    rubin: ["Rubin", "#7a0a1e", "#d81b3c", "#ff8aa0", "lines"],
+    tuerkis: ["Türkis", "#1d8a85", "#3cc8c0", "#a3f2ec", "veins"],
+    bergkristall: ["Bergkristall", "#93b9dd", "#e3f1ff", "#ffffff", "lines"],
+    smaragd: ["Smaragd", "#0a5a2a", "#1fae5a", "#9ef0b8", "lines"],
+    obsidian: ["Obsidian", "#0e0e14", "#33334a", "#7a7a99", "sheen"]
+  };
+  const pattern = ([, d, m, l, p]) => {
+    if (p === "fibers") { let o = ""; for (let i = 0; i < 13; i++) { const y = 8 + 88 * i / 12; o += `<path d="M-10 ${y} q25 -7 50 0 t50 0 t50 0" fill="none" stroke="${[d, m, l, m][i % 4]}" stroke-width="${3 + i % 3}" opacity=".85"/>`; }
+      return `<g transform="rotate(14 50 50)">${o}<ellipse cx="52" cy="52" rx="46" ry="8" fill="${l}" opacity=".55"/></g>`; }
+    return { cloud: `<g fill="#ffffff" opacity=".45"><ellipse cx="36" cy="56" rx="14" ry="8"/><ellipse cx="62" cy="68" rx="12" ry="6"/></g>`,
+      lines: `<path d="M30 30l14 50M58 22l10 56M44 18l-6 60" stroke="#ffffff" stroke-width="2.4" opacity=".5"/>`,
+      sheen: `<ellipse cx="50" cy="46" rx="30" ry="18" fill="#8fd0ff" opacity=".5"/><ellipse cx="44" cy="40" rx="14" ry="7" fill="#ffffff" opacity=".7"/>`,
+      rings: `<g fill="none" stroke="${d}" stroke-width="3.4" opacity=".7">${[10, 18, 26, 34, 42].map(r => `<circle cx="40" cy="62" r="${r}"/>`).join("")}</g>`,
+      flecks: `<g fill="#ffd54a">${[[30, 40], [58, 34], [44, 60], [66, 62], [36, 74], [72, 46], [52, 80]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.4"/>`).join("")}</g>`,
+      veins: `<path d="M18 40q14 8 20 26t26 10M56 18q-6 18 8 26t14 22M30 82q8-10 22-8" fill="none" stroke="#6b4a2b" stroke-width="2.6" opacity=".75"/>`,
+      bubbles: `<g fill="#ffffff" opacity=".55"><circle cx="38" cy="46" r="3"/><circle cx="60" cy="58" r="2.2"/><circle cx="48" cy="70" r="2.6"/></g><path d="M30 40q20-10 40 6" stroke="${l}" stroke-width="6" fill="none" opacity=".5"/>`,
+      rainbow: `<g opacity=".8"><circle cx="34" cy="44" r="7" fill="#ff7ab6"/><circle cx="58" cy="36" r="6" fill="#7affc8"/><circle cx="66" cy="60" r="8" fill="#7ab8ff"/><circle cx="42" cy="68" r="7" fill="#ffd36b"/><circle cx="52" cy="52" r="5" fill="#c78bff"/></g>` }[p];
+  };
+  const SH = {
+    wuerfel: { o: "M30 14L70 14L88 36L80 76L50 92L20 76L12 36Z",
+      over: (s) => `<path d="M12 36L24 40L50 50L50 92L20 76Z" fill="${s[1]}" opacity="${COMIC ? .45 : .3}"/>`,
+      top: (s) => `<path d="M34 22L66 22L76 38L50 48L24 38Z" fill="${s[3]}" opacity=".55" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/><path d="M50 48V92M24 38L12 36M76 38L88 36" stroke="${INK}" stroke-width="1.6" opacity=".5"/><path d="M36 26l8 0" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round"/>` },
+    trommel: { o: "M22 30Q34 12 58 16Q84 20 88 46Q92 72 66 84Q40 94 22 78Q6 62 12 46Q14 36 22 30Z",
+      over: (s) => `<path d="M8 70Q40 96 92 60V100H8Z" fill="${s[1]}" opacity="${COMIC ? .45 : .3}"/>`,
+      top: () => `<path d="M30 30q8-8 18-8" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round" fill="none"/>` },
+    roh: { o: "M16 40L30 18L54 12L74 22L88 44L84 72L62 88L32 86L14 68Z",
+      over: (s) => `<path d="M30 18L54 12L74 22L56 40L36 38Z" fill="#ffffff" opacity=".25"/><path d="M14 68L32 86L62 88L56 40L36 38Z" fill="${s[1]}" opacity="${COMIC ? .45 : .3}"/>`,
+      top: () => `<path d="M30 18L36 38L56 40L74 22M56 40L62 88M36 38L14 68" fill="none" stroke="${INK}" stroke-width="1.6" opacity=".55"/><path d="M38 22l10-3" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round"/>` },
+    kugel: { o: "M50 12A38 38 0 1 1 49.9 12Z",
+      over: (s) => `<path d="M12 56Q30 92 88 56V100H12Z" fill="${s[1]}" opacity="${COMIC ? .45 : .3}"/>`,
+      top: () => `<ellipse cx="36" cy="32" rx="9" ry="5" fill="#ffffff" opacity=".85" transform="rotate(-30 36 32)"/>` },
+    herz: { o: "M50 88C20 66 8 50 10 34 12 18 32 12 50 30 68 12 88 18 90 34 92 50 80 66 50 88Z",
+      over: (s) => `<path d="M50 30V88L10 40Z" fill="${s[1]}" opacity="${COMIC ? .4 : .22}"/>`,
+      top: () => `<path d="M20 30q4-8 14-8" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round" fill="none"/>` }
+  };
+  const CYC = ["wuerfel", "trommel", "roh", "kugel", "herz"];
+  const sym = (k, shape) => { const s = ST[k], h = SH[shape], id = `st-${k}-${shape}`;
+    // Teil 1 mit weichem Verlauf, Teil 2 flach mit harter Schattenfläche
+    const fill = COMIC ? s[2] : `url(#${id}-g)`;
+    return `<symbol id="${id}" viewBox="0 0 100 100">
+      ${COMIC ? "" : `<linearGradient id="${id}-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${s[3]}"/><stop offset=".45" stop-color="${s[2]}"/><stop offset="1" stop-color="${s[1]}"/></linearGradient>`}
+      <clipPath id="${id}-c"><path d="${h.o}"/></clipPath>
+      <ellipse cx="50" cy="93" rx="30" ry="5" fill="#00000030"/>
+      <path d="${h.o}" fill="${fill}"/>
+      <g clip-path="url(#${id}-c)">${pattern(s)}${h.over(s)}</g>
+      <path d="${h.o}" fill="none" stroke="${INK}" stroke-width="${SW}" stroke-linejoin="round"/>${h.top(s)}
+      <path d="M74 20l2 4 4 1-4 1-2 4-1-4-4-1 4-1z" fill="#ffffff"/></symbol>`; };
+  
+
+  const PLAN = COMIC ? ["bergkristall", "bergkristall", "malachit", "malachit", "tuerkis", "tuerkis"] : ["rosen", "tiger", "amethyst", "mond", "lapis", "opal"];
+  document.querySelector("svg defs").insertAdjacentHTML("beforeend", [...new Set(PLAN)].flatMap(k => CYC.map(c => sym(k, c))).join(""));
+  const T = THEMES.steine, cyc = (l) => CYC.map(c => `st-${PLAN[l % PLAN.length]}-${c}`);
+  T.boxCycle = cyc;
+  if (T.levelBox) T.levelBox = (l) => cyc(l)[0];
+  T.box = cyc(0)[0];
+})();
 const EXTRA_WALLS = {};
 // ===== Arne: kurze dunkle Haare (Seiten grau), hohe Stirn, durchsichtige eckige Brille, dunkler Schnurrbart,
 // graumelierter Bart, Bomberjacke mit bunten Blumen, schwarzes Hemd mit Kirschmuster =====
@@ -4297,10 +4372,12 @@ const FAMILY_HERO = `<svg viewBox="${typeof COMIC_LOGO === "undefined" ? "34 54 
   const TX = (x, y, s, c, fs = 12) => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Fredoka, Arial, sans-serif" font-weight="700" font-size="${fs}" fill="${c}">${s}</text>`;
   const label = (s, c, fs) => `<rect x="22" y="56" width="56" height="18" rx="3" fill="#fff" ${K}/>${TX(50, 69, s, c, fs)}`;
   const sticker = (s, bg, fg) => `<circle cx="72" cy="70" r="12" fill="${bg}" ${K}/>${TX(72, 74.5, s, fg)}`;
+  const MORE_BALLS = (top, band) => [["#2ec4b6", "#1f4fae"], ["#ff8c1a", "#ffe066"], ["#ffcc33", "#2f7ae5"], ["#3fae4a", "#ffcc33"], ["#e53935", "#ffffff"], ["#2b2b33", "#ffcc33"], ["#8a5a2b", "#ffcc33"]]
+    .map(([t, b]) => [{ [top]: t, [band]: b }]);
   const tints = [[{}, "", "v-hell"], [{}, "", "v-dunkel"], [{}, "", "v-dreh"]];
   const SPEC = {
     tennisball: [[{ "#d7f03c": "#7ad65a" }], [{ "#d7f03c": "#ffa43a" }], [{ "#d7f03c": "#ff8fc8" }]],
-    k2tennis: [[{ "#d7f03c": "#7ad65a" }], [{ "#d7f03c": "#ffa43a" }], [{ "#d7f03c": "#ff8fc8" }]],
+    k2tennis: [[{ "#d7f03c": "#7ad65a" }], [{ "#d7f03c": "#ffa43a" }], [{ "#d7f03c": "#ff8fc8" }], [{ "#d7f03c": "#4fd6d0" }]],
     pauke: [[{ "url(#gold)": "#d07a45", "#9a6404": "#8a4a1d" }], [{ "url(#gold)": "#c9ced8", "#9a6404": "#6b7280" }], [{ "url(#gold)": "#a8743a", "#9a6404": "#6b4420" }]],
     pommes: [[{ "#fff6dc": "#e53935" }], [{ "#e53935": "#fff6dc" }],
       [{}, `<g ${K}>${[30, 44, 58].map(x => `<ellipse cx="${x + 6}" cy="30" rx="7" ry="5" fill="#b5532a"/>`).join("")}</g><path d="M30 26q10 6 22 0 8-4 18 2" stroke="#e53935" stroke-width="4" fill="none"/>`]],
@@ -4309,14 +4386,15 @@ const FAMILY_HERO = `<svg viewBox="${typeof COMIC_LOGO === "undefined" ? "34 54 
       [{}, `<ellipse cx="50" cy="50" rx="22" ry="6" fill="#ffffff" ${K}/><circle cx="50" cy="49" r="5" fill="#ffcc33" ${K}/>`]],
     muffin: [[{ "#b8763e": "#ff9fc0", "#4a2a14": "#d6262b", "#f4f1ea": "#ffe3ef" }], [{ "#b8763e": "#c9b8f0", "#4a2a14": "#3a3a9a", "#f4f1ea": "#e3edff" }], [{ "#b8763e": "#ffe680", "#4a2a14": "#ffffff", "#f4f1ea": "#fff6c8" }]],
     // Superbälle: Meisterball, Premierball, Heilball (der Hyperball gehört schon zu den Pokébällen)
-    superball: [[{ "#2f7ae5": "#8b5cf6", "#ef4b4b": "#ff8fb1" }], [{ "#2f7ae5": "#ffffff" }], [{ "#2f7ae5": "#ff8fc8", "#ef4b4b": "#ffffff" }]],
-    k2super: [[{ "#2b5fd9": "#8b5cf6", "#e2402f": "#ff8fb1" }], [{ "#2b5fd9": "#ffffff" }], [{ "#2b5fd9": "#ff8fc8", "#e2402f": "#ffffff" }]],
+    // danach weitere Bälle in eigenen Farben, damit auch große Level keine doppelten haben: Türkis, Orange, Gelb, Grün, Rot, Schwarz-Gold, Braun
+    superball: [[{ "#2f7ae5": "#8b5cf6", "#ef4b4b": "#ff8fb1" }], [{ "#2f7ae5": "#ffffff" }], [{ "#2f7ae5": "#ff8fc8", "#ef4b4b": "#ffffff" }], ...MORE_BALLS("#2f7ae5", "#ef4b4b")],
+    k2super: [[{ "#2b5fd9": "#8b5cf6", "#e2402f": "#ff8fb1" }], [{ "#2b5fd9": "#ffffff" }], [{ "#2b5fd9": "#ff8fc8", "#e2402f": "#ffffff" }], ...MORE_BALLS("#2b5fd9", "#e2402f")],
     trommel: [[{ "#ef4b4b": "#3d7fd6" }], [{ "#ef4b4b": "#4fae3a" }], [{ "#ef4b4b": "#8b5cf6" }]],
     einhorn: [[{ "#c78bff": "#4fd6d0", "#ff8fb1": "#2a9fd6" }], [{ "#c78bff": "#ff8fb1", "#ff8fb1": "#ff5c8a" }], [{ "#c78bff": "#ffcc33", "#ff8fb1": "#ff8a3a" }]],
     k2heu: [[{ "#c0392b": "#2b5fd9" }], [{ "#c0392b": "#3fae4a" }, `<circle cx="50" cy="26" r="6" fill="#ff8fb1" ${K}/><circle cx="50" cy="26" r="2.4" fill="#ffd23a"/>`],
       [{ "#c0392b": "#e8b51a" }, `<path d="M44 26l14-14" stroke="#3fae4a" stroke-width="4"/><path d="M38 30l16-10 4 6z" fill="#ff8a1a" ${K}/>`]],
     k2pizza: [[{}, sticker("M", "#3fae4a", "#fff")], [{}, sticker("S", "#e2402f", "#fff")], [{}, sticker("F", "#8a5a3a", "#fff")], [{}, sticker("H", "#ffd23a", "#2d3036")]],
-    k2karton: [[{}, label("SPIELZEUG", "#e2402f", 9)], [{}, label("BÜCHER", "#2b5fd9", 10)], [{}, label("LEGO", "#e8a21a", 11)], [{}, label("KUSCHELTIERE", "#c2418a", 7.5)]],
+    k2karton: [[{}, label("SPIELZEUG", "#e2402f", 9)], [{}, label("BÜCHER", "#2b5fd9", 10)], [{}, label("LEGO", "#e8a21a", 11)], [{}, label("KUSCHELTIERE", "#c2418a", 7.5)], [{}, label("BÄLLE", "#ff8a1a", 11)]],
     k2kristall: tints
   };
   document.querySelectorAll('symbol[id^="gem-"]').forEach(s => { SPEC[s.id] = tints; });
