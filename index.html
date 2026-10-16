@@ -601,6 +601,15 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .map-lasse .ml-in { width: 100%; height: 100%; animation: mapbob 2.6s ease-in-out infinite; }
 .map-lasse svg { width: 100%; height: 100%; overflow: visible; display: block; }
 @media (prefers-reduced-motion: reduce) { .lv-card, .map-lasse .ml-in, .world button.gold-new svg.goldworld { animation: none; } }
+/* Schlapfel: Begleiter, großer Schlapfel am Rand, Bild im Levelauftritt */
+.sprite.companion { z-index: 2; pointer-events: none; transition: transform 260ms ease; }
+.sprite.companion .face-dir { transform-origin: 50% 80%; }
+.sprite.companion svg { transform: scale(.82) translateY(6%); }
+.sprite.companion.same { opacity: 0; }
+.sprite.companion.cheer svg { animation: jubelhop .42s ease-in-out infinite alternate; }
+.side svg .sl-awake { display: none; } .side svg.jubel .sl-sleep { display: none; } .side svg.jubel .sl-awake { display: inline; }
+.lv-ico { display: block; width: 64px; height: 64px; margin: -40px auto 2px; }
+.lv-ico svg { width: 100%; height: 100%; display: block; }
 </style>
 
 <!-- Gemeinsame Verläufe und Symbole -->
@@ -5857,7 +5866,7 @@ const LOESUNGEN = {"0-0":"LLulD","0-2":"uulLulldRurDrddllURuulD","0-1":"rddLruul
     document.querySelectorAll(".lv-intro").forEach(e => e.remove()); clearTimeout(introT);
     const el = document.createElement("div"); el.className = "lv-intro";
     const top = W.custom ? "Eigenes Level" : W.bonus ? "Bonus" : `Welt ${w + 1} · Level ${l + 1}`;
-    el.innerHTML = `<div class="lv-card"><small>${esc(top)}</small><b>${esc(W.custom ? (THEMES.custom && THEMES.custom.title) || "" : sceneName(w, l))}</b></div>`;
+    el.innerHTML = `<div class="lv-card">${typeof S !== "undefined" && S && S.introIcon ? `<span class="lv-ico">${S.introIcon}</span>` : ""}<small>${esc(top)}</small><b>${esc(W.custom ? (THEMES.custom && THEMES.custom.title) || "" : sceneName(w, l))}</b></div>`;
     document.getElementById("scr-game").appendChild(el);
     introT = setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 450); }, calm() ? 1200 : 1500);
   }
@@ -5899,6 +5908,119 @@ const LOESUNGEN = {"0-0":"LLulD","0-2":"uulLulldRurDrddllURuulD","0-1":"rddLruul
       }
     }
     return r;
+  };
+})();
+// ===== Schlapfel in den Pflanzen-Pokémon-Leveln (Teil 1, Welt 3, Level 3 und 4) =====
+// Schlapfel: runder Apfelkuchen-Drache – rote Apfelschale mit Teiggitter auf dem Rücken, cremefarbener Bauch,
+// hellgrüner Hals und Kopf mit Blätterkragen. Verschiedene Haltungen in den Wänden, dazu Apfelkuchen;
+// Schlapfel läuft als Begleiter hinter Lasse her, ein großer Schlapfel schläft am Rand und wacht beim Sieg auf.
+const SL = { ink: "#4a3728", red: "#e8423a", redD: "#b92a24", crust: "#ecc77e", crustD: "#c99a4c", cream: "#fff1d0", neck: "#d6ea8c", neckD: "#b4cf62", leaf: "#5fb54a", leafD: "#3f8a3a" };
+const SLK = `stroke="${SL.ink}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
+let slN = 0;
+// face: "auf" (Augen offen), "zu" (schläft), "mampf" (kaut), "jubel" (Mund offen)
+function schlapfel({ face = "auf", extra = "", front = "", head = [74, 30] } = {}) {
+  const id = "slc" + (++slN), [hx, hy] = head;
+  const eyes = face === "zu" ? `<path d="M${hx - 6} ${hy - 1}q3 3 6 0M${hx + 4} ${hy - 1}q3 3 6 0" fill="none" ${SLK}/>`
+    : `<circle cx="${hx - 3}" cy="${hy - 2}" r="2.6" fill="${SL.ink}"/><circle cx="${hx + 7}" cy="${hy - 2}" r="2.6" fill="${SL.ink}"/><circle cx="${hx - 2}" cy="${hy - 3}" r=".9" fill="#fff"/><circle cx="${hx + 8}" cy="${hy - 3}" r=".9" fill="#fff"/>`;
+  const mouth = face === "jubel" ? `<path d="M${hx - 2} ${hy + 6}q5 8 10 0z" fill="#c0392b" ${SLK}/>`
+    : face === "mampf" ? `<ellipse cx="${hx + 3}" cy="${hy + 7}" rx="4" ry="3" fill="#c0392b" ${SLK}/>`
+    : `<path d="M${hx - 1} ${hy + 6}q4 4 8 0" fill="none" ${SLK}/>`;
+  return `<g class="slap">
+    <ellipse cx="48" cy="90" rx="34" ry="5" fill="#00000022"/>
+    ${[[24, 80], [38, 84], [58, 84], [70, 80]].map(([x, y]) => `<rect x="${x - 6}" y="${y - 6}" width="12" height="12" rx="5" fill="${SL.neck}" ${SLK}/>`).join("")}
+    <path d="M${hx - 8} ${hy + 8}q-2 22-14 30" fill="none" stroke="${SL.ink}" stroke-width="16" stroke-linecap="round"/>
+    <path d="M${hx - 8} ${hy + 8}q-2 22-14 30" fill="none" stroke="${SL.neck}" stroke-width="11" stroke-linecap="round"/>
+    <clipPath id="${id}"><ellipse cx="44" cy="64" rx="34" ry="22"/></clipPath>
+    <ellipse cx="44" cy="64" rx="34" ry="22" fill="${SL.red}"/>
+    <g clip-path="url(#${id})"><ellipse cx="44" cy="76" rx="30" ry="10" fill="${SL.cream}"/>
+      ${[16, 28, 40, 52, 64].map(x => `<path d="M${x} 40l12 22" stroke="${SL.crust}" stroke-width="5"/><path d="M${x + 12} 40l-12 22" stroke="${SL.crust}" stroke-width="5"/>`).join("")}
+      <path d="M10 62q34 6 68 0" fill="none" stroke="${SL.crustD}" stroke-width="5"/></g>
+    <ellipse cx="44" cy="64" rx="34" ry="22" fill="none" ${SLK}/>
+    <path d="M22 50q6-8 14-6" fill="none" stroke="#fff" stroke-width="3" opacity=".55"/>
+    ${[[-10, 4], [0, 10], [10, 6], [-4, -2]].map(([dx, dy]) => `<path d="M${hx - 8 + dx} ${hy + 14 + dy}q-8-6-4-14 8 4 4 14z" fill="${SL.leaf}" ${SLK}/>`).join("")}
+    <circle cx="${hx}" cy="${hy}" r="12" fill="${SL.neck}" ${SLK}/>
+    <path d="M${hx - 6} ${hy - 10}q2-8 8-8M${hx + 2} ${hy - 11}q4-7 10-5" fill="none" stroke="${SL.leafD}" stroke-width="3"/>
+    ${eyes}${mouth}<circle cx="${hx - 7}" cy="${hy + 4}" r="2.4" fill="#ff9db0" opacity=".7"/>${extra}</g>${front}`;
+}
+const slPie = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="6" rx="22" ry="8" fill="#e9eaee" ${SLK}/><path d="M-18 2q18-14 36 0v4q-18 10-36 0z" fill="${SL.crust}" ${SLK}/>
+  ${[-10, 0, 10].map(d => `<path d="M${d - 4} -6l8 12M${d + 4} -6l-8 12" stroke="${SL.crustD}" stroke-width="2.4"/>`).join("")}<circle cx="-6" cy="-2" r="2" fill="${SL.red}"/><circle cx="7" cy="0" r="2" fill="${SL.red}"/></g>`;
+const SL_VARIANTS = [
+  schlapfel(),
+  schlapfel({ face: "zu", extra: `<text x="84" y="14" font-family="Fredoka, sans-serif" font-weight="700" font-size="13" fill="${SL.ink}">z</text><text x="90" y="6" font-family="Fredoka, sans-serif" font-weight="700" font-size="10" fill="${SL.ink}">z</text>`, head: [70, 34] }),
+  schlapfel({ face: "mampf", front: `<g transform="rotate(-12 86 40)"><path d="M78 36l16-6 2 10z" fill="${SL.crust}" ${SLK}/><path d="M80 36l14-5" stroke="${SL.red}" stroke-width="2"/></g>${[[90, 50], [84, 56]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.6" fill="${SL.crustD}"/>`).join("")}` }),
+  schlapfel({ face: "jubel", head: [76, 24], extra: `${[[90, 10], [60, 10], [94, 34]].map(([x, y]) => `<path d="M${x} ${y - 5}l1.6 3.4 3.6.4-2.6 2.4.8 3.6-3.4-1.8-3.4 1.8.8-3.6-2.6-2.4 3.6-.4z" fill="#ffd23a" stroke="${SL.ink}" stroke-width="1"/>`).join("")}` }),
+  schlapfel({ extra: `<path d="M30 46q-2 10 2 14q4-4 2-14z" fill="#f2b632" ${SLK}/><path d="M52 44q-2 8 2 12q4-4 2-12z" fill="#f2b632" ${SLK}/>`, front: `<g transform="translate(6 70)"><path d="M0 0h16l-2 18H2z" fill="#c8743a" ${SLK}/><path d="M-1 0h18" stroke="${SL.ink}" stroke-width="3"/><path d="M4 0q4-6 8 0" fill="#f2b632"/></g>` }),
+  schlapfel({ extra: `<path d="M86 12c-6-6-12 0-6 6l6 6 6-6c6-6 0-12-6-6z" fill="#ff8fb1" ${SLK}/>` })
+];
+const slPad = `${pad("#8fd06a", "#5e9e4a")}<path d="M10 80q10-4 20 0M60 84q10-4 20 0" stroke="#5e9e4a" stroke-width="2" fill="none"/>`;
+const slTile = (inner) => `<svg viewBox="0 0 100 100">${slPad}<g transform="translate(4 4) scale(.92)">${inner}</g></svg>`;
+// Jede Haltung zählt als eigenes Bild (höchstens viermal pro Level, gut verteilt)
+const SL_WALLS = SL_VARIANTS.map((v, i) => () => asPerson(slTile(v), "schlapfel" + i));
+const SL_PIES = [
+  () => slTile(slPie(50, 54, 1.8)),
+  () => slTile(`<path d="M30 70l40-24v24z" fill="${SL.crust}" ${SLK}/><path d="M30 70l40-24" stroke="${SL.crustD}" stroke-width="3"/><path d="M34 70h32v8H34z" fill="${SL.red}" ${SLK}/><path d="M60 40q8-10 14 0-2 8-14 0z" fill="#fff" ${SLK}/>`),
+  () => slTile(`<path d="M22 54h56l-6 30H28z" fill="#c8743a" ${SLK}/><path d="M26 64h48M28 74h44" stroke="#9c5428" stroke-width="2"/>${[[34, 48], [48, 44], [62, 48], [41, 38], [56, 38]].map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="8" fill="${i % 2 ? "#ffd23a" : SL.red}" ${SLK}/><path d="M${x} ${y - 8}v-4" stroke="${SL.ink}" stroke-width="2"/>`).join("")}`),
+  () => slTile(`<path d="M50 90V54" stroke="#8a5a2b" stroke-width="8"/><circle cx="50" cy="36" r="28" fill="#4fb058" ${SLK}/>${[[36, 30], [58, 24], [62, 44], [42, 48], [50, 34]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="${SL.red}" ${SLK}/>`).join("")}`),
+  () => slTile(`<rect x="18" y="20" width="64" height="40" rx="5" fill="#d9a066" ${SLK}/><path d="M50 60v28" stroke="#8a5a2b" stroke-width="7"/><text x="50" y="38" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="${SL.ink}">SCHLAPFELS</text><text x="50" y="53" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="${SL.ink}">GARTEN</text>`)
+];
+// Lasse im Schlapfel-Look: apfelrote Jacke mit Teiggitter-Mütze und Blättern
+LASSE.schlapfel = lasseBase(SL.red, "#4f8a3a", "#ffffff",
+  `<path d="M36 60h28" stroke="${SL.crust}" stroke-width="4"/><path d="M50 52q-4 6 0 10 4-4 0-10z" fill="${SL.leaf}" stroke="${INK}" stroke-width="1.4"/>`,
+  `${HAIR_STRUBBEL}<path d="M24 30q0-24 26-24t26 24z" fill="${SL.red}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
+   <path d="M30 18l10 12M40 10l12 20M54 8l10 22M66 12l8 18M30 28l14-18M42 30l14-22M56 30l12-20" stroke="${SL.crust}" stroke-width="2.6"/>
+   <path d="M22 30h56" stroke="${INK}" stroke-width="3"/><path d="M50 6V-2" stroke="#8a5a2b" stroke-width="3"/><path d="M50 0q10-8 16 0-8 6-16 0z" fill="${SL.leaf}" stroke="${INK}" stroke-width="1.6"/>`);
+// Großer Schlapfel am Rand: schläft, beim Sieg (Klasse „jubel“) wacht er auf und jubelt
+const SL_SIDE = `<svg viewBox="0 0 100 200" data-slside="1"><g transform="translate(-30 66) scale(1.5)"><g class="sl-sleep">${schlapfel({ face: "zu", head: [70, 36], extra: `<text x="82" y="16" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="${SL.ink}">z</text>` })}</g><g class="sl-awake">${schlapfel({ face: "jubel", head: [76, 24] })}</g></g></svg>`;
+
+{
+  const S = THEMES.pokemon.scenes.find(s => s.name === "Pflanzen-Pokémon");
+  const pieOrMon = [...SL_WALLS, ...SL_WALLS, ...SL_PIES];
+  S.wall = (x, y) => pieOrMon[pick(x, y, 0, pieOrMon.length)]();
+  S.floor = (x, y) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${(x + y) % 2 ? "var(--floor-b)" : "var(--floor-a)"}"/>
+    ${pick(x, y, 1, 4) === 0 ? `<path d="M${25 + pick(x, y, 2, 40)} ${30 + pick(x, y, 3, 40)}q8-8 14 0-8 8-14 0z" fill="#6cbf57"/>` : ""}
+    ${pick(x, y, 4, 6) === 0 ? `<circle cx="${24 + pick(x, y, 5, 52)}" cy="${30 + pick(x, y, 6, 44)}" r="5" fill="${SL.red}" stroke="${SL.ink}" stroke-width="1.6"/>` : ""}</svg>`;
+  S.lasse = "schlapfel"; S.words = ["Lecker!", "Mampf!"]; S.winTitle = "Schlapfel ist satt!";
+  S.side = { l: [SL_SIDE], r: [] };
+  S.introIcon = slTile(SL_VARIANTS[3]);
+  S.companion = schlapfel({ head: [74, 30] });
+}
+// Die neuen Wandbilder ersetzen die alten Zusatzwände dieses Schauplatzes
+EXTRA_WALLS["Pflanzen-Pokémon"] = [...SL_PIES];
+if (typeof EXTRA_SHARE !== "undefined") EXTRA_SHARE["Pflanzen-Pokémon"] = 3;
+
+// Begleiter: Schlapfel läuft einen Schritt hinter Lasse her (nur Bild, blockiert nichts)
+(() => {
+  let prev = null, comp = null;
+  const baseRender = render;
+  render = function (...a) {
+    const r = baseRender(...a);
+    if (!S || !S.companion) { prev = null; return r; }
+    comp = board.querySelector(".sprite.companion");
+    if (!comp) { comp = document.createElement("div"); comp.className = "sprite companion"; comp.innerHTML = `<div class="face-dir"><svg viewBox="0 0 100 100">${S.companion}</svg></div>`; board.appendChild(comp); prev = null; }
+    const here = [...player];
+    let at = here;
+    if (prev && Math.abs(prev[0] - here[0]) + Math.abs(prev[1] - here[1]) === 1) at = prev;
+    else if (prev && prev[0] === here[0] && prev[1] === here[1]) at = [+comp.style.getPropertyValue("--x"), +comp.style.getPropertyValue("--y")];
+    comp.style.setProperty("--x", at[0]); comp.style.setProperty("--y", at[1]);
+    comp.classList.toggle("same", at[0] === here[0] && at[1] === here[1]);
+    comp.querySelector(".face-dir").style.transform = `scaleX(${facing})`;
+    comp.classList.toggle("cheer", lasseEl.classList.contains("cheer"));
+    prev = here; return r;
+  };
+})();
+// Sieg: eigener Jubeltitel für Schlapfels Garten
+(() => {
+  const win = document.getElementById("win");
+  new MutationObserver(() => { if (!win.hidden && S && S.winTitle) document.getElementById("win-title").textContent = S.winTitle; })
+    .observe(win, { attributes: true, attributeFilter: ["hidden"] });
+})();
+// Weltkarte: ein Schlapfel sitzt bei der Pokémon-Insel
+(() => {
+  const baseDeco = mapDeco;
+  mapDeco = function (shown, open, pts) {
+    const html = baseDeco(shown, open, pts), i = shown.findIndex(w => w.theme === "pokemon");
+    if (i < 0) return html;
+    return html + `<div class="mapdeco mapfig" style="left:${pts[i][0] + 40}%;top:${pts[i][1] + 40}px;width:58px;height:58px;animation-delay:-1.3s"><svg viewBox="0 0 100 100" overflow="visible">${SL_VARIANTS[5]}</svg></div>`;
   };
 })();
 </script>

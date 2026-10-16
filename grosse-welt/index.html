@@ -601,6 +601,15 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .map-lasse .ml-in { width: 100%; height: 100%; animation: mapbob 2.6s ease-in-out infinite; }
 .map-lasse svg { width: 100%; height: 100%; overflow: visible; display: block; }
 @media (prefers-reduced-motion: reduce) { .lv-card, .map-lasse .ml-in, .world button.gold-new svg.goldworld { animation: none; } }
+/* Schlapfel: Begleiter, großer Schlapfel am Rand, Bild im Levelauftritt */
+.sprite.companion { z-index: 2; pointer-events: none; transition: left .22s ease, top .22s ease; }
+.sprite.companion .face-dir { transform-origin: 50% 80%; }
+.sprite.companion svg { transform: scale(.82) translateY(6%); }
+.sprite.companion.same { opacity: 0; }
+.sprite.companion.cheer svg { animation: jubelhop .42s ease-in-out infinite alternate; }
+.side svg .sl-awake { display: none; } .side svg.jubel .sl-sleep { display: none; } .side svg.jubel .sl-awake { display: inline; }
+.lv-ico { display: block; width: 64px; height: 64px; margin: -40px auto 2px; }
+.lv-ico svg { width: 100%; height: 100%; display: block; }
 
 /* ===== Teil 2: Comic-Look (Notizbuch, Tusche, Marker) ===== */
 :root { --display: "Permanent Marker", "Gochi Hand", "Comic Sans MS", sans-serif; --body: "Patrick Hand", "Comic Sans MS", system-ui, sans-serif; --tape: #f3e6a6; --ink2: #2d3036; }
@@ -5735,7 +5744,7 @@ const LOESUNGEN = {"0-0":"drrruUlUdrruLuLLulldRDDlddrUdrrruuuulLulDrrrddlUruLL",
     document.querySelectorAll(".lv-intro").forEach(e => e.remove()); clearTimeout(introT);
     const el = document.createElement("div"); el.className = "lv-intro";
     const top = W.custom ? "Eigenes Level" : W.bonus ? "Bonus" : `Welt ${w + 1} · Level ${l + 1}`;
-    el.innerHTML = `<div class="lv-card"><small>${esc(top)}</small><b>${esc(W.custom ? (THEMES.custom && THEMES.custom.title) || "" : sceneName(w, l))}</b></div>`;
+    el.innerHTML = `<div class="lv-card">${typeof S !== "undefined" && S && S.introIcon ? `<span class="lv-ico">${S.introIcon}</span>` : ""}<small>${esc(top)}</small><b>${esc(W.custom ? (THEMES.custom && THEMES.custom.title) || "" : sceneName(w, l))}</b></div>`;
     document.getElementById("scr-game").appendChild(el);
     introT = setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 450); }, calm() ? 1200 : 1500);
   }
