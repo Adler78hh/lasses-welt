@@ -5027,7 +5027,7 @@ function mapDeco(shown, open, pts) {
 }
 // ===== Umbau: eine Pokémon-Welt mit sechs Designs, Welt 9 wird „Die drei ??? Kids“ (Teil 1 und Teil 2) =====
 // Welt 3: Wasser, Pflanzen, Blitz, Kampf, Psycho, Feuer (je ein Level). Welt 9: Justus und die Kaffeekanne,
-// Peter und Rocky Beach, Bobs Recherchen und Archiv. Geschoben werden Lupen, die Ziele sind Fingerabdrücke.
+// Peter und Rocky Beach, Bobs Recherchen und Archiv. Geschoben werden Lupen, die Ziele sind Fußspuren.
 (() => {
   const COMIC = typeof kO !== "undefined";
   const O = `stroke="#4a3728" stroke-width="${COMIC ? 2.6 : 2.2}" stroke-linejoin="round" stroke-linecap="round"`;
@@ -5162,8 +5162,10 @@ function mapDeco(shown, open, pts) {
     // Walkie-Talkies
     (p) => p(`${[[34, "#2b5fd9"], [64, "#e2402f"]].map(([x, c]) => `<path d="M${x - 4} 24v-12" stroke="#4a3728" stroke-width="3"/><rect x="${x - 11}" y="24" width="22" height="50" rx="5" fill="${c}" ${O}/><rect x="${x - 7}" y="30" width="14" height="10" rx="2" fill="#bfe6ff" ${O1}/>
       ${[48, 54, 60, 66].map(y => `<path d="M${x - 6} ${y}h12" stroke="#4a3728" stroke-width="1.4"/>`).join("")}`).join("")}<path d="M44 20q5-5 10 0M41 15q8-8 16 0" fill="none" stroke="#4a3728" stroke-width="1.6"/>`),
-    // Fußspuren
-    (p) => p(`${[[30, 74, -10], [46, 58, 8], [38, 40, -10], [56, 24, 8]].map(([x, y, r]) => `<g transform="rotate(${r} ${x} ${y})"><ellipse cx="${x}" cy="${y}" rx="6" ry="9" fill="#5a4636" opacity=".75"/><ellipse cx="${x}" cy="${y + 12}" rx="4.6" ry="4" fill="#5a4636" opacity=".75"/></g>`).join("")}`),
+    // Karteikarte mit Fingerabdrücken
+    (p) => p(`<g transform="rotate(5 50 50)"><rect x="16" y="20" width="68" height="56" rx="3" fill="#ffffff" ${O}/><path d="M16 32h68" stroke="#e2402f" stroke-width="2"/>
+      ${[30, 50, 70].map(x => `<g fill="none" stroke="#4a3728" stroke-width="1.4" opacity=".7">${[3, 6, 9].map(r => `<ellipse cx="${x}" cy="52" rx="${r}" ry="${r * 1.3}"/>`).join("")}</g>`).join("")}
+      <path d="M22 70h56" stroke="#9aa3b1" stroke-width="2"/></g>`),
     // Visitenkarte „Wir übernehmen jeden Fall“
     (p) => p(`<g transform="rotate(-6 50 50)"><rect x="10" y="28" width="80" height="44" rx="3" fill="#ffffff" ${O}/>${fz(W, 24, 52, 18)}${fz(R, 34, 52, 18)}${fz(B, 44, 52, 18)}
       <path d="M54 40h28M54 48h24M54 56h28M18 64h64" stroke="#9aa3b1" stroke-width="2.4" stroke-linecap="round"/></g>`),
@@ -5272,17 +5274,19 @@ function mapDeco(shown, open, pts) {
   ];
 
   const BOX_COLORS = [["#e2402f", ""], ["#2b5fd9", ""], ["#ffd23a", ""], ["#3fae4a", ""], ["#7b4fd6", ""], ["#ff8a1a", ""], ["#2ec4b6", ""], ["#ff8fb1", ""], ["#4a3728", ""], ["#f2f3f5", ""], ["#8a5a2b", ""], ["#bbe90b", ""]];
+  // Zielfeld: ein Paar kräftige Schuhabdrücke mit Profil
+  const sohle = (x, y, r, flip) => `<g transform="translate(${x} ${y}) rotate(${r})${flip ? " scale(-1 1)" : ""}">
+      <path d="M-8 -22q8-6 14 0 4 8 2 18l-2 6h-12l-3-8q-3-10 1-16z" fill="#5a4636"/><path d="M-6 6h10l1 10q-6 6-12 0z" fill="#5a4636"/>
+      <path d="M-6 -16h10M-7 -10h12M-7 -4h11M-5 10h8" stroke="#8a7462" stroke-width="2"/></g>`;
   const fingerTarget = () => `<svg viewBox="0 0 100 100">
-    <ellipse class="glow" cx="50" cy="52" rx="32" ry="38" fill="#fff3b0"/>
-    <g fill="none" stroke="#4a3728" stroke-width="2.6" stroke-linecap="round" opacity=".55">
-      ${[8, 14, 20, 26, 32].map((r, i) => `<path d="M${50 - r * .8} ${62 + i} q0 -${r * 1.6} ${r * .8} -${r * 1.6} t${r * .8} ${r * 1.6}${i > 1 ? ` q0 ${r * .4} -${r * .2} ${r * .7}` : ""}"/>`).join("")}
-      <path d="M38 78q12 6 24 0M34 72q16 10 32 0"/></g>
+    <ellipse class="glow" cx="50" cy="52" rx="38" ry="38" fill="#fff3b0"/>
+    <g opacity=".85">${sohle(37, 58, -10, true)}${sohle(63, 44, 10, false)}</g>
     <g class="fx" fill="#f7d02c"><path d="M12 8l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z"/><path d="M86 4l2.5 5.5 6 .8-4.3 4 1 6-5.2-3-5.2 3 1-6-4.3-4 6-.8z"/></g></svg>`;
 
   const D = {
     worldName: "Die drei ??? Kids", title: "Die drei ??? Kids", emblem: "fragezeichen", box: "lupe", rolls: false, squish: false,
     boxWord: "Lupen", pushWord: "Schübe", boxColors: BOX_COLORS,
-    hint: "Schieb jede Lupe auf einen Fingerabdruck. Lupen lassen sich nur schieben, nicht ziehen.",
+    hint: "Schieb jede Lupe auf eine Fußspur. Lupen lassen sich nur schieben, nicht ziehen.",
     winTitle: "Fall gelöst!", winText: (m, p) => `Alle Spuren untersucht! ${m} Schritte, ${p} Schübe.`,
     confetti: ["#ffffff", "#e2402f", "#2b5fd9", "#ffd23a"],
     prize: { symbol: "detektivausweis", title: "Detektiv-Ausweis!", text: (m) => `Du bist jetzt der vierte Detektiv! Finale in ${m} Schritten.` },
