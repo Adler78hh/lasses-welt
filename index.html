@@ -4319,7 +4319,7 @@ const NEUE_WAENDE = {
     () => pParty(`${ballon(30, 34, "#ff8fb1")}${ballon(50, 28, "#7ad6ff")}${ballon(70, 34, "#ffd23a")}`),
     () => pParty(`<use href="#geschenk" x="16" y="14" width="68" height="72"/>`),
     () => pParty(`<path d="M50 12l26 72H24z" fill="#7ad6ff" ${E2}/><path d="M38 44h24M32 62h36" stroke="#ff8fb1" stroke-width="5"/><circle cx="50" cy="12" r="7" fill="#ffd23a" ${E2}/>`),
-    () => pParty(`<text x="50" y="74" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="64" fill="#ff8fb1" stroke="#4a3728" stroke-width="2.4">7</text><path d="M60 14v10" stroke="#4a3728" stroke-width="3"/><path class="flame" d="M60 4q-6 8 0 12 6-4 0-12z" fill="#ff8a1a"/>`)
+    () => pParty(`<text x="50" y="74" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="64" fill="#ff8fb1" stroke="#4a3728" stroke-width="2.4">8</text><path d="M60 14v10" stroke="#4a3728" stroke-width="3"/><path class="flame" d="M60 4q-6 8 0 12 6-4 0-12z" fill="#ff8a1a"/>`)
   ],
   // --- Pokémon (nur Gegenstände; Pokémon selbst zählen wie Personen) ---
   "Wasser-Pokémon": [
@@ -4627,6 +4627,49 @@ for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (E
   const flowerTile = (x, y) => `<svg viewBox="0 0 100 100">${pad("#9ed680", "#5e9e4a")}${FLOWERS[(pick(x, y, 132, 97) + x + y * 2) % FLOWERS.length](x, y)}</svg>`;
   if (weide) weide.wall = (x, y) => { if (pick(x, y, 130, 3) === 0) return meadowHead(x, y); const k = pick(x, y, 0, 6); return k < 3 ? rail("#9ed680") : k < 5 ? flowerTile(x, y) : meadowBush; };
   if (turnier) { const base = turnier.wall; turnier.wall = (x, y) => pick(x, y, 131, 4) === 0 ? arenaHead(x, y) : base(x, y); }
+})();
+// ===== Geburtstag (Teil 1): Lasses Holz-Geburtstagszug =====
+// Vorne die Lok: ein hellblauer Wal auf Holzrädern (ohne Kerze). Dahinter Holzwagen mit dreieckigen Aufbauten und gedrehter Kerze.
+(() => {
+  const O = `stroke="#4a3728" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"`;
+  const WOOD = "#e2c49a", WOOD_D = "#c9a676", WHEEL = "#efe6d6";
+  const wheel = (cx, cy, r = 8) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${WHEEL}" ${O}/><circle cx="${cx}" cy="${cy}" r="${r * .3}" fill="${WOOD_D}" ${O} stroke-width="1.4"/>`;
+  const track = `<ellipse cx="50" cy="88" rx="38" ry="4" fill="#00000020"/>`;
+
+  // Wal-Lok: Kopf links, Schwanzflosse rechts hochgebogen, helle Bauchseite, zwei Holzräder
+  const wal = () => pParty(`${track}
+    <path d="M14 58q0-26 30-26 18 0 30 10 6-10 14-16-2 12-6 18 6 0 10 6-8 2-14 0-4 18-30 22H24q-10-2-10-14z" fill="#9fc3d6" ${O}/>
+    <path d="M18 64q14 9 34 9 12 0 18-3-6 8-22 9H26q-7-1-8-15z" fill="#dfeef5"/>
+    <circle cx="28" cy="48" r="3" fill="#2b1a0e"/><circle cx="29" cy="47" r="1" fill="#ffffff"/>
+    <path d="M20 56q4 3 9 1" fill="none" stroke="#4a3728" stroke-width="1.6"/><ellipse cx="33" cy="55" rx="3" ry="2" fill="#f4a6b8" opacity=".7"/>
+    <path d="M40 36q8-4 16 0" fill="none" stroke="#ffffff" stroke-width="3" opacity=".5"/>
+    <rect x="18" y="74" width="60" height="6" rx="3" fill="${WOOD}" ${O} stroke-width="1.6"/>${wheel(30, 80, 9)}${wheel(66, 80, 9)}
+    <path d="M78 77h8" stroke="#4a3728" stroke-width="2.4"/><circle cx="88" cy="77" r="2.4" fill="none" stroke="#4a3728" stroke-width="1.8"/>`);
+
+  // Gedrehte Kerze mit Flamme
+  const kerze = (x, top, bottom, c) => `<rect x="${x - 3}" y="${top}" width="6" height="${bottom - top}" rx="2" fill="${c}" ${O} stroke-width="1.4"/>
+    ${Array.from({ length: Math.floor((bottom - top) / 5) }, (_, i) => `<path d="M${x - 3} ${top + 5 + i * 5}l6-3" stroke="${c === "#ffffff" ? "#d6dde6" : "#ffffff"}" stroke-width="1.4"/>`).join("")}
+    <path d="M${x} ${top}v-3" stroke="#4a3728" stroke-width="1.4"/><path class="flame" d="M${x} ${top - 14}q5 6 0 11-5-5 0-11z" fill="#ffb02e" stroke="#e2601a" stroke-width="1"/>`;
+  // Wagen: Holzbrett auf zwei Rädern, dreieckiger Aufbau (Farbe oder Streifen), Kerze in der Spitze
+  const wagen = ({ tri, stripe, kerzeC, dots }) => { const id = "zg" + (tri + (stripe || "")).replace(/#/g, "");
+    return pParty(`${track}
+      ${stripe ? `<clipPath id="${id}"><path d="M24 62L50 32l26 30z"/></clipPath>` : ""}
+      <path d="M24 62L50 32l26 30z" fill="${tri}" ${O}/>
+      ${stripe ? `<g clip-path="url(#${id})">${[34, 41, 48, 55, 62].map(y => `<path d="M20 ${y}h60" stroke="${stripe}" stroke-width="3.4"/>`).join("")}</g><path d="M24 62L50 32l26 30z" fill="none" ${O}/>` : ""}
+      <path d="M50 32l26 30h5L55 32z" fill="#00000022"/>
+      ${kerze(50, 17, 38, kerzeC)}
+      <rect x="18" y="60" width="64" height="14" rx="3" fill="${WOOD}" ${O}/>
+      ${dots ? [26, 38, 50, 62, 74].map(x => `<circle cx="${x}" cy="67" r="1.8" fill="#ffffff"/>`).join("") : `<path d="M20 66h60" stroke="${WOOD_D}" stroke-width="1.4"/>`}
+      ${wheel(30, 78)}${wheel(70, 78)}
+      <path d="M8 68h10M82 68h10" stroke="#4a3728" stroke-width="2.4"/><circle cx="7" cy="68" r="2.4" fill="none" stroke="#4a3728" stroke-width="1.8"/>`); };
+  const WAGEN = [
+    { tri: "#a9cfe6", kerzeC: "#ffffff" },
+    { tri: "#e9c3c0", kerzeC: "#bcd8ea" },
+    { tri: "#f2f2f2", stripe: "#6b7482", kerzeC: "#ffffff" },
+    { tri: "#ffffff", stripe: "#2e4f9a", kerzeC: "#bcd8ea" },
+    { tri: "#d9c3a5", kerzeC: "#ffffff", dots: true }
+  ];
+  EXTRA_WALLS["Geburtstag"] = (EXTRA_WALLS["Geburtstag"] || []).concat([wal, ...WAGEN.map(w => () => wagen(w))]);
 })();
 
 // ===== Kinderbuch-Details =====
