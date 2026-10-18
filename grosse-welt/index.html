@@ -4186,16 +4186,15 @@ const EXTRA_WALLS = {};
     () => pB(`<rect x="12" y="12" width="76" height="76" rx="2" fill="#8a5a2b" ${O}/>${[16, 40, 64].map((y, r) => [0, 1, 2, 3, 4, 5, 6].map(i => `<rect x="${16 + i * 10}" y="${y + (i % 3)}" width="8" height="${20 - (i % 3)}" fill="${["#e2402f", "#2b5fd9", "#ffd23a", "#3fae4a", "#7b4fd6", "#f2efe6", "#c0612b"][(i + r) % 7]}" ${O1} stroke-width="1"/>`).join("")).join("")}`)
   ];
 
-  const scene = ({ name, lasse, pal, floor, pad, items, main, others, extras }) => ({
-    name, lasse, pal, floor, deco: () => "", extras: extras || (() => ""), words: ["Aha!", "Spur!"], winTitle: "Fall gelöst!", sound: "spur", winSound: "trommelwirbel",
-    side: { l: [sideSvg(main)], r: others.map(sideSvg) },
-    wall: (x, y) => { const k = pick(x, y, 150, 20);
-      if (k < 2) return personTile(pad, main, pick(x, y, 151, 2));
-      if (k === 2) return personTile(pad, others[pick(x, y, 152, 2)], 0);
-      if (k < 5) return fragen(pad, pick(x, y, 153, 3));
-      if (k < 11) return DETEKTIV[pick(x, y, 154, DETEKTIV.length)](pad);
-      return items[pick(x, y, 155, items.length)](); }
-  });
+  // Jeder Detektiv steht genau einmal in den Wänden (weit verteilt); neben dem Spielfeld nur die Hauptfigur des Levels
+  const scene = ({ name, lasse, pal, floor, pad, items, main, others, extras }) => {
+    const decor = [...items.map(f => () => f()), ...DETEKTIV.map(f => () => f(pad)), (x, y) => fragen(pad, pick(x, y, 153, 3)), (x, y) => fragen(pad, pick(x, y, 156, 3))];
+    return {
+      name, lasse, pal, floor, deco: () => "", extras: extras || (() => ""), words: ["Aha!", "Spur!"], winTitle: "Fall gelöst!", sound: "spur", winSound: "trommelwirbel",
+      side: { l: [sideSvg(main)], r: [] },
+      wall: feierWalls(decor, () => [personTile(pad, main, 0), personTile(pad, others[0], 0), personTile(pad, others[1], 0)])
+    };
+  };;
   const flo = (a, b, inner = () => "") => (x, y) => svgT(`<rect width="100" height="100" fill="${(x + y) % 2 ? b : a}"/>${inner(x, y)}`);
   const SC = [
     scene({ name: "Justus und die Kaffeekanne", lasse: "detektiv", pal: { "--bg": "#efe6d6", "--bg-2": "#faf6ee" }, pad: pJ, items: JUSTUS_ITEMS, main: "justus", others: ["peter", "bob"],
