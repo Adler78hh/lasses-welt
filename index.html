@@ -4598,7 +4598,34 @@ for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (E
   const R = THEMES.reiten, byName = (n) => (R.scenes || []).find(s => s.name === n);
   const weide = byName("Weide"), stall = byName("Stall"), turnier = byName("Turnierplatz");
   if (stall) { const base = stall.wall; stall.wall = (x, y) => pick(x, y, 0, 5) < 3 ? stallHead(x, y) : base(x, y); }
-  if (weide) { const base = weide.wall; weide.wall = (x, y) => pick(x, y, 130, 3) === 0 ? meadowHead(x, y) : base(x, y); }
+  // Weide ohne grasende Ponys: an ihrer Stelle Blumenwiesen
+  const OB = `stroke="#2b1a0e" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"`;
+  const stem = (x1, y1, x2, y2) => `<path d="M${x1} ${y1}Q${x1 + 2} ${(y1 + y2) / 2} ${x2} ${y2}" stroke="#3f8a3a" stroke-width="2.6" fill="none" stroke-linecap="round"/>`;
+  const leaf = (x, y, r) => `<path d="M${x} ${y}q${8 * r} -8 ${12 * r} -2q-6 6 -${12 * r} 2z" fill="#4fb058" ${OB} stroke-width="1.2"/>`;
+  const FLOWERS = [
+    // Wildblumenwiese
+    (x, y) => `${[[18, 60, "#ff8fb1"], [32, 74, "#ffe066"], [48, 58, "#ffffff"], [62, 76, "#c9a0ff"], [78, 62, "#ff8a3d"], [26, 86, "#7ab8ff"], [54, 88, "#ff8fb1"], [74, 86, "#ffffff"], [40, 44, "#ffe066"], [70, 46, "#ff8fb1"]]
+      .map(([a, b, c], i) => `${stem(a, b + 10, a + (i % 2 ? 2 : -2), b)}${flower(a, b, c, 4 + (i % 3))}`).join("")}`,
+    // Sonnenblumen
+    () => `${[[28, 30, 1], [56, 22, 1.2], [80, 40, .9]].map(([a, b, sc]) => `${stem(a, 92, a, b)}${leaf(a, 64, 1)}${leaf(a, 74, -1)}
+      <g transform="translate(${a} ${b}) scale(${sc})">${Array.from({ length: 12 }, (_, i) => `<ellipse cx="0" cy="-12" rx="4" ry="8" fill="#ffcc1a" ${OB} stroke-width="1" transform="rotate(${i * 30})"/>`).join("")}
+      <circle r="8" fill="#7a4a22" ${OB}/><g fill="#4a2a10">${[[-3, -2], [2, -3], [0, 2], [3, 2], [-3, 3]].map(([u, v]) => `<circle cx="${u}" cy="${v}" r="1"/>`).join("")}</g></g>`).join("")}`,
+    // Tulpen
+    () => `${[[18, "#ef4b4b"], [34, "#ffd23a"], [50, "#ff8fb1"], [66, "#ef4b4b"], [82, "#c9a0ff"]].map(([a, c], i) => { const b = 40 + (i % 2) * 12;
+      return `${stem(a, 92, a, b + 8)}${i % 2 ? leaf(a, 80, 1) : leaf(a, 76, -1)}<path d="M${a - 8} ${b}q0 14 8 14t8-14l-4 4-4-6-4 6z" fill="${c}" ${OB}/>`; }).join("")}`,
+    // Mohn und Kornblumen
+    () => `${[[22, 46, "m"], [40, 62, "k"], [56, 40, "m"], [72, 60, "k"], [84, 38, "m"], [30, 80, "k"], [62, 84, "m"]].map(([a, b, t]) => `${stem(a, 94, a, b)}${t === "m"
+      ? `<g transform="translate(${a} ${b})">${[0, 90, 180, 270].map(r => `<ellipse cx="0" cy="-6" rx="7" ry="6" fill="#e2302f" ${OB} stroke-width="1.2" transform="rotate(${r})"/>`).join("")}<circle r="3.4" fill="#2b1a0e"/></g>`
+      : `<g transform="translate(${a} ${b})">${Array.from({ length: 8 }, (_, i) => `<path d="M0 0l-2-9h4z" fill="#3d6fe0" ${OB} stroke-width="1" transform="rotate(${i * 45})"/>`).join("")}<circle r="2.4" fill="#1a3a8a"/></g>`}`).join("")}`,
+    // Gänseblümchen und Pusteblumen
+    () => `${[[20, 70], [36, 82], [52, 72], [68, 84], [84, 70], [44, 56], [70, 58]].map(([a, b]) => flower(a, b, "#ffffff", 4.4)).join("")}
+      ${[[30, 30], [66, 26]].map(([a, b]) => `${stem(a, 70, a, b)}<g transform="translate(${a} ${b})" stroke="#ffffff" stroke-width="1.2" opacity=".95">${Array.from({ length: 16 }, (_, i) => `<path d="M0 0l0-11" transform="rotate(${i * 22.5})"/>`).join("")}</g><circle cx="${a}" cy="${b}" r="11.5" fill="#ffffff" opacity=".25"/><circle cx="${a}" cy="${b}" r="2" fill="#c9b27a"/>`).join("")}`,
+    // Lupinen und Fingerhut
+    () => `${[[24, "#8b5cf6"], [44, "#ff8fb1"], [62, "#5a8bff"], [80, "#ffffff"]].map(([a, c], i) => `${stem(a, 94, a, 30 + (i % 2) * 10)}${leaf(a, 84, i % 2 ? 1 : -1)}
+      ${Array.from({ length: 7 }, (_, j) => `<ellipse cx="${a + (j % 2 ? 3 : -3)}" cy="${34 + (i % 2) * 10 + j * 6}" rx="${2.6 + j * .35}" ry="3" fill="${c}" ${OB} stroke-width="1"/>`).join("")}`).join("")}`
+  ];
+  const flowerTile = (x, y) => `<svg viewBox="0 0 100 100">${pad("#9ed680", "#5e9e4a")}${FLOWERS[(pick(x, y, 132, 97) + x + y * 2) % FLOWERS.length](x, y)}</svg>`;
+  if (weide) weide.wall = (x, y) => { if (pick(x, y, 130, 3) === 0) return meadowHead(x, y); const k = pick(x, y, 0, 6); return k < 3 ? rail("#9ed680") : k < 5 ? flowerTile(x, y) : meadowBush; };
   if (turnier) { const base = turnier.wall; turnier.wall = (x, y) => pick(x, y, 131, 4) === 0 ? arenaHead(x, y) : base(x, y); }
 })();
 
