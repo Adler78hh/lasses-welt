@@ -4732,7 +4732,7 @@ for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (E
 // ===== Familie · Bibi und Tina (Teil 1): Bibi, Tina, Karla Kolumna und die Pferde Amadeus und Sabrina =====
 // Nach den Vorlagen aus der Serie: Bibi blond mit großem Pferdeschwanz und roter Schleife, Sommersprossen, pinkes Shirt, hellblaue Reithose.
 // Tina rote Haare, cremefarbenes Shirt, Jeans. Karla Kolumna dunkle Haare, große getönte Brille, blauer Pulli, gelbe Hose, rote Schuhe.
-// Amadeus ist Bibis Rappe, Sabrina Tinas Fuchsstute; beide schauen über den Zaun vom Martinshof.
+// Amadeus ist rotbraun mit heller Mähne (Tinas Pferd), Sabrina ein Schimmel (Bibis Pferd); beide schauen über den Zaun vom Martinshof.
 (() => {
   const O = `stroke="#4a3728" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"`, O1 = `stroke="#4a3728" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"`;
   const SK = "#ffd9bf";
@@ -4804,8 +4804,8 @@ for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (E
     ${[14, 86].map(a => `<rect x="${a - 6}" y="60" width="12" height="30" rx="3" fill="#ffffff" ${O}/>`).join("")}
     <rect x="2" y="66" width="96" height="9" rx="4" fill="#ffffff" ${O}/><rect x="2" y="80" width="96" height="9" rx="4" fill="#ffffff" ${O}/>
     <rect x="26" y="64" width="48" height="13" rx="3" fill="#8a5a2b" ${O1}/><text x="50" y="73.6" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="8" fill="#ffffff">${name}</text>`;
-  const AMADEUS = asPerson(`<svg viewBox="0 0 100 100" class="horse">${pad("#e6f5d8", "#a9cf8f")}${pferd("#2b2220", "#0f0b09", "#5a4a42", `<path d="M50 24l2.4 4 4.4.6-3.2 3 .8 4.4-4.4-2.2-4.4 2.2.8-4.4-3.2-3 4.4-.6z" fill="#ffffff"/>`, "AMADEUS")}</svg>`, "amadeus");
-  const SABRINA = asPerson(`<svg viewBox="0 0 100 100" class="horse">${pad("#e6f5d8", "#a9cf8f")}${pferd("#b8642a", "#8a3e18", "#e3a774", `<path d="M47 22q3-3 6 0l-1 26h-4z" fill="#ffffff"/>`, "SABRINA")}</svg>`, "sabrina");
+  const AMADEUS = asPerson(`<svg viewBox="0 0 100 100" class="horse">${pad("#e6f5d8", "#a9cf8f")}${pferd("#b8642a", "#ead2a0", "#e3a774", `<path d="M47 22q3-3 6 0l-1 26h-4z" fill="#ffffff"/>`, "AMADEUS")}</svg>`, "amadeus");
+  const SABRINA = asPerson(`<svg viewBox="0 0 100 100" class="horse">${pad("#e6f5d8", "#a9cf8f")}${pferd("#f6f4ef", "#dcd8d0", "#e2cfc8", "", "SABRINA")}</svg>`, "sabrina");
 
   // Einbau ins Level „Bibi und Tina“ (Welt 10): neue Wände ohne grasendes Pony, Figuren neben dem Spielfeld
   const L = FAMILY_LEVELS.find(f => f.name === "Bibi und Tina");
