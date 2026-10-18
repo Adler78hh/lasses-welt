@@ -5300,8 +5300,8 @@ function mapDeco(shown, open, pts) {
   mapDeco = function (shown, open, pts) {
     let html = baseDeco(shown, open, pts);
     const i = shown.findIndex(w => w.theme === "pokemon2"), wi = WORLDS.indexOf(shown[i]);
-    // erst sichtbar, wenn die Welt der drei ??? komplett geschafft ist
-    if (i < 0 || solvedIn(P(), wi) < NL(wi)) return html;
+    // erst sichtbar, wenn die Welt der drei ??? komplett geschafft ist (im Cheat-Profil sofort)
+    if (i < 0 || (!P().unlockAll && solvedIn(P(), wi) < NL(wi))) return html;
     const left = pts[i][0] < 50;
     [["justus", 0], ["peter", 1], ["bob", 2]].forEach(([who, k]) => {
       const x = pts[i][0] + (left ? 1 : -1) * (36 + k * 9), y = pts[i][1] + 30 + (k % 2) * 10;
@@ -6765,8 +6765,8 @@ if (typeof EXTRA_SHARE !== "undefined") EXTRA_SHARE["Pflanzen-Pokémon"] = 3;
   const baseDeco = mapDeco;
   mapDeco = function (shown, open, pts) {
     const html = baseDeco(shown, open, pts), i = shown.findIndex(w => w.theme === "pokemon");
-    // erst sichtbar, wenn die Pokémon-Welt komplett geschafft ist
-    if (i < 0 || solvedIn(P(), WORLDS.indexOf(shown[i])) < NL(WORLDS.indexOf(shown[i]))) return html;
+    // erst sichtbar, wenn die Pokémon-Welt komplett geschafft ist (im Cheat-Profil sofort)
+    if (i < 0 || (!P().unlockAll && solvedIn(P(), WORLDS.indexOf(shown[i])) < NL(WORLDS.indexOf(shown[i])))) return html;
     return html + `<div class="mapdeco mapfig" style="left:${pts[i][0] + 40}%;top:${pts[i][1] + 40}px;width:58px;height:58px;animation-delay:-1.3s"><svg viewBox="0 0 100 100" overflow="visible">${SL_VARIANTS[5]}</svg></div>`;
   };
 })();
@@ -6945,8 +6945,8 @@ for (const T of [THEMES.pokemon, THEMES.pokemon2]) for (const S of T.scenes) {
   const baseDeco = mapDeco;
   mapDeco = function (shown, open, pts) {
     let html = baseDeco(shown, open, pts);
-    // erst sichtbar, wenn die Pokémon-Welt komplett geschafft ist; dann stehen Schlapfel und Schiggy bei Welt 3, Pikachu bei Welt 4 und drei bei Welt 5
-    const pw = WORLDS.findIndex(w => w.theme === "pokemon"); if (pw < 0 || solvedIn(P(), pw) < NL(pw)) return html;
+    // erst sichtbar, wenn die Pokémon-Welt komplett geschafft ist (im Cheat-Profil sofort); dann stehen Schlapfel und Schiggy bei Welt 3, Pikachu bei Welt 4 und drei bei Welt 5
+    const pw = WORLDS.findIndex(w => w.theme === "pokemon"); if (pw < 0 || (!P().unlockAll && solvedIn(P(), pw) < NL(pw))) return html;
     const add = (theme, list) => { const i = shown.findIndex(w => w.theme === theme); if (i < 0) return;
       list.forEach(([svg, dx, dy], k) => { html += `<div class="mapdeco mapfig" style="left:${pts[i][0] + dx}%;top:${pts[i][1] + dy}px;width:52px;height:52px;animation-delay:${-k * .9}s"><svg viewBox="0 0 100 100" overflow="visible">${svg}</svg></div>`; }); };
     // seit dem Umbau gibt es nur noch eine Pokémon-Welt: alle fünf stehen dort
