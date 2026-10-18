@@ -6945,12 +6945,14 @@ for (const T of [THEMES.pokemon, THEMES.pokemon2]) for (const S of T.scenes) {
   const baseDeco = mapDeco;
   mapDeco = function (shown, open, pts) {
     let html = baseDeco(shown, open, pts);
-    // erst sichtbar, wenn die Pokémon-Welt komplett geschafft ist; dann stehen drei bei Welt 3 und drei bei Welt 5
+    // erst sichtbar, wenn die Pokémon-Welt komplett geschafft ist; dann stehen Schlapfel und Schiggy bei Welt 3, Pikachu bei Welt 4 und drei bei Welt 5
     const pw = WORLDS.findIndex(w => w.theme === "pokemon"); if (pw < 0 || solvedIn(P(), pw) < NL(pw)) return html;
     const add = (theme, list) => { const i = shown.findIndex(w => w.theme === theme); if (i < 0) return;
       list.forEach(([svg, dx, dy], k) => { html += `<div class="mapdeco mapfig" style="left:${pts[i][0] + dx}%;top:${pts[i][1] + dy}px;width:52px;height:52px;animation-delay:${-k * .9}s"><svg viewBox="0 0 100 100" overflow="visible">${svg}</svg></div>`; }); };
     // seit dem Umbau gibt es nur noch eine Pokémon-Welt: alle fünf stehen dort
-    add("pokemon", [[POKE_MAP.schiggy, 56, -16], [POKE_MAP.pikachu, 64, 34]]);
+    add("pokemon", [[POKE_MAP.schiggy, 56, -16]]);
+    // Pikachu steht bei Welt 4 zwischen Arne und Matze
+    add("lego", [[POKE_MAP.pikachu, -28.4, 50]]);
     add("steine", [[POKE_MAP.kleinstein, 40, -14], [POKE_MAP.mewtu, 54, 20], [POKE_MAP.glurak, 40, 52]]);
     return html;
   };
