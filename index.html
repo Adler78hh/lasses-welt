@@ -4677,6 +4677,58 @@ for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (E
   // Wal und Wagen zählen als je ein Motiv, damit der Zug die anderen Geburtstagsdinge nicht verdrängt; die Wagenfarbe wechselt je Feld
   EXTRA_WALLS["Geburtstag"] = (EXTRA_WALLS["Geburtstag"] || []).concat([wal, (x, y) => wagen(WAGEN[(pick(x, y, 140, 97) + x + 2 * y) % WAGEN.length])]);
 })();
+// ===== Weihnachten (Teil 1): Lasses Wichtel-Ecke (Tomte) =====
+// Graublaue Wichteltür mit Kranz, Leiter und Bänkchen, Bogenfenster, roter POST-Briefkasten,
+// TOMTE-Matte aus Bügelperlen, Reisigbesen mit Tannenbäumchen, weißer Lattenzaun.
+(() => {
+  const O = `stroke="#4a3728" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"`;
+  const DOOR = "#8fa3a8", DOOR_D = "#76898e", WOOD = "#e8cfa0", WOOD_D = "#c9a676";
+  // Putzwand mit Ziegelsockel (wie die Wand hinter der Wichteltür)
+  const wand = (inner) => svgT(`<rect x="3" y="9" width="94" height="88" rx="14" fill="#7a4a2a"/><rect x="3" y="3" width="94" height="86" rx="14" fill="#f3ece0"/>
+    <g fill="#e2d8c6">${[[16, 14], [70, 20], [40, 30], [82, 46], [22, 52], [60, 10]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.6"/>`).join("")}</g>
+    <path d="M3 70h94v5q0 14-14 14H17Q3 89 3 75z" fill="#a0603a"/><path d="M3 79h94M30 70v9M64 70v9M14 79v10M48 79v10M82 79v10" stroke="#7a4a2a" stroke-width="1.6"/>${inner}`);
+  // Holzdielen-Boden (wie die Terrasse vor der Tür)
+  const dielen = (inner) => svgT(`<rect x="3" y="9" width="94" height="88" rx="14" fill="#3a2214"/><rect x="3" y="3" width="94" height="86" rx="14" fill="#6b3e24"/>
+    ${[14, 26, 38, 50, 62, 74, 86].map(x => `<path d="M${x} 6v80" stroke="#55301b" stroke-width="2"/>`).join("")}${inner}`);
+
+  const kranz = (cx, cy, r) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#2f4a3a" stroke-width="${r * .55}"/>
+    ${Array.from({ length: 12 }, (_, i) => { const a = i / 12 * Math.PI * 2; return `<circle cx="${cx + Math.cos(a) * r}" cy="${cy + Math.sin(a) * r}" r="${r * .22}" fill="#4f6e5a"/>`; }).join("")}
+    <path d="M${cx + r * .3} ${cy - r}l${r * .5} -${r * .35} 0 ${r * .7}z M${cx + r * .3} ${cy - r}l-${r * .5} -${r * .35} 0 ${r * .7}z" fill="#c8202a" stroke="#7a1015" stroke-width="1"/>`;
+
+  const TILES = [
+    // Wichteltür mit Kranz, darunter Leiter auf dem Bänkchen
+    () => wand(`<path d="M50 4l2 4-3 2 3 3" fill="none" stroke="#d9a520" stroke-width="1.4"/>
+      <rect x="32" y="8" width="36" height="46" rx="2" fill="${DOOR}" ${O}/>${[38, 44, 50, 56, 62].map(x => `<path d="M${x} 9v44" stroke="${DOOR_D}" stroke-width="1.4"/>`).join("")}
+      <rect x="29" y="14" width="42" height="6" rx="3" fill="${DOOR}" ${O} stroke-width="1.6"/><rect x="29" y="44" width="42" height="6" rx="3" fill="${DOOR}" ${O} stroke-width="1.6"/>
+      ${kranz(48, 30, 8)}<circle cx="62" cy="34" r="2.6" fill="#ffffff" ${O} stroke-width="1.2"/>
+      <path d="M42 54v26M58 54v26" stroke="${WOOD}" stroke-width="3.4"/><path d="M42 54v26M58 54v26" stroke="${WOOD_D}" stroke-width="1" opacity=".6"/>
+      ${[60, 68, 76].map(y => `<path d="M42 ${y}h16" stroke="${WOOD}" stroke-width="3"/>`).join("")}
+      <rect x="34" y="80" width="32" height="6" rx="1" fill="${WOOD}" ${O} stroke-width="1.4"/><path d="M38 86v4M62 86v4" stroke="${WOOD_D}" stroke-width="2.4"/>`),
+    // Bogenfenster mit weißem Rahmen
+    () => wand(`<path d="M24 64V36q0-24 26-24t26 24v28z" fill="#ffffff" ${O}/><path d="M29 60V37q0-20 21-20t21 20v23z" fill="#7d939a"/>
+      <path d="M50 17v43M29 40h42" stroke="#ffffff" stroke-width="4"/><path d="M34 34q4-10 12-12" stroke="#ffffff" stroke-width="2" opacity=".4" fill="none"/>`),
+    // Roter Briefkasten POST
+    () => wand(`<rect x="28" y="22" width="44" height="12" rx="2" fill="#a51e24" ${O} transform="skewX(-6)"/>
+      <rect x="28" y="30" width="44" height="34" rx="2" fill="#b0232a" ${O}/><path d="M28 34h44" stroke="#7a1015" stroke-width="2"/>
+      <text x="50" y="52" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="9" letter-spacing="1.5" fill="#ffffff">POST</text>
+      <path d="M32 26h30" stroke="#ffffff" stroke-width="1.4" opacity=".35"/>`),
+    // TOMTE-Matte aus Bügelperlen
+    () => dielen(`<rect x="8" y="30" width="84" height="40" rx="3" fill="#ffffff" ${O}/>
+      <g fill="#ffffff" stroke="#d8d4cc" stroke-width=".6">${Array.from({ length: 8 }, (_, r) => Array.from({ length: 20 }, (_, c) => `<circle cx="${11.5 + c * 4.1}" cy="${33.5 + r * 4.6}" r="1.7"/>`).join("")).join("")}</g>
+      <text x="50" y="60" text-anchor="middle" font-family="Fredoka, Arial Black, sans-serif" font-weight="700" font-size="20" letter-spacing="1" fill="#c8202a">TOMTE</text>`),
+    // Reisigbesen und Tannenbäumchen
+    () => dielen(`<path d="M30 6l10 58" stroke="${WOOD}" stroke-width="3.4" stroke-linecap="round"/>
+      <path d="M36 60l-14 26h30l-8-26z" fill="#a8743a" ${O} stroke-width="1.6"/>${[26, 32, 38, 44, 50].map(x => `<path d="M${x} 86l${(42 - x) * .2} -22" stroke="#7a4a22" stroke-width="1"/>`).join("")}
+      <path d="M35 62h10" stroke="#c8202a" stroke-width="2.4"/>
+      <path d="M70 28l-14 24h6l-10 18h36l-10-18h6z" fill="#2f8a8a" ${O} stroke-width="1.6"/><g fill="#ffffff" opacity=".7">${[[66, 40], [72, 50], [62, 58], [76, 62], [68, 66]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.2"/>`).join("")}</g>
+      <rect x="64" y="70" width="12" height="8" rx="3" fill="#c9a676" ${O} stroke-width="1.4"/>`),
+    // Weißer Lattenzaun
+    () => dielen(`${[14, 30, 46, 62, 78].map(x => `<path d="M${x} 82V30l6-8 6 8v52z" fill="#ffffff" ${O}/>`).join("")}
+      <rect x="6" y="44" width="88" height="6" rx="2" fill="#f2efe8" ${O} stroke-width="1.6"/><rect x="6" y="66" width="88" height="6" rx="2" fill="#f2efe8" ${O} stroke-width="1.6"/>
+      <path d="M8 40q20 8 42 0t42 0" fill="none" stroke="#d9a520" stroke-width="1.2"/>`)
+  ];
+  EXTRA_WALLS["Weihnachten"] = (EXTRA_WALLS["Weihnachten"] || []).concat(TILES);
+})();
 
 // ===== Kinderbuch-Details =====
 // Kleine Dinge, die auf Wände und Böden gestreut werden, damit sich nichts wiederholt.
