@@ -4409,6 +4409,124 @@ for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (E
     if (typeof EXTRA_SHARE !== "undefined") EXTRA_SHARE[name] = Math.max(EXTRA_SHARE[name] || 4, 5);
   }
 })();
+// ===== Fußball (Teil 1): Trainingsplatz mit detailreicheren Wänden, Stadion mit vielen jubelnden Fans =====
+(() => {
+  const K = EK, K1 = `stroke="#4a3728" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"`;
+  // Rasen-Kachel mit Mähstreifen und Grasbüscheln
+  const tp = (inner, x = 0, y = 0) => svgT(`${pad("#8fcf72", "#5e9e4a")}
+    <path d="M8 12h84v8H8zM8 36h84v8H8zM8 60h84v8H8z" fill="#ffffff" opacity=".08"/>
+    <g stroke="#4e9a40" stroke-width="2" stroke-linecap="round"><path d="M${12 + pick(x, y, 41, 10)} 82l-2-6M${14 + pick(x, y, 41, 10)} 82l1-7M${78 - pick(x, y, 42, 10)} 80l-1-6M${80 - pick(x, y, 42, 10)} 80l2-6"/></g>${inner}`);
+
+  const TRAIN = [
+    // Hütchen-Turm und einzelne Hütchen mit Schatten und Streifen
+    (x, y) => tp(`${[[30, 1], [64, .8]].map(([cx, s]) => `<g transform="translate(${cx} 80) scale(${s})"><ellipse cx="0" cy="2" rx="18" ry="4" fill="#00000025"/>
+      <rect x="-17" y="-4" width="34" height="7" rx="3" fill="#e2601a" ${K}/><path d="M-9 -4L-4 -46h8l5 42z" fill="#ff8a2a" ${K}/>
+      <path d="M-7 -20h14l1 7H-8z" fill="#fff"/><path d="M-5 -34h10l.8 6H-5.8z" fill="#fff"/><path d="M-3 -42l-3 34" stroke="#ffffff" stroke-width="2" opacity=".35"/></g>`).join("")}
+      <g transform="translate(80 80)"><ellipse cx="0" cy="2" rx="10" ry="3" fill="#00000025"/>${[0, -6, -12].map(d => `<path d="M-9 ${d}h18l-2-5h-14z" fill="#ffd23a" ${K1}/>`).join("")}</g>`, x, y),
+    // Bandenwerbung, aufgestellt im Rasen, mit Schrauben, Glanz und Stützen
+    (x, y) => { const [t, c] = BOARD_TEXT[pick(x, y, 5, BOARD_TEXT.length)];
+      return tp(`<path d="M20 78l-6 10M80 78l6 10" stroke="#5a5f6e" stroke-width="4"/><ellipse cx="50" cy="86" rx="40" ry="4" fill="#00000025"/>
+        <rect x="6" y="24" width="88" height="56" rx="6" fill="#ffffff" ${K}/><rect x="11" y="29" width="78" height="46" rx="4" fill="${c}"/>
+        <path d="M11 29h78l-60 46H11z" fill="#ffffff" opacity=".14"/>
+        <text x="50" y="${t.length > 5 ? 58 : 62}" text-anchor="middle" font-family="Fredoka, Trebuchet MS, sans-serif" font-weight="700" font-size="${t.length > 5 ? 17 : 24}" fill="#ffffff" stroke="#00000033" stroke-width="1" paint-order="stroke">${t}</text>
+        <path d="M18 36l2 4 4 .6-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.6z" fill="#ffd23a" opacity=".9"/>
+        ${[[10, 27], [90, 27], [10, 77], [90, 77]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="1.6" fill="#9aa3b1"/>`).join("")}`, x, y); },
+    // Ballnetz mit Kordel und Bällen
+    (x, y) => tp(`<ellipse cx="50" cy="86" rx="30" ry="4" fill="#00000025"/>
+      <path d="M30 26q-10 26 0 54 20 10 40 0 10-28 0-54z" fill="#ffffff" fill-opacity=".25" ${K}/>
+      ${[[40, 70], [60, 70], [50, 54], [36, 46], [64, 46], [50, 36]].map(([a, b]) => `<use href="#ball" x="${a - 11}" y="${b - 11}" width="22" height="22"/>`).join("")}
+      <g stroke="#ffffff" stroke-width="1.2" opacity=".85" fill="none"><path d="M30 26q20 30 40 54M70 26q-20 30-40 54M27 40q23 10 46 0M26 56q24 10 48 0M28 70q22 8 44 0"/></g>
+      <path d="M30 26q20-8 40 0" fill="none" stroke="#e2402f" stroke-width="3"/><path d="M50 22v-8q6-4 10 2" fill="none" stroke="#e2402f" stroke-width="2.4"/>`, x, y),
+    // Getränkekiste mit Trinkflaschen
+    (x, y) => tp(`<ellipse cx="50" cy="88" rx="36" ry="4" fill="#00000025"/>
+      ${[24, 38, 52, 66, 80].map((cx, i) => `<rect x="${cx - 6}" y="26" width="12" height="38" rx="5" fill="${["#9fd2ff", "#ff9ab8", "#9fd2ff", "#ffe07a", "#9fd2ff"][i]}" ${K1}/>
+        <rect x="${cx - 6}" y="40" width="12" height="24" rx="3" fill="#ffffff" opacity=".45"/><rect x="${cx - 3.5}" y="19" width="7" height="8" rx="2" fill="#2a6ae0" ${K1}/><path d="M${cx} 19v-4" stroke="#2a6ae0" stroke-width="2.4" stroke-linecap="round"/>`).join("")}
+      <rect x="14" y="54" width="72" height="32" rx="4" fill="#2a6ae0" ${K}/><path d="M14 64h72" stroke="#1a4bae" stroke-width="2"/>
+      <rect x="40" y="58" width="20" height="6" rx="3" fill="#1a4bae"/><path d="M22 74h56" stroke="#ffffff" stroke-width="2" opacity=".35"/>
+      <text x="50" y="82" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="7" fill="#ffffff">WASSER</text>`, x, y),
+    // Trainerbank mit Plexiglasdach, Sitzen und Trainingsjacke
+    (x, y) => tp(`<ellipse cx="50" cy="88" rx="40" ry="4" fill="#00000025"/>
+      <path d="M10 30q40-26 80 0v10H10z" fill="#bfe6ff" fill-opacity=".7" ${K}/><path d="M18 24q16-10 30-12" stroke="#ffffff" stroke-width="3" opacity=".7" fill="none" stroke-linecap="round"/>
+      <path d="M12 40v46M88 40v46" stroke="#5a5f6e" stroke-width="4"/>
+      ${[24, 42, 60, 78].map((cx, i) => `<path d="M${cx - 8} 70v-20q0-5 8-5t8 5v20z" fill="${i === 1 ? "#e2402f" : "#2a6ae0"}" ${K1}/><text x="${cx}" y="62" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="9" fill="#fff">${[1, 7, 10, 11][i]}</text>`).join("")}
+      <rect x="12" y="70" width="76" height="6" rx="2" fill="#5a5f6e" ${K1}/>
+      <path d="M36 46l6 2 6-2v16H36z" fill="#ffd23a" ${K1}/>`, x, y),
+    // Koordinationsleiter und Mini-Hürden
+    (x, y) => tp(`<g transform="rotate(-8 50 50)"><path d="M26 14v78M50 14v78" stroke="#ffd23a" stroke-width="3"/>${[20, 34, 48, 62, 76].map(yy => `<rect x="24" y="${yy}" width="28" height="5" rx="2" fill="#ffd23a" ${K1}/>`).join("")}</g>
+      ${[[70, 46], [74, 74]].map(([cx, cy]) => `<path d="M${cx - 12} ${cy + 10}v-14M${cx + 12} ${cy + 10}v-14" stroke="#5a5f6e" stroke-width="3"/><rect x="${cx - 14}" y="${cy - 8}" width="28" height="7" rx="2" fill="#e2402f" ${K1}/><path d="M${cx - 8} ${cy - 8}v7M${cx} ${cy - 8}v7M${cx + 8} ${cy - 8}v7" stroke="#fff" stroke-width="2.4"/>`).join("")}`, x, y),
+    // Slalomstangen
+    (x, y) => tp(`${[22, 40, 58, 76].map((cx, i) => `<ellipse cx="${cx}" cy="${84 - i * 4}" rx="7" ry="2.4" fill="#00000025"/><rect x="${cx - 3}" y="${18 + (i % 2) * 6}" width="6" height="${66 - i * 4 - (i % 2) * 6}" rx="3" fill="${i % 2 ? "#ffd23a" : "#e2402f"}" ${K1}/>
+      <path d="M${cx - 3} ${30 + (i % 2) * 6}h6M${cx - 3} ${44 + (i % 2) * 6}h6" stroke="#ffffff" stroke-width="3"/><circle cx="${cx}" cy="${18 + (i % 2) * 6}" r="3.4" fill="#ffffff" ${K1}/>`).join("")}`, x, y),
+    // Taktiktafel mit Aufstellung
+    (x, y) => tp(`<path d="M30 80l-8 10M70 80l8 10M50 80v10" stroke="#8a5a2b" stroke-width="4"/>
+      <rect x="10" y="16" width="80" height="64" rx="5" fill="#ffffff" ${K}/><rect x="15" y="21" width="70" height="54" rx="2" fill="#3fae48"/>
+      <g stroke="#ffffff" stroke-width="1.6" fill="none"><path d="M50 21v54"/><circle cx="50" cy="48" r="9"/><path d="M15 36h10v24H15M85 36H75v24h10"/></g>
+      ${[[26, 34], [26, 62], [38, 48]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="3.6" fill="#2a6ae0" stroke="#fff" stroke-width="1.2"/>`).join("")}
+      ${[[64, 30], [62, 60], [74, 46]].map(([a, b]) => `<path d="M${a - 3} ${b - 3}l6 6M${a + 3} ${b - 3}l-6 6" stroke="#e2402f" stroke-width="2.4" stroke-linecap="round"/>`).join("")}
+      <path d="M40 48q10-14 20-6" fill="none" stroke="#ffd23a" stroke-width="2" stroke-dasharray="3 2"/><path d="M58 40l3 3-4 1z" fill="#ffd23a"/>`, x, y),
+    // Kreidewagen zum Linienziehen
+    (x, y) => tp(`<path d="M8 84h60" stroke="#ffffff" stroke-width="6" opacity=".9"/><ellipse cx="54" cy="86" rx="28" ry="3" fill="#00000025"/>
+      <path d="M78 48l12-26" stroke="#5a5f6e" stroke-width="4" stroke-linecap="round"/><rect x="84" y="16" width="10" height="6" rx="3" fill="#4a3728" transform="rotate(-24 89 19)"/>
+      <path d="M36 48h44l-6 26H42z" fill="#e2402f" ${K}/><rect x="34" y="42" width="48" height="8" rx="3" fill="#ffffff" ${K1}/>
+      <circle cx="44" cy="78" r="8" fill="#4a3728" ${K1}/><circle cx="44" cy="78" r="3" fill="#9aa3b1"/><circle cx="72" cy="78" r="8" fill="#4a3728" ${K1}/><circle cx="72" cy="78" r="3" fill="#9aa3b1"/>`, x, y)
+  ];
+  { const S = THEMES.fussball.scenes[1];
+    if (S && S.name === "Trainingsplatz") S.wall = feierWalls(TRAIN, () => trainingFriends(grassPad)); }
+
+  // ---------- Stadion: grüne Maskottchen-Figur raus, viele jubelnde Fans ----------
+  const SKIN = ["#ffd9bf", "#f1c27d", "#c68642", "#8d5524", "#ffe0c4"];
+  const HAIR = ["#ffd54a", "#5a3416", "#16181f", "#c9631f", "#9a9a9a"];
+  const INKF = "#4a3728", F2 = `stroke="${INKF}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"`;
+  // pose: "hoch" (Arme hoch), "schal" (Schal über dem Kopf), "fahne" (Fahne), "klatsch" (klatschen), "finger" (Schaumstoff-Finger)
+  const fan = (cx, i, x, y, pose, shirt, d) => { const sk = SKIN[pick(x, y, 60 + i, SKIN.length)], hc = HAIR[pick(x, y, 70 + i, HAIR.length)];
+    const arm = (x1, y1, x2, y2) => `<path d="M${x1} ${y1}L${x2} ${y2}" stroke="${INKF}" stroke-width="7.4" stroke-linecap="round"/><path d="M${x1} ${y1}L${x2} ${y2}" stroke="${shirt}" stroke-width="5" stroke-linecap="round"/><circle cx="${x2}" cy="${y2}" r="3.6" fill="${sk}" ${F2} stroke-width="1.4"/>`;
+    const arms = {
+      hoch: arm(cx - 9, 72, cx - 16, 40) + arm(cx + 9, 72, cx + 16, 40),
+      schal: arm(cx - 9, 72, cx - 14, 40) + arm(cx + 9, 72, cx + 14, 40) + `<rect x="${cx - 18}" y="33" width="36" height="7" rx="2" fill="#2a6ae0" ${F2} stroke-width="1.4"/><path d="M${cx - 12} 33v7M${cx - 4} 33v7M${cx + 4} 33v7M${cx + 12} 33v7" stroke="#ffffff" stroke-width="2.6"/>`,
+      // Fahne weht immer zur Kachelmitte, damit sie nicht über den Rand ragt
+      fahne: (() => { const s = cx > 60 ? -1 : 1, hx = cx + 14 * s;
+        return arm(cx - 9 * s, 72, cx - 12 * s, 58) + arm(cx + 9 * s, 72, hx, 40) + `<path d="M${hx} 42V10" stroke="#9aa3b1" stroke-width="2.4"/><path class="pennant" d="M${hx + s} 11h${22 * s}l${-4 * s} 8 ${4 * s} 8H${hx + s}z" fill="#ffffff" ${F2} stroke-width="1.4"/><path d="M${hx + s} 16h${20 * s}" stroke="#2a6ae0" stroke-width="3"/>`; })(),
+      klatsch: arm(cx - 9, 72, cx - 2, 56) + arm(cx + 9, 72, cx + 2, 56) + `<path d="M${cx - 8} 50l-3-3M${cx + 8} 50l3-3M${cx} 48v-4" stroke="#ffd23a" stroke-width="1.8" stroke-linecap="round"/>`,
+      finger: arm(cx - 9, 72, cx - 14, 60) + arm(cx + 9, 72, cx + 16, 44) + `<path d="M${cx + 10} 46q0-10 6-10t6 10l-1 8h-10z" fill="#ffd23a" ${F2} stroke-width="1.4"/><rect x="${cx + 14}" y="20" width="6" height="18" rx="3" fill="#ffd23a" ${F2} stroke-width="1.4"/>`
+    }[pose];
+    return `<g class="fan" style="animation-delay:${d + i * .27}s">
+      <path d="M${cx - 13} 96q0-28 13-28t13 28z" fill="${shirt}" ${F2}/><path d="M${cx - 6} 70l6 6 6-6" fill="none" stroke="${shirt === "#ffffff" ? "#2a6ae0" : "#ffffff"}" stroke-width="2.4"/>
+      ${arms}
+      <circle cx="${cx}" cy="58" r="11" fill="${sk}" ${F2}/>
+      <path d="M${cx - 11} 56q0-13 11-13t11 13q-5-4-11-4t-11 4z" fill="${hc}" ${F2} stroke-width="1.6"/>
+      ${pick(x, y, 80 + i, 3) === 0 ? `<path d="M${cx - 6} 60h4M${cx + 2} 60h4" stroke="#2a6ae0" stroke-width="2.4"/>` : ""}
+      <circle cx="${cx - 3.6}" cy="57" r="1.6" fill="${INKF}"/><circle cx="${cx + 3.6}" cy="57" r="1.6" fill="${INKF}"/>
+      <path d="M${cx - 4} 62q4 6 8 0z" fill="#8a1f1f" ${F2} stroke-width="1.2"/></g>`; };
+  const POSES = ["hoch", "schal", "fahne", "klatsch", "finger"];
+  const stand = (inner) => `<svg viewBox="0 0 100 100"><rect x="4" y="10" width="92" height="86" rx="18" fill="#122f6e"/><rect x="4" y="4" width="92" height="80" rx="18" fill="#1d3f8a"/>
+    <path d="M8 30h84M8 56h84" stroke="#2a6ae0" stroke-width="3" opacity=".5"/>${inner}</svg>`;
+  // Fans in der Reihe: drei Fans, Posen und Trikots wechseln je Kachel
+  const fanRow = (x, y) => { const d = delayOf(x, y), p0 = pick(x, y, 90, POSES.length);
+    return stand([20, 50, 80].map((cx, i) => fan(cx, i, x, y, POSES[(p0 + i * 2) % POSES.length], (i + x + y) % 2 ? "#ffffff" : "#2a6ae0", d)).join("")); };
+  // Zwei Fans halten ein Banner hoch
+  const BANNER = ["LASSE", "TOR!", "OLÉ", "HSV"];
+  const fanBanner = (x, y) => { const d = delayOf(x, y), t = BANNER[pick(x, y, 91, BANNER.length)];
+    return stand(`${fan(24, 0, x, y, "hoch", "#2a6ae0", d)}${fan(76, 1, x, y, "hoch", "#ffffff", d)}
+      <g class="fan" style="animation-delay:${d}s"><rect x="10" y="22" width="80" height="22" rx="3" fill="#ffffff" ${F2}/><text x="50" y="39" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="17" fill="#2a6ae0">${t}</text></g>`); };
+  // Welle: vier kleine Fans in zwei Reihen
+  const fanWave = (x, y) => { const d = delayOf(x, y);
+    const mini = (cx, cy, i) => { const sk = SKIN[pick(x, y, 100 + i, SKIN.length)], sh = i % 2 ? "#ffffff" : "#2a6ae0";
+      return `<g class="fan" style="animation-delay:${d + i * .2}s"><path d="M${cx - 9} ${cy + 22}q0-16 9-16t9 16z" fill="${sh}" ${F2} stroke-width="1.6"/>
+        <path d="M${cx - 6} ${cy + 8}l-5-16M${cx + 6} ${cy + 8}l5-16" stroke="${sk}" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="${cx}" cy="${cy}" r="7.5" fill="${sk}" ${F2} stroke-width="1.6"/><path d="M${cx - 7.5} ${cy - 1}q0-9 7.5-9t7.5 9z" fill="${HAIR[pick(x, y, 110 + i, HAIR.length)]}"/>
+        <path d="M${cx - 3} ${cy + 3}q3 4 6 0" fill="${INKF}"/></g>`; };
+    return stand(`${[[26, 30, 0], [74, 30, 1], [16, 64, 2], [50, 64, 3], [84, 64, 4]].map(([a, b, i]) => mini(a, b, i)).join("")}`); };
+
+  const ST = THEMES.fussball.scenes[2];
+  if (ST && ST.name === "Stadion bei Flutlicht") {
+    // Grundwände: meistens Fans, ab und zu die Tribüne mit Raute
+    ST.wall = (x, y) => { const k = pick(x, y, 0, 8); return k < 4 ? fanRow(x, y) : k < 6 ? fanBanner(x, y) : k === 6 ? fanWave(x, y) : tribune(x, y); };
+    // Die grüne Maskottchen-Figur fliegt raus; Zusatzwände (Flutlicht, Anzeigetafel, Pokal …) kommen seltener
+    const ex = EXTRA_WALLS[ST.name] || [];
+    EXTRA_WALLS[ST.name] = ex.filter(f => !/fill="#2fa84f"/.test(f(1, 1)));
+    EXTRA_SHARE[ST.name] = 3;
+  }
+})();
 
 // ===== Kinderbuch-Details =====
 // Kleine Dinge, die auf Wände und Böden gestreut werden, damit sich nichts wiederholt.
