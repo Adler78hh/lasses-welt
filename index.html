@@ -4535,11 +4535,11 @@ for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (E
   const COATS = [
     { name: "Brauner", coat: "#8a4f24", mane: "#2a1a10", muzzle: "#c9926a", mark: "stern" },
     { name: "Rappe", coat: "#2b2220", mane: "#0f0b09", muzzle: "#5a4a42", mark: "keins" },
-    { name: "Fuchs", coat: "#c0622b", mane: "#a0481d", muzzle: "#e8a77a", mark: "blesse" },
+    { name: "Fuchs", coat: "#c2461f", mane: "#8f2f12", muzzle: "#e49a7a", mark: "stern" },
     { name: "Schimmel", coat: "#f1efe9", mane: "#cfcac0", muzzle: "#d9c9c2", mark: "keins", pat: "aepfel" },
     { name: "Falbe", coat: "#d6b07a", mane: "#3a2a1e", muzzle: "#8a6a50", mark: "schnippe" },
-    { name: "Palomino", coat: "#e6b45a", mane: "#fff3d6", muzzle: "#f3cf95", mark: "blesse" },
-    { name: "Haflinger", coat: "#b8682e", mane: "#f5e3b8", muzzle: "#e3a774", mark: "blesse" },
+    { name: "Palomino", coat: "#ecc36b", mane: "#fff3d6", muzzle: "#f6d9a6", mark: "schnippe" },
+    { name: "Haflinger", coat: "#b8702e", mane: "#fff6dc", muzzle: "#e8b07c", mark: "blesse", pat: "schopf" },
     { name: "Schecke", coat: "#ffffff", mane: "#8a4f24", muzzle: "#f0d6c8", mark: "keins", pat: "schecken" },
     { name: "Norweger", coat: "#e3c79a", mane: "#fff6e0", muzzle: "#6b5440", mark: "keins", pat: "zweifarbig" },
     { name: "Isländer", coat: "#7a5a48", mane: "#e6d6c4", muzzle: "#a88a74", mark: "stern" }
@@ -4552,7 +4552,9 @@ for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (E
       blesse: `<path d="M47 22q3-3 6 0l-1 26h-4z" fill="#ffffff"/>`, schnippe: `<ellipse cx="50" cy="52" rx="4" ry="3" fill="#ffffff" opacity=".9"/>`, keins: "" }[c.mark];
     const pat = c.pat === "aepfel" ? `<g fill="#c9c4bb" opacity=".7"><circle cx="38" cy="44" r="3"/><circle cx="60" cy="28" r="2.6"/><circle cx="64" cy="46" r="3.2"/><circle cx="44" cy="30" r="2.2"/></g>`
       : c.pat === "schecken" ? `<path d="M30 30q4-14 16-12 0 12-8 20-6 2-8-8z" fill="#8a4f24"/><path d="M58 40q8-4 12 4l-2 12q-8-2-10-16z" fill="#8a4f24"/>` : "";
-    const mane = c.pat === "zweifarbig"
+    const mane = c.pat === "schopf"
+      ? `<path d="M34 20q4-14 16-14t16 14q-4 14-10 16-2-8-6-8t-6 8q-6-2-10-16z" fill="${c.mane}" ${O} stroke-width="2"/><path d="M42 14q4 6 8 6M58 14q-4 6-8 6" stroke="#e6d2a4" stroke-width="2" fill="none"/>`
+      : c.pat === "zweifarbig"
       ? `<path d="M41 13q9-9 18 0 0 8-9 10-9-2-9-10z" fill="${c.mane}" ${O} stroke-width="2"/><path d="M50 8v12" stroke="#3a2a1e" stroke-width="3"/>`
       : `<path d="M39 14q11-10 22 0-3 10-11 10t-11-10z" fill="${c.mane}" ${O} stroke-width="2"/><path d="M44 18q2 6 6 6M56 18q-2 6-6 6" stroke="${c.mane}" stroke-width="3" fill="none"/>`;
     return `<g class="peek" style="animation-delay:${d}s">
