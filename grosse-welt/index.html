@@ -4055,15 +4055,18 @@ const EXTRA_WALLS = {};
   const FIG = { justus: [justusDenkt, justusDenkt], peter: [peterJubelt, peterSteht], bob: [bobSchreibt, bobSteht] };
   const SIDE = { justus: justusMitLupe, peter: peterJubelt, bob: bobSchreibt };
   const VARIANTS = { justus: FIG.justus, peter: FIG.peter, bob: FIG.bob };
-  const personTile = (padFn, who, i) => asPerson(padFn(`<g transform="translate(26 3) scale(.47)">${FIG[who][i]}</g>`), who);
+  // Wandbild als Brustbild: Kopf und Oberkörper groß, an der Kachelkante abgeschnitten
+  const personTile = (padFn, who, i) => asPerson(padFn(`<clipPath id="bust-${who}-${i}"><rect x="3" y="3" width="94" height="86" rx="14"/></clipPath>
+    <g clip-path="url(#bust-${who}-${i})"><g transform="translate(-2 6) scale(1.04)">${FIG[who][i]}</g></g>`), who);
   const sideSvg = (who) => `<svg data-kid="1" viewBox="0 0 100 200" overflow="visible">${SIDE[who]}</svg>`;
 
   // ---------- 4. Lasse als Detektiv mit Sherlock-Holmes-Mütze ----------
-  const HUT = `<path d="M22 30q0-24 28-24t28 24z" fill="#b08850" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
-    <path d="M30 26q20-14 40 0M28 20q22-14 44 0M40 8v20M50 6v22M60 8v20" stroke="#7a5a30" stroke-width="1.6" fill="none"/>
-    <path d="M20 30q-8 2-12 8 10 0 16-2zM80 30q8 2 12 8-10 0-16-2z" fill="#b08850" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
-    <path d="M46 6q-6-6-10 0 4 2 10 0zM54 6q6-6 10 0-4 2-10 0z" fill="#8a6a3a" stroke="${INK}" stroke-width="1.6"/>
-    <path d="M22 30h56" stroke="${INK}" stroke-width="2.4"/>`;
+  // Sherlock-Holmes-Mütze: karierte Kappe, kleiner Schirm über der Stirn, Ohrenklappen oben zur Schleife gebunden
+  const HUT = `<path d="M23 30q0-24 27-24t27 24z" fill="#b08850" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M31 27q19-13 38 0M28 20q22-14 44 0M40 8v21M50 6v24M60 8v21" stroke="#7a5a30" stroke-width="1.6" fill="none"/>
+    <path d="M27 22q-4-8 2-12 6 4 6 10zM73 22q4-8-2-12-6 4-6 10z" fill="#9c7642" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"/>
+    <path d="M50 7q-9-7-12 0 3 4 12 0zM50 7q9-7 12 0-3 4-12 0z" fill="#7a5a30" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/><circle cx="50" cy="7" r="2.2" fill="#7a5a30" stroke="${INK}" stroke-width="1.4"/>
+    <path d="M32 29q18 5 36 0l-2 3.6q-16 4-32 0z" fill="#9c7642" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"/>`;
   LASSE.detektiv = lasseBase("#a8763e", "#3a3f55", "#5a3416",
     `<path d="M33 56q17 10 34 0l2 10q-19 10-38 0z" fill="#b08850" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/><path d="M38 60l4 4M58 60l4 4M44 63l2 3M54 63l2 3" stroke="#7a5a30" stroke-width="1.4"/>
      <circle cx="50" cy="70" r="2" fill="#2d3036"/>`,
@@ -4107,10 +4110,16 @@ const EXTRA_WALLS = {};
   const pJ = tile("#cbb79a", "#8a7356");
   const JUSTUS_ITEMS = [
     // Die Kaffeekanne: alter Wassertank auf Stelzen mit Tülle, Deckel, Tür und Fahne
-    () => pJ(`<path d="M30 88l6-20M70 88l-6-20M40 88l2-20M60 88l-2-20" stroke="#5a5f6e" stroke-width="4"/>
-      <path d="M28 70V36q0-10 22-10t22 10v34q-22 8-44 0z" fill="#8fa8b8" ${O}/><path d="M72 40q14 0 16 14l-6 2q-2-8-10-8" fill="#8fa8b8" ${O}/>
-      <path d="M26 30q24-12 48 0" fill="#6f8898" ${O}/><path d="M50 18v6" stroke="#2d3036" stroke-width="3"/><path d="M50 8v12" stroke="#5a5f6e" stroke-width="2"/><path d="M50 8l14 4-14 4z" fill="#e2402f" ${O1}/>
-      <rect x="42" y="46" width="14" height="22" rx="2" fill="#5a4636" ${O1}/><circle cx="34" cy="44" r="4" fill="#ffe9a0" ${O1}/><path d="M30 60h6M30 64h6" stroke="#6f8898" stroke-width="2"/>`),
+    () => pJ(`<path d="M24 90l6-16M76 90l-6-16M40 90v-16M60 90v-16" stroke="#5a5f6e" stroke-width="4"/><path d="M26 84h48" stroke="#5a5f6e" stroke-width="2.4"/>
+      <path d="M20 74V30q0-12 30-12t30 12v44q-30 10-60 0z" fill="#8fa8b8" ${O}/>
+      <path d="M80 34q16-2 16 16l-8 2q0-8-8-8" fill="#8fa8b8" ${O}/>
+      <path d="M17 26q33-16 66 0" fill="#6f8898" ${O}/><circle cx="50" cy="13" r="4" fill="#6f8898" ${O1}/>
+      <path d="M62 14l6-12M68 2l-4-2M68 2l4 1" stroke="#2d3036" stroke-width="2"/><circle cx="68" cy="2" r="2" fill="#e2402f"/>
+      <path d="M26 40v6M26 56v6M74 40v6M74 56v6" stroke="#6f8898" stroke-width="2"/>${[30, 42, 54, 66].map(x => `<circle cx="${x}" cy="31" r="1.2" fill="#5a6f7e"/>`).join("")}
+      <rect x="44" y="50" width="16" height="26" rx="2" fill="#5a4636" ${O1}/><circle cx="57" cy="64" r="1.4" fill="#ffd23a"/>
+      <circle cx="33" cy="46" r="7" fill="#ffe36b" ${O1}/><path d="M33 39v14M26 46h14" stroke="#2d3036" stroke-width="1.2"/><circle cx="33" cy="46" r="10" fill="#ffe36b" opacity=".25"/>
+      <path d="M10 92V44M18 92V44" stroke="#c99a62" stroke-width="2.6"/>${[50, 58, 66, 74, 82].map(y => `<path d="M10 ${y}h8" stroke="#c99a62" stroke-width="2.4"/>`).join("")}
+      <text x="70" y="64" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="11" fill="#ffffff" stroke="#2d3036" stroke-width=".8" paint-order="stroke">???</text>`),
     // Schrottberg mit Rad, Rohr und Kiste
     () => pJ(`<path d="M10 84q10-34 40-40 30 6 40 40z" fill="#8a7a6a" ${O}/><circle cx="34" cy="56" r="13" fill="none" stroke="#2d3036" stroke-width="5"/><circle cx="34" cy="56" r="3" fill="#2d3036"/>
       <path d="M50 46l30 14" stroke="#9aa3b1" stroke-width="7" stroke-linecap="round"/><rect x="56" y="64" width="20" height="14" fill="#c99a62" ${O1}/><path d="M18 76l12-6M62 40l6 -8" stroke="#c0612b" stroke-width="3"/>`),
@@ -4178,12 +4187,12 @@ const EXTRA_WALLS = {};
   ];
 
   const scene = ({ name, lasse, pal, floor, pad, items, main, others, extras }) => ({
-    name, lasse, pal, floor, deco: () => "", extras: extras || (() => ""), words: ["Aha!", "Spur!"], winTitle: "Fall gelöst!",
+    name, lasse, pal, floor, deco: () => "", extras: extras || (() => ""), words: ["Aha!", "Spur!"], winTitle: "Fall gelöst!", sound: "spur", winSound: "trommelwirbel",
     side: { l: [sideSvg(main)], r: others.map(sideSvg) },
     wall: (x, y) => { const k = pick(x, y, 150, 20);
       if (k < 2) return personTile(pad, main, pick(x, y, 151, 2));
       if (k === 2) return personTile(pad, others[pick(x, y, 152, 2)], 0);
-      if (k < 6) return fragen(pad, pick(x, y, 153, 3));
+      if (k < 5) return fragen(pad, pick(x, y, 153, 3));
       if (k < 11) return DETEKTIV[pick(x, y, 154, DETEKTIV.length)](pad);
       return items[pick(x, y, 155, items.length)](); }
   });
@@ -4230,7 +4239,7 @@ const EXTRA_WALLS = {};
     const left = pts[i][0] < 50;
     [["justus", 0], ["peter", 1], ["bob", 2]].forEach(([who, k]) => {
       const x = pts[i][0] + (left ? 1 : -1) * (36 + k * 9), y = pts[i][1] + 30 + (k % 2) * 10;
-      html += `<div class="mapdeco mapfig" data-who="${who.toUpperCase()}" style="left:${x}%;top:${y}px;width:34px;height:68px;animation-delay:${-k * .8}s"><svg viewBox="0 0 100 200" overflow="visible">${SIDE[who]}</svg></div>`; });
+      html += `<div class="mapdeco mapfig" data-who="${who.toUpperCase()}" style="left:${x}%;top:${y}px;width:${COMIC ? 46 : 34}px;height:${COMIC ? 92 : 68}px;animation-delay:${-k * .8}s"><svg viewBox="0 0 100 200" overflow="visible">${SIDE[who]}</svg></div>`; });
     return html;
   };
 })();
@@ -4794,6 +4803,13 @@ const SND = (() => {
       [.2, .3, .38].forEach((d, i) => { const o = c.createOscillator(), g2 = c.createGain(); o.frequency.setValueAtTime(500 + i * 150, t + d); o.frequency.exponentialRampToValueAtTime(1100 + i * 200, t + d + .06); env(g2, t + d, .005, .07, .1); o.connect(g2).connect(c.destination); o.start(t + d); o.stop(t + d + .09); }); },
     // Weltall: Computer-Piepen
     piep() { const c = ac(); if (!c) return; const t = c.currentTime + .03; [1200, 1600, 2000, 2400].forEach((f, i) => tone(c, f, t + i * .07, .08, .1, "sine")); },
+    // Die drei ???: Lupe auf der Spur – geheimnisvolles Glitzern (aufsteigend, leicht schräg)
+    spur() { const c = ac(); if (!c) return; const t = c.currentTime + .03; [659, 784, 988, 1319].forEach((f, i) => tone(c, f, t + i * .06, .35 - i * .05, .11, i % 2 ? "triangle" : "sine")); tone(c, 1976, t + .26, .5, .05); },
+    // Die drei ???: Trommelwirbel mit Beckenschlag beim gelösten Fall
+    trommelwirbel() { const c = ac(); if (!c) return; const t0 = c.currentTime + .03;
+      for (let i = 0; i < 26; i++) { const t = t0 + i * .045, s = noise(c, .05), f = c.createBiquadFilter(), g = c.createGain(); f.type = "bandpass"; f.frequency.value = 1800; f.Q.value = 1.4; env(g, t, .003, .045, .05 + i * .006); s.connect(f).connect(g).connect(c.destination); s.start(t); }
+      const tc = t0 + 1.2, s = noise(c, 1.2), f = c.createBiquadFilter(), g = c.createGain(); f.type = "highpass"; f.frequency.value = 5000; env(g, tc, .005, 1.1, .3); s.connect(f).connect(g).connect(c.destination); s.start(tc);
+      tone(c, 110, tc, .3, .3, "sine"); },
     // Applaus: viele kurze Klatscher über zwei Sekunden
     applause() { const c = ac(); if (!c) return; const t0 = c.currentTime + .05;
       for (let i = 0; i < 70; i++) { const t = t0 + Math.random() * 2.2 * Math.sqrt(Math.random()), s = noise(c, .04), f = c.createBiquadFilter(), g = c.createGain();
@@ -5345,7 +5361,7 @@ function render() {
     else nextBtn.textContent = curWorld < WORLDS.length - 1 ? "Zur Weltkarte" : "Fertig!";
     const w = curWorld, l = curLevel;
     document.querySelectorAll(".side svg").forEach(s => s.classList.add("jubel"));
-    SND.applause();
+    if (S && S.winSound && SND[S.winSound]) SND[S.winSound](); else SND.applause();
     if (typeof FX !== "undefined" && FX.win) FX.win();
     setTimeout(() => { if (w === curWorld && l === curLevel && lasseEl.classList.contains("cheer")) { winEl.hidden = false; confetti(); } }, 450);
   } else if (!won) { winEl.hidden = true; lasseEl.classList.remove("cheer"); document.querySelectorAll(".side svg.jubel").forEach(s => s.classList.remove("jubel")); }
@@ -6204,6 +6220,232 @@ const LOESUNGEN = {"0-0":"drrruUlUdrruLuLLulldRDDlddrUdrrruuuulLulDrrrddlUruLL",
     }
     return r;
   };
+})();
+// ===== Hauptrollen in den übrigen Pokémon-Leveln (Teil 1 und Teil 2) – gleicher Aufbau wie Schlapfels Garten =====
+// Wasser: Schiggy · Blitz: Pikachu · Kampf: Kleinstein · Psycho: Mewtu · Feuer: Glurak.
+// Je sechs Haltungen in den Wänden (jede höchstens viermal), passende Gegenstände, Begleiter hinter Lasse,
+// großes Pokémon am Rand (schläft, jubelt beim Sieg), Lasse im passenden Look, eigenes Startbild, Jubelwörter und Siegtitel.
+const PKS = { ink: "#2d3036" };
+const PKK = `stroke="${PKS.ink}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"`;
+let pkN = 0;
+const pkEyes = (face, pts, r = 3, col = PKS.ink) => face === "zu"
+  ? pts.map(([x, y]) => `<path d="M${x - r - 1} ${y}q${r + 1} ${r} ${2 * r + 2} 0" fill="none" ${PKK}/>`).join("")
+  : pts.map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * 1.2}" fill="${col}"/><circle cx="${x + r * .35}" cy="${y - r * .45}" r="${r * .4}" fill="#fff"/>`).join("");
+const pkMouth = (face, x, y, w = 8) => face === "jubel" ? `<path d="M${x - w / 2} ${y}q${w / 2} ${w} ${w} 0z" fill="#c0392b" ${PKK}/>`
+  : face === "mampf" ? `<ellipse cx="${x}" cy="${y + 1}" rx="${w / 3}" ry="${w / 4}" fill="#c0392b" ${PKK}/>` : `<path d="M${x - w / 2} ${y}q${w / 2} ${w / 2} ${w} 0" fill="none" ${PKK}/>`;
+const pkStars = (pts) => pts.map(([x, y]) => `<path d="M${x} ${y - 5}l1.6 3.4 3.6.4-2.6 2.4.8 3.6-3.4-1.8-3.4 1.8.8-3.6-2.6-2.4 3.6-.4z" fill="#ffd23a" stroke="${PKS.ink}" stroke-width="1"/>`).join("");
+const pkZ = (x, y) => `<text x="${x}" y="${y}" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="${PKS.ink}">z</text><text x="${x + 7}" y="${y - 9}" font-family="Fredoka, sans-serif" font-weight="700" font-size="9" fill="${PKS.ink}">z</text>`;
+const pkHeart = (x, y) => `<path d="M${x} ${y}c-5-5-10 0-5 5l5 5 5-5c5-5 0-10-5-5z" fill="#ff8fb1" ${PKK}/>`;
+const pkGrad = (id, a, b) => `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;
+
+// ---------- Schiggy: hellblaue Schildkröte, brauner Panzer mit hellem Rand, gelber Bauchpanzer, Ringelschwanz ----------
+function schiggy({ face = "auf", extra = "", front = "" } = {}) {
+  const id = "pks" + (++pkN), up = face === "jubel";
+  return `<g><defs>${pkGrad(id, "#a8e0f8", "#6cbfe6")}</defs><ellipse cx="50" cy="93" rx="24" ry="4" fill="#00000024"/>
+    <path d="M70 74q18 2 16-12-2-10-10-6-6 4 0 8 4 0 2-4" fill="url(#${id})" ${PKK}/>
+    <ellipse cx="50" cy="64" rx="25" ry="23" fill="#c27b3e" ${PKK}/><ellipse cx="50" cy="64" rx="25" ry="23" fill="none" stroke="#f3e0a6" stroke-width="4" transform="scale(.94) translate(3.2 4)"/>
+    ${[[38, 90], [62, 90]].map(([x, y]) => `<ellipse cx="${x}" cy="${y - 2}" rx="8" ry="6" fill="url(#${id})" ${PKK}/>`).join("")}
+    <path d="M36 50q14-6 28 0v26q-14 8-28 0z" fill="#f6dc7a" ${PKK}/><path d="M37 60h26M37 70h26M50 48v34" stroke="#c9a54a" stroke-width="1.6"/>
+    ${up ? `<path d="M30 54l-10-16M70 54l10-16" stroke="${PKS.ink}" stroke-width="10" stroke-linecap="round"/><path d="M30 54l-10-16M70 54l10-16" stroke="#8fd0f0" stroke-width="7" stroke-linecap="round"/>`
+         : `<path d="M30 56l-8 10M70 56l8 10" stroke="${PKS.ink}" stroke-width="10" stroke-linecap="round"/><path d="M30 56l-8 10M70 56l8 10" stroke="#8fd0f0" stroke-width="7" stroke-linecap="round"/>`}
+    <circle cx="50" cy="31" r="20" fill="url(#${id})" ${PKK}/><path d="M38 20q6-8 14-8" fill="none" stroke="#fff" stroke-width="3" opacity=".6"/>
+    ${face === "zu" ? pkEyes(face, [[42, 32], [58, 32]], 3.4) : pkEyes(face, [[42, 31], [58, 31]], 4.2, "#7a2a3a")}
+    ${pkMouth(face, 50, 41, 12)}${extra}</g>${front}`;
+}
+// ---------- Pikachu: gelb, lange Ohren mit schwarzen Spitzen, rote Backen, Blitzschwanz ----------
+function pikachu({ face = "auf", extra = "", front = "" } = {}) {
+  const id = "pkp" + (++pkN), up = face === "jubel";
+  return `<g><defs>${pkGrad(id, "#ffe46a", "#f6c62a")}</defs><ellipse cx="50" cy="93" rx="22" ry="4" fill="#00000024"/>
+    <path d="M66 74l12-4-4-10 14-4-6-12 12-6-20 4 4 10-14 4 4 10-8 2z" fill="#f6c62a" ${PKK}/><path d="M66 74l12-4-2-5-10 3z" fill="#8a5a2b"/>
+    <ellipse cx="50" cy="68" rx="19" ry="21" fill="url(#${id})" ${PKK}/>
+    ${[[41, 90], [59, 90]].map(([x, y]) => `<ellipse cx="${x}" cy="${y - 1}" rx="7" ry="4" fill="#f6c62a" ${PKK}/>`).join("")}
+    ${up ? `<path d="M34 60l-10-14M66 60l10-14" stroke="${PKS.ink}" stroke-width="8.6" stroke-linecap="round"/><path d="M34 60l-10-14M66 60l10-14" stroke="#ffe46a" stroke-width="5.6" stroke-linecap="round"/>`
+         : `<path d="M36 62l6 6M64 62l-6 6" stroke="${PKS.ink}" stroke-width="8.6" stroke-linecap="round"/><path d="M36 62l6 6M64 62l-6 6" stroke="#ffe46a" stroke-width="5.6" stroke-linecap="round"/>`}
+    <path d="M36 26L20 2l20 16z" fill="#ffe46a" ${PKK}/><path d="M20 2l7 10 5-4z" fill="${PKS.ink}"/><path d="M64 26L80 2 60 18z" fill="#ffe46a" ${PKK}/><path d="M80 2l-7 10-5-4z" fill="${PKS.ink}"/>
+    <ellipse cx="50" cy="36" rx="20" ry="17" fill="url(#${id})" ${PKK}/><path d="M38 26q6-6 12-6" fill="none" stroke="#fff" stroke-width="3" opacity=".6"/>
+    ${pkEyes(face, [[42, 34], [58, 34]], 3.2)}<circle cx="34" cy="42" r="5" fill="#e8423a"/><circle cx="66" cy="42" r="5" fill="#e8423a"/>
+    <circle cx="50" cy="39" r="1.2" fill="${PKS.ink}"/>${face === "jubel" ? pkMouth(face, 50, 43, 9) : `<path d="M46 43q2 2 4 0 2 2 4 0" fill="none" ${PKK}/>`}${extra}</g>${front}`;
+}
+// ---------- Kleinstein: grauer Felsbrocken mit zwei kräftigen Armen, buschige Brauen, schwebt ----------
+function kleinstein({ face = "auf", extra = "", front = "" } = {}) {
+  const id = "pkk" + (++pkN), up = face === "jubel";
+  const arm = (s) => up
+    ? `<path d="M${50 + s * 20} 52q${s * 14} -4 ${s * 18} -22" fill="none" stroke="${PKS.ink}" stroke-width="13" stroke-linecap="round"/><path d="M${50 + s * 20} 52q${s * 14} -4 ${s * 18} -22" fill="none" stroke="#a9a49a" stroke-width="9.6" stroke-linecap="round"/><circle cx="${50 + s * 38}" cy="28" r="9" fill="#a9a49a" ${PKK}/>`
+    : `<path d="M${50 + s * 20} 52q${s * 16} 0 ${s * 18} 14" fill="none" stroke="${PKS.ink}" stroke-width="13" stroke-linecap="round"/><path d="M${50 + s * 20} 52q${s * 16} 0 ${s * 18} 14" fill="none" stroke="#a9a49a" stroke-width="9.6" stroke-linecap="round"/><circle cx="${50 + s * 38}" cy="68" r="9" fill="#a9a49a" ${PKK}/>`;
+  return `<g><defs><radialGradient id="${id}" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#c9c4b8"/><stop offset="1" stop-color="#8e887c"/></radialGradient></defs>
+    <ellipse cx="50" cy="93" rx="18" ry="3.4" fill="#00000020"/>${arm(-1)}${arm(1)}
+    <path d="M28 52q-2-22 20-26 24-2 26 20 2 22-22 26-22 0-24-20z" fill="url(#${id})" ${PKK}/>
+    ${[[36, 38, 3], [64, 62, 2.6], [40, 66, 2], [60, 34, 2]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#7a7468"/>`).join("")}<path d="M56 30l6 4M34 58l4 4" stroke="#7a7468" stroke-width="2"/>
+    <path d="M36 42l10 4M64 42l-10 4" stroke="${PKS.ink}" stroke-width="4" stroke-linecap="round"/>
+    ${pkEyes(face, [[42, 50], [58, 50]], 2.6)}${pkMouth(face, 50, 60, 10)}${extra}</g>${front}`;
+}
+// ---------- Mewtu: grau-weiß, lila Bauch und Schwanz, Hornohren, Röhre vom Kopf zum Nacken ----------
+function mewtu({ face = "auf", extra = "", front = "" } = {}) {
+  const id = "pkm" + (++pkN), up = face === "jubel";
+  return `<g><defs>${pkGrad(id, "#f1eef6", "#cfc8dc")}</defs><ellipse cx="50" cy="94" rx="20" ry="3.6" fill="#00000024"/>
+    <path d="M58 76q26 6 30-12 2-12-8-10" fill="none" stroke="${PKS.ink}" stroke-width="12" stroke-linecap="round"/><path d="M58 76q26 6 30-12 2-12-8-10" fill="none" stroke="#9b6bc9" stroke-width="8.4" stroke-linecap="round"/>
+    <path d="M42 80l-4 12h8l2-10M58 80l4 12h-8l-2-10" fill="url(#${id})" ${PKK}/>
+    <path d="M38 48q12-6 24 0l2 32q-14 6-28 0z" fill="url(#${id})" ${PKK}/><path d="M42 62q8-4 16 0l1 18q-9 4-18 0z" fill="#9b6bc9" ${PKK}/>
+    ${up ? `<path d="M38 52l-14-16M62 52l14-16" stroke="${PKS.ink}" stroke-width="7" stroke-linecap="round"/><path d="M38 52l-14-16M62 52l14-16" stroke="#e6e2ef" stroke-width="4.4" stroke-linecap="round"/>${[[22, 32], [78, 32]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4" fill="#e6e2ef" ${PKK}/>`).join("")}`
+         : `<path d="M38 54l-10 12M62 54l10 12" stroke="${PKS.ink}" stroke-width="7" stroke-linecap="round"/><path d="M38 54l-10 12M62 54l10 12" stroke="#e6e2ef" stroke-width="4.4" stroke-linecap="round"/>${[[27, 68], [73, 68]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4" fill="#e6e2ef" ${PKK}/>`).join("")}`}
+    <path d="M56 32q10 4 6 16" fill="none" stroke="${PKS.ink}" stroke-width="7" stroke-linecap="round"/><path d="M56 32q10 4 6 16" fill="none" stroke="#cfc8dc" stroke-width="4.4" stroke-linecap="round"/>
+    <path d="M38 22l-4-14 10 8zM62 22l4-14-10 8z" fill="url(#${id})" ${PKK}/>
+    <path d="M36 30q0-14 14-14t14 14q0 12-14 14-14-2-14-14z" fill="url(#${id})" ${PKK}/>
+    ${face === "zu" ? pkEyes(face, [[44, 30], [56, 30]], 2.6) : pkEyes(face, [[44, 30], [56, 30]], 2.8, "#7a3fb0")}${pkMouth(face, 50, 38, 6)}${extra}</g>${front}`;
+}
+// ---------- Glurak: orange Drache, heller Bauch, Flügel innen türkis, Hörner, Flammenschwanz ----------
+function glurak({ face = "auf", extra = "", front = "" } = {}) {
+  const id = "pkg" + (++pkN), up = face === "jubel";
+  return `<g><defs>${pkGrad(id, "#ffa25a", "#e8702a")}<radialGradient id="${id}f"><stop offset="0" stop-color="#fff3a0"/><stop offset=".5" stop-color="#ffb02e"/><stop offset="1" stop-color="#e8402f"/></radialGradient></defs>
+    <ellipse cx="50" cy="94" rx="24" ry="4" fill="#00000024"/>
+    <path d="M38 54Q22 40 6 18q4 18 2 34 8-4 14 0 6-6 16 2z" fill="#e8702a" ${PKK}/><path d="M36 52Q22 40 10 26q3 14 2 22 6-2 10 1 6-4 14 3z" fill="#3a8fa0"/><path d="M62 54Q78 40 94 18q-4 18-2 34-8-4-14 0-6-6-16 2z" fill="#e8702a" ${PKK}/><path d="M64 52Q78 40 90 26q-3 14-2 22-6-2-10 1-6-4-14 3z" fill="#3a8fa0"/>
+    <path d="M64 80q20 4 22-14" fill="none" stroke="${PKS.ink}" stroke-width="10" stroke-linecap="round"/><path d="M64 80q20 4 22-14" fill="none" stroke="#e8702a" stroke-width="7" stroke-linecap="round"/>
+    <path class="flame" d="M86 66q-10-10 0-24 10 12 0 24z" fill="url(#${id}f)" ${PKK}/>
+    ${[[40, 90], [60, 90]].map(([x, y]) => `<ellipse cx="${x}" cy="${y - 2}" rx="8" ry="5" fill="#e8702a" ${PKK}/>`).join("")}
+    <ellipse cx="50" cy="66" rx="20" ry="22" fill="url(#${id})" ${PKK}/><ellipse cx="50" cy="70" rx="12" ry="16" fill="#f6dfa0"/>
+    ${up ? `<path d="M32 56l-10-14M68 56l10-14" stroke="${PKS.ink}" stroke-width="9" stroke-linecap="round"/><path d="M32 56l-10-14M68 56l10-14" stroke="#ffa25a" stroke-width="6" stroke-linecap="round"/>`
+         : `<path d="M32 58l-6 10M68 58l6 10" stroke="${PKS.ink}" stroke-width="9" stroke-linecap="round"/><path d="M32 58l-6 10M68 58l6 10" stroke="#ffa25a" stroke-width="6" stroke-linecap="round"/>`}
+    <path d="M40 22l-4-12 9 7zM60 22l4-12-9 7z" fill="#f6dfa0" ${PKK}/>
+    <path d="M34 34q0-16 16-16t16 16q0 6-6 10H40q-6-4-6-10z" fill="url(#${id})" ${PKK}/><path d="M40 40q10 8 20 0" fill="#ffa25a" ${PKK}/>
+    ${face === "zu" ? pkEyes(face, [[43, 31], [57, 31]], 2.6) : pkEyes(face, [[43, 31], [57, 31]], 2.8, "#1f6a8a")}${pkMouth(face, 50, 42, 10)}${extra}</g>${front}`;
+}
+
+// ---------- Kachelhintergründe, Gegenstände, Lasse-Looks ----------
+const pkPad = (top, side, ground) => `${pad(top, side)}<path d="M3 74q24-6 47 0t47 0v14q0 3-3 3H6q-3 0-3-3z" fill="${ground}"/>`;
+const pkTileWith = (padSvg) => (inner) => `<svg viewBox="0 0 100 100">${padSvg}<g transform="translate(4 4) scale(.92)">${inner}</g></svg>`;
+const POKE_STARS = {
+  "Wasser-Pokémon": { name: "schiggy", draw: schiggy, tile: pkTileWith(pkPad("#e3f4ff", "#9fc6e6", "#7fc8f0")),
+    extras: { item: { front: `<g transform="translate(66 60)"><rect x="0" y="0" width="22" height="12" rx="4" fill="#ff8a1a" ${PKK}/><rect x="16" y="10" width="6" height="10" rx="2" fill="#ff8a1a" ${PKK}/><path d="M-2 4q-10-2-18 4" fill="none" stroke="#7fc8f0" stroke-width="4" stroke-linecap="round"/></g>` },
+      cool: { extra: `<path d="M34 28h32v6q-4 6-10 2l-4-4h-4l-4 4q-6 4-10-2z" fill="${PKS.ink}"/><path d="M38 30l6 4" stroke="#fff" stroke-width="1.6"/>` } },
+    items: [
+      `<ellipse cx="50" cy="60" rx="30" ry="24" fill="#c27b3e" ${PKK}/><path d="M30 50h40M24 62h52M30 74h40M50 36v48" stroke="#8a5a2b" stroke-width="3"/><ellipse cx="50" cy="60" rx="30" ry="24" fill="none" stroke="#f3e0a6" stroke-width="4"/>`,
+      `<path d="M20 70q30-40 60 0z" fill="#f6b6c6" ${PKK}/>${[30, 40, 50, 60, 70].map(x => `<path d="M50 70L${x} 42" stroke="#d87a92" stroke-width="2"/>`).join("")}<circle cx="70" cy="40" r="6" fill="#fff" ${PKK}/><circle cx="30" cy="44" r="4" fill="#fff" ${PKK}/>`,
+      `<path d="M18 54h64v8q-4 10-14 4l-8-6h-4l-8 6q-10 6-14-4z" fill="${PKS.ink}"/><path d="M28 56l10 6M64 56l10 6" stroke="#fff" stroke-width="2.4"/>`
+    ],
+    lasse: ["#7fc8f0", "#3d6fb3", "#ffffff", `<path d="M40 56h20v20H40z" fill="#f6dc7a" stroke="${INK}" stroke-width="1.6"/>`,
+      `${HAIR_STRUBBEL}<path d="M26 26h48v6q-4 8-14 4l-6-4h-8l-6 4q-10 4-14-4z" fill="${INK}"/><path d="M30 28l8 4M62 28l8 4" stroke="#fff" stroke-width="2"/>`],
+    words: ["Schiggy!", "Platsch!"], win: "Schiggy jubelt!", sleepZ: [70, 22] },
+  "Blitz-Pokémon": { name: "pikachu", draw: pikachu, tile: pkTileWith(pkPad("#fff6d6", "#e6cf8a", "#b6dc7a")),
+    extras: { item: { front: `<g transform="translate(70 56)"><rect x="0" y="6" width="14" height="28" rx="5" fill="#e8423a" ${PKK}/><path d="M3 6l4-8 4 8z" fill="#fff" ${PKK}/><rect x="2" y="16" width="10" height="8" fill="#fff"/></g>` },
+      cool: { front: `<path d="M84 24l-8 14h6l-4 12 12-16h-6l4-10z" fill="#ffd23a" ${PKK}/>` } },
+    items: [
+      `<rect x="38" y="24" width="24" height="56" rx="10" fill="#e8423a" ${PKK}/><path d="M42 24l8-14 8 14z" fill="#fff" ${PKK}/><rect x="40" y="44" width="20" height="16" fill="#fff"/><text x="50" y="56" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="9" fill="#e8423a">K</text>`,
+      `<path d="M56 10L30 54h18l-8 36 32-46H54l12-34z" fill="#ffd23a" ${PKK}/>`,
+      `${[[36, 50, "#e8423a"], [56, 46, "#2b5fd9"], [46, 64, "#ffd23a"], [64, 64, "#e8423a"]].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="10" fill="${c}" ${PKK}/><path d="M${x} ${y - 10}q2-6 6-8" fill="none" stroke="#3fae4a" stroke-width="3"/>`).join("")}`
+    ],
+    lasse: ["#ffd84a", "#8a5a2b", "#e8423a", `<path d="M44 58l6-8-2 6h6l-6 10 2-8z" fill="${INK}"/>`,
+      `${HAIR_STRUBBEL}<path d="M24 30q0-24 26-24t26 24z" fill="#ffd84a" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><path d="M30 14L18-10l20 12zM70 14l12-24-20 12z" fill="#ffd84a" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/><path d="M18-10l6 9 5-3zM82-10l-6 9-5-3z" fill="${INK}"/><path d="M22 30h56" stroke="${INK}" stroke-width="3"/>`],
+    words: ["Pika!", "Pikachu!"], win: "Pikachu freut sich!", sleepZ: [72, 20] },
+  "Kampf-Pokémon": { name: "kleinstein", draw: kleinstein, tile: pkTileWith(pkPad("#f3e6d2", "#c9a87a", "#b8a58a")),
+    extras: { item: { front: `<g transform="translate(8 74)"><rect x="0" y="6" width="34" height="5" rx="2" fill="#5b6475" ${PKK}/><rect x="2" y="0" width="7" height="17" rx="2" fill="#2d3036" ${PKK}/><rect x="25" y="0" width="7" height="17" rx="2" fill="#2d3036" ${PKK}/></g>` },
+      cool: { front: `<path d="M8 86l10-14 8 10 8-16 12 20z" fill="#a9a49a" ${PKK}/>` } },
+    items: [
+      `<path d="M14 84l14-30 16 12 12-26 18 22 12 22z" fill="#a9a49a" ${PKK}/><circle cx="40" cy="70" r="3" fill="#7a7468"/><circle cx="64" cy="60" r="3" fill="#7a7468"/>`,
+      `<rect x="14" y="46" width="72" height="8" rx="3" fill="#5b6475" ${PKK}/>${[18, 28, 64, 74].map(x => `<rect x="${x}" y="34" width="8" height="32" rx="3" fill="#2d3036" ${PKK}/>`).join("")}`,
+      `<path d="M50 16l26 14v28L50 76 24 58V30z" fill="#a9a49a" ${PKK}/><path d="M50 26l16 8v18L50 62 34 52V34z" fill="#8e887c" ${PKK}/><text x="50" y="96" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="11" fill="${PKS.ink}">FELSORDEN</text>`
+    ],
+    lasse: ["#a9a49a", "#5b6475", "#2d3036", `<path d="M38 60h24" stroke="#7a7468" stroke-width="4"/>`,
+      `${HAIR_STRUBBEL}<path d="M24 30q0-24 26-24t26 24z" fill="#a9a49a" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><circle cx="38" cy="18" r="3" fill="#7a7468"/><circle cx="58" cy="14" r="2.4" fill="#7a7468"/><path d="M32 22l10 4M68 22l-10 4" stroke="${INK}" stroke-width="3"/><path d="M22 30h56" stroke="${INK}" stroke-width="3"/>`],
+    words: ["Kleinstein!", "Rumms!"], win: "Kleinstein ist stark!", sleepZ: [68, 30] },
+  "Psycho-Pokémon": { name: "mewtu", draw: mewtu, tile: pkTileWith(pkPad("#f3ecff", "#c9b4e6", "#c9a8e8")),
+    extras: { item: { front: `<g><circle cx="50" cy="18" r="11" fill="#7a3fb0" opacity=".85" ${PKK}/><circle cx="50" cy="18" r="6" fill="#d9c4ff"/></g>` },
+      cool: { front: `${[[16, 30], [84, 34], [20, 62]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="none" stroke="#9b6bc9" stroke-width="2.4"/>`).join("")}` } },
+    items: [
+      `<circle cx="50" cy="50" r="24" fill="#7a3fb0" ${PKK}/><circle cx="50" cy="50" r="14" fill="#d9c4ff"/><circle cx="44" cy="44" r="5" fill="#fff" opacity=".7"/>`,
+      `<rect x="34" y="16" width="32" height="68" rx="14" fill="#cfe9ff" fill-opacity=".7" ${PKK}/><path d="M38 60q12 6 24 0v16q-12 8-24 0z" fill="#9fd8ff"/><rect x="30" y="80" width="40" height="8" rx="3" fill="#5b6475" ${PKK}/>`,
+      `<path d="M40 88V50q0-6 6-6" fill="none" stroke="${PKS.ink}" stroke-width="10" stroke-linecap="round"/><path d="M40 88V50q0-6 6-6" fill="none" stroke="#e9eaee" stroke-width="7" stroke-linecap="round"/><path d="M46 44q4-26 18-28" fill="none" stroke="${PKS.ink}" stroke-width="10" stroke-linecap="round"/><path d="M46 44q4-26 18-28" fill="none" stroke="#e9eaee" stroke-width="7" stroke-linecap="round"/><ellipse cx="66" cy="14" rx="9" ry="11" fill="#e9eaee" ${PKK}/>`
+    ],
+    lasse: ["#e6e2ef", "#9b6bc9", "#5b6475", `<path d="M40 62h20v14H40z" fill="#9b6bc9" stroke="${INK}" stroke-width="1.6"/>`,
+      `${HAIR_STRUBBEL}<path d="M24 30q0-24 26-24t26 24z" fill="#e6e2ef" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><path d="M32 14l-6-14 14 8zM68 14l6-14-14 8z" fill="#e6e2ef" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/><path d="M22 30h56" stroke="${INK}" stroke-width="3"/>`],
+    words: ["Psi!", "Wow!"], win: "Mewtu staunt!", sleepZ: [66, 18] },
+  "Feuer-Pokémon": { name: "glurak", draw: glurak, tile: pkTileWith(pkPad("#fde3d0", "#d9a07a", "#b8764a")),
+    extras: { item: { front: `<path class="flame" d="M40 40q-16-4-30 4 14 6 30 2z" fill="#ffb02e" ${PKK}/><path d="M40 42q-10-2-20 2 10 3 20 1z" fill="#fff3a0"/>` },
+      cool: { front: `<path d="M80 86l-6-10 4 2 0-8 6 8 2-4 2 12z" fill="#ffb02e" ${PKK}/>` } },
+    items: [
+      `<path d="M24 82l52-12M24 70l52 12" stroke="#8a5a2b" stroke-width="7" stroke-linecap="round"/><path class="flame" d="M50 74q-22-18-6-46 4 12 10 8 2-12 10-18 12 26-14 56z" fill="#ff8a1a" ${PKK}/><path d="M50 72q-8-8-2-20 6 8 8 2 6 10-6 18z" fill="#ffd23a"/>`,
+      `<path d="M50 20l12 22-12 40-12-40z" fill="#e2402f" ${PKK}/><path d="M38 42h24" stroke="#ffd23a" stroke-width="2"/>`,
+      `<path d="M14 84l22-40h28l22 40z" fill="#7a3a26" ${PKK}/><path d="M36 44q4-16 14-6 10-10 14 6" fill="#ff8a3d" ${PKK}/><path d="M42 44l4 20M58 44l-2 16" stroke="#ffb02e" stroke-width="4"/>`
+    ],
+    lasse: ["#ffa25a", "#e8702a", "#2d3036", `<ellipse cx="50" cy="66" rx="8" ry="10" fill="#f6dfa0" stroke="${INK}" stroke-width="1.4"/>`,
+      `${HAIR_STRUBBEL}<path d="M24 30q0-24 26-24t26 24z" fill="#ffa25a" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><path d="M34 12l-6-12 12 6zM66 12l6-12-12 6z" fill="#f6dfa0" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/><path d="M22 30h56" stroke="${INK}" stroke-width="3"/>`],
+    words: ["Fauch!", "Feuer!"], win: "Glurak brüllt vor Freude!", sleepZ: [70, 18] }
+};
+
+// ---------- Einbau in die Schauplätze ----------
+const POKE_MAP = {}; // Bild je Pokémon für die Weltkarte
+// Teil 2 (Comic): die Schauplätze heißen anders, die Kacheln bekommen Comic-Hintergründe
+const PK_COMIC = typeof kO !== "undefined";
+const PK_ALIAS = { "Route 1": ["Wasser-Pokémon", "#bfe3a0"], "Vertania-Wald": ["Blitz-Pokémon", "#5f9a52"], "Arena Marmoria": ["Kampf-Pokémon", "#c9c0b0"],
+  "Psycho-Arena": ["Psycho-Pokémon", "#b48ad6"], "Glumandas Vulkan": ["Feuer-Pokémon", "#6a2e22"] };
+for (const T of [THEMES.pokemon, THEMES.pokemon2]) for (const S of T.scenes) {
+  let cfg = POKE_STARS[S.name];
+  if (!cfg && PK_COMIC && PK_ALIAS[S.name]) { const [key, bg] = PK_ALIAS[S.name];
+    cfg = { ...POKE_STARS[key], tile: (inner) => kB(bg, `<g transform="translate(4 4) scale(.92)">${inner}</g>`) }; }
+  if (!cfg) continue;
+  const d = cfg.draw, [zx, zy] = cfg.sleepZ;
+  const poses = [d(), d({ face: "zu", extra: pkZ(zx, zy) }), d({ face: "mampf", ...cfg.extras.item }), d({ face: "jubel", extra: pkStars([[14, 20], [86, 16], [12, 50]]) }),
+    d(cfg.extras.cool), d({ extra: pkHeart(80, 16) })];
+  const people = poses.map((p, i) => () => asPerson(cfg.tile(p), cfg.name + i));
+  const things = cfg.items.map(it => () => cfg.tile(it));
+  const base = S.wall, list = [...people, ...people, ...things];
+  // eigene Motive zu zwei Dritteln, sonst die bisherigen Wände des Schauplatzes
+  // Teil 2 behält mehr von seinen Comic-Wänden: dort nur ein Drittel eigene Motive
+  S.wall = (x, y) => pick(x, y, 31, 3) < (PK_COMIC ? 1 : 2) ? list[pick(x, y, 32, list.length)]() : base(x, y);
+  LASSE["pk_" + cfg.name] = lasseBase(...cfg.lasse);
+  S.lasse = "pk_" + cfg.name; S.words = cfg.words; S.winTitle = cfg.win;
+  S.side = { l: [`<svg viewBox="0 0 100 200"><g transform="translate(0 96)"><g class="sl-sleep">${d({ face: "zu", extra: pkZ(zx, zy) })}</g><g class="sl-awake">${d({ face: "jubel" })}</g></g></svg>`], r: [] };
+  S.introIcon = cfg.tile(d({ face: "jubel" }));
+  S.companion = d();
+  POKE_MAP[cfg.name] = d();
+  if (typeof EXTRA_SHARE !== "undefined") EXTRA_SHARE[S.name] = 3;
+}
+// Weltkarte: alle Pokémon bei der Pokémon-Insel (Welt 3)
+(() => {
+  const baseDeco = mapDeco;
+  mapDeco = function (shown, open, pts) {
+    let html = baseDeco(shown, open, pts);
+    // erst sichtbar, wenn die Pokémon-Welt komplett geschafft ist (im Cheat-Profil sofort); dann stehen Schlapfel, Schiggy und Glurak bei Welt 3, Pikachu bei Welt 4, Kleinstein und Mewtu bei Welt 5
+    const pw = WORLDS.findIndex(w => w.theme === "pokemon"); if (pw < 0 || (!P().unlockAll && solvedIn(P(), pw) < NL(pw))) return html;
+    const add = (theme, list) => { const i = shown.findIndex(w => w.theme === theme); if (i < 0) return;
+      list.forEach(([svg, dx, dy], k) => { html += `<div class="mapdeco mapfig" style="left:${pts[i][0] + dx}%;top:${pts[i][1] + dy}px;width:52px;height:52px;animation-delay:${-k * .9}s"><svg viewBox="0 0 100 100" overflow="visible">${svg}</svg></div>`; }); };
+    // seit dem Umbau gibt es nur noch eine Pokémon-Welt: alle fünf stehen dort
+    if (PK_COMIC) add("pokemon", [[POKE_MAP.schiggy, 30, -10], [POKE_MAP.pikachu, 44, 24], [POKE_MAP.glurak, 30, 58]]);
+    else {
+      add("pokemon", [[POKE_MAP.schiggy, 56, -16], [POKE_MAP.glurak, 64, 34]]);
+      // Pikachu steht bei Welt 4 zwischen Arne und Matze
+      add("lego", [[POKE_MAP.pikachu, -28.4, 50]]);
+    }
+    add("steine", [[POKE_MAP.kleinstein, 40, -4], [POKE_MAP.mewtu, 54, 30]]);
+    return html;
+  };
+})();
+// ===== Begleiter und eigener Siegtitel je Schauplatz (Teil 1 und Teil 2) =====
+// Ein Pokémon läuft einen Schritt hinter Lasse her; S.winTitle ersetzt den Siegtitel des Themas.
+// Begleiter läuft einen Schritt hinter Lasse her (nur Bild, blockiert nichts)
+(() => {
+  let prev = null, comp = null;
+  const baseRender = render;
+  render = function (...a) {
+    const r = baseRender(...a);
+    if (!S || !S.companion) { prev = null; return r; }
+    comp = board.querySelector(".sprite.companion");
+    if (!comp) { comp = document.createElement("div"); comp.className = "sprite companion"; comp.innerHTML = `<div class="face-dir"><svg viewBox="0 0 100 100">${S.companion}</svg></div>`; board.appendChild(comp); prev = null; }
+    const here = [...player];
+    let at = here;
+    if (prev && Math.abs(prev[0] - here[0]) + Math.abs(prev[1] - here[1]) === 1) at = prev;
+    else if (prev && prev[0] === here[0] && prev[1] === here[1]) at = [+comp.style.getPropertyValue("--x"), +comp.style.getPropertyValue("--y")];
+    comp.style.setProperty("--x", at[0]); comp.style.setProperty("--y", at[1]);
+    comp.classList.toggle("same", at[0] === here[0] && at[1] === here[1]);
+    comp.querySelector(".face-dir").style.transform = `scaleX(${facing})`;
+    comp.classList.toggle("cheer", lasseEl.classList.contains("cheer"));
+    prev = here; return r;
+  };
+})();
+// Sieg: eigener Jubeltitel des Schauplatzes
+(() => {
+  const win = document.getElementById("win");
+  new MutationObserver(() => { if (!win.hidden && S && S.winTitle) document.getElementById("win-title").textContent = S.winTitle; })
+    .observe(win, { attributes: true, attributeFilter: ["hidden"] });
 })();
 </script>
 
