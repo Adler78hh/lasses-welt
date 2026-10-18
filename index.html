@@ -4669,7 +4669,8 @@ for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (E
     { tri: "#ffffff", stripe: "#2e4f9a", kerzeC: "#bcd8ea" },
     { tri: "#d9c3a5", kerzeC: "#ffffff", dots: true }
   ];
-  EXTRA_WALLS["Geburtstag"] = (EXTRA_WALLS["Geburtstag"] || []).concat([wal, ...WAGEN.map(w => () => wagen(w))]);
+  // Wal und Wagen zählen als je ein Motiv, damit der Zug die anderen Geburtstagsdinge nicht verdrängt; die Wagenfarbe wechselt je Feld
+  EXTRA_WALLS["Geburtstag"] = (EXTRA_WALLS["Geburtstag"] || []).concat([wal, (x, y) => wagen(WAGEN[(pick(x, y, 140, 97) + x + 2 * y) % WAGEN.length])]);
 })();
 
 // ===== Kinderbuch-Details =====
