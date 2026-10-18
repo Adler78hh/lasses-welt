@@ -4730,8 +4730,8 @@ for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (E
   EXTRA_WALLS["Weihnachten"] = (EXTRA_WALLS["Weihnachten"] || []).concat(TILES);
 })();
 // ===== Familie · Bibi und Tina (Teil 1): Bibi, Tina, Karla Kolumna und die Pferde Amadeus und Sabrina =====
-// Bibi: blond mit hochstehendem Zopf und roter Schleife, blaues Kleid, Hexensterne. Tina: lange braune Haare mit Haarband,
-// rotes Shirt, Jeans, Reitstiefel. Karla Kolumna: rote Haare im Dutt, große runde Brille, lila Kostüm, Notizblock, „Sensationell!“.
+// Nach den Vorlagen aus der Serie: Bibi blond mit großem Pferdeschwanz und roter Schleife, Sommersprossen, pinkes Shirt, hellblaue Reithose.
+// Tina rote Haare, cremefarbenes Shirt, Jeans. Karla Kolumna dunkle Haare, große getönte Brille, blauer Pulli, gelbe Hose, rote Schuhe.
 // Amadeus ist Bibis Rappe, Sabrina Tinas Fuchsstute; beide schauen über den Zaun vom Martinshof.
 (() => {
   const O = `stroke="#4a3728" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"`, O1 = `stroke="#4a3728" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"`;
@@ -4740,51 +4740,57 @@ for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (E
   const sterne = (pts) => pts.map(([x, y, s = 1]) => `<path transform="translate(${x} ${y}) scale(${s})" d="M0 -6l1.8 4.2 4.2.6-3 3 .8 4.2L0 3.8-3.8 6l.8-4.2-3-3 4.2-.6z" fill="#ffd23a" stroke="#c99a00" stroke-width=".8"/>`).join("");
 
   // ---------- Köpfe (gemeinsam für Wandbilder und ganze Figuren); Mittelpunkt (50, 40) ----------
-  const augen = `<ellipse cx="42" cy="42" rx="2.8" ry="3.6" fill="#4a3728"/><ellipse cx="58" cy="42" rx="2.8" ry="3.6" fill="#4a3728"/><circle cx="43" cy="41" r="1.1" fill="#fff"/><circle cx="59" cy="41" r="1.1" fill="#fff"/>
-    <ellipse cx="36" cy="50" rx="3.6" ry="2.2" fill="#ff8f8f" opacity=".5"/><ellipse cx="64" cy="50" rx="3.6" ry="2.2" fill="#ff8f8f" opacity=".5"/>`;
-  const gesicht = (mund) => `<ellipse cx="50" cy="40" rx="20" ry="21" fill="${SK}" ${O}/>${augen}<path d="M49 46q-2 4 2 5" fill="none" stroke="#d9a888" stroke-width="1.6"/>${mund}`;
+  const augen = `<ellipse cx="42" cy="42" rx="2.8" ry="3.6" fill="#4a3728"/><ellipse cx="58" cy="42" rx="2.8" ry="3.6" fill="#4a3728"/><circle cx="43" cy="41" r="1.1" fill="#fff"/><circle cx="59" cy="41" r="1.1" fill="#fff"/>`;
+  const backen = `<ellipse cx="36" cy="50" rx="3.6" ry="2.2" fill="#ff8f8f" opacity=".45"/><ellipse cx="64" cy="50" rx="3.6" ry="2.2" fill="#ff8f8f" opacity=".45"/>`;
+  const gesicht = (mund, mitAugen = true) => `<ellipse cx="50" cy="40" rx="20" ry="21" fill="${SK}" ${O}/>${mitAugen ? augen : ""}${backen}<path d="M49 46q-2 4 2 5" fill="none" stroke="#d9a888" stroke-width="1.6"/>${mund}`;
   const lachen = `<path d="M42 53q8 8 16 0z" fill="#ffffff" ${O1}/>`, laecheln = `<path d="M43 53q7 5 14 0" fill="none" stroke="#4a3728" stroke-width="2"/>`;
-  const BIBI_KOPF = `<path d="M45 20q-6-14 0-22 4 4 5 0 2 5 6 0 6 8-1 22z" fill="#ffd54a" ${O}/><path d="M48 6v10M53 4v12" stroke="#e8b830" stroke-width="1.6"/>
-    <path d="M44 16l-8-6 1 9zM56 16l8-6-1 9z" fill="#e2402f" ${O1}/><circle cx="50" cy="16" r="3" fill="#e2402f" ${O1}/>
-    ${gesicht(lachen)}<path d="M30 38q0-20 20-20t20 20q-6-8-12-8l-4 5-4-5-4 5-4-5q-8 2-12 8z" fill="#ffd54a" ${O}/>`;
-  const TINA_HINTEN = `<path d="M30 40q-6 26 0 40l10-6h20l10 6q6-14 0-40z" fill="#6b3e1f" ${O}/>`;
-  const TINA_KOPF = `${gesicht(laecheln)}
-    <path d="M30 40q0-22 20-22t20 22q-8-10-20-10t-20 10z" fill="#6b3e1f" ${O}/><path d="M31 32q19-14 38 0" fill="none" stroke="#e2402f" stroke-width="3.4"/>`;
-  const KARLA_KOPF = `<circle cx="50" cy="12" r="10" fill="#e2622a" ${O}/><path d="M44 10q6-4 12 0" stroke="#b8441a" stroke-width="1.6" fill="none"/>
-    ${gesicht(`<path d="M42 52q8 9 16 0z" fill="#c0392b" ${O1}/>`)}<path d="M30 38q0-20 20-20t20 20q-4-8-20-8t-20 8z" fill="#e2622a" ${O}/>
-    <g fill="#ffffff" fill-opacity=".35" stroke="#4a3728" stroke-width="2"><circle cx="42" cy="42" r="7.4"/><circle cx="58" cy="42" r="7.4"/></g><path d="M49.4 42h1.2M34.6 41l-4-2M65.4 41l4-2" stroke="#4a3728" stroke-width="1.8"/>
-    <circle cx="30" cy="48" r="2.4" fill="#ffd23a" ${O1}/><circle cx="70" cy="48" r="2.4" fill="#ffd23a" ${O1}/>`;
+  // Bibi: großer blonder Pferdeschwanz nach hinten, rote Schleife, Pony, Sommersprossen
+  const BIBI_HINTEN = `<path d="M44 22q-30-18-34 14-2 22 10 36 2-14 6-20 4 10 10 12-4-12 2-24z" fill="#ffcc1a" ${O}/>`;
+  const BIBI_KOPF = `${gesicht(lachen)}${[[34, 46], [37, 49], [33, 50], [66, 46], [63, 49], [67, 50]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r=".9" fill="#d9442a"/>`).join("")}
+    <path d="M29 42q-2-24 21-24t21 22q-4-6-8-8l-2 6-4-8-4 6-4-7-4 7-4-6q-6 4-12 12z" fill="#ffcc1a" ${O}/><path d="M29 42q-2 10 2 18M71 40q2 10-2 16" fill="none" stroke="#ffcc1a" stroke-width="4"/>
+    <path d="M44 20l-12-9 2 12zM48 18l12-10-1 13z" fill="#e2201a" ${O1}/><circle cx="46" cy="19" r="3.2" fill="#e2201a" ${O1}/>`;
+  // Tina: rote, nach außen schwingende Haare bis zur Schulter
+  const TINA_HINTEN = `<path d="M30 36q-4 16-2 24l-8 6q10 3 14-3l3-5h26l3 5q4 6 14 3l-8-6q2-8-2-24z" fill="#d8261e" ${O}/>`;
+  const TINA_KOPF = `${gesicht(laecheln)}<path d="M29 40q0-22 21-22t21 22q-6-12-21-12-8 0-12 6-4 2-9 6z" fill="#d8261e" ${O}/>`;
+  // Karla Kolumna: dunkle Haare, große getönte Brille, lachender offener Mund
+  const KARLA_HINTEN = `<path d="M29 36q-4 16-2 24l-6 5q8 3 12-3l2-4h30l2 4q4 6 12 3l-6-5q2-8-2-24z" fill="#4a4a52" ${O}/>`;
+  const KARLA_KOPF = `${gesicht(`<path d="M41 52q9 12 18 0z" fill="#c0392b" ${O1}/><path d="M43 53h14" stroke="#ffffff" stroke-width="2"/>`)}
+    <path d="M29 38q0-20 21-20t21 20q-8-10-21-10t-21 10z" fill="#4a4a52" ${O}/>
+    <path d="M28 36h44q2 10-6 12-8 1-12-4h-8q-4 5-12 4-8-2-6-12z" fill="#b89a7a" fill-opacity=".55" ${O}/><path d="M33 38l6 3" stroke="#ffffff" stroke-width="2" opacity=".7"/>`;
 
   // ---------- Ganze Figuren für neben dem Spielfeld (viewBox 0 0 100 200) ----------
   const arm = (x1, y1, x2, y2, c) => `<path d="M${x1} ${y1}L${x2} ${y2}" stroke="#4a3728" stroke-width="11" stroke-linecap="round"/><path d="M${x1} ${y1}L${x2} ${y2}" stroke="${c}" stroke-width="7" stroke-linecap="round"/><circle cx="${x2}" cy="${y2}" r="5" fill="${SK}" ${O1}/>`;
   const stiefel = (c) => `<path d="M36 166h11v20q0 6-6 6h-9q-4 0-4-4 0-4 8-4z" fill="${c}" ${O}/><path d="M53 166h11v18q8 0 8 4t-4 4h-9q-6 0-6-6z" fill="${c}" ${O}/>`;
+  const kopf = (hinten, k) => `<g transform="translate(0 4)">${hinten}</g><rect x="45" y="58" width="10" height="12" rx="3" fill="${SK}" ${O1}/><g transform="translate(0 4)">${k}</g>`;
+  // Bibi: pinkes Shirt, hellblaue Reithose, braune Reitstiefel, Hexensterne an der erhobenen Hand
   const BIBI_FIG = `<ellipse cx="50" cy="194" rx="26" ry="4" fill="#00000022"/>
-    <rect x="38" y="130" width="8" height="40" rx="3" fill="#ffffff" ${O1}/><rect x="54" y="130" width="8" height="40" rx="3" fill="#ffffff" ${O1}/>${stiefel("#7a4a22")}
-    ${arm(34, 76, 22, 112, "#2b6fd9")}${arm(66, 76, 82, 56, "#2b6fd9")}${sterne([[86, 44], [92, 58, .8], [80, 34, .7]])}
-    <path d="M36 72q14-8 28 0l8 64H28z" fill="#2b6fd9" ${O}/><path d="M42 68l8 8 8-8" fill="#ffffff" ${O1}/><path d="M30 124h40" stroke="#ffd23a" stroke-width="3"/>
-    <rect x="45" y="58" width="10" height="12" rx="3" fill="${SK}" ${O1}/><g transform="translate(0 4)">${BIBI_KOPF}</g>`;
-  const TINA_FIG = `<ellipse cx="50" cy="194" rx="26" ry="4" fill="#00000022"/><g transform="translate(0 4)"><path d="M30 40q-6 26 0 40l10-6h20l10 6q6-14 0-40z" fill="#6b3e1f" ${O}/></g>
-    <path d="M36 116h28l-2 54h-10l-2-40-2 40H38z" fill="#3a5fa8" ${O}/>${stiefel("#5a3416")}
-    ${arm(34, 76, 24, 110, "#e2402f")}${arm(66, 76, 76, 110, "#e2402f")}
-    <path d="M34 76q16-10 32 0v42H34z" fill="#e2402f" ${O}/><path d="M44 70l6 6 6-6" fill="none" stroke="#ffffff" stroke-width="2"/>
-    <rect x="45" y="58" width="10" height="12" rx="3" fill="${SK}" ${O1}/><g transform="translate(0 4)">${TINA_KOPF}</g>`;
-  const block = `<g transform="rotate(-10 72 92)"><rect x="62" y="80" width="18" height="24" rx="2" fill="#ffffff" ${O1}/><path d="M62 80h18" stroke="#4a3728" stroke-width="3"/><path d="M65 88h12M65 93h12M65 98h8" stroke="#9aa3b1" stroke-width="1.4"/></g>`;
+    <path d="M36 116h28l-1 54h-10l-3-40-3 40H37z" fill="#7fc4ec" ${O}/>${stiefel("#7a4a22")}
+    ${arm(34, 78, 22, 112, "#e06aa0")}${arm(66, 78, 82, 56, "#e06aa0")}${sterne([[86, 44], [92, 58, .8], [80, 34, .7]])}
+    <path d="M33 78q17-10 34 0v40H33z" fill="#e06aa0" ${O}/><path d="M44 70q6 5 12 0" fill="none" stroke="#c04a80" stroke-width="2"/>
+    ${kopf(BIBI_HINTEN, BIBI_KOPF)}`;
+  // Tina: cremefarbenes Shirt, Jeans mit Gürtel, braune Stiefel
+  const TINA_FIG = `<ellipse cx="50" cy="194" rx="26" ry="4" fill="#00000022"/>
+    <path d="M35 116h30l-2 54h-10l-3-40-3 40H37z" fill="#3a5fa8" ${O}/><path d="M35 120h30" stroke="#4a3728" stroke-width="3"/><rect x="47" y="117" width="6" height="5" fill="#c9ced8" ${O1}/>${stiefel("#6b3e1f")}
+    ${arm(34, 78, 24, 112, "#f6f0dc")}${arm(66, 78, 76, 112, "#f6f0dc")}
+    <path d="M33 78q17-10 34 0v40H33z" fill="#f6f0dc" ${O}/><path d="M44 70q6 5 12 0" fill="none" stroke="#c9c0a0" stroke-width="2"/>
+    ${kopf(TINA_HINTEN, TINA_KOPF)}`;
+  // Karla Kolumna: blauer Pulli mit weißem Kragen und Bündchen, gelbe Hose mit Umschlag, rote Schuhe, Hände zusammen vor der Brust
   const KARLA_FIG = `<ellipse cx="50" cy="194" rx="28" ry="4" fill="#00000022"/>
-    <rect x="38" y="140" width="8" height="34" rx="3" fill="${SK}" ${O1}/><rect x="54" y="140" width="8" height="34" rx="3" fill="${SK}" ${O1}/>
-    <path d="M34 186q0-10 10-10h4v10zM52 186v-10h4q10 0 10 10z" fill="#3fae4a" ${O}/>
-    <path d="M32 112h36l6 34H26z" fill="#3fae4a" ${O}/>
-    ${arm(32, 76, 22, 106, "#8b5cf6")}${block}${arm(68, 76, 70, 96, "#8b5cf6")}
-    <path d="M32 76q18-10 36 0v40H32z" fill="#8b5cf6" ${O}/><path d="M42 70l8 14 8-14" fill="#ffffff" ${O1}/><circle cx="50" cy="94" r="2" fill="#ffd23a"/><circle cx="50" cy="104" r="2" fill="#ffd23a"/>
-    <rect x="45" y="58" width="10" height="12" rx="3" fill="${SK}" ${O1}/><g transform="translate(0 4)">${KARLA_KOPF}</g>`;
+    <path d="M36 118h28l-1 52h-10l-3-40-3 40H37z" fill="#f2d43a" ${O}/><rect x="35" y="164" width="13" height="8" rx="3" fill="#f2d43a" ${O1}/><rect x="52" y="164" width="13" height="8" rx="3" fill="#f2d43a" ${O1}/>
+    <path d="M30 188q0-12 12-12h6v12zM52 188v-12h6q12 0 12 12z" fill="#b8484a" ${O}/>
+    <path d="M32 78q18-10 36 0v42H32z" fill="#2aa8d8" ${O}/><path d="M32 114h36v6H32z" fill="#ffffff" ${O1}/><path d="M43 70q7 6 14 0" fill="#ffffff" ${O1}/>
+    <path d="M32 82q-8 14 10 18M68 82q8 14-10 18" fill="none" stroke="#4a3728" stroke-width="11" stroke-linecap="round"/><path d="M32 82q-8 14 10 18M68 82q8 14-10 18" fill="none" stroke="#2aa8d8" stroke-width="7" stroke-linecap="round"/>
+    <rect x="40" y="95" width="6" height="7" fill="#ffffff" ${O1}/><rect x="54" y="95" width="6" height="7" fill="#ffffff" ${O1}/><ellipse cx="50" cy="98" rx="7" ry="6" fill="${SK}" ${O1}/>
+    ${kopf(KARLA_HINTEN, KARLA_KOPF)}`;
   const fig = (inner) => `<svg data-kid="1" viewBox="0 0 100 200" overflow="visible">${inner}</svg>`;
 
   // ---------- Wandbilder (Brustbild mit Schultern) ----------
   const buste = (kopf, shirt, extra = "", hinten = "") => `<g transform="translate(6 12) scale(.88)">${hinten}<path d="M18 100q0-30 32-30t32 30z" fill="${shirt}" ${O}/>${kopf}</g>${extra}`;
-  const BIBI_W = asPerson(wiese(buste(BIBI_KOPF, "#2b6fd9", sterne([[16, 22], [84, 16, .8], [86, 40, .7]]))), "bibi");
-  const BIBI_W2 = asPerson(wiese(`<path d="M14 90l44-58" stroke="#8a5a2b" stroke-width="4"/><path d="M58 32l10-8-2 12z" fill="#d9b36b" ${O1}/>${buste(BIBI_KOPF, "#2b6fd9")}${sterne([[78, 20], [88, 34, .7]])}`), "bibi");
-  const TINA_W = asPerson(wiese(buste(TINA_KOPF, "#e2402f", "", TINA_HINTEN)), "tina");
-  const KARLA_W = asPerson(wiese(`${buste(KARLA_KOPF, "#8b5cf6")}<rect x="54" y="8" width="44" height="16" rx="6" fill="#ffffff" ${O1}/><path d="M60 24l-4 6 10-6z" fill="#ffffff" ${O1}/>
-    <text x="76" y="19.6" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="6.4" fill="#8b5cf6">Sensationell!</text>`), "karla");
+  const BIBI_W = asPerson(wiese(buste(BIBI_KOPF, "#e06aa0", sterne([[84, 16, .8], [88, 36, .7]]), BIBI_HINTEN)), "bibi");
+  const BIBI_W2 = asPerson(wiese(`<path d="M14 90l44-58" stroke="#8a5a2b" stroke-width="4"/><path d="M58 32l10-8-2 12z" fill="#d9b36b" ${O1}/>${buste(BIBI_KOPF, "#e06aa0", "", BIBI_HINTEN)}${sterne([[78, 20], [88, 34, .7]])}`), "bibi");
+  const TINA_W = asPerson(wiese(buste(TINA_KOPF, "#f6f0dc", "", TINA_HINTEN)), "tina");
+  const KARLA_W = asPerson(wiese(`${buste(KARLA_KOPF, "#2aa8d8", "", KARLA_HINTEN)}<rect x="54" y="8" width="44" height="16" rx="6" fill="#ffffff" ${O1}/><path d="M60 24l-4 6 10-6z" fill="#ffffff" ${O1}/>
+    <text x="76" y="19.6" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="6.4" fill="#2a7fb8">Sensationell!</text>`), "karla");
 
   // ---------- Amadeus und Sabrina über dem Zaun des Martinshofs ----------
   const pferd = (fell, maehne, maul, abz, name) => `<g class="peek">
