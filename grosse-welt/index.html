@@ -3950,6 +3950,236 @@ const EXTRA_WALLS = {};
     if (typeof EXTRA_SHARE !== "undefined") EXTRA_SHARE[name] = Math.max(EXTRA_SHARE[name] || 4, 5);
   }
 })();
+// ===== Umbau: eine Pokémon-Welt mit sechs Designs, Welt 9 wird „Die drei ??? Kids“ (Teil 1 und Teil 2) =====
+// Welt 3: Wasser, Pflanzen, Blitz, Kampf, Psycho, Feuer (je ein Level). Welt 9: Justus und die Kaffeekanne,
+// Peter und Rocky Beach, Bobs Recherchen und Archiv. Geschoben werden Lupen, die Ziele sind Fingerabdrücke.
+(() => {
+  const COMIC = typeof kO !== "undefined";
+  const O = `stroke="#2d3036" stroke-width="${COMIC ? 2.6 : 2.2}" stroke-linejoin="round" stroke-linecap="round"`;
+  const O1 = `stroke="#2d3036" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"`;
+  const T1PAD = (top, side) => `<rect x="3" y="9" width="94" height="88" rx="16" fill="${side}"/><rect x="3" y="3" width="94" height="86" rx="16" fill="${top}"/><rect x="14" y="10" width="26" height="6" rx="3" fill="#ffffff" opacity=".3"/>`;
+  const tile = (top, side) => (inner) => COMIC ? kB(top, inner) : svgT(`${T1PAD(top, side)}${inner}`);
+
+  // ---------- 1. Pokémon: sechs Designs in einer Welt ----------
+  const P = THEMES.pokemon, P2 = THEMES.pokemon2;
+  const SIX = [...P.scenes, ...P2.scenes];
+  P.scenes = SIX; P.levelScenes = SIX;
+  P.levelNames = COMIC ? ["Route 1", "Vertania", "Marmoria", "Dojo", "Psycho", "Vulkan"] : ["Wasser", "Pflanzen", "Blitz", "Kampf", "Psycho", "Feuer"];
+
+  // ---------- 2. Gemeinsame Symbole: Lupe, drei Fragezeichen, Detektiv-Ausweis ----------
+  document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
+    <symbol id="lupe" viewBox="0 0 100 100">
+      <ellipse cx="50" cy="90" rx="30" ry="5" fill="#00000024"/>
+      <path d="M62 62l22 22" stroke="#2d3036" stroke-width="15" stroke-linecap="round"/><path d="M62 62l22 22" stroke="#7a4a22" stroke-width="10" stroke-linecap="round"/>
+      <path d="M70 70l12 12" stroke="#a8743a" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="42" cy="42" r="30" fill="var(--c1, #e2402f)" stroke="#2d3036" stroke-width="3"/>
+      <circle cx="42" cy="42" r="22" fill="#d6f0ff" stroke="#2d3036" stroke-width="2.4"/>
+      <path d="M28 34q4-10 14-12" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/><circle cx="54" cy="52" r="3" fill="#ffffff" opacity=".8"/>
+      <circle cx="42" cy="42" r="26" fill="none" stroke="#ffffff" stroke-width="1.6" opacity=".35"/>
+    </symbol>
+    <symbol id="fragezeichen" viewBox="0 0 100 100">
+      ${[["#ffffff", 20], ["#e2402f", 50], ["#2b5fd9", 80]].map(([c, x]) => `<text x="${x}" y="78" text-anchor="middle" font-family="Fredoka, Arial Black, sans-serif" font-weight="700" font-size="60" fill="${c}" stroke="#2d3036" stroke-width="3" paint-order="stroke">?</text>`).join("")}
+    </symbol>
+    <symbol id="detektivausweis" viewBox="0 0 100 100">
+      <rect x="8" y="22" width="84" height="58" rx="6" fill="#ffffff" stroke="#2d3036" stroke-width="3"/><rect x="8" y="22" width="84" height="16" rx="6" fill="#2d3036"/>
+      <text x="50" y="34" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="10" fill="#ffffff">DETEKTIV</text>
+      ${[["#ffffff", 22], ["#e2402f", 34], ["#2b5fd9", 46]].map(([c, x]) => `<text x="${x}" y="70" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="26" fill="${c}" stroke="#2d3036" stroke-width="2" paint-order="stroke">?</text>`).join("")}
+      <path d="M58 52h26M58 60h20M58 68h24" stroke="#9aa3b1" stroke-width="3" stroke-linecap="round"/>
+    </symbol>`);
+
+  // ---------- 3. Figuren: Justus, Peter, Bob (wie in den Kids-Büchern) ----------
+  kidHair.justus = (c) => `<path d="M34 34q-2-19 16-19t16 17q-6-7-12-6-4-4-8-1-5-2-12 9z" fill="${c}" ${KK}/>`;
+  kidHair.peter = (c) => `<path d="M34 33q-3-18 14-19 6-4 11 1 9 2 8 17-4-8-9-8-1 4-6 4 2-4 0-6-6 6-18 11z" fill="${c}" ${KK}/>`;
+  kidHair.bob = (c) => `<path d="M34 33q-1-18 16-18t16 18q-2-8-9-9l-8 4 2-5q-9 1-17 10z" fill="${c}" ${KK}/>`;
+  const brille = `<g fill="#ffffff" fill-opacity=".35" stroke="#2d3036" stroke-width="1.6"><circle cx="45" cy="33" r="4.6"/><circle cx="55" cy="33" r="4.6"/></g><path d="M49.6 33h.8M40.4 32l-4-1M59.6 32l4-1" stroke="#2d3036" stroke-width="1.4"/>`;
+  const fz = (c, x, y, s = 9) => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="${s}" fill="${c}" stroke="#2d3036" stroke-width="1" paint-order="stroke">?</text>`;
+  const notizbuch = (x, y) => `<g transform="rotate(-10 ${x} ${y})"><rect x="${x - 8}" y="${y - 10}" width="16" height="20" rx="1.5" fill="#ffe9a8" ${O1}/><path d="M${x - 5} ${y - 4}h10M${x - 5} ${y}h10M${x - 5} ${y + 4}h7" stroke="#7a8aa8" stroke-width="1.2"/></g>`;
+  const skateboard = (x, y) => `<g transform="rotate(-20 ${x} ${y})"><rect x="${x - 16}" y="${y - 3}" width="32" height="6" rx="3" fill="#e2402f" ${O1}/><circle cx="${x - 9}" cy="${y + 5}" r="2.6" fill="#ffd23a" ${O1}/><circle cx="${x + 9}" cy="${y + 5}" r="2.6" fill="#ffd23a" ${O1}/></g>`;
+  const akte = (x, y) => `<g transform="rotate(8 ${x} ${y})"><rect x="${x - 10}" y="${y - 8}" width="20" height="16" rx="1.5" fill="#e3b860" ${O1}/><path d="M${x - 10} ${y - 4}h20" stroke="#b8862f" stroke-width="1.4"/><text x="${x}" y="${y + 5}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="6" fill="#7a4a22">AKTE</text></g>`;
+  const JUSTUS = { hair: "justus", hc: "#2a1d18", shirt: "#ffffff", shorts: "#3b4a6b", socks: "#ffffff", shoes: "#2d3036",
+    front: `<path d="M38 52h24" stroke="#d9dde6" stroke-width="1"/>${fz("#2d3036", 50, 63, 10)}` };
+  const PETER = { hair: "peter", hc: "#b4542a", shirt: "#e2402f", shorts: "#2b5fd9", socks: "#ffffff", shoes: "#ffffff",
+    front: fz("#ffffff", 50, 63, 10) };
+  const BOB = { hair: "bob", hc: "#f2c94c", shirt: "#2b5fd9", shorts: "#c9a36a", socks: "#2b5fd9", shoes: "#7a4a22",
+    front: brille + fz("#ffffff", 50, 63, 10) };
+  // Posen: normal, mit Gegenstand
+  const fig = (cfg, prop = "") => kidFigure({ ...cfg, hat: null, prop });
+  const VARIANTS = {
+    justus: [fig(JUSTUS), fig(JUSTUS, notizbuch(72, 66) + `<path d="M64 66l6 0" stroke="#ffd9bf" stroke-width="5" stroke-linecap="round"/>`)],
+    peter: [fig(PETER), fig(PETER, skateboard(72, 84))],
+    bob: [fig(BOB), fig(BOB, akte(73, 66))]
+  };
+  const personTile = (padFn, who, i) => asPerson(padFn(`<g transform="translate(8 4) scale(.84)">${VARIANTS[who][i]}</g>`), who);
+
+  // ---------- 4. Lasse als Detektiv mit Sherlock-Holmes-Mütze ----------
+  const HUT = `<path d="M22 30q0-24 28-24t28 24z" fill="#b08850" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M30 26q20-14 40 0M28 20q22-14 44 0M40 8v20M50 6v22M60 8v20" stroke="#7a5a30" stroke-width="1.6" fill="none"/>
+    <path d="M20 30q-8 2-12 8 10 0 16-2zM80 30q8 2 12 8-10 0-16-2z" fill="#b08850" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M46 6q-6-6-10 0 4 2 10 0zM54 6q6-6 10 0-4 2-10 0z" fill="#8a6a3a" stroke="${INK}" stroke-width="1.6"/>
+    <path d="M22 30h56" stroke="${INK}" stroke-width="2.4"/>`;
+  LASSE.detektiv = lasseBase("#a8763e", "#3a3f55", "#5a3416",
+    `<path d="M33 56q17 10 34 0l2 10q-19 10-38 0z" fill="#b08850" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/><path d="M38 60l4 4M58 60l4 4M44 63l2 3M54 63l2 3" stroke="#7a5a30" stroke-width="1.4"/>
+     <circle cx="50" cy="70" r="2" fill="#2d3036"/>`,
+    `<path d="M26 33q-3 6 1 10 1-6 4-8zM74 33q3 6-1 10-1-6-4-8z" fill="${HAIR}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>${HUT}`);
+
+  // ---------- 5. Wände ----------
+  const W = "#ffffff", R = "#e2402f", B = "#2b5fd9";
+  // Die drei Fragezeichen in Weiß, Rot und Blau auf schwarzem Grund
+  const fragen = (padFn, v) => padFn(v === 0
+    ? `<rect x="10" y="16" width="80" height="64" rx="8" fill="#16181f" ${O}/><use href="#fragezeichen" x="14" y="16" width="72" height="66"/>`
+    : v === 1 ? `<rect x="14" y="22" width="72" height="50" rx="6" fill="#ffffff" ${O}/><text x="50" y="40" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="8" fill="#2d3036">DIE DREI</text>
+        ${fz(W, 34, 64, 22)}${fz(R, 50, 64, 22)}${fz(B, 66, 64, 22)}`
+    : `<g transform="rotate(-8 50 50)"><path d="M18 30h64v40H18z" fill="#16181f" ${O}/>${fz(W, 36, 62, 28)}${fz(R, 50, 62, 28)}${fz(B, 64, 62, 28)}</g>`);
+  // Typische Detektiv-Sachen (keine Lupen und keine Fingerabdrücke, die gehören zum Spiel)
+  const DETEKTIV = [
+    // Taschenlampe mit Lichtkegel
+    (p) => p(`<path d="M44 48L92 26v44z" fill="#fff3b0" opacity=".7"/><rect x="12" y="42" width="34" height="14" rx="4" fill="#3b4a6b" ${O}/><rect x="40" y="38" width="8" height="22" rx="2" fill="#9aa3b1" ${O}/><circle cx="24" cy="49" r="3" fill="#e2402f"/>`),
+    // Notizblock mit Bleistift
+    (p) => p(`<rect x="22" y="18" width="46" height="62" rx="3" fill="#ffe9a8" ${O}/>${[0, 1, 2, 3, 4].map(i => `<circle cx="${28 + i * 8}" cy="18" r="2.6" fill="none" stroke="#9aa3b1" stroke-width="2"/>`).join("")}
+      <path d="M28 34h34M28 44h30M28 54h34M28 64h22" stroke="#7a8aa8" stroke-width="1.6"/><path d="M64 78l14-40 6 2-14 40z" fill="#ffd23a" ${O1}/><path d="M64 78l2-6 4 2z" fill="#2d3036"/>`),
+    // Walkie-Talkies
+    (p) => p(`${[[34, "#2b5fd9"], [64, "#e2402f"]].map(([x, c]) => `<path d="M${x - 4} 24v-12" stroke="#2d3036" stroke-width="3"/><rect x="${x - 11}" y="24" width="22" height="50" rx="5" fill="${c}" ${O}/><rect x="${x - 7}" y="30" width="14" height="10" rx="2" fill="#bfe6ff" ${O1}/>
+      ${[48, 54, 60, 66].map(y => `<path d="M${x - 6} ${y}h12" stroke="#2d3036" stroke-width="1.4"/>`).join("")}`).join("")}<path d="M44 20q5-5 10 0M41 15q8-8 16 0" fill="none" stroke="#2d3036" stroke-width="1.6"/>`),
+    // Fußspuren
+    (p) => p(`${[[30, 74, -10], [46, 58, 8], [38, 40, -10], [56, 24, 8]].map(([x, y, r]) => `<g transform="rotate(${r} ${x} ${y})"><ellipse cx="${x}" cy="${y}" rx="6" ry="9" fill="#5a4636" opacity=".75"/><ellipse cx="${x}" cy="${y + 12}" rx="4.6" ry="4" fill="#5a4636" opacity=".75"/></g>`).join("")}`),
+    // Visitenkarte „Wir übernehmen jeden Fall“
+    (p) => p(`<g transform="rotate(-6 50 50)"><rect x="10" y="28" width="80" height="44" rx="3" fill="#ffffff" ${O}/>${fz(W, 24, 52, 18)}${fz(R, 34, 52, 18)}${fz(B, 44, 52, 18)}
+      <path d="M54 40h28M54 48h24M54 56h28M18 64h64" stroke="#9aa3b1" stroke-width="2.4" stroke-linecap="round"/></g>`),
+    // Fernglas
+    (p) => p(`${[34, 62].map(x => `<rect x="${x - 10}" y="36" width="20" height="34" rx="8" fill="#2d3036" ${O}/><circle cx="${x}" cy="70" r="9" fill="#5a7aa8" ${O}/><circle cx="${x - 3}" cy="67" r="2.4" fill="#ffffff" opacity=".7"/>`).join("")}<rect x="42" y="44" width="12" height="10" rx="2" fill="#9aa3b1" ${O1}/><path d="M24 36q-4-14 8-16M72 36q4-14-8-16" fill="none" stroke="#7a4a22" stroke-width="2"/>`),
+    // Pinnwand mit Fotos und roten Fäden
+    (p) => p(`<rect x="12" y="16" width="76" height="66" rx="4" fill="#c99a62" ${O}/>${[[24, 26], [60, 24], [30, 56], [64, 58]].map(([x, y]) => `<rect x="${x}" y="${y}" width="16" height="14" fill="#ffffff" ${O1}/><circle cx="${x + 8}" cy="${y}" r="2" fill="#e2402f"/>`).join("")}
+      <path d="M32 26L68 24M32 26L38 56M68 24L72 58M38 56L72 58" stroke="#e2402f" stroke-width="1.4"/>${fz(R, 50, 48, 14)}`),
+    // Kreide-Fragezeichen an der Wand mit Kreidestück
+    (p) => p(`<rect x="12" y="16" width="76" height="60" rx="4" fill="#2f4a3a" ${O}/>${fz("#ffffff", 50, 64, 46).replace('stroke="#2d3036" stroke-width="1"', 'stroke="none"')}<rect x="60" y="78" width="16" height="5" rx="2" fill="#ffffff" ${O1}/>`)
+  ];
+
+  // Schauplatz 1: Justus und die Kaffeekanne (Schrottplatz)
+  const pJ = tile("#cbb79a", "#8a7356");
+  const JUSTUS_ITEMS = [
+    // Die Kaffeekanne: alter Wassertank auf Stelzen mit Tülle, Deckel, Tür und Fahne
+    () => pJ(`<path d="M30 88l6-20M70 88l-6-20M40 88l2-20M60 88l-2-20" stroke="#5a5f6e" stroke-width="4"/>
+      <path d="M28 70V36q0-10 22-10t22 10v34q-22 8-44 0z" fill="#8fa8b8" ${O}/><path d="M72 40q14 0 16 14l-6 2q-2-8-10-8" fill="#8fa8b8" ${O}/>
+      <path d="M26 30q24-12 48 0" fill="#6f8898" ${O}/><path d="M50 18v6" stroke="#2d3036" stroke-width="3"/><path d="M50 8v12" stroke="#5a5f6e" stroke-width="2"/><path d="M50 8l14 4-14 4z" fill="#e2402f" ${O1}/>
+      <rect x="42" y="46" width="14" height="22" rx="2" fill="#5a4636" ${O1}/><circle cx="34" cy="44" r="4" fill="#ffe9a0" ${O1}/><path d="M30 60h6M30 64h6" stroke="#6f8898" stroke-width="2"/>`),
+    // Schrottberg mit Rad, Rohr und Kiste
+    () => pJ(`<path d="M10 84q10-34 40-40 30 6 40 40z" fill="#8a7a6a" ${O}/><circle cx="34" cy="56" r="13" fill="none" stroke="#2d3036" stroke-width="5"/><circle cx="34" cy="56" r="3" fill="#2d3036"/>
+      <path d="M50 46l30 14" stroke="#9aa3b1" stroke-width="7" stroke-linecap="round"/><rect x="56" y="64" width="20" height="14" fill="#c99a62" ${O1}/><path d="M18 76l12-6M62 40l6 -8" stroke="#c0612b" stroke-width="3"/>`),
+    // Reifenstapel
+    () => pJ(`${[74, 60, 46, 32].map((y, i) => `<ellipse cx="${50 + (i % 2) * 4}" cy="${y}" rx="26" ry="9" fill="#2a2a30" ${O}/><ellipse cx="${50 + (i % 2) * 4}" cy="${y - 2}" rx="12" ry="4" fill="#5a5f6e"/>`).join("")}`),
+    // Schild des Schrottplatzes
+    () => pJ(`<path d="M24 86V50M76 86V50" stroke="#7a4a22" stroke-width="5"/><rect x="8" y="22" width="84" height="34" rx="4" fill="#ffe9a8" ${O}/>
+      <text x="50" y="36" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="9" fill="#7a4a22">SCHROTTPLATZ</text>
+      <text x="50" y="50" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="10" fill="#e2402f">T. JONAS</text>`),
+    // Alte Badewanne mit Füßen
+    () => pJ(`<path d="M14 46h72v8q0 22-22 22H36q-22 0-22-22z" fill="#f2f3f5" ${O}/><path d="M24 76l-4 8M76 76l4 8" stroke="#d9a520" stroke-width="5" stroke-linecap="round"/><path d="M78 46V28q0-8 8-8" fill="none" stroke="#9aa3b1" stroke-width="4"/><path d="M22 56q10 6 20 0" stroke="#c9ced8" stroke-width="2" fill="none"/>`),
+    // Tante Mathildas Kirschkuchen
+    () => pJ(`<ellipse cx="50" cy="66" rx="36" ry="12" fill="#ffffff" ${O}/><path d="M18 60q0-14 32-14t32 14v4q-32 12-64 0z" fill="#e8b46a" ${O}/>
+      ${[[30, 54], [44, 50], [58, 52], [70, 56], [38, 60], [62, 60]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.6" fill="#b0182a" ${O1}/>`).join("")}<path d="M40 30q4-8 0-14M56 30q4-8 0-14" stroke="#c9ced8" stroke-width="2" fill="none"/>`)
+  ];
+  // Schauplatz 2: Peter und Rocky Beach
+  const pP = tile("#9fd8f2", "#4aa0c8");
+  const PETER_ITEMS = [
+    // Skateboard-Rampe mit Brett
+    () => pP(`<path d="M10 84q40 0 52-40v40z" fill="#c9ced8" ${O}/><path d="M62 44h20v40H62" fill="#9aa3b1" ${O}/>${skateboard(36, 70).replace(/scale/, "")}`),
+    // Surfbrett im Sand
+    () => pP(`<path d="M8 74q42-10 84 0v12H8z" fill="#f2d39a"/><path d="M50 10q14 20 8 64-8 2-16 0-6-44 8-64z" fill="#ffd23a" ${O}/><path d="M50 14v58" stroke="#e2402f" stroke-width="4"/><path d="M44 40l12 2" stroke="#ffffff" stroke-width="2"/>`),
+    // Welle mit Surfer-Schaum
+    () => pP(`<path d="M6 86V60q16-30 44-24 20 4 18 22-10-12-20-4 10 10 26 2 10-6 20 4v26z" fill="#2b7fd0" ${O}/><path d="M24 54q12-18 30-14" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="66" cy="50" r="3" fill="#ffffff"/><circle cx="74" cy="56" r="2.4" fill="#ffffff"/>`),
+    // Fahrrad
+    () => pP(`<circle cx="28" cy="66" r="15" fill="none" stroke="#2d3036" stroke-width="4"/><circle cx="72" cy="66" r="15" fill="none" stroke="#2d3036" stroke-width="4"/>
+      <path d="M28 66l16-26h22l6 26M44 40l14 26h-30M44 40l-4-8h-8M66 40l2-10h8" fill="none" stroke="#e2402f" stroke-width="4" stroke-linejoin="round"/>`),
+    // Giovannis Eiscafé
+    () => pP(`<rect x="14" y="40" width="72" height="46" fill="#fff6e6" ${O}/>${[0, 1, 2, 3, 4, 5].map(i => `<path d="M${14 + i * 12} 30h12v12q-6 6-12 0z" fill="${i % 2 ? "#ffffff" : "#e2402f"}" ${O1}/>`).join("")}
+      <text x="50" y="25" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="11" fill="#2d3036">GIOVANNI</text>
+      <path d="M44 84l6-18 6 18z" fill="#e8b46a" ${O1}/><circle cx="46" cy="62" r="5" fill="#ff8fb1" ${O1}/><circle cx="54" cy="62" r="5" fill="#fff3b0" ${O1}/><circle cx="50" cy="56" r="5" fill="#8a5a2b" ${O1}/>
+      <rect x="22" y="52" width="14" height="14" fill="#bfe6ff" ${O1}/><rect x="64" y="52" width="14" height="14" fill="#bfe6ff" ${O1}/>`),
+    // Palme am Strand
+    () => pP(`<path d="M8 76q42-10 84 0v10H8z" fill="#f2d39a"/><path d="M50 80q-4-30 4-52" stroke="#8a5a2b" stroke-width="6" fill="none"/>
+      ${[[-60, "#3fae4a"], [-20, "#4fbf57"], [20, "#3fae4a"], [60, "#4fbf57"]].map(([a, c]) => `<path d="M54 28q-20-8-30 6 14-4 30-6z" fill="${c}" ${O1} transform="rotate(${a} 54 28)"/>`).join("")}<circle cx="52" cy="32" r="3" fill="#8a5a2b"/><circle cx="58" cy="32" r="3" fill="#8a5a2b"/>`)
+  ];
+  // Schauplatz 3: Bob, Recherchen und Archiv
+  const pB = tile("#e9dcc6", "#b39a76");
+  const BOB_ITEMS = [
+    // Aktenschrank
+    () => pB(`<rect x="22" y="12" width="56" height="74" rx="3" fill="#9aa3b1" ${O}/>${[16, 40, 64].map(y => `<rect x="27" y="${y}" width="46" height="20" rx="2" fill="#c9ced8" ${O1}/><rect x="43" y="${y + 7}" width="14" height="5" rx="2" fill="#5a5f6e"/><rect x="45" y="${y + 13}" width="10" height="4" fill="#ffffff" ${O1} stroke-width="1"/>`).join("")}`),
+    // Zeitungsstapel „Rocky Beach News“
+    () => pB(`${[78, 72, 66].map((y, i) => `<rect x="${16 + i * 2}" y="${y}" width="64" height="7" rx="1" fill="#f2efe6" ${O1}/>`).join("")}
+      <g transform="rotate(-6 50 40)"><rect x="14" y="16" width="70" height="48" fill="#fbf8f0" ${O}/><text x="49" y="28" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="7.6" fill="#2d3036">ROCKY BEACH NEWS</text>
+      <rect x="20" y="34" width="24" height="22" fill="#c9ced8"/><path d="M50 36h28M50 42h28M50 48h24M50 54h28" stroke="#9aa3b1" stroke-width="2"/></g>`),
+    // City Bank
+    () => pB(`<path d="M12 34L50 14l38 20z" fill="#e8e2d4" ${O}/><rect x="14" y="34" width="72" height="8" fill="#e8e2d4" ${O1}/>
+      ${[22, 38, 54, 70].map(x => `<rect x="${x}" y="44" width="8" height="34" fill="#f6f2e8" ${O1}/>`).join("")}<rect x="10" y="78" width="80" height="8" fill="#e8e2d4" ${O}/>
+      <text x="50" y="40.6" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="6.4" fill="#2d3036">CITY BANK</text><circle cx="50" cy="26" r="4" fill="#d9a520" ${O1}/>`),
+    // Polizeirevier
+    () => pB(`<rect x="14" y="30" width="72" height="56" fill="#f2f3f5" ${O}/><rect x="14" y="30" width="72" height="12" fill="#2b5fd9" ${O}/>
+      <text x="50" y="39.6" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="9" fill="#ffffff">POLIZEI</text>
+      <rect x="42" y="60" width="16" height="26" fill="#5a7aa8" ${O1}/><rect x="22" y="50" width="14" height="12" fill="#bfe6ff" ${O1}/><rect x="64" y="50" width="14" height="12" fill="#bfe6ff" ${O1}/>
+      <rect class="blinklight" x="44" y="18" width="12" height="10" rx="4" fill="#4aa8ff" ${O1}/>`),
+    // Super-Papagei auf der Stange
+    () => pB(`<path d="M20 74h60M50 74v14" stroke="#7a4a22" stroke-width="5" stroke-linecap="round"/><g class="bob">
+      <path d="M52 72q-20 12-22 26" stroke="#2b5fd9" stroke-width="7" fill="none" stroke-linecap="round"/><ellipse cx="54" cy="56" rx="14" ry="20" fill="#3fae4a" ${O}/>
+      <circle cx="56" cy="34" r="12" fill="#e2402f" ${O}/><path d="M64 34q10 2 6 12-4-6-8-6z" fill="#ffd23a" ${O1}/><circle cx="58" cy="32" r="2.4" fill="#2d3036"/>
+      <path d="M44 52q-8 10 2 20" fill="#2b5fd9" ${O1}/></g><rect x="66" y="12" width="26" height="14" rx="5" fill="#ffffff" ${O1}/><text x="79" y="22" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="8" fill="#2d3036">?!</text>`),
+    // Der Karpatenhund: Porzellanfigur auf dem Sockel
+    () => pB(`<rect x="24" y="72" width="52" height="12" rx="2" fill="#7a4a22" ${O}/><path d="M32 72l4-20q-2-12 8-14l4-12 4 6q8-2 10 8l-4 4q6 6 4 28z" fill="#f6f2e8" ${O}/>
+      <circle cx="54" cy="36" r="1.8" fill="#2d3036"/><path d="M60 40l6 2" stroke="#2d3036" stroke-width="1.6"/><path d="M38 56q6-4 10 2" stroke="#2b5fd9" stroke-width="2" fill="none"/><path d="M36 66q-8-4-6-14" stroke="#f6f2e8" stroke-width="5" fill="none" stroke-linecap="round"/>`),
+    // Bücherregal mit Lexika
+    () => pB(`<rect x="12" y="12" width="76" height="76" rx="2" fill="#8a5a2b" ${O}/>${[16, 40, 64].map((y, r) => [0, 1, 2, 3, 4, 5, 6].map(i => `<rect x="${16 + i * 10}" y="${y + (i % 3)}" width="8" height="${20 - (i % 3)}" fill="${["#e2402f", "#2b5fd9", "#ffd23a", "#3fae4a", "#7b4fd6", "#f2efe6", "#c0612b"][(i + r) % 7]}" ${O1} stroke-width="1"/>`).join("")).join("")}`)
+  ];
+
+  const scene = ({ name, lasse, pal, floor, pad, items, main, others, extras }) => ({
+    name, lasse, pal, floor, deco: () => "", extras: extras || (() => ""), words: ["Aha!", "Spur!"], winTitle: "Fall gelöst!",
+    wall: (x, y) => { const k = pick(x, y, 150, 20);
+      if (k < 2) return personTile(pad, main, pick(x, y, 151, 2));
+      if (k === 2) return personTile(pad, others[pick(x, y, 152, 2)], 0);
+      if (k < 6) return fragen(pad, pick(x, y, 153, 3));
+      if (k < 11) return DETEKTIV[pick(x, y, 154, DETEKTIV.length)](pad);
+      return items[pick(x, y, 155, items.length)](); }
+  });
+  const flo = (a, b, inner = () => "") => (x, y) => svgT(`<rect width="100" height="100" fill="${(x + y) % 2 ? b : a}"/>${inner(x, y)}`);
+  const SC = [
+    scene({ name: "Justus und die Kaffeekanne", lasse: "detektiv", pal: { "--bg": "#efe6d6", "--bg-2": "#faf6ee" }, pad: pJ, items: JUSTUS_ITEMS, main: "justus", others: ["peter", "bob"],
+      floor: flo("#b9a88c", "#b2a184", (x, y) => pick(x, y, 1, 4) === 0 ? `<circle cx="${20 + pick(x, y, 2, 60)}" cy="${20 + pick(x, y, 3, 60)}" r="3" fill="#8a7a62"/><path d="M${30 + pick(x, y, 4, 40)} 70l8-3" stroke="#9aa3b1" stroke-width="2"/>` : "") }),
+    scene({ name: "Peter und Rocky Beach", lasse: "detektiv", pal: { "--bg": "#e2f4ff", "--bg-2": "#f6fbff" }, pad: pP, items: PETER_ITEMS, main: "peter", others: ["justus", "bob"],
+      floor: flo("#f2dca8", "#eed5a0", (x, y) => pick(x, y, 1, 5) === 0 ? `<path d="M${30 + pick(x, y, 2, 40)} ${40 + pick(x, y, 3, 30)}q4-6 8 0" fill="none" stroke="#d9b878" stroke-width="2"/>` : ""),
+      extras: () => birdHTML() }),
+    scene({ name: "Bob: Recherchen und Archiv", lasse: "detektiv", pal: { "--bg": "#f2ece2", "--bg-2": "#fbf8f2" }, pad: pB, items: BOB_ITEMS, main: "bob", others: ["justus", "peter"],
+      floor: flo("#c99a62", "#c2935b", (x, y) => `<path d="M0 ${33 + (x % 2) * 10}h100M0 ${66 + (x % 2) * 10}h100" stroke="#a8743a" stroke-width="1.6" opacity=".6"/>`) })
+  ];
+
+  const BOX_COLORS = [["#e2402f", ""], ["#2b5fd9", ""], ["#ffd23a", ""], ["#3fae4a", ""], ["#7b4fd6", ""], ["#ff8a1a", ""], ["#2ec4b6", ""], ["#ff8fb1", ""], ["#2d3036", ""], ["#f2f3f5", ""], ["#8a5a2b", ""], ["#bbe90b", ""]];
+  const fingerTarget = () => `<svg viewBox="0 0 100 100">
+    <ellipse class="glow" cx="50" cy="52" rx="32" ry="38" fill="#fff3b0"/>
+    <g fill="none" stroke="#2d3036" stroke-width="2.6" stroke-linecap="round" opacity=".55">
+      ${[8, 14, 20, 26, 32].map((r, i) => `<path d="M${50 - r * .8} ${62 + i} q0 -${r * 1.6} ${r * .8} -${r * 1.6} t${r * .8} ${r * 1.6}${i > 1 ? ` q0 ${r * .4} -${r * .2} ${r * .7}` : ""}"/>`).join("")}
+      <path d="M38 78q12 6 24 0M34 72q16 10 32 0"/></g>
+    <g class="fx" fill="#f7d02c"><path d="M12 8l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z"/><path d="M86 4l2.5 5.5 6 .8-4.3 4 1 6-5.2-3-5.2 3 1-6-4.3-4 6-.8z"/></g></svg>`;
+
+  const D = {
+    worldName: "Die drei ??? Kids", title: "Die drei ??? Kids", emblem: "fragezeichen", box: "lupe", rolls: false, squish: false,
+    boxWord: "Lupen", pushWord: "Schübe", boxColors: BOX_COLORS,
+    hint: "Schieb jede Lupe auf einen Fingerabdruck. Lupen lassen sich nur schieben, nicht ziehen.",
+    winTitle: "Fall gelöst!", winText: (m, p) => `Alle Spuren untersucht! ${m} Schritte, ${p} Schübe.`,
+    confetti: ["#ffffff", "#e2402f", "#2b5fd9", "#ffd23a"],
+    prize: { symbol: "detektivausweis", title: "Detektiv-Ausweis!", text: (m) => `Du bist jetzt der vierte Detektiv! Finale in ${m} Schritten.` },
+    target: fingerTarget, levelNames: COMIC ? null : null,
+    pal: { ...(P2.pal || {}), "--accent": "#e2402f", "--accent-dark": "#a8261a", "--soft": "#f4efe6", "--edge": "#e3d8c6", "--bg": "#f2ece2", "--bg-2": "#fbf8f2", "--floor-a": "#c99a62", "--floor-b": "#c2935b" },
+    scenes: SC
+  };
+  THEMES.pokemon2 = COMIC ? theme2(D) : D;
+  // Weltkarte: Justus, Peter und Bob stehen bei Welt 9
+  const baseDeco = mapDeco;
+  mapDeco = function (shown, open, pts) {
+    let html = baseDeco(shown, open, pts);
+    const i = shown.findIndex(w => w.theme === "pokemon2"); if (i < 0) return html;
+    const left = pts[i][0] < 50;
+    [["justus", 0], ["peter", 1], ["bob", 2]].forEach(([who, k]) => {
+      const x = pts[i][0] + (left ? 1 : -1) * (36 + k * 9), y = pts[i][1] + 30 + (k % 2) * 10;
+      html += `<div class="mapdeco mapfig" data-who="${who.toUpperCase()}" style="left:${x}%;top:${y}px;width:46px;height:57px;animation-delay:${-k * .8}s"><svg viewBox="0 -24 100 124" overflow="visible">${VARIANTS[who][0]}</svg></div>`; });
+    return html;
+  };
+})();
 // ===== Arne: kurze dunkle Haare (Seiten grau), hohe Stirn, durchsichtige eckige Brille, dunkler Schnurrbart,
 // graumelierter Bart, Bomberjacke mit bunten Blumen, schwarzes Hemd mit Kirschmuster =====
 const AK = `stroke="#2d3036" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"`;
@@ -4802,7 +5032,7 @@ function renderLevels() {
   let next = -1;
   for (let l = 0; l < NL(curWorld); l++) if (levelOpen(p, curWorld, l) && !isSolved(p, curWorld, l)) { next = l; break; }
   document.getElementById("levelgrid").innerHTML = w.levels.map((_, l) => {
-    const row = th.scenes && l % PER_DESIGN === 0 && th.scenes[l / PER_DESIGN] ? `<div class="row-name">${esc(th.scenes[l / PER_DESIGN].name)}</div>` : "";
+    const row = th.scenes && !th.levelScenes && l % PER_DESIGN === 0 && th.scenes[l / PER_DESIGN] ? `<div class="row-name">${esc(th.scenes[l / PER_DESIGN].name)}</div>` : "";
     const prize = th.prize && l === NL(curWorld) - 1;
     const open = levelOpen(p, curWorld, l), done = isSolved(p, curWorld, l);
     const cls = ["lvl", done ? "done" : "", !open ? "locked" : "", l === next ? "next" : ""].join(" ");
