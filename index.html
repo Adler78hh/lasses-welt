@@ -4527,6 +4527,78 @@ for (const [name, list] of Object.entries(NEUE_WAENDE)) { EXTRA_WALLS[name] = (E
     EXTRA_SHARE[ST.name] = 3;
   }
 })();
+// ===== Reiten (Teil 1): viele Pferdeköpfe in verschiedenen Fellfarben =====
+// Im Stall schauen sie über die Stahltür, auf der Weide und am Turnierplatz über den Zaun.
+(() => {
+  const O = `stroke="#2b1a0e" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
+  // Fell, Mähne, Maul, Abzeichen (stern, blesse, schnippe, keins), Muster (aepfel, schecken, zweifarbig)
+  const COATS = [
+    { name: "Brauner", coat: "#8a4f24", mane: "#2a1a10", muzzle: "#c9926a", mark: "stern" },
+    { name: "Rappe", coat: "#2b2220", mane: "#0f0b09", muzzle: "#5a4a42", mark: "keins" },
+    { name: "Fuchs", coat: "#c0622b", mane: "#a0481d", muzzle: "#e8a77a", mark: "blesse" },
+    { name: "Schimmel", coat: "#f1efe9", mane: "#cfcac0", muzzle: "#d9c9c2", mark: "keins", pat: "aepfel" },
+    { name: "Falbe", coat: "#d6b07a", mane: "#3a2a1e", muzzle: "#8a6a50", mark: "schnippe" },
+    { name: "Palomino", coat: "#e6b45a", mane: "#fff3d6", muzzle: "#f3cf95", mark: "blesse" },
+    { name: "Haflinger", coat: "#b8682e", mane: "#f5e3b8", muzzle: "#e3a774", mark: "blesse" },
+    { name: "Schecke", coat: "#ffffff", mane: "#8a4f24", muzzle: "#f0d6c8", mark: "keins", pat: "schecken" },
+    { name: "Norweger", coat: "#e3c79a", mane: "#fff6e0", muzzle: "#6b5440", mark: "keins", pat: "zweifarbig" },
+    { name: "Isländer", coat: "#7a5a48", mane: "#e6d6c4", muzzle: "#a88a74", mark: "stern" }
+  ];
+  const coatOf = (x, y, salt) => COATS[(pick(x, y, salt, 97) + x * 3 + y * 7) % COATS.length];
+
+  // Kopf mit Hals, schaut über eine Kante bei y = edge
+  const head = (c, x, y, edge = 64) => { const d = delayOf(x, y);
+    const mark = { stern: `<path d="M50 26l2.4 4 4.4.6-3.2 3 .8 4.4-4.4-2.2-4.4 2.2.8-4.4-3.2-3 4.4-.6z" fill="#ffffff"/>`,
+      blesse: `<path d="M47 22q3-3 6 0l-1 26h-4z" fill="#ffffff"/>`, schnippe: `<ellipse cx="50" cy="52" rx="4" ry="3" fill="#ffffff" opacity=".9"/>`, keins: "" }[c.mark];
+    const pat = c.pat === "aepfel" ? `<g fill="#c9c4bb" opacity=".7"><circle cx="38" cy="44" r="3"/><circle cx="60" cy="28" r="2.6"/><circle cx="64" cy="46" r="3.2"/><circle cx="44" cy="30" r="2.2"/></g>`
+      : c.pat === "schecken" ? `<path d="M30 30q4-14 16-12 0 12-8 20-6 2-8-8z" fill="#8a4f24"/><path d="M58 40q8-4 12 4l-2 12q-8-2-10-16z" fill="#8a4f24"/>` : "";
+    const mane = c.pat === "zweifarbig"
+      ? `<path d="M41 13q9-9 18 0 0 8-9 10-9-2-9-10z" fill="${c.mane}" ${O} stroke-width="2"/><path d="M50 8v12" stroke="#3a2a1e" stroke-width="3"/>`
+      : `<path d="M39 14q11-10 22 0-3 10-11 10t-11-10z" fill="${c.mane}" ${O} stroke-width="2"/><path d="M44 18q2 6 6 6M56 18q-2 6-6 6" stroke="${c.mane}" stroke-width="3" fill="none"/>`;
+    return `<g class="peek" style="animation-delay:${d}s">
+      <path d="M36 ${edge + 4}V52h28v${edge - 48}z" fill="${c.coat}" ${O}/><path d="M62 52q6 6 6 ${edge - 46}" fill="none" stroke="${c.mane}" stroke-width="6" stroke-linecap="round"/>
+      <g class="ears" style="animation-delay:${d}s"><path d="M33 22l-4-16 13 10z" fill="${c.coat}" ${O}/><path d="M67 22l4-16-13 10z" fill="${c.coat}" ${O}/>
+        <path d="M33 18l-1-7 5 5z" fill="#00000030"/><path d="M67 18l1-7-5 5z" fill="#00000030"/></g>
+      <path d="M30 26q0-14 20-14t20 14l-3 30q-2 10-17 10t-17-10z" fill="${c.coat}" ${O}/>
+      ${pat}${mark}${mane}
+      <ellipse cx="50" cy="56" rx="15" ry="10" fill="${c.muzzle}" ${O} stroke-width="2.2"/>
+      <ellipse cx="45" cy="56" rx="2" ry="3" fill="#2b1a0e"/><ellipse cx="55" cy="56" rx="2" ry="3" fill="#2b1a0e"/><path d="M46 62q4 2 8 0" stroke="#2b1a0e" stroke-width="1.6" fill="none"/>
+      <g class="h-eyes" style="animation-delay:${d}s"><ellipse cx="38" cy="36" rx="3.6" ry="4.4" fill="#1a120c"/><ellipse cx="62" cy="36" rx="3.6" ry="4.4" fill="#1a120c"/>
+        <circle cx="39.2" cy="34.4" r="1.3" fill="#ffffff"/><circle cx="63.2" cy="34.4" r="1.3" fill="#ffffff"/></g></g>`; };
+
+  // Stall: Holzwand dahinter, unten eine graue Stahltür mit Nieten und Gitterstäben
+  const stallHead = (x, y) => { const c = coatOf(x, y, 120);
+    return `<svg viewBox="0 0 100 100" class="horse"><rect x="3" y="8" width="94" height="88" rx="14" fill="#3a2414"/><rect x="3" y="3" width="94" height="86" rx="14" fill="#4f3220"/>
+      <path d="M14 4v60M86 4v60" stroke="#3a2414" stroke-width="4"/>
+      ${head(c, x, y, 62)}
+      <rect x="5" y="62" width="90" height="28" rx="5" fill="#8b95a3" ${O}/>
+      <rect x="5" y="62" width="90" height="6" rx="3" fill="#c3cad3" ${O} stroke-width="1.6"/>
+      <path d="M12 72h76M12 82h76" stroke="#6b7482" stroke-width="2"/>${[12, 30, 50, 70, 88].map(a => `<circle cx="${a}" cy="77" r="1.8" fill="#c3cad3"/>`).join("")}
+      <rect x="78" y="70" width="10" height="5" rx="2" fill="#4a5260"/><path d="M14 66l20 22" stroke="#ffffff" stroke-width="2" opacity=".25"/></svg>`; };
+
+  // Weide: Holzzaun auf der Wiese
+  const pad = (top, side) => `<rect x="3" y="9" width="94" height="88" rx="16" fill="${side}"/><rect x="3" y="3" width="94" height="86" rx="16" fill="${top}"/><rect x="14" y="10" width="26" height="6" rx="3" fill="#ffffff" opacity=".3"/>`;
+  const meadowHead = (x, y) => { const c = coatOf(x, y, 121);
+    return `<svg viewBox="0 0 100 100" class="horse">${pad("#9ed680", "#5e9e4a")}<path d="M8 40q20-6 42 0t42-2" stroke="#7cc46a" stroke-width="3" fill="none" opacity=".6"/>
+      ${head(c, x, y, 66)}
+      ${[14, 86].map(a => `<rect x="${a - 6}" y="58" width="12" height="32" rx="3" fill="#b07a45" ${O}/>`).join("")}
+      <rect x="2" y="64" width="96" height="9" rx="4" fill="#d29a5f" ${O}/><rect x="2" y="79" width="96" height="9" rx="4" fill="#d29a5f" ${O}/>
+      ${flower(26, 90, "#ffffff", 3.4)}${flower(74, 92, "#ffe066", 3.4)}</svg>`; };
+
+  // Turnierplatz: weißer Zaun mit roten Streifen und Blumenkasten
+  const arenaHead = (x, y) => { const c = coatOf(x, y, 122);
+    return `<svg viewBox="0 0 100 100" class="horse">${pad("#8fd06f", "#4e9a40")}
+      ${head(c, x, y, 66)}
+      ${[12, 88].map(a => `<rect x="${a - 6}" y="56" width="12" height="34" rx="3" fill="#ffffff" ${O}/><path d="M${a - 6} 64h12M${a - 6} 76h12" stroke="#ef4b4b" stroke-width="4"/>`).join("")}
+      <rect x="2" y="64" width="96" height="9" rx="4" fill="#ffffff" ${O}/>${[22, 42, 62, 82].map(a => `<rect x="${a - 4}" y="65.5" width="8" height="6" fill="#ef4b4b"/>`).join("")}
+      <rect x="22" y="78" width="56" height="12" rx="4" fill="#8a5a2b" ${O}/>${flower(34, 77, "#ff8fb1", 4)}${flower(50, 76, "#ffffff", 4)}${flower(66, 77, "#ffe066", 4)}</svg>`; };
+
+  const R = THEMES.reiten, byName = (n) => (R.scenes || []).find(s => s.name === n);
+  const weide = byName("Weide"), stall = byName("Stall"), turnier = byName("Turnierplatz");
+  if (stall) { const base = stall.wall; stall.wall = (x, y) => pick(x, y, 0, 5) < 3 ? stallHead(x, y) : base(x, y); }
+  if (weide) { const base = weide.wall; weide.wall = (x, y) => pick(x, y, 130, 3) === 0 ? meadowHead(x, y) : base(x, y); }
+  if (turnier) { const base = turnier.wall; turnier.wall = (x, y) => pick(x, y, 131, 4) === 0 ? arenaHead(x, y) : base(x, y); }
+})();
 
 // ===== Kinderbuch-Details =====
 // Kleine Dinge, die auf Wände und Böden gestreut werden, damit sich nichts wiederholt.
