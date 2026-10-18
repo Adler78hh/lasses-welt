@@ -5062,29 +5062,76 @@ function mapDeco(shown, open, pts) {
       <path d="M58 52h26M58 60h20M58 68h24" stroke="#9aa3b1" stroke-width="3" stroke-linecap="round"/>
     </symbol>`);
 
-  // ---------- 3. Figuren: Justus, Peter, Bob (wie in den Kids-Büchern) ----------
-  kidHair.justus = (c) => `<path d="M34 34q-2-19 16-19t16 17q-6-7-12-6-4-4-8-1-5-2-12 9z" fill="${c}" ${KK}/>`;
-  kidHair.peter = (c) => `<path d="M34 33q-3-18 14-19 6-4 11 1 9 2 8 17-4-8-9-8-1 4-6 4 2-4 0-6-6 6-18 11z" fill="${c}" ${KK}/>`;
-  kidHair.bob = (c) => `<path d="M34 33q-1-18 16-18t16 18q-2-8-9-9l-8 4 2-5q-9 1-17 10z" fill="${c}" ${KK}/>`;
-  const brille = `<g fill="#ffffff" fill-opacity=".35" stroke="#4a3728" stroke-width="1.6"><circle cx="45" cy="33" r="4.6"/><circle cx="55" cy="33" r="4.6"/></g><path d="M49.6 33h.8M40.4 32l-4-1M59.6 32l4-1" stroke="#4a3728" stroke-width="1.4"/>`;
   const fz = (c, x, y, s = 9) => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="${s}" fill="${c}" stroke="#4a3728" stroke-width="1" paint-order="stroke">?</text>`;
   const notizbuch = (x, y) => `<g transform="rotate(-10 ${x} ${y})"><rect x="${x - 8}" y="${y - 10}" width="16" height="20" rx="1.5" fill="#ffe9a8" ${O1}/><path d="M${x - 5} ${y - 4}h10M${x - 5} ${y}h10M${x - 5} ${y + 4}h7" stroke="#7a8aa8" stroke-width="1.2"/></g>`;
   const skateboard = (x, y) => `<g transform="rotate(-20 ${x} ${y})"><rect x="${x - 16}" y="${y - 3}" width="32" height="6" rx="3" fill="#e2402f" ${O1}/><circle cx="${x - 9}" cy="${y + 5}" r="2.6" fill="#ffd23a" ${O1}/><circle cx="${x + 9}" cy="${y + 5}" r="2.6" fill="#ffd23a" ${O1}/></g>`;
   const akte = (x, y) => `<g transform="rotate(8 ${x} ${y})"><rect x="${x - 10}" y="${y - 8}" width="20" height="16" rx="1.5" fill="#e3b860" ${O1}/><path d="M${x - 10} ${y - 4}h20" stroke="#b8862f" stroke-width="1.4"/><text x="${x}" y="${y + 5}" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="6" fill="#7a4a22">AKTE</text></g>`;
-  const JUSTUS = { hair: "justus", hc: "#2a1d18", shirt: "#ffffff", shorts: "#3b4a6b", socks: "#ffffff", shoes: "#4a3728",
-    front: `<path d="M38 52h24" stroke="#d9dde6" stroke-width="1"/>${fz("#4a3728", 50, 63, 10)}` };
-  const PETER = { hair: "peter", hc: "#b4542a", shirt: "#e2402f", shorts: "#2b5fd9", socks: "#ffffff", shoes: "#ffffff",
-    front: fz("#ffffff", 50, 63, 10) };
-  const BOB = { hair: "bob", hc: "#f2c94c", shirt: "#2b5fd9", shorts: "#c9a36a", socks: "#2b5fd9", shoes: "#7a4a22",
-    front: brille + fz("#ffffff", 50, 63, 10) };
-  // Posen: normal, mit Gegenstand
-  const fig = (cfg, prop = "") => kidFigure({ ...cfg, hat: null, prop });
-  const VARIANTS = {
-    justus: [fig(JUSTUS), fig(JUSTUS, notizbuch(72, 66) + `<path d="M64 66l6 0" stroke="#ffd9bf" stroke-width="5" stroke-linecap="round"/>`)],
-    peter: [fig(PETER), fig(PETER, skateboard(72, 84))],
-    bob: [fig(BOB), fig(BOB, akte(73, 66))]
-  };
-  const personTile = (padFn, who, i) => asPerson(padFn(`<g transform="translate(8 4) scale(.84)">${VARIANTS[who][i]}</g>`), who);
+  // ---------- 3. Figuren: Justus, Peter, Bob (nach den Vorlagen aus den Kids-Büchern) ----------
+  // Ganze Figur in viewBox 0 0 100 200: Kopf oben, Knielange Shorts, Socken, Turnschuhe
+  const OF = `stroke="#4a3728" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
+  const SK = "#ffd9bf";
+  const arm = (x1, y1, x2, y2, sleeve, len = .45) => { const sx = x1 + (x2 - x1) * len, sy = y1 + (y2 - y1) * len;
+    return `<path d="M${x1} ${y1}L${x2} ${y2}" stroke="#4a3728" stroke-width="11" stroke-linecap="round"/><path d="M${x1} ${y1}L${x2} ${y2}" stroke="${SK}" stroke-width="7" stroke-linecap="round"/>
+      <path d="M${x1} ${y1}L${sx} ${sy}" stroke="#4a3728" stroke-width="14" stroke-linecap="round"/><path d="M${x1} ${y1}L${sx} ${sy}" stroke="${sleeve}" stroke-width="10" stroke-linecap="round"/>`; };
+  const hand = (x, y, r = 5.4) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${SK}" ${OF} stroke-width="2"/>`;
+  const fist = (x, y) => `<rect x="${x - 6}" y="${y - 6}" width="12" height="12" rx="5" fill="${SK}" ${OF} stroke-width="2"/><path d="M${x - 4} ${y - 1}h8M${x - 4} ${y + 2}h8" stroke="#d9a888" stroke-width="1.2"/>`;
+  const teen = ({ w = 40, shirt, sleeve = shirt, shirtArt = "", shorts, socks = "#ffffff", shoes, shoeArt = "", hair, face = "", arms, front = "" }) => {
+    const L = 50 - w / 2, R = 50 + w / 2;
+    return `<ellipse cx="50" cy="194" rx="28" ry="4" fill="#00000022"/>
+      <rect x="${50 - w * .3}" y="140" width="9" height="40" rx="4" fill="${SK}" ${OF}/><rect x="${50 + w * .3 - 9}" y="140" width="9" height="40" rx="4" fill="${SK}" ${OF}/>
+      <rect x="${50 - w * .3 - 1}" y="168" width="11" height="14" rx="3" fill="${socks}" ${OF} stroke-width="1.8"/><rect x="${50 + w * .3 - 10}" y="168" width="11" height="14" rx="3" fill="${socks}" ${OF} stroke-width="1.8"/>
+      ${[50 - w * .3 + 3, 50 + w * .3 - 5].map((x, i) => `<path d="M${x - 10 + i * 4} 192q0-12 10-12h4q8 0 9 12z" fill="${shoes}" ${OF} stroke-width="2"/><path d="M${x - 10 + i * 4} 190h23" stroke="#ffffff" stroke-width="2.4"/>${shoeArt.replaceAll("X", x)}`).join("")}
+      <path d="M${L + 2} 112h${w - 4}l3 36h-${w / 2 - 2}l-2-6-2 6h-${w / 2 - 2}z" fill="${shorts}" ${OF}/><path d="M50 118v18" stroke="#00000030" stroke-width="1.4"/>
+      ${arms.back || ""}
+      <path d="M${L} 116V80q0-14 ${w / 2} -14t${w / 2} 14v36z" fill="${shirt}" ${OF}/>${shirtArt}
+      <path d="M44 66q6 6 12 0" fill="none" stroke="#4a3728" stroke-width="2"/>
+      ${arms.front || ""}
+      <rect x="45" y="58" width="10" height="10" rx="3" fill="${SK}" ${OF} stroke-width="1.8"/>
+      <ellipse cx="28.5" cy="42" rx="3.4" ry="5" fill="${SK}" ${OF} stroke-width="1.8"/><ellipse cx="71.5" cy="42" rx="3.4" ry="5" fill="${SK}" ${OF} stroke-width="1.8"/>
+      <ellipse cx="50" cy="40" rx="21" ry="22" fill="${SK}" ${OF}/>
+      ${hair}
+      <ellipse cx="42" cy="42" rx="2.6" ry="3.4" fill="#4a3728"/><ellipse cx="58" cy="42" rx="2.6" ry="3.4" fill="#4a3728"/><circle cx="42.8" cy="41" r="1" fill="#fff"/><circle cx="58.8" cy="41" r="1" fill="#fff"/>
+      <path d="M49 46q-2 5 2 6" fill="none" stroke="#d9a888" stroke-width="1.8"/>
+      ${face || `<path d="M42 54q8 7 16 0" fill="#ffffff" ${OF} stroke-width="1.8"/>`}
+      <ellipse cx="36" cy="50" rx="3.4" ry="2" fill="#ff8f8f" opacity=".45"/><ellipse cx="64" cy="50" rx="3.4" ry="2" fill="#ff8f8f" opacity=".45"/>
+      ${front}`; };
+
+  // Justus: kräftig, braune strubbelige Haare, dunkelrotes Shirt mit breitem schwarzem Streifen, hellblaue Jeans-Shorts, dunkelblaue Turnschuhe
+  const JUSTUS_HAAR = `<path d="M28 40q-4-26 22-28 8-6 14 0 12 2 10 14 4 6 0 14-2-10-8-12 2 6-2 8-4-8-12-8 2 4-2 6-6-6-14-2-4 4-8 8z" fill="#7a4626" ${OF}/>
+    <path d="M40 14q-2-8 6-10-2 4 0 6M58 12q6-4 10 2-4 0-6 2M30 26q-6-2-6-8 4 2 8 2" fill="#7a4626" ${OF} stroke-width="1.8"/><path d="M38 24q6-4 12 0M54 22q6-2 10 4" stroke="#5a3016" stroke-width="1.6" fill="none"/>
+    <path d="M38 35l7-1M55 34l7 1" stroke="#5a3016" stroke-width="2.4"/>`;
+  const justusShirt = (w) => `<path d="M${50 - w / 2} 86h${w}v18h-${w}z" fill="#1f1f24"/><path d="M${50 - w / 2} 108h${w}" stroke="#1f1f24" stroke-width="3"/>`;
+  const JUSTUS_CFG = { w: 48, shirt: "#9a2a2a", shirtArt: justusShirt(48), shorts: "#a9cbe0", shoes: "#2e3a5a", hair: JUSTUS_HAAR,
+    face: `<path d="M43 54q7 5 15-1" fill="none" stroke="#4a3728" stroke-width="2.2"/>`,
+    shoeArt: `<path d="MX 186l4-5M${"X"} 189l7-7" stroke="#ffffff" stroke-width="1.6"/>` };
+  // Justus mit Lupe vor dem Gesicht und Hand in der Hüfte (neben dem Level), an der Wand nachdenklich mit Finger am Kinn
+  const lupeHand = (x, y) => `<path d="M${x} ${y}l6 14" stroke="#7a4a22" stroke-width="4" stroke-linecap="round"/><circle cx="${x - 3}" cy="${y - 8}" r="9" fill="#d6f0ff" stroke="#c98a2a" stroke-width="3"/><path d="M${x - 8} ${y - 11}q2-4 6-5" stroke="#fff" stroke-width="2" fill="none"/>`;
+  const justusMitLupe = teen({ ...JUSTUS_CFG, arms: { front: arm(28, 76, 22, 52, "#9a2a2a") + lupeHand(22, 46) + hand(22, 52) + arm(72, 76, 78, 108, "#9a2a2a") + hand(76, 108) } });
+  const justusDenkt = teen({ ...JUSTUS_CFG, arms: { front: arm(28, 76, 22, 110, "#9a2a2a") + hand(22, 110) + arm(72, 76, 58, 64, "#9a2a2a", .55) + hand(57, 62, 5) } });
+  // Bob: blond, Brille, limettengrünes Shirt mit schwarzem Stern, dunkelblaue Shorts, hellblaue Turnschuhe, schreibt in den Notizblock
+  const BOB_HAAR = `<path d="M28 44q-4-30 22-30t22 30q-2-12-8-14-10 6-26 2-6 4-10 12z" fill="#f2c94c" ${OF}/><path d="M40 20q10 4 22 2" stroke="#d9a520" stroke-width="1.6" fill="none"/>`;
+  const BRILLE = `<g fill="#ffffff" fill-opacity=".3" stroke="#4a3728" stroke-width="2"><circle cx="42" cy="42" r="6.4"/><circle cx="58" cy="42" r="6.4"/></g><path d="M48.4 42h3.2M35.6 41l-6-2M64.4 41l6-2" stroke="#4a3728" stroke-width="1.8"/>`;
+  const stern = `<path d="M50 78l3.6 8 8.4.6-6.4 5.4 2 8.2L50 96l-7.6 4.2 2-8.2-6.4-5.4 8.4-.6z" fill="#1f1f24"/>`;
+  const BOB_CFG = { w: 38, shirt: "#a4d64a", shirtArt: stern, shorts: "#2b4f9a", shoes: "#8fc8ef", hair: BOB_HAAR, front: BRILLE };
+  const block = `<g transform="rotate(-8 38 92)"><rect x="28" y="80" width="20" height="26" rx="2" fill="#ffffff" ${OF} stroke-width="2"/><path d="M28 80h20" stroke="#4a3728" stroke-width="3"/><path d="M32 88h12M32 93h12M32 98h8" stroke="#9aa3b1" stroke-width="1.4"/></g>`;
+  const stift = `<path d="M54 92l12-16" stroke="#e8a21a" stroke-width="4" stroke-linecap="round"/><path d="M54 92l2-3" stroke="#4a3728" stroke-width="4"/><path d="M66 76l2-2" stroke="#ff8fb1" stroke-width="4" stroke-linecap="round"/>`;
+  const bobSchreibt = teen({ ...BOB_CFG, arms: { front: arm(31, 76, 34, 98, "#a4d64a") + block + hand(36, 100) + arm(69, 76, 58, 94, "#a4d64a") + stift + hand(57, 92) } });
+  const bobSteht = teen({ ...BOB_CFG, arms: { front: arm(31, 76, 28, 110, "#a4d64a") + hand(28, 110) + arm(69, 76, 72, 110, "#a4d64a") + hand(72, 110) } });
+  // Peter: groß und sportlich, rotorange Stachelhaare, türkisblaues Shirt mit dunklem Kragen, hellgraue Shorts, schwarz-weiße Turnschuhe
+  const PETER_HAAR = `<path d="M28 40q-6-6-2-14l-8-4 10-2-4-10 12 4 0-10 10 8 6-10 4 10 10-6-2 10 12-2-8 8 8 6-10 2q2 8-2 14-2-12-10-14-10 4-22 2-6 2-4 10z" fill="#e2622a" ${OF}/>
+    <path d="M38 35l7-2M55 33l7 2" stroke="#a8401a" stroke-width="2.4"/>`;
+  const peterShirt = `<path d="M43 66l7 6 7-6" fill="#1f3a5a" ${OF} stroke-width="1.6"/>`;
+  const PETER_CFG = { w: 38, shirt: "#2f8fb4", sleeve: "#2f8fb4", shirtArt: peterShirt, shorts: "#c9c9de", shoes: "#1f1f24", hair: PETER_HAAR,
+    face: `<path d="M42 53q8 8 16 0" fill="#ffffff" ${OF} stroke-width="1.8"/>` };
+  const cuff = (x, y) => `<circle cx="${x}" cy="${y}" r="5.6" fill="none" stroke="#1f3a5a" stroke-width="2.4"/>`;
+  const peterJubelt = teen({ ...PETER_CFG, arms: { front: arm(31, 76, 22, 58, "#2f8fb4", .5) + fist(20, 50) + arm(69, 76, 74, 106, "#2f8fb4") + hand(73, 106) } });
+  const peterSteht = teen({ ...PETER_CFG, arms: { front: arm(31, 76, 28, 110, "#2f8fb4") + hand(28, 110) + arm(69, 76, 74, 108, "#2f8fb4") + hand(73, 108) } });
+
+  const FIG = { justus: [justusDenkt, justusDenkt], peter: [peterJubelt, peterSteht], bob: [bobSchreibt, bobSteht] };
+  const SIDE = { justus: justusMitLupe, peter: peterJubelt, bob: bobSchreibt };
+  const VARIANTS = { justus: FIG.justus, peter: FIG.peter, bob: FIG.bob };
+  const personTile = (padFn, who, i) => asPerson(padFn(`<g transform="translate(26 3) scale(.47)">${FIG[who][i]}</g>`), who);
+  const sideSvg = (who) => `<svg data-kid="1" viewBox="0 0 100 200" overflow="visible">${SIDE[who]}</svg>`;
 
   // ---------- 4. Lasse als Detektiv mit Sherlock-Holmes-Mütze ----------
   const HUT = `<path d="M22 30q0-24 28-24t28 24z" fill="#b08850" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
@@ -5205,6 +5252,7 @@ function mapDeco(shown, open, pts) {
 
   const scene = ({ name, lasse, pal, floor, pad, items, main, others, extras }) => ({
     name, lasse, pal, floor, deco: () => "", extras: extras || (() => ""), words: ["Aha!", "Spur!"], winTitle: "Fall gelöst!",
+    side: { l: [sideSvg(main)], r: others.map(sideSvg) },
     wall: (x, y) => { const k = pick(x, y, 150, 20);
       if (k < 2) return personTile(pad, main, pick(x, y, 151, 2));
       if (k === 2) return personTile(pad, others[pick(x, y, 152, 2)], 0);
@@ -5251,7 +5299,7 @@ function mapDeco(shown, open, pts) {
     const left = pts[i][0] < 50;
     [["justus", 0], ["peter", 1], ["bob", 2]].forEach(([who, k]) => {
       const x = pts[i][0] + (left ? 1 : -1) * (36 + k * 9), y = pts[i][1] + 30 + (k % 2) * 10;
-      html += `<div class="mapdeco mapfig" data-who="${who.toUpperCase()}" style="left:${x}%;top:${y}px;width:46px;height:57px;animation-delay:${-k * .8}s"><svg viewBox="0 -24 100 124" overflow="visible">${VARIANTS[who][0]}</svg></div>`; });
+      html += `<div class="mapdeco mapfig" data-who="${who.toUpperCase()}" style="left:${x}%;top:${y}px;width:34px;height:68px;animation-delay:${-k * .8}s"><svg viewBox="0 0 100 200" overflow="visible">${SIDE[who]}</svg></div>`; });
     return html;
   };
 })();
