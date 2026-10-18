@@ -3961,10 +3961,10 @@ const EXTRA_WALLS = {};
   const tile = (top, side) => (inner) => COMIC ? kB(top, inner) : svgT(`${T1PAD(top, side)}${inner}`);
 
   // ---------- 1. Pokémon: sechs Designs in einer Welt ----------
-  const P = THEMES.pokemon, P2 = THEMES.pokemon2;
-  const SIX = [...P.scenes, ...P2.scenes];
-  P.scenes = SIX; P.levelScenes = SIX;
-  P.levelNames = COMIC ? ["Route 1", "Vertania", "Marmoria", "Dojo", "Psycho", "Vulkan"] : ["Wasser", "Pflanzen", "Blitz", "Kampf", "Psycho", "Feuer"];
+  const PK = THEMES.pokemon, P2 = THEMES.pokemon2;
+  const SIX = [...PK.scenes, ...P2.scenes];
+  PK.scenes = SIX; PK.levelScenes = SIX;
+  PK.levelNames = COMIC ? ["Route 1", "Vertania", "Marmoria", "Dojo", "Psycho", "Vulkan"] : ["Wasser", "Pflanzen", "Blitz", "Kampf", "Psycho", "Feuer"];
 
   // ---------- 2. Gemeinsame Symbole: Lupe, drei Fragezeichen, Detektiv-Ausweis ----------
   document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
@@ -4224,7 +4224,9 @@ const EXTRA_WALLS = {};
   const baseDeco = mapDeco;
   mapDeco = function (shown, open, pts) {
     let html = baseDeco(shown, open, pts);
-    const i = shown.findIndex(w => w.theme === "pokemon2"); if (i < 0) return html;
+    const i = shown.findIndex(w => w.theme === "pokemon2"), wi = WORLDS.indexOf(shown[i]);
+    // erst sichtbar, wenn die Welt der drei ??? komplett geschafft ist
+    if (i < 0 || solvedIn(P(), wi) < NL(wi)) return html;
     const left = pts[i][0] < 50;
     [["justus", 0], ["peter", 1], ["bob", 2]].forEach(([who, k]) => {
       const x = pts[i][0] + (left ? 1 : -1) * (36 + k * 9), y = pts[i][1] + 30 + (k % 2) * 10;

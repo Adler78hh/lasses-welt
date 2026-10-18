@@ -5036,10 +5036,10 @@ function mapDeco(shown, open, pts) {
   const tile = (top, side) => (inner) => COMIC ? kB(top, inner) : svgT(`${T1PAD(top, side)}${inner}`);
 
   // ---------- 1. Pokémon: sechs Designs in einer Welt ----------
-  const P = THEMES.pokemon, P2 = THEMES.pokemon2;
-  const SIX = [...P.scenes, ...P2.scenes];
-  P.scenes = SIX; P.levelScenes = SIX;
-  P.levelNames = COMIC ? ["Route 1", "Vertania", "Marmoria", "Dojo", "Psycho", "Vulkan"] : ["Wasser", "Pflanzen", "Blitz", "Kampf", "Psycho", "Feuer"];
+  const PK = THEMES.pokemon, P2 = THEMES.pokemon2;
+  const SIX = [...PK.scenes, ...P2.scenes];
+  PK.scenes = SIX; PK.levelScenes = SIX;
+  PK.levelNames = COMIC ? ["Route 1", "Vertania", "Marmoria", "Dojo", "Psycho", "Vulkan"] : ["Wasser", "Pflanzen", "Blitz", "Kampf", "Psycho", "Feuer"];
 
   // ---------- 2. Gemeinsame Symbole: Lupe, drei Fragezeichen, Detektiv-Ausweis ----------
   document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
@@ -5299,7 +5299,9 @@ function mapDeco(shown, open, pts) {
   const baseDeco = mapDeco;
   mapDeco = function (shown, open, pts) {
     let html = baseDeco(shown, open, pts);
-    const i = shown.findIndex(w => w.theme === "pokemon2"); if (i < 0) return html;
+    const i = shown.findIndex(w => w.theme === "pokemon2"), wi = WORLDS.indexOf(shown[i]);
+    // erst sichtbar, wenn die Welt der drei ??? komplett geschafft ist
+    if (i < 0 || solvedIn(P(), wi) < NL(wi)) return html;
     const left = pts[i][0] < 50;
     [["justus", 0], ["peter", 1], ["bob", 2]].forEach(([who, k]) => {
       const x = pts[i][0] + (left ? 1 : -1) * (36 + k * 9), y = pts[i][1] + 30 + (k % 2) * 10;
@@ -6763,7 +6765,8 @@ if (typeof EXTRA_SHARE !== "undefined") EXTRA_SHARE["Pflanzen-Pokémon"] = 3;
   const baseDeco = mapDeco;
   mapDeco = function (shown, open, pts) {
     const html = baseDeco(shown, open, pts), i = shown.findIndex(w => w.theme === "pokemon");
-    if (i < 0) return html;
+    // erst sichtbar, wenn die Pokémon-Welt komplett geschafft ist
+    if (i < 0 || solvedIn(P(), WORLDS.indexOf(shown[i])) < NL(WORLDS.indexOf(shown[i]))) return html;
     return html + `<div class="mapdeco mapfig" style="left:${pts[i][0] + 40}%;top:${pts[i][1] + 40}px;width:58px;height:58px;animation-delay:-1.3s"><svg viewBox="0 0 100 100" overflow="visible">${SL_VARIANTS[5]}</svg></div>`;
   };
 })();
@@ -6942,10 +6945,13 @@ for (const T of [THEMES.pokemon, THEMES.pokemon2]) for (const S of T.scenes) {
   const baseDeco = mapDeco;
   mapDeco = function (shown, open, pts) {
     let html = baseDeco(shown, open, pts);
+    // erst sichtbar, wenn die Pokémon-Welt komplett geschafft ist; dann stehen drei bei Welt 3 und drei bei Welt 5
+    const pw = WORLDS.findIndex(w => w.theme === "pokemon"); if (pw < 0 || solvedIn(P(), pw) < NL(pw)) return html;
     const add = (theme, list) => { const i = shown.findIndex(w => w.theme === theme); if (i < 0) return;
       list.forEach(([svg, dx, dy], k) => { html += `<div class="mapdeco mapfig" style="left:${pts[i][0] + dx}%;top:${pts[i][1] + dy}px;width:52px;height:52px;animation-delay:${-k * .9}s"><svg viewBox="0 0 100 100" overflow="visible">${svg}</svg></div>`; }); };
     // seit dem Umbau gibt es nur noch eine Pokémon-Welt: alle fünf stehen dort
-    add("pokemon", [[POKE_MAP.schiggy, 56, -16], [POKE_MAP.pikachu, 56, 40], [POKE_MAP.kleinstein, 70, -8], [POKE_MAP.mewtu, 72, 30], [POKE_MAP.glurak, 64, 66]]);
+    add("pokemon", [[POKE_MAP.schiggy, 56, -16], [POKE_MAP.pikachu, 64, 34]]);
+    add("steine", [[POKE_MAP.kleinstein, 40, -14], [POKE_MAP.mewtu, 54, 20], [POKE_MAP.glurak, 40, 52]]);
     return html;
   };
 })();
