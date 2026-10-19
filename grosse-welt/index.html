@@ -4227,6 +4227,7 @@ const EXTRA_WALLS = {};
     pal: { ...(P2.pal || {}), "--accent": "#e2402f", "--accent-dark": "#a8261a", "--soft": "#f4efe6", "--edge": "#e3d8c6", "--bg": "#f2ece2", "--bg-2": "#fbf8f2", "--floor-a": "#c99a62", "--floor-b": "#c2935b" },
     scenes: SC
   };
+  D.mapIcon = "karte-fragen"; // Weltkarte: die drei Fragezeichen in Weiß, Rot und Blau
   THEMES.pokemon2 = COMIC ? theme2(D) : D;
   // Weltkarte: Justus, Peter und Bob stehen bei Welt 9
   const baseDeco = mapDeco;
@@ -4241,6 +4242,27 @@ const EXTRA_WALLS = {};
       html += `<div class="mapdeco mapfig" data-who="${who.toUpperCase()}" style="left:${x}%;top:${y}px;width:${COMIC ? 46 : 34}px;height:${COMIC ? 92 : 68}px;animation-delay:${-k * .8}s"><svg viewBox="0 0 100 200" overflow="visible">${SIDE[who]}</svg></div>`; });
     return html;
   };
+})();
+// ===== Eigene Bilder für die Weltkarte (Fragezeichen in beiden Teilen, Rakete nur Teil 1) =====
+// Feiern: gestauchte Comic-Silvesterrakete mit dicker Kontur, Funken und Sternen. Detektive: drei Fragezeichen.
+(() => {
+  const O = `stroke="#2d3036" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"`;
+  // Detektive: drei dicke Fragezeichen (Weiß, Rot, Blau) mit kräftiger dunkler Kontur, damit das weiße auf dem hellen Kreis sichtbar ist
+  document.querySelector("svg defs").insertAdjacentHTML("beforeend", `<symbol id="karte-fragen" viewBox="0 0 100 100" overflow="visible">
+    ${[["#ffffff", 22, -8], ["#e2402f", 50, 0], ["#2b5fd9", 78, 8]].map(([c, x, r]) => `<text x="${x}" y="80" transform="rotate(${r} ${x} 60)" text-anchor="middle" font-family="Fredoka, Arial Black, sans-serif" font-weight="700" font-size="72" fill="${c}" stroke="#2d3036" stroke-width="7" paint-order="stroke" stroke-linejoin="round">?</text>`).join("")}
+  </symbol>`);
+  document.querySelector("svg defs").insertAdjacentHTML("beforeend", `<symbol id="karte-rakete" viewBox="0 0 100 100" overflow="visible"><g transform="translate(0 10) scale(1 .86)">
+    <path d="M50 74q-8 10-4 22 4-6 4-10 2 6 6 10 2-12-6-22z" fill="#ffb02e" ${O} stroke-width="2.4"/><path d="M50 78q-3 6 0 12 3-6 0-12z" fill="#fff36b"/>
+    <path d="M30 60l-12 18 16-4zM70 60l12 18-16-4z" fill="#3d7fd6" ${O}/>
+    <path d="M50 8q24 14 22 40l-2 26H30l-2-26Q26 22 50 8z" fill="#ef4b4b" ${O}/>
+    <path d="M50 8q11 7 16 18H34q5-11 16-18z" fill="#ffcc33" ${O} stroke-width="2.8"/>
+    <path d="M29 58h42" stroke="#ffcc33" stroke-width="7"/><path d="M29 58h42" stroke="#2d3036" stroke-width="1.4" opacity=".4"/>
+    <circle cx="50" cy="40" r="8" fill="#bfe6ff" ${O} stroke-width="2.8"/><path d="M46 37q2-3 5-3" stroke="#ffffff" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M36 30q-2 10 0 20" stroke="#ffffff" stroke-width="3.4" opacity=".55" fill="none" stroke-linecap="round"/>
+    ${[[16, 22, 1], [86, 18, .8], [84, 50, .6], [14, 52, .6]].map(([x, y, s]) => `<path transform="translate(${x} ${y}) scale(${s})" d="M0 -9l2.6 6.4 6.4 2.6-6.4 2.6L0 9l-2.6-6.4L-9 0l6.4-2.6z" fill="#ffd23a" stroke="#2d3036" stroke-width="1.6" stroke-linejoin="round"/>`).join("")}
+  </g></symbol>`);
+  // nur Teil 1: dort ist Welt 8 „Feiern“ (in Teil 2 heißt sie „Essen“ und behält ihre Pizza)
+  if (THEMES.essen && typeof kO === "undefined") THEMES.essen.mapIcon = "karte-rakete";
 })();
 // ===== Arne: kurze dunkle Haare (Seiten grau), hohe Stirn, durchsichtige eckige Brille, dunkler Schnurrbart,
 // graumelierter Bart, Bomberjacke mit bunten Blumen, schwarzes Hemd mit Kirschmuster =====
@@ -5061,7 +5083,7 @@ function renderMap() {
       return `<div class="${cls}" style="left:${pts[i][0]}%;top:${pts[i][1] + 10}px">
         <button type="button" data-w="${i}" ${open[i] ? "" : "disabled"} aria-label="${open[i] ? `Welt ${i + 1}: ${w.name}, ${n} von ${NL(i)} geschafft${Array.from({ length: NL(i) }, (_, l) => isGold(p, i, l)).every(Boolean) ? ", alles golden" : ""}` : `Welt ${i + 1}: noch verdeckt`}">
           ${open[i] && Array.from({ length: NL(i) }, (_, l) => isGold(p, i, l)).every(Boolean) ? `<svg class="goldworld" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 1l13.6 30.3 33 3.3-24.6 22.2 7.2 32.4L50 72.6 20.8 89.2 28 56.8 3.4 34.6l33-3.3z" fill="url(#gold)" stroke="#c99a00" stroke-width="2" stroke-linejoin="round"/></svg>` : ""}
-          ${open[i] ? `<svg class="icon" viewBox="0 0 100 100"><use href="#${th.box === "kiste" ? "welt" : th.box}"/></svg>` : ""}
+          ${open[i] ? `<svg class="icon" viewBox="0 0 100 100"><use href="#${th.mapIcon || (th.box === "kiste" ? "welt" : th.box)}"/></svg>` : ""}
           ${open[i] && th.prize && isSolved(p, i, NL(i) - 1) ? `<svg class="badge" viewBox="0 0 100 ${th.prize.symbol === "schleife" ? 128 : 100}"><use href="#${th.prize.symbol}"/></svg>` : ""}
         </button>
         <span class="wname">${w.bonus ? (open[i] ? esc(w.name) : "Bonus") : open[i] ? `${i + 1} · ${esc(w.name)}` : `Welt ${i + 1}`}</span>
