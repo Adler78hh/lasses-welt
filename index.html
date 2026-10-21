@@ -3655,8 +3655,18 @@ const cookPot = (stir = false) => `<rect x="54" y="74" width="40" height="10" rx
   <path class="steam" d="M66 46q-4-6 0-10M80 46q-4-6 0-10" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>${stir ? `<path d="M84 52L96 26" stroke="#b07a45" stroke-width="4" stroke-linecap="round"/>` : `<path d="M62 48q6-14 2-24" stroke="#f6d77a" stroke-width="2.4" fill="none"/>`}`;
 const galleyStove = svgT(`${pad("#ffffff", "#c9ced8")}<rect x="8" y="16" width="38" height="52" rx="4" fill="#f4e9d8" stroke="#4a3728" stroke-width="2"/><path d="M14 26h26M14 36h26" stroke="#c9b48c" stroke-width="2"/>${cookPot(true)}`);
 const galleyStove2 = svgT(`${pad("#ffffff", "#c9ced8")}<path d="M10 30h34M10 46h34" stroke="#8a5a2b" stroke-width="3"/><path d="M14 30v-8h8v8M28 30v-10h10v10M14 46v-6h22v6" fill="#ffcc33" stroke="#4a3728" stroke-width="1.6"/>${cookPot(false)}`);
+// Lasse als Pirat: Dreispitz mit Totenkopf, rotes Kopftuch, Augenklappe, geringeltes Hemd, Schärpe, Stiefel; an der Wand ruft er „Arrrr!“
+LASSE.pirat = lasseBase("#ffffff", "#4a3728", "#3b2a1e",
+  `${[60, 66, 72].map(y => `<path d="M33 ${y}h35" stroke="#e2402f" stroke-width="3.4"/>`).join("")}<path d="M34 72l32-14" stroke="#ffcc33" stroke-width="5"/><circle cx="50" cy="65" r="2.4" fill="#ffcc33" stroke="${INK}" stroke-width="1.2"/>`,
+  `<path d="M26 33q-3 6 1 10 1-6 4-8zM74 33q3 6-1 10-1-6-4-8z" fill="${HAIR}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
+   <path d="M25 30q0-20 25-20t25 20z" fill="#e2402f" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>${[[34, 22], [46, 16], [58, 20], [66, 26]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.8" fill="#ffffff"/>`).join("")}
+   <path d="M74 26l8 4-6 4z" fill="#e2402f" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/>
+   <path d="M14 22q36-24 72 0-8 6-18 4-8-12-18-12t-18 12q-10 2-18-4z" fill="#1f1f24" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>
+   <path d="M18 22q32-16 64 0" fill="none" stroke="#ffcc33" stroke-width="2"/>
+   <circle cx="50" cy="13" r="4" fill="#ffffff"/><path d="M47 18l6 0M48 15h.1M52 15h.1" stroke="#1f1f24" stroke-width="1.4"/><path d="M45 20l10-3M45 17l10 3" stroke="#ffffff" stroke-width="1.4"/>`)
+  .replace(/<\/g>\s*<\/svg>\s*$/, `<path d="M28 31l26 8" stroke="#1f1f24" stroke-width="1.6"/><ellipse cx="41" cy="36" rx="6" ry="5.4" fill="#1f1f24" stroke="${INK}" stroke-width="1.4"/></g></svg>`);
 const PIPPILOTTA = {
-  name: "Segelschiff Pippilotta", lasse: "koch",
+  name: "Segelschiff Pippilotta", lasse: "pirat", bumpWord: "Arrrr!",
   pal: { "--bg": "#cfe9ff", "--bg-2": "#eef7ff" },
   floor: deckPlanks,
   wall: () => bulwark,
@@ -5119,7 +5129,7 @@ const FX = (() => {
         <text x="50" y="57" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="${w.length > 6 ? 17 : 22}" fill="#e2402f">${w}</text></svg>`, 950);
       if (!calm()) for (let i = 0; i < 5; i++) add("fx1-star", x, y, `<svg viewBox="0 0 100 100"><path d="M50 8l11 27 29 2-22 19 7 29-25-15-25 15 7-29-22-19 29-2z" fill="${COLS[i % COLS.length]}" stroke="${INK1}" stroke-width="5" stroke-linejoin="round"/></svg>`, 850, `--a:${-80 + i * 40}deg`);
     },
-    bump() { mood("m-oops", 420); const now = Date.now(); if (now - lastBump > 2500) { lastBump = now; bubble("Hm?", "fx1-q", 900); } },
+    bump() { mood("m-oops", 420); const now = Date.now(); if (now - lastBump > 2500) { lastBump = now; bubble((typeof S !== "undefined" && S && S.bumpWord) || "Hm?", "fx1-q", 900); } },
     win() { bubble(["Juhu!", "Jaaa!", "Super!"][Math.floor(Math.random() * 3)], "fx1-win", 1600); }
   };
 })();
