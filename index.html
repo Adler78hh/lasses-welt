@@ -2169,11 +2169,26 @@ const wRochen = `<svg viewBox="0 0 100 100">${WX("#7fc8f0")}<g class="bob">
   <path d="M50 26q12 14 40 18-14 12-32 12l-8 6-8-6q-18 0-32-12 28-4 40-18z" fill="#e897c8" ${LG_OL}/>
   <path d="M50 62q2 14 12 24" fill="none" stroke="#4a3728" stroke-width="2.4" stroke-linecap="round"/>
   <path d="M44 30q-4-8-10-8M56 30q4-8 10-8" fill="none" stroke="#4a3728" stroke-width="2.4" stroke-linecap="round"/>${EYE(44, 40)}${EYE(56, 40)}</g></svg>`;
-const wEisbaer = `<svg viewBox="0 0 100 100">${WX("#eaf6ff")}<g class="bob">
-  <path d="M14 66q0-24 30-24h20q22 0 22 16v12q0 6-6 6H20q-6 0-6-10z" fill="#ffffff" ${LG_OL}/>
-  <circle cx="76" cy="40" r="14" fill="#ffffff" ${LG_OL}/><circle cx="70" cy="28" r="4" fill="#ffffff" ${LG_OL}/>
-  <ellipse cx="86" cy="44" rx="5" ry="4" fill="#ffffff" ${LG_OL}/><circle cx="90" cy="43" r="2" fill="#4a3728"/>${EYE(76, 38)}
-  <path d="M28 76v6M44 76v6M62 76v6M76 76v6" stroke="#4a3728" stroke-width="2.4"/></g></svg>`;
+// Tiefsee-Tauchboot statt Eisbär: gelber Kugelrumpf mit großer Kuppel, Greifarm mit Probe, Scheinwerfer, Schrauben und Ballasttanks
+const wTauchboot = `<svg viewBox="0 0 100 100">${WX("#1d4e8a")}
+  <clipPath id="tb-wasser"><rect x="4.5" y="4.5" width="91" height="83" rx="11"/></clipPath>
+  <g clip-path="url(#tb-wasser)"><path d="M22 50L-2 70v20h40z" fill="#fff6b0" opacity=".28"/><path d="M78 50l24 18v22H64z" fill="#fff6b0" opacity=".22"/>
+  <path d="M4 90q10-8 20-4 6-8 14-2 10-6 16 2 10-4 16 0 8-4 26 2v8H4z" fill="#0f2f58"/></g>
+  <g class="bob">
+    <rect x="22" y="66" width="56" height="8" rx="3" fill="${EXP_N}" ${LG_OL}/><path d="M28 74v6M72 74v6M24 80h52" stroke="#4a3728" stroke-width="3" stroke-linecap="round"/>
+    <path d="M20 48q0-26 30-26t30 26v18H20z" fill="#ffcd03" ${LG_OL}/>
+    <circle cx="50" cy="42" r="13" fill="#9fd8ff" fill-opacity=".9" ${LG_OL}/><path d="M43 36q4-5 10-4" stroke="#ffffff" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <circle cx="50" cy="44" r="4" fill="#ffd9bf" ${LG_OL} stroke-width="1.2"/><rect x="46" y="38" width="8" height="3" rx="1" fill="${EXP_O}"/>
+    ${[30, 40, 60, 70].map(x => `<rect x="${x - 3}" y="18" width="6" height="4" rx="1.4" fill="#ffcd03" ${LG_OL} stroke-width="1.2"/>`).join("")}
+    <rect x="18" y="56" width="64" height="6" fill="${EXP_O}" ${LG_OL} stroke-width="1.4"/>
+    <rect x="16" y="44" width="8" height="8" rx="2" fill="#f2f3f5" ${LG_OL}/><circle cx="18" cy="48" r="2.4" fill="#fff6b0"/>
+    <rect x="76" y="44" width="8" height="8" rx="2" fill="#f2f3f5" ${LG_OL}/><circle cx="82" cy="48" r="2.4" fill="#fff6b0"/>
+    <path d="M78 60l10 4 2 8" fill="none" stroke="#4a3728" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M86 72l4 6M94 72l-4 6" stroke="#4a3728" stroke-width="2.6" stroke-linecap="round"/><path d="M87 80l3 4 3-4-3-3z" fill="${EXP_T}" ${LG_OL} stroke-width="1"/>
+    <g transform="translate(18 66)"><rect x="-8" y="-4" width="8" height="8" rx="2" fill="#8b939f" ${LG_OL} stroke-width="1.4"/><path d="M-10 -6v12M-12 -4v8" stroke="#4a3728" stroke-width="1.8"/></g>
+    <path d="M50 22v-8" stroke="#4a3728" stroke-width="2"/><circle class="blinklight" cx="50" cy="12" r="2.6" fill="#ff4d4d"/>
+  </g>
+  ${[[30, 12], [36, 4], [26, 6]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.6" fill="none" stroke="#ffffff" stroke-width="1.6" opacity=".8"/>`).join("")}</svg>`;
 const wRobbe = `<svg viewBox="0 0 100 100">${WX("#eaf6ff")}<g class="bob">
   <path d="M18 74q-4-20 14-34 14-10 30-6 14 4 14 18 0 8-8 12-10 4-20 10z" fill="#a9b1bd" ${LG_OL}/>
   <path d="M30 72q-10 4-16 0 6-2 8-8" fill="#a9b1bd" ${LG_OL}/>${EYE(56, 42)}${EYE(66, 44)}
@@ -2181,7 +2196,7 @@ const wRobbe = `<svg viewBox="0 0 100 100">${WX("#eaf6ff")}<g class="bob">
 const wTaucher = `<svg viewBox="0 0 100 100">${WX("#2f7ae5")}
   ${minifig(`<rect x="40" y="26" width="20" height="10" rx="4" fill="#9fd8ff" fill-opacity=".7" ${LG_OL}/><path d="M60 30q8 0 8 10v8" fill="none" stroke="#4a3728" stroke-width="2.4"/>`, "#4a3728", `<rect x="58" y="46" width="10" height="20" rx="4" fill="${EXP_T}" ${LG_OL}/>`)}
   ${[[22, 30], [28, 18], [20, 10]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="none" stroke="#ffffff" stroke-width="1.8"/>`).join("")}</svg>`;
-const WASSER_WALLS = [wSchiff, wUboot, wHeli, wBoot, wOrca, wHai, wRochen, wEisbaer, wRobbe, wTaucher, wSchiff, wUboot];
+const WASSER_WALLS = [wSchiff, wUboot, wHeli, wBoot, wOrca, wHai, wRochen, wTauchboot, wRobbe, wTaucher, wSchiff, wUboot];
 const wasserFloor = (x, y) => plate("#d8eef8", "#e8f6fc", 3, x, y) + (pick(x, y, 6, 8) === 0 ? `<path d="M16 70q8-5 16 0t16 0" fill="none" stroke="#7fc8f0" stroke-width="2.4" stroke-linecap="round"/>` : "") + "</svg>";
 
 // ---------- Weltall: dazu das Shuttle und der weiße Roboter-Astronaut aus dem Regal ----------
