@@ -1692,7 +1692,7 @@ const MINI = "#ffd23f"; // Minifiguren-Gelb
 // Grundplatte mit Noppen (n × n)
 const plate = (fill, stud, n, x, y) => {
   const step = 100 / n, r = step * .3;
-  let s = `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${(x + y) % 2 ? `color-mix(in srgb, ${fill} 94%, #000)` : fill}"/>`;
+  let s = `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${fill}"/>`;
   for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
     const cx = step * (i + .5), cy = step * (j + .5);
     s += `<circle cx="${cx}" cy="${cy + r * .18}" r="${r}" fill="#00000022"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="${stud}"/><circle cx="${cx - r * .3}" cy="${cy - r * .3}" r="${r * .35}" fill="#ffffff" opacity=".35"/>`;
@@ -1801,13 +1801,13 @@ THEMES.lego = {
       deco: (x, y) => pick(x, y, 9, 5) === 0 ? `<svg viewBox="0 0 100 100"><g transform="translate(30 34) scale(.4)">${duploBrick(DUPLO_COLORS[pick(x, y, 3, 5)])}</g></svg>` : "",
       extras: () => birdHTML() },
     { name: "Lego City", lasse: "feuerwehr",
-      pal: { "--bg": "#e8eef6", "--bg-2": "#f8fafd", "--floor-a": "#a0a5a9", "--floor-b": "#969ba0" },
+      pal: { "--bg": "#e8eef6", "--bg-2": "#f8fafd", "--floor-a": "#a0a5a9", "--floor-b": "#a0a5a9" },
       floor: (x, y, ctx) => plate("#a0a5a9", "#b4b9be", 3, x, y) + (y === ctx.midY ? `<rect x="0" y="46" width="100" height="8" fill="#ffffff" opacity=".85"/><rect x="40" y="46" width="20" height="8" fill="#a0a5a9"/>` : "") + "</svg>",
       wall: (x, y) => [fireStation, policeStation, fireTruck, policeCar, firefighter, policeman, fireStation, policeStation][pick(x, y, 0, 8)],
       deco: (x, y) => pick(x, y, 9, 6) === 0 ? `<svg viewBox="0 0 100 100"><path d="M40 80l6-46h8l6 46z" fill="#ff7e14" stroke="#4a3728" stroke-width="2.2"/><path d="M43 58h14" stroke="#ffffff" stroke-width="5"/></svg>` : "",
       extras: () => birdHTML() },
     { name: "Lego Weltraum", lasse: "astronaut",
-      pal: { "--bg": "#10163a", "--bg-2": "#26306b", "--floor-a": "#4a5570", "--floor-b": "#434d66", "--on-bg": "#c8d0f0" },
+      pal: { "--bg": "#10163a", "--bg-2": "#26306b", "--floor-a": "#4a5570", "--floor-b": "#4a5570", "--on-bg": "#c8d0f0" },
       floor: (x, y) => plate("#4a5570", "#5a6683", 3, x, y) + (pick(x, y, 2, 7) === 0 ? `<circle cx="50" cy="50" r="18" fill="#3a4358" opacity=".7"/>` : "") + "</svg>",
       wall: (x, y) => [spaceModule, rocket, satellite, astronaut, alien, moonRock, spaceModule][pick(x, y, 0, 7)],
       deco: () => "",
@@ -1900,7 +1900,7 @@ const bhFloor = (x, y, ctx) => {
   if (y === ctx.midY) return plate("#8b7a66", "#9b8a76", 3, x, y) +
     `${[14, 50, 86].map(cx => `<rect x="${cx - 6}" y="16" width="12" height="68" rx="2" fill="#6b5a46"/>`).join("")}
     <rect x="0" y="27" width="100" height="7" fill="#8b939f" stroke="#4a3728" stroke-width="1.6"/><rect x="0" y="66" width="100" height="7" fill="#8b939f" stroke="#4a3728" stroke-width="1.6"/></svg>`;
-  return (pick(x, y, 8, 5) === 0 ? plate("#8a4a2a", "#9c5a36", 3, x, y) : plate("#a0a5a9", "#b4b9be", 3, x, y)) + "</svg>";
+  return plate("#a0a5a9", "#b4b9be", 3, x, y) + "</svg>";
 };
 // Lasse als Schaffner: dunkelblaue Jacke, rote Krawatte, Schaffnermütze mit rotem Band, Pfeife
 LASSE.schaffner = lasseBase("#1f3f8a", "#4a3728", "#16181f",
@@ -1957,7 +1957,7 @@ const zSchild = `<svg viewBox="0 0 100 100">${duploBrick("#e3000b")}
   <rect x="16" y="14" width="68" height="36" rx="10" fill="#ffcd03" ${LG_OL}/>
   <text x="50" y="42" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="24" fill="#4a3728">ZOO</text></svg>`;
 const ZOO_WALLS = [zGiraffe, zElefant, zLoewe, zZebra, zAffe, zPinguin, zZaun, zSchild, `<svg viewBox="0 0 100 100">${duploTree}</svg>`, zZaun];
-const zooFloor = (x, y, ctx) => (y === ctx.midY ? plate("#e8c27a", "#f2d394", 2, x, y) : plate("#5cb85c", "#6fcf6f", 2, x, y)) + "</svg>";
+const zooFloor = (x, y) => plate("#5cb85c", "#6fcf6f", 2, x, y) + "</svg>";
 
 // ---------- Duplo-Baustelle: gelbe Raupe und Radlader, Kran, Baken, Betonmischer ----------
 const dbStripes = (x, y, w, h) => `<clipPath id="dbs${x}${y}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2"/></clipPath><g clip-path="url(#dbs${x}${y})"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#ffcd03"/>${Array.from({ length: 8 }, (_, i) => `<path d="M${x + i * 8 - 6} ${y + h}l${h} -${h}" stroke="#4a3728" stroke-width="3.4"/>`).join("")}</g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="none" ${LG_OL}/>`;
@@ -1985,7 +1985,7 @@ const bStapel = `<svg viewBox="0 0 100 100">${duploBrick("#8b939f")}
   <g transform="translate(14 30) scale(.36)">${duploBrick("#e3000b")}</g><g transform="translate(50 30) scale(.36)">${duploBrick("#0055bf")}</g>
   <g transform="translate(32 4) scale(.36)">${duploBrick("#ffcd03")}</g></svg>`;
 const BAU_WALLS = [bRaupe, bLader, bKran, bBake, bMischer, bSand, bStapel, bBake, bStapel];
-const bauFloor = (x, y) => plate("#c9a467", "#d8b57a", 2, x, y) + (pick(x, y, 5, 9) === 0 ? `<circle cx="30" cy="70" r="6" fill="#a8844a" opacity=".6"/><circle cx="70" cy="30" r="4" fill="#a8844a" opacity=".6"/>` : "") + "</svg>";
+const bauFloor = (x, y) => plate("#c9a467", "#d8b57a", 2, x, y) + "</svg>";
 
 // ---------- City mit Polizei-Gefängnisinsel: Turm mit Scheinwerfern, Gitter, Hubschrauber, Boot, Flitzer ----------
 const CW = (top) => cityWall(top);
@@ -2197,7 +2197,7 @@ const wTaucher = `<svg viewBox="0 0 100 100">${WX("#2f7ae5")}
   ${minifig(`<rect x="40" y="26" width="20" height="10" rx="4" fill="#9fd8ff" fill-opacity=".7" ${LG_OL}/><path d="M60 30q8 0 8 10v8" fill="none" stroke="#4a3728" stroke-width="2.4"/>`, "#4a3728", `<rect x="58" y="46" width="10" height="20" rx="4" fill="${EXP_T}" ${LG_OL}/>`)}
   ${[[22, 30], [28, 18], [20, 10]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="none" stroke="#ffffff" stroke-width="1.8"/>`).join("")}</svg>`;
 const WASSER_WALLS = [wSchiff, wUboot, wHeli, wBoot, wOrca, wHai, wRochen, wTauchboot, wRobbe, wTaucher, wSchiff, wUboot];
-const wasserFloor = (x, y) => plate("#d8eef8", "#e8f6fc", 3, x, y) + (pick(x, y, 6, 8) === 0 ? `<path d="M16 70q8-5 16 0t16 0" fill="none" stroke="#7fc8f0" stroke-width="2.4" stroke-linecap="round"/>` : "") + "</svg>";
+const wasserFloor = (x, y) => plate("#d8eef8", "#e8f6fc", 3, x, y) + "</svg>";
 
 // ---------- Weltall: dazu das Shuttle und der weiße Roboter-Astronaut aus dem Regal ----------
 const sShuttle = `<svg viewBox="0 0 100 100">${spaceWall("#3a4566")}<g class="lg-launch">
@@ -2261,19 +2261,19 @@ LASSE.forscher = lasseBase(EXP_O, EXP_N, "#16181f",
       return plan.get(x + "," + y) || fn(x, y); }; };
   T.levelScenes = [
     { name: "Duplo-Zoo", lasse: "zoowaerter", sound: "troete", box: "duplostein", words: ["Mampf!", "Toll!"],
-      pal: { "--bg": "#eaf7dc", "--bg-2": "#f8fdf2", "--floor-a": "#5cb85c", "--floor-b": "#55ad55" },
+      pal: { "--bg": "#eaf7dc", "--bg-2": "#f8fdf2", "--floor-a": "#5cb85c", "--floor-b": "#5cb85c" },
       floor: zooFloor, wall: limited(pickFrom(ZOO_WALLS)), deco: () => "", extras: () => birdHTML() },
     { name: "Duplo-Baustelle", lasse: "bauarbeiter", sound: "hammer", box: "duplostein", words: ["Klick!", "Passt!"],
-      pal: { "--bg": "#fff4e0", "--bg-2": "#fffbf3", "--floor-a": "#c9a467", "--floor-b": "#c19c5f" },
+      pal: { "--bg": "#fff4e0", "--bg-2": "#fffbf3", "--floor-a": "#c9a467", "--floor-b": "#c9a467" },
       floor: bauFloor, wall: limited(pickFrom(BAU_WALLS)), deco: () => "", extras: () => birdHTML() },
     { name: "Lego City", lasse: "feuerwehr", sound: "tatue", words: ["Tatü!", "Klick!"],
       pal: oCity.pal, floor: oCity.floor, wall: limited(pickFrom(CITY_WALLS)), deco: oCity.deco, extras: oCity.extras },
     { name: "Gefängnisinsel", lasse: "polizist", sound: "tuut",
       boardExtras: (ctx, W) => `<div class="lg-train" style="--my:${ctx.midY};--bw:${W}">${LG_TRAIN}</div>`, words: ["Tuut!", "Erwischt!"],
-      pal: { "--bg": "#dceefa", "--bg-2": "#f2f9fe", "--floor-a": "#a0a5a9", "--floor-b": "#989da1" },
+      pal: { "--bg": "#dceefa", "--bg-2": "#f2f9fe", "--floor-a": "#a0a5a9", "--floor-b": "#a0a5a9" },
       floor: bhFloor, wall: limited(bhInselWall, 2), deco: () => "", extras: () => birdHTML() },
     { name: "Wasserexpedition", lasse: "forscher", sound: "platsch", words: ["Platsch!", "Ahoi!"],
-      pal: { "--bg": "#dff1fb", "--bg-2": "#f4fbff", "--floor-a": "#d8eef8", "--floor-b": "#cfe6f2" },
+      pal: { "--bg": "#dff1fb", "--bg-2": "#f4fbff", "--floor-a": "#d8eef8", "--floor-b": "#d8eef8" },
       floor: wasserFloor, wall: limited(pickFrom(WASSER_WALLS)), deco: () => "", extras: () => birdHTML() },
     { name: "Weltall", lasse: "astronaut", sound: "piep", words: ["Klick!", "Wow!"],
       pal: oSpace.pal, floor: oSpace.floor, deco: oSpace.deco, extras: oSpace.extras,

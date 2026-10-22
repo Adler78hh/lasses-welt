@@ -1812,7 +1812,7 @@ const MINI = "#ffd23f"; // Minifiguren-Gelb
 // Grundplatte mit Noppen (n × n)
 const plate = (fill, stud, n, x, y) => {
   const step = 100 / n, r = step * .3;
-  let s = `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${(x + y) % 2 ? `color-mix(in srgb, ${fill} 94%, #000)` : fill}"/>`;
+  let s = `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${fill}"/>`;
   for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
     const cx = step * (i + .5), cy = step * (j + .5);
     s += `<circle cx="${cx}" cy="${cy + r * .18}" r="${r}" fill="#00000022"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="${stud}"/><circle cx="${cx - r * .3}" cy="${cy - r * .3}" r="${r * .35}" fill="#ffffff" opacity=".35"/>`;
@@ -1921,13 +1921,13 @@ THEMES.lego = {
       deco: (x, y) => pick(x, y, 9, 5) === 0 ? `<svg viewBox="0 0 100 100"><g transform="translate(30 34) scale(.4)">${duploBrick(DUPLO_COLORS[pick(x, y, 3, 5)])}</g></svg>` : "",
       extras: () => birdHTML() },
     { name: "Lego City", lasse: "feuerwehr",
-      pal: { "--bg": "#e8eef6", "--bg-2": "#f8fafd", "--floor-a": "#a0a5a9", "--floor-b": "#969ba0" },
+      pal: { "--bg": "#e8eef6", "--bg-2": "#f8fafd", "--floor-a": "#a0a5a9", "--floor-b": "#a0a5a9" },
       floor: (x, y, ctx) => plate("#a0a5a9", "#b4b9be", 3, x, y) + (y === ctx.midY ? `<rect x="0" y="46" width="100" height="8" fill="#ffffff" opacity=".85"/><rect x="40" y="46" width="20" height="8" fill="#a0a5a9"/>` : "") + "</svg>",
       wall: (x, y) => [fireStation, policeStation, fireTruck, policeCar, firefighter, policeman, fireStation, policeStation][pick(x, y, 0, 8)],
       deco: (x, y) => pick(x, y, 9, 6) === 0 ? `<svg viewBox="0 0 100 100"><path d="M40 80l6-46h8l6 46z" fill="#ff7e14" stroke="#2d3036" stroke-width="2.2"/><path d="M43 58h14" stroke="#ffffff" stroke-width="5"/></svg>` : "",
       extras: () => birdHTML() },
     { name: "Lego Weltraum", lasse: "astronaut",
-      pal: { "--bg": "#10163a", "--bg-2": "#26306b", "--floor-a": "#4a5570", "--floor-b": "#434d66", "--on-bg": "#c8d0f0" },
+      pal: { "--bg": "#10163a", "--bg-2": "#26306b", "--floor-a": "#4a5570", "--floor-b": "#4a5570", "--on-bg": "#c8d0f0" },
       floor: (x, y) => plate("#4a5570", "#5a6683", 3, x, y) + (pick(x, y, 2, 7) === 0 ? `<circle cx="50" cy="50" r="18" fill="#3a4358" opacity=".7"/>` : "") + "</svg>",
       wall: (x, y) => [spaceModule, rocket, satellite, astronaut, alien, moonRock, spaceModule][pick(x, y, 0, 7)],
       deco: () => "",
@@ -3112,7 +3112,7 @@ THEMES.lego = theme2({
   pal: { "--accent": "#e2402f", "--accent-dark": "#a82f22" },
   target: kTarget(`${kGlow(`<rect x="12" y="16" width="76" height="70" opacity="0"/>`)}<rect x="12" y="16" width="76" height="70" rx="5" fill="none" stroke="#fff" stroke-width="5" stroke-dasharray="10 7"/>${[[32, 36], [68, 36], [32, 66], [68, 66]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="8" fill="none" stroke="#fff" stroke-width="2.4" stroke-dasharray="3 3"/>`).join("")}`),
   scenes: [
-    kScene("Baustelle", "lego", PAL("#fff3df", "#fffaf2"), kFloor("#c2c6cc", "#b8bcc2", (x, y) => [[30, 30], [70, 30], [30, 70], [70, 70]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="11" fill="#d0d4da" stroke="#9aa0a8" stroke-width="2"/>`).join("")), [
+    kScene("Baustelle", "lego", PAL("#fff3df", "#fffaf2"), kFloor("#c2c6cc", "#c2c6cc", (x, y) => [[30, 30], [70, 30], [30, 70], [70, 70]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="11" fill="#d0d4da" stroke="#9aa0a8" stroke-width="2"/>`).join("")), [
       // keine Legosteine als Wand (sonst verwechselt man sie mit den Steinen zum Schieben): Bagger, Mischer, Schild, Sandhaufen
       () => kB("#9fd2ff", `<rect x="10" y="62" width="56" height="16" rx="8" fill="${KI}"/>${[20, 34, 48, 58].map(x => `<circle cx="${x}" cy="70" r="4" fill="#ffd23a"/>`).join("")}<rect x="14" y="40" width="48" height="22" rx="4" fill="#ffd23a" ${kO}/><rect x="40" y="22" width="20" height="20" rx="3" fill="#ffd23a" ${kO}/><rect x="44" y="26" width="12" height="10" fill="#9fd2ff" ${kO2}/><path d="M60 44l18-18 10 6" fill="none" stroke="#ffd23a" stroke-width="7" stroke-linejoin="round"/><path d="M60 44l18-18 10 6" fill="none" stroke="${KI}" stroke-width="2"/><path d="M82 30l10 4-2 16-14-4z" fill="#8b939f" ${kO2}/>`),
       () => kB("#c8e6a0", `<ellipse cx="42" cy="44" rx="26" ry="18" fill="#ff8a1a" ${kO}/><path d="M24 36l34 18M30 28l30 16" stroke="#fff" stroke-width="3"/><rect x="66" y="34" width="22" height="26" rx="3" fill="#e2402f" ${kO}/><rect x="70" y="38" width="14" height="9" fill="#9fd2ff" ${kO2}/><rect x="10" y="60" width="80" height="10" rx="3" fill="#5b6475" ${kO2}/>${[24, 56, 78].map(x => `<circle cx="${x}" cy="76" r="8" fill="${KI}"/><circle cx="${x}" cy="76" r="3" fill="#c2c6cc"/>`).join("")}`),
@@ -3123,14 +3123,14 @@ THEMES.lego = theme2({
       () => kB("#c2c6cc", `<path d="M30 84l8-40h24l8 40z" fill="#ff8a1a" ${kO2}/><path d="M34 64h32" stroke="#fff" stroke-width="5"/>`),
       () => kB("#2b5fd9", `<rect x="30" y="22" width="40" height="48" rx="10" fill="#ffd23a" ${kO}/><circle cx="42" cy="42" r="3" fill="${KI}"/><circle cx="58" cy="42" r="3" fill="${KI}"/><path d="M40 54q10 8 20 0" fill="none" stroke="${KI}" stroke-width="2.4"/><path d="M28 24q22-14 44 0z" fill="#ffd23a" ${kO2}/>`)
     ]),
-    kScene("Lego-Stadt", "legoNoppe", PAL("#e6eef8", "#f8fbff"), kFloor("#a3a7ad", "#9a9ea4", (x, y, ctx) => y === ctx.midY ? `<path d="M0 50h100" stroke="#fff" stroke-width="5" stroke-dasharray="14 10"/>` : ""), [
+    kScene("Lego-Stadt", "legoNoppe", PAL("#e6eef8", "#f8fbff"), kFloor("#a3a7ad", "#a3a7ad", (x, y, ctx) => [[30, 30], [70, 30], [30, 70], [70, 70]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="11" fill="#b2b6bc" stroke="#878b92" stroke-width="2"/>`).join("") + (y === ctx.midY ? `<rect x="0" y="44" width="100" height="12" fill="#a3a7ad"/><path d="M0 50h100" stroke="#fff" stroke-width="5" stroke-dasharray="14 10"/>` : "")), [
       () => kB("#f2f2f2", `<rect x="14" y="30" width="72" height="32" fill="#9fd2ff" ${kO2}/><path d="M38 30v32M62 30v32" stroke="${KI}" stroke-width="2"/><rect x="14" y="66" width="72" height="12" fill="#2b5fd9" ${kO2}/>`),
       () => kB("#e2402f", `<rect x="16" y="40" width="68" height="46" fill="#c0392b" ${kO2}/><path d="M16 54h68M16 68h68" stroke="${KI}" stroke-width="2"/>${kHand("112", "#fff", 16, 32)}`),
       () => kB("#2b5fd9", `${kHand("POLIZEI", "#fff", 14, 30)}<rect x="20" y="40" width="24" height="22" fill="#9fd2ff" ${kO2}/><rect x="56" y="40" width="24" height="22" fill="#9fd2ff" ${kO2}/><rect x="40" y="66" width="20" height="24" fill="#1a3f99" ${kO2}/>`),
       () => kB("#c2c6cc", `<rect x="14" y="44" width="72" height="30" rx="8" fill="#e2402f" ${kO}/><rect x="24" y="30" width="34" height="18" rx="4" fill="#9fd2ff" ${kO2}/><circle cx="30" cy="76" r="8" fill="${KI}"/><circle cx="70" cy="76" r="8" fill="${KI}"/><rect class="siren" x="34" y="22" width="14" height="8" rx="3" fill="#4fd1ff" ${kO2}/>`),
       (x, y) => kBricks("#c9b8a6", kGraffiti(x, y, ["BRICK", "LASSE", "CITY"], GRAF))
     ]),
-    kScene("Raumstation", "legoNoppe", PAL("#0f1433", "#232c66", "#d8deff", "#ffffff"), kFloor("#3e4766", "#454e6e", (x, y) => [[30, 30], [70, 30], [30, 70], [70, 70]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="10" fill="#4f5a7e" stroke="#2c3350" stroke-width="2"/>`).join("")), [
+    kScene("Raumstation", "legoNoppe", PAL("#0f1433", "#232c66", "#d8deff", "#ffffff"), kFloor("#3e4766", "#3e4766", (x, y) => [[30, 30], [70, 30], [30, 70], [70, 70]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="10" fill="#4f5a7e" stroke="#2c3350" stroke-width="2"/>`).join("")), [
       () => kB("#c9ced8", `<circle cx="50" cy="46" r="22" fill="#2b3a67" ${kO2}/><circle class="glowwin" cx="50" cy="46" r="14" fill="#7fe3ff"/><path d="M10 78h80" stroke="#2b5fd9" stroke-width="6"/>`),
       () => kB("#232c66", `<path d="M50 8q18 16 16 50H34Q32 24 50 8z" fill="#fff" ${kO}/><path d="M50 8q10 8 13 20H37Q40 16 50 8z" fill="#e2402f" ${kO2}/><circle cx="50" cy="40" r="7" fill="#7fe3ff" ${kO2}/><path class="flame" d="M40 60q10 28 20 0z" fill="#ffb02e"/>`),
       () => kB("#232c66", `<g class="bob"><path d="M30 88q0-30 20-30t20 30z" fill="#6fe36f" ${kO2}/><ellipse cx="50" cy="40" rx="22" ry="20" fill="#6fe36f" ${kO}/><ellipse cx="50" cy="38" rx="9" ry="10" fill="#fff" ${kO2}/><circle cx="50" cy="40" r="4.4" fill="${KI}"/></g>`),
