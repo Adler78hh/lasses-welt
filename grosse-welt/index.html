@@ -1922,7 +1922,10 @@ THEMES.lego = {
       extras: () => birdHTML() },
     { name: "Lego City", lasse: "feuerwehr",
       pal: { "--bg": "#e8eef6", "--bg-2": "#f8fafd", "--floor-a": "#a0a5a9", "--floor-b": "#a0a5a9" },
-      floor: (x, y, ctx) => plate("#a0a5a9", "#b4b9be", 3, x, y) + (y === ctx.midY ? `<rect x="0" y="46" width="100" height="8" fill="#ffffff" opacity=".85"/><rect x="40" y="46" width="20" height="8" fill="#a0a5a9"/>` : "") + "</svg>",
+      // Straßenlinien als Kreuz: waagerecht in der mittleren Zeile, senkrecht in der mittleren Spalte; auf der Kreuzung frei
+      floor: (x, y, ctx) => plate("#a0a5a9", "#b4b9be", 3, x, y) + (x === ctx.mid && y === ctx.midY ? "" :
+        (y === ctx.midY ? `<rect x="0" y="46" width="100" height="8" fill="#ffffff" opacity=".85"/><rect x="40" y="46" width="20" height="8" fill="#a0a5a9"/>` : "") +
+        (x === ctx.mid ? `<rect x="46" y="0" width="8" height="100" fill="#ffffff" opacity=".85"/><rect x="46" y="40" width="8" height="20" fill="#a0a5a9"/>` : "")) + "</svg>",
       wall: (x, y) => [fireStation, policeStation, fireTruck, policeCar, firefighter, policeman, fireStation, policeStation][pick(x, y, 0, 8)],
       deco: (x, y) => pick(x, y, 9, 6) === 0 ? `<svg viewBox="0 0 100 100"><path d="M40 80l6-46h8l6 46z" fill="#ff7e14" stroke="#2d3036" stroke-width="2.2"/><path d="M43 58h14" stroke="#ffffff" stroke-width="5"/></svg>` : "",
       extras: () => birdHTML() },
