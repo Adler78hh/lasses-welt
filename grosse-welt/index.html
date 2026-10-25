@@ -2823,7 +2823,7 @@ function feierPlan(decor, people) {
   for (const [pi, p] of people.entries()) {
     let best = null, bestD = -1;
     for (const [x, y] of order) {
-      if (plan.has(key(x, y))) continue;
+      if (plan.has(key(x, y)) || (typeof SIGN_CELLS !== "undefined" && SIGN_CELLS.has(key(x, y)))) continue;
       const d = chosen.length ? Math.min(...chosen.map(([a, b]) => Math.abs(a - x) + Math.abs(b - y))) : 0;
       if (d > bestD) { bestD = d; best = [x, y]; }
       if (!chosen.length) break;
@@ -5264,6 +5264,9 @@ function buildBoard() {
     if (best) html = html.replace(new RegExp(`<div class="tile deco" style="--x:${best[0]};--y:${best[1]}">.*?</svg></div>`), "")
       + `<div class="tile deco" style="--x:${best[0]};--y:${best[1]}">${TRAINER}</div>`;
   }
+  // Felder unter dem Namensschild vorab bestimmen: dort keine Personen (sie wären verdeckt)
+  SIGN = T.levelName ? signSpot() : null;
+  SIGN_CELLS = new Set(SIGN ? Array.from({ length: SIGN.len }, (_, i) => key(SIGN.x + i, SIGN.y)) : []);
   const wallHtml = {}; const persons = {}, used = {}; let plainN = 0;
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
     const k = key(x, y), pos = `style="--x:${x};--y:${y}"`;
@@ -5277,6 +5280,7 @@ function buildBoard() {
       const pid = (h) => (h.match(/data-person="([^"]+)"/) || [])[1];
       const plain = (h) => !/<(path|circle|ellipse|g|text|use|polygon|polyline|line|image)\b/.test(h.replace(/<g[^>]*class="(detail)?"/g, ""));
       const score = (h) => { let v = 0; const id = pid(h);
+        if (id && SIGN_CELLS.has(k)) v += 1000;
         if (id) { const at = persons[id] || []; if (at.length >= 4 || at.some(([a, b]) => Math.max(Math.abs(a - x), Math.abs(b - y)) < 3)) v += 1000; }
         if (h === wallHtml[key(x - 1, y)] || h === wallHtml[key(x, y - 1)]) v += 100;
         if (plain(h) && plainN >= 3) v += 50;
@@ -5298,7 +5302,7 @@ function buildBoard() {
     }
     if (goals.has(k)) html += `<div class="tile target" data-k="${k}" ${pos}>${T.targetAt ? T.targetAt(...k.split(",").map(Number)) : T.target(curLevel)}</div>`;
   }
-  if (T.levelName) html += signHTML(T.levelName(curLevel));
+  if (T.levelName) html += signHTML(T.levelName(curLevel), SIGN);
   if (S && S.boardExtras) html += S.boardExtras(ctx, W, H);
   board.innerHTML = html;
   const side = (S && S.side) || null, arena = document.querySelector(".arena");
@@ -5319,7 +5323,8 @@ function buildBoard() {
   slots.innerHTML = [...goals].map(() => `<span class="slot"><svg viewBox="0 0 100 100"><use href="#${T.boxIn || boxId()}"/></svg></span>`).join("");
 }
 // Schild mit dem Namen des Fundorts: auf der längsten sichtbaren Wandreihe, bevorzugt oben
-function signHTML(text) {
+let SIGN = null, SIGN_CELLS = new Set();
+function signSpot() {
   let best = null;
   for (let y = 0; y < H; y++) {
     let x = 0;
@@ -5332,6 +5337,9 @@ function signHTML(text) {
       } else x++;
     }
   }
+  return best;
+}
+function signHTML(text, best = signSpot()) {
   if (!best) return "";
   const fs = Math.min(.42, best.len / (text.length * .6)).toFixed(3);
   return `<div class="sign" style="left:calc(${best.x} * var(--t) + 4px);top:calc(${best.y} * var(--t) + var(--t) * .18);width:calc(${best.len} * var(--t) - 8px);height:calc(var(--t) * .62);font-size:calc(var(--t) * ${fs})">${esc(text)}</div>`;
