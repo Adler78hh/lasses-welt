@@ -3693,7 +3693,7 @@ const PIPPILOTTA = {
   extras: () => birdHTML() + bunting(["#2f9a52", "#ffffff", "#ef4b4b", "#ffcc33"])
 };
 
-// Design 2 (Level 3–4): Grillfest im Garten von Christian und Alex. Enni ist dabei, Lasse schiebt Burger.
+// Design 2 (Level 3–4): Gartenparty von Christian und Alex. Enni ist dabei, Lasse schiebt Burger.
 // Arne und Matze stehen als ganze Figuren links und rechts neben dem Spielfeld.
 document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
   <symbol id="burger" viewBox="0 0 100 100">
@@ -3945,7 +3945,7 @@ const SILVESTER = {
 PIPPILOTTA.side = { l: [ARNE_FULL], r: [MATZE_FULL] };
 PIPPILOTTA.wall = (x, y) => { const k = pick(x, y, 0, 18); return k < 4 ? bulwark : k < 7 ? mastSail(x, y) : k < 9 ? deckhouse : k === 9 ? lifeRing : k === 10 ? ropeCoil : k === 11 ? galleyStove : k === 12 ? galleyStove2 : k === 13 ? nameBoard : k === 14 ? shipWheel : seaView(x, y); };
 const GRILLFEST = {
-  name: "Grillfest im Garten", lasse: "koch",
+  name: "Gartenparty", lasse: "koch",
   pal: { "--bg": "#e6f5ff", "--bg-2": "#f8fcff" },
   floor: lawn,
   wall: (x, y) => { const k = pick(x, y, 0, 16); return k < 4 ? fence : k < 6 ? hedge : k < 8 ? grillStation : k === 8 ? saladTable : k === 9 ? grillSandbox : k === 10 ? swingSet : k === 11 ? kubb : k === 12 ? trampoline : k < 15 ? lightsTree : lemonadeTable; },
@@ -3969,8 +3969,8 @@ const enniPlays = gardenPad(`<rect x="8" y="58" width="84" height="34" rx="4" fi
 const FEIERN = [
   { scene: PIPPILOTTA, box: "nudeln", name: "Segelschiff Pippilotta", word: "Nudelteller",
     hint: "Arne und Matze kochen Nudeln an Bord! Bring jeden Teller mit Nudelberg an einen gedeckten Platz.", title: "Ahoi!", win: "Nudeln für alle an Deck der Pippilotta!" },
-  { scene: GRILLFEST, box: "burger", name: "Grillfest im Garten", word: "Burger",
-    hint: "Grillfest bei Christian und Alex! Bring jeden Burger an einen gedeckten Platz.", title: "Mahlzeit!", win: "Burger für alle beim Grillfest!" },
+  { scene: GRILLFEST, box: "burger", name: "Gartenparty", word: "Burger",
+    hint: "Gartenparty bei Christian und Alex! Bring jeden Burger an einen gedeckten Platz.", title: "Mahlzeit!", win: "Burger für alle auf der Gartenparty!" },
   { scene: WEIHNACHTEN, box: "christbaumkugel", name: "Weihnachten", word: "Christbaumkugel",
     hint: "Frohe Weihnachten mit Ida, Anna und Sören! Häng jede Christbaumkugel an einen Tannenzweig.", title: "Frohe Weihnachten!", win: "Der Baum ist geschmückt!" },
   { scene: GEBURTSTAG, box: "geschenk", name: "Geburtstag", word: "Geschenk",
