@@ -741,6 +741,42 @@ button:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 v
 .lv-card small { font: 400 16px "Bangers", Impact, sans-serif; letter-spacing: .08em; }
 .lv-card b { font: 400 40px/1 "Bangers", Impact, sans-serif; letter-spacing: .05em; color: #e2402f; -webkit-text-stroke: 1.5px var(--ink2); }
 @keyframes introIn { from { transform: scale(.3) rotate(-14deg); opacity: 0; } to { transform: rotate(-3deg); opacity: 1; } }
+
+/* ===== Teil 2 · Spielbildschirm kompakt: Kopf in einer Zeile, Symbolknöpfe, flaches Steuerkreuz → größeres Spielfeld ===== */
+#scr-game { gap: 8px; }
+#scr-game > .topbar { display: none; }
+#scr-game .head { flex-wrap: nowrap; gap: 8px; padding: 6px 10px 6px 6px; border-radius: 14px; }
+#scr-game .head-back { flex: none; width: 34px; height: 34px; padding: 0; border-radius: 10px; display: grid; place-items: center; border: 2px solid var(--ink2, var(--ink)); box-shadow: 0 2px 0 var(--ink2, var(--ink)); }
+#scr-game .head-back svg { width: 18px; height: 18px; }
+#scr-game .emblem { width: 30px; height: 30px; }
+#scr-game .who h1 { display: none; }
+#scr-game .who p { margin: 0; display: grid; gap: 1px; }
+#scr-game .who p b { font-family: var(--display); font-weight: 400; font-size: 19px; line-height: 1; color: var(--ink); letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#scr-game .who p small { font-size: 12px; line-height: 1.1; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#scr-game .slots { flex: none; gap: 3px; max-width: 46%; justify-content: flex-end; }
+#scr-game .slot, #scr-game .slots.many .slot { width: 22px; height: 22px; }
+#scr-game .bar { flex-wrap: nowrap; gap: 6px; }
+#scr-game .stats { gap: 6px; min-width: 0; }
+#scr-game .chip { padding: 4px 8px; font-size: 13px; white-space: nowrap; }
+#scr-game .actions { gap: 6px; flex: none; }
+#scr-game .actions button { width: 40px; height: 40px; padding: 0; font-size: 0; gap: 0; justify-content: center; border-radius: 12px; }
+#scr-game .actions button svg { width: 20px; height: 20px; }
+#scr-game .pad-zone { padding-top: 4px; gap: 4px; }
+#scr-game .pad { grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(2, 54px); gap: 6px; }
+#scr-game .pad button[data-d="u"] { grid-area: 1 / 2; } #scr-game .pad button[data-d="l"] { grid-area: 2 / 1; }
+#scr-game .pad button[data-d="d"] { grid-area: 2 / 2; } #scr-game .pad button[data-d="r"] { grid-area: 2 / 3; }
+#scr-game .pad-toggle { font-size: 11px; padding: 2px 10px; }
+
+/* ===== Teil 2 · Wände als Klötze: kräftige Unterkante, damit Wand und Boden klar getrennt sind ===== */
+#board .tile.wall svg { filter: drop-shadow(0 3px 0 #2d3036a6) !important; }
+#board { filter: none !important; }
+
+/* ===== Teil 2 · Ziele gut sichtbar: heller Schein, weiße Kontur, sanftes Pulsieren; besetzt leuchtet das Feld ===== */
+#board .tile.target::before { content: ""; position: absolute; inset: 4%; border-radius: 50%; background: radial-gradient(circle, #fff7a8 0 38%, #fff7a800 70%); animation: t2pulse 1.8s ease-in-out infinite; }
+#board .tile.target svg { position: relative; filter: drop-shadow(0 0 1.2px #fff) drop-shadow(0 0 1.2px #fff) drop-shadow(0 0 2px #fff6) saturate(1.25); }
+#board .tile.target.hit::before { inset: -6%; background: radial-gradient(circle, #ffe14dcc 0 40%, #ffe14d00 72%); animation: none; }
+@keyframes t2pulse { 0%, 100% { transform: scale(.82); opacity: .75; } 50% { transform: scale(1.05); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { #board .tile.target::before { animation: none; } }
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -1231,6 +1267,7 @@ button:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 v
       <button type="button" class="back" data-go="levels"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Level</button>
     </div>
     <header class="head">
+      <button type="button" class="head-back" data-go="levels" aria-label="Zurück zur Levelauswahl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
       <svg class="emblem" aria-hidden="true"><use id="emblem" href="#raute"/></svg>
       <div class="who">
         <h1 id="game-player">Lasse</h1>
@@ -2829,7 +2866,7 @@ function feierPlan(decor, people) {
       if (!chosen.length) break;
     }
     if (!best) break;
-    plan.set(key(best[0], best[1]), p.replace("<svg", `<svg data-person="${pi}"`)); chosen.push(best);
+    plan.set(key(best[0], best[1]), p.replace("<svg", `<svg data-person="${pi}" data-plan="1"`)); chosen.push(best);
   }
   const used = decor.map(() => 0);
   vis.sort((a, b) => a[1] - b[1] || a[0] - b[0]);
@@ -2913,8 +2950,11 @@ const kDrip = (x, c) => `<path d="M${x} 40v${10 + (x % 7) * 3}" stroke="${c}" st
 const kGraffiti = (x, y, words, cols) => { const t = words[pick(x, y, 4, words.length)], c = cols[pick(x, y, 5, cols.length)]; return kTag(t, c, t.length > 5 ? 16 : 22, -10 + pick(x, y, 6, 14)) + kDrip(30 + pick(x, y, 7, 40), c); };
 const kPerson = (hair, shirt, x = 50) => `<path d="M${x - 16} 96q0-24 16-24t16 24z" fill="${shirt}" ${kO2}/><circle cx="${x}" cy="56" r="13" fill="#f6cfae" ${kO2}/><path d="M${x - 13} 54q0-16 13-16t13 16q-6-6-13-6t-13 6z" fill="${hair}" ${kO2}/><circle cx="${x - 4}" cy="57" r="1.8" fill="${KI}"/><circle cx="${x + 4}" cy="57" r="1.8" fill="${KI}"/><path d="M${x - 4} 63q4 3 8 0" stroke="${KI}" stroke-width="1.6" fill="none"/>`;
 const kCrowd = (x, y, bg = "#33507f") => kB(bg, `<g class="fan">${kPerson(["#f3c93f", "#3b2418", KI, "#c9631f"][pick(x, y, 1, 4)], ["#ffffff", "#e2402f", "#2b5fd9", "#ffd23a"][pick(x, y, 2, 4)], 30)}</g><g class="fan" style="animation-delay:.4s">${kPerson(["#3b2418", "#f3c93f", "#c9631f", KI][pick(x, y, 3, 4)], ["#2b5fd9", "#ffffff", "#3fae4a", "#e2402f"][pick(x, y, 4, 4)], 70)}</g>`);
-const asphalt2 = (x, y) => svgT(`<rect width="100" height="100" fill="${(x + y) % 2 ? "#8e8c88" : "#97958f"}"/>${pick(x, y, 1, 4) === 0 ? `<path d="M${20 + pick(x, y, 2, 50)} 30l8 12-4 10 10 12" fill="none" stroke="${KI}" stroke-width="1.6" opacity=".5"/>` : ""}${pick(x, y, 3, 7) === 0 ? `<path d="M26 70q10-8 20 0t20 0" stroke="#fff" stroke-width="3" fill="none" opacity=".8"/>` : ""}`);
-const kFloor = (a, b, extra = () => "") => (x, y, ctx) => svgT(`<rect width="100" height="100" fill="${(x + y) % 2 ? b : a}"/>${extra(x, y, ctx)}`);
+const asphalt2 = (x, y) => svgT(`<rect width="100" height="100" fill="#a3a19b"/>${pick(x, y, 1, 4) === 0 ? `<path d="M${20 + pick(x, y, 2, 50)} 30l8 12-4 10 10 12" fill="none" stroke="${KI}" stroke-width="1.6" opacity=".5"/>` : ""}${pick(x, y, 3, 7) === 0 ? `<path d="M26 70q10-8 20 0t20 0" stroke="#fff" stroke-width="3" fill="none" opacity=".8"/>` : ""}`);
+// Boden ruhig und hell: eine Farbe statt Schachbrett, dunkle Böden aufgehellt (Wände heben sich ab)
+const kLum = (h) => { const n = parseInt(h.slice(1), 16); return ((n >> 16) * .299 + ((n >> 8) & 255) * .587 + (n & 255) * .114) / 255; };
+const kCalm = (a) => /^#[0-9a-f]{6}$/i.test(a) && kLum(a) < .42 ? `color-mix(in srgb, ${a} 72%, #fff)` : a;
+const kFloor = (a, b, extra = () => "") => (x, y, ctx) => svgT(`<rect width="100" height="100" fill="${kCalm(a)}"/>${extra(x, y, ctx)}`);
 
 // ---------- Lasse mit etwa 10 ----------
 const SKIN10 = "#f5c9a4", HAIR10 = "#f6c945";
@@ -5218,7 +5258,9 @@ function loadLevel(w, l, data) {
   document.querySelector(".win-card").classList.toggle("prize", finale);
   document.getElementById("game-player").textContent = P().name;
   const lname = T.levelName ? T.levelName(l) : (S ? S.name : "");
-  document.getElementById("subtitle").textContent = L.custom ? `${L.back === "editor" ? "Test" : "Eigenes Level"} · ${lname}` : `${L.bonus ? "Bonus" : "Welt " + (w + 1)}${lname ? " · " + lname : ""}${L.bonus ? "" : ` · Level ${l + 1}${finale ? " · Finale" : ""}`}`;
+  // Kopfzeile: Schauplatz groß, darunter klein Welt und Level
+  document.getElementById("subtitle").innerHTML = L.custom ? `<b>${esc(lname)}</b><small>${L.back === "editor" ? "Test" : "Eigenes Level"}</small>`
+    : `<b>${esc(lname || L.name)}</b><small>${L.bonus ? "Bonus" : `Welt ${w + 1} · Level ${l + 1}${finale ? " · Finale" : ""}`}</small>`;
   document.getElementById("push-word").textContent = T.pushWord;
   document.getElementById("hint").textContent = typeof T.hint === "function" ? T.hint(l) : T.hint;
   document.getElementById("win-title").textContent = finale ? T.prize.title : (typeof T.winTitle === "function" ? T.winTitle(l) : T.winTitle);
@@ -5236,6 +5278,42 @@ function loadLevel(w, l, data) {
   savedBeforeReset = null;
   reset(data);
 }
+
+// ===== Teil 2 · Ruhige Wände: eine Grundwand je Schauplatz, nur etwa jede dritte Kachel zeigt ein Motiv =====
+// Grundwände im Comic-Look (kB): Ziegel, Bretter, Hecke, Bruchstein, Paneel, Fels, Lego, Fliesen, Farbe
+const bwDark = (c, k = .28) => `color-mix(in srgb, ${c} ${100 - k * 100}%, #000)`;
+const bwLight = (c, k = .35) => `color-mix(in srgb, ${c} ${100 - k * 100}%, #fff)`;
+const BW = {
+  ziegel: (c) => kB(c, `${[24, 44, 64, 84].map((y, i) => `<path d="M5 ${y}h90" stroke="${bwDark(c)}" stroke-width="2"/>${[0, 1, 2].map(j => `<path d="M${(i % 2 ? 22 : 38) + j * 30} ${y - 20}v20" stroke="${bwDark(c)}" stroke-width="2"/>`).join("")}`).join("")}`),
+  bretter: (c) => kB(c, `${[26, 48, 70].map(y => `<path d="M5 ${y}h90" stroke="${bwDark(c)}" stroke-width="2.4"/>`).join("")}<circle cx="16" cy="15" r="2" fill="${bwDark(c, .45)}"/><circle cx="84" cy="59" r="2" fill="${bwDark(c, .45)}"/><path d="M30 37q10-3 20 0" stroke="${bwDark(c, .15)}" stroke-width="1.6" fill="none"/>`),
+  latten: (c) => kB(c, `${[24, 50, 76].map(x => `<path d="M${x} 6v88" stroke="${bwDark(c, .18)}" stroke-width="2"/>`).join("")}<path d="M5 30h90M5 70h90" stroke="${bwDark(c, .22)}" stroke-width="5"/>`),
+  hecke: (c) => kB(c, `${[[22, 26], [52, 18], [80, 30], [34, 52], [66, 48], [20, 78], [50, 80], [80, 74]].map(([x, y]) => `<path d="M${x - 11} ${y + 4}q0-12 11-12t11 12" fill="${bwLight(c, .18)}" stroke="${bwDark(c)}" stroke-width="1.8"/>`).join("")}`),
+  stein: (c) => kB(c, `<path d="M5 34h30l4-28M39 34h56M24 34l-4 30M5 64h60l6-30M65 64h30M44 64l-4 30" fill="none" stroke="${bwDark(c)}" stroke-width="2.2"/>`),
+  paneel: (c) => kB(c, `<rect x="12" y="12" width="76" height="76" rx="6" fill="none" stroke="${bwDark(c, .22)}" stroke-width="2.4"/>${[[18, 18], [82, 18], [18, 82], [82, 82]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.4" fill="${bwDark(c, .35)}"/>`).join("")}`),
+  fels: (c) => kB(c, `<path d="M14 30l14-6 10 10M60 20l16 8M24 66l18-4 8 12M66 60l14 10" fill="none" stroke="${bwDark(c, .4)}" stroke-width="2.2"/><circle cx="76" cy="44" r="3" fill="${bwLight(c, .15)}"/>`, 18),
+  lego: (c) => kB(c, `${[[30, 30], [70, 30], [30, 70], [70, 70]].map(([x, y]) => `<circle cx="${x}" cy="${y + 2}" r="12" fill="${bwDark(c, .25)}"/><circle cx="${x}" cy="${y}" r="12" fill="${bwLight(c, .12)}" stroke="${bwDark(c, .35)}" stroke-width="1.8"/>`).join("")}`, 8),
+  fliesen: (c) => kB(c, `<path d="M5 35h90M5 65h90M35 5v90M65 5v90" stroke="${bwLight(c, .5)}" stroke-width="2.4"/>`, 8),
+  farbe: (c) => kB(c, `<path d="M5 62h90" stroke="${bwDark(c, .25)}" stroke-width="4"/><path d="M5 70h90" stroke="${bwLight(c, .3)}" stroke-width="2"/>`),
+  schaum: (c) => kB(c, `${[18, 38, 58, 78].map(x => `<path d="M${x} 10l8 8-8 8 8 8-8 8 8 8-8 8 8 8-8 8" fill="none" stroke="${bwLight(c, .22)}" stroke-width="2.2" stroke-linejoin="round"/>`).join("")}`, 10),
+  regal: (c) => kB(c, `${[30, 58, 86].map(y => `<path d="M6 ${y}h88" stroke="${bwDark(c, .35)}" stroke-width="4"/>`).join("")}${[[14, 10], [26, 12], [40, 9], [60, 11], [74, 10], [18, 38], [34, 40], [56, 37], [70, 39]].map(([x, h], i) => `<rect x="${x}" y="${(i < 5 ? 30 : 58) - 6 - h}" width="9" height="${h + 6}" fill="${["#e2402f", "#2b5fd9", "#ffd23a", "#3fae4a", "#f4efe4"][i % 5]}" stroke="${KI}" stroke-width="1.4"/>`).join("")}`)
+};
+const BASE_WALL = {
+  "Bolzplatz": ["ziegel", "#b5533c"], "HSV-Campus": ["paneel", "#e6ecf4"], "Volksparkstadion": ["paneel", "#2b3f7a"],
+  "Reiterhof": ["bretter", "#9a6a3c"], "Ausritt im Wald": ["hecke", "#4f8a3a"], "Springturnier": ["latten", "#f2efe6"],
+  "Route 1": ["hecke", "#6fae4a"], "Vertania-Wald": ["hecke", "#3f7a35"], "Arena Marmoria": ["stein", "#9a8f80"],
+  "Kampf-Dojo": ["bretter", "#b5874f"], "Psycho-Arena": ["paneel", "#8b6fc0"], "Glumandas Vulkan": ["fels", "#5a2a20"],
+  "Baustelle": ["lego", "#f2c230"], "Lego-Stadt": ["lego", "#e2402f"], "Raumstation": ["paneel", "#2b3352"],
+  "Bergkristall-Höhle": ["fels", "#3d3532"], "Malachit-Mine": ["fels", "#3a4038"], "Türkis-Tempel": ["stein", "#8e7d5a"],
+  "Konservatorium Hamburg": ["bretter", "#8a5a32"], "Laeiszhalle": ["paneel", "#6a2424"], "Elbphilharmonie": ["paneel", "#ece7dc"],
+  "Sandplatz-Turnier": ["latten", "#2f6b3f"], "Tennishalle": ["paneel", "#d9dee6"], "Center Court": ["hecke", "#2f6b3f"],
+  "Foodtruck-Festival": ["ziegel", "#c7643c"], "Pizzeria": ["ziegel", "#b5533c"], "Burger-Diner": ["fliesen", "#e2402f"],
+  "Sörens Proberaum": ["schaum", "#3a3548"], "Annas Klassenzimmer": ["farbe", "#8fbfe0"], "Idas Zimmer": ["farbe", "#e86fa0"],
+  "Justus und die Kaffeekanne": ["bretter", "#7a5534"], "Peter und Rocky Beach": ["stein", "#c9b48a"], "Bob: Recherchen und Archiv": ["regal", "#6b5440"]
+};
+const baseWallCache = {};
+const baseWall = (name) => { const b = BASE_WALL[name]; if (!b) return null; return baseWallCache[name] || (baseWallCache[name] = BW[b[0]](b[1]).replace("<svg", '<svg data-base="1"')); };
+// Motivfelder verteilt: nie zwei direkt nebeneinander oder übereinander
+const motifCell = (x, y) => (x + 2 * y) % 3 === 0;
 
 function buildBoard() {
   let html = "";
@@ -5286,12 +5364,16 @@ function buildBoard() {
         if (plain(h) && plainN >= 3) v += 50;
         const n = used[h] || 0; if (n >= 5) v += 10 * (n - 4);
         return v; };
-      let w = fn(x, y), bestV = score(w);
+      const bw = S && baseWall(S.name);
+      if (bw && !motifCell(x, y)) { const f0 = fn(x, y); if (!/data-plan=/.test(f0)) { wallHtml[k] = bw; html += `<div class="tile wall base" ${pos}>${bw}</div>`; continue; } }
+      let w = fn(x, y), bestV = score(w) + (bw && /<text\b/.test(w) ? 300 : 0);
       for (const [dx, dy] of [[13, 7], [29, 17], [41, 3], [57, 23], [71, 11], [83, 31], [97, 5], [109, 43], [127, 19], [139, 61], [151, 37], [163, 89]]) {
         if (!bestV) break;
-        const c = fn(x + dx, y + dy), v = score(c);
+        const c = fn(x + dx, y + dy), v = score(c) + (bw && /<text\b/.test(c) ? 300 : 0);
         if (v < bestV) { w = c; bestV = v; }
       }
+      // Nur Motive ohne Schrift; findet sich keins, bleibt es bei der Grundwand
+      if (bw && /<text\b/.test(w) && !/data-plan=/.test(w)) { wallHtml[k] = bw; html += `<div class="tile wall base" ${pos}>${bw}</div>`; continue; }
       { const id = pid(w); if (id) (persons[id] = persons[id] || []).push([x, y]); }
       if (plain(w)) plainN++;
       used[w] = (used[w] || 0) + 1;
@@ -5569,7 +5651,7 @@ function availSize() {
   const room = arena && arena.clientWidth ? arena.clientWidth : Math.min(window.innerWidth - 32, 720);
   const aw = room - 4;
   const top = arena ? arena.getBoundingClientRect().top + window.scrollY : 200;
-  const below = [".pad-zone", "#hint"].reduce((n, q) => n + (document.querySelector(q)?.offsetHeight || 0), 0) + 28;
+  const below = [".pad-zone"].reduce((n, q) => n + (document.querySelector(q)?.offsetHeight || 0), 0) + 28;
   return [aw, Math.max(200, window.innerHeight - top - below - (hasSide ? sideW * 2 + 6 : 0))];
 }
 const TILE_MAX = 84, TILE_MIN = 26;
