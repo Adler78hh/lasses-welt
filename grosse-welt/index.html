@@ -754,7 +754,8 @@ button:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 v
 #scr-game .who p b { font-family: var(--display); font-weight: 400; font-size: 19px; line-height: 1; color: var(--ink); letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #scr-game .who p small { font-size: 12px; line-height: 1.1; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #scr-game .slots { flex: none; gap: 3px; max-width: 46%; justify-content: flex-end; }
-#scr-game .slot, #scr-game .slots.many .slot { width: 22px; height: 22px; }
+#scr-game .slot { width: 22px; height: 22px; }
+#scr-game .slots.many .slot { width: 17px; height: 17px; }
 #scr-game .bar { flex-wrap: nowrap; gap: 6px; }
 #scr-game .stats { gap: 6px; min-width: 0; }
 #scr-game .chip { padding: 4px 8px; font-size: 13px; white-space: nowrap; }
@@ -777,6 +778,33 @@ button:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 v
 #board .tile.target.hit::before { inset: -6%; background: radial-gradient(circle, #ffe14dcc 0 40%, #ffe14d00 72%); animation: none; }
 @keyframes t2pulse { 0%, 100% { transform: scale(.82); opacity: .75; } 50% { transform: scale(1.05); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { #board .tile.target::before { animation: none; } }
+
+/* ===== Teil 2 · Geschobene Gegenstände groß und mit kräftiger Kontur, Lasse größer mit hellem Schein ===== */
+#board .sprite.box .spin > svg { transform: scale(1.12); filter: drop-shadow(1px 0 0 #2d3036) drop-shadow(-1px 0 0 #2d3036) drop-shadow(0 1px 0 #2d3036) drop-shadow(0 -1px 0 #2d3036) drop-shadow(0 3px 2px #0004); }
+#board #lasse { z-index: 4; }
+#board #lasse::before { content: ""; position: absolute; left: 4%; right: 4%; bottom: -6%; height: 36%; border-radius: 50%; background: radial-gradient(closest-side, #fffbd0 0, #fff6a0cc 45%, #fff6a000 100%); animation: t2pulse 2.2s ease-in-out infinite; }
+#board #lasse svg { transform: scale(1.42) !important; transform-origin: 50% 88%; }
+
+/* ===== Teil 2 · Levelauswahl mit Vorschaubildern ===== */
+#levelgrid { grid-template-columns: repeat(2, minmax(0, 150px)); gap: 16px; }
+#levelgrid .lvl { display: block; padding: 0; overflow: hidden; background: #fff; border: 2.5px solid var(--ink2, var(--ink)); }
+#levelgrid .lvl .lvl-prev { position: absolute; inset: 8px; width: calc(100% - 16px); height: calc(100% - 16px); }
+#levelgrid .lvl .lvl-num { position: absolute; left: 6px; top: 6px; min-width: 30px; height: 30px; padding: 0 6px; box-sizing: border-box; border-radius: 10px; display: grid; place-items: center;
+  background: #fff; border: 2px solid var(--ink2, var(--ink)); font-size: 20px; line-height: 1; color: var(--ink); z-index: 2; }
+#levelgrid .lvl.next { background: #fff6c8; box-shadow: 0 0 0 4px #ffd23a, 3px 3px 0 4px var(--ink2, var(--ink)); }
+#levelgrid .lvl.next .lvl-num { background: #ffd23a; }
+#levelgrid .lvl.done { background: #f2fbef; }
+#levelgrid .lvl.locked { background: #fff; border-style: solid; }
+#levelgrid .lvl.locked .lvl-prev { filter: grayscale(.55) brightness(.6); }
+#levelgrid .lvl.locked .lvl-num { opacity: .7; }
+#levelgrid .lvl .lvl-lock { position: absolute; left: 50%; top: 50%; width: 38px; height: 38px; transform: translate(-50%, -50%); color: #fff; filter: drop-shadow(0 2px 0 #2d3036) drop-shadow(0 0 3px #0008); z-index: 2; }
+#levelgrid .lvl .lvl-star, #levelgrid .lvl .prize-ico, #levelgrid .lvl .lvl-gem { z-index: 3; }
+#levelgrid .lvl .lvl-star { left: auto; right: -6px; top: -6px; }
+
+/* ===== Teil 2 · Graffiti-Tags auf der Weltkarte ===== */
+.map-tag { position: absolute; width: 150px; height: 62px; transform: translate(-50%, -50%); pointer-events: none; z-index: 0; }
+.map-tag svg { width: 100%; height: 100%; display: block; overflow: visible; }
+#levelgrid .lvl .lvl-name { position: absolute; left: 50%; bottom: 5px; transform: translateX(-50%); z-index: 2; padding: 2px 8px; border-radius: 8px; background: #fff; border: 2px solid var(--ink2, var(--ink)); font-size: 12px; white-space: nowrap; opacity: 1; }
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -3007,6 +3035,57 @@ function kLasse({ shirt = "#e2402f", pants = "#33507f", shoes = "#ffffff", head 
 }
 const kRaute = `<path d="M0-7l7 7-7 7-7-7z" fill="#0a5cb0" stroke="#fff" stroke-width="1.4"/><path d="M0-2.6l2.6 2.6L0 2.6-2.6 0z" fill="${KI}"/>`;
 const ashCap = `<path d="M34 20q0-16 16-16t16 16z" fill="#e2402f" ${kO}/><path d="M42 18q0-10 8-10t8 10z" fill="#fff" ${kO2}/><path d="M48 10v6h5" stroke="#3fae4a" stroke-width="2.6" fill="none"/><path d="M32 20h30l-2 4H34z" fill="#e2402f" ${kO2}/>`;
+// ===== Teil 2 · Lasse trägt je Schauplatz ein passendes Outfit =====
+const capBack = (c) => `<path d="M34 20q0-16 16-16t16 16z" fill="${c}" ${kO}/><path d="M60 18h10l-1 4h-9z" fill="${c}" ${kO2}/>`;
+const helmetRide = (c) => `<path d="M33 22q0-19 17-19t17 19z" fill="${c}" ${kO}/><path d="M38 9q6-4 12-3" stroke="#fff" stroke-width="2.4" opacity=".6" fill="none"/><path d="M31 22h38l-2 4H33z" fill="${c}" ${kO2}/>`;
+const bowTie = (y = 46) => `<path d="M44 ${y - 4}l6 4-6 4zM56 ${y - 4}l-6 4 6 4z" fill="${KI}"/><circle cx="50" cy="${y}" r="1.8" fill="${KI}"/>`;
+Object.assign(LASSE, {
+  // Fußball
+  bolz: kLasse({ shirt: "#8a97a6", pants: "#33507f", shoes: "#ffffff", body: `<path d="M42 44q8 8 16 0" fill="none" stroke="${KI}" stroke-width="2"/><path d="M44 60h12v8H44z" fill="#79879a" ${kO2}/>`, head: capBack("#e2402f") }),
+  hsvTraining: kLasse({ shirt: "#0a5cb0", pants: "#0a5cb0", shoes: "#ffffff", body: `<path d="M38 46h24l2 22H36z" fill="#c6f135" ${kO2}/><text x="50" y="62" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="11" fill="${KI}">7</text>` }),
+  kapitaen: kLasse({ shirt: "#ffffff", pants: "#e2402f", shoes: KI, body: `<g transform="translate(57 52)">${kRaute}</g><text x="44" y="64" font-family="Bangers, Impact, sans-serif" font-size="11" fill="#0a5cb0">7</text>`, hand: `<path d="M27 56l8-3 2 6-8 3z" fill="#ffd23a" ${kO2}/><text x="31.5" y="60.5" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="5.5" fill="${KI}" transform="rotate(-20 31.5 58)">C</text>` }),
+  // Reiten
+  stall: kLasse({ shirt: "#c0392b", pants: "#33507f", shoes: "#3f7a35", body: `<path d="M37 52h26M36 60h28M44 46v22M56 46v22" stroke="#8a231a" stroke-width="2"/><path d="M40 82h8v8h-8zM52 82h8v8h-8z" fill="#3f7a35"/>`, hand: `<path d="M70 70L86 30" stroke="#a8743f" stroke-width="3.6" stroke-linecap="round"/><path d="M80 32l4-14M85 34l5-13M90 36l5-12M80 32q8 4 15 4" stroke="#9aa3b1" stroke-width="2.4" fill="none" stroke-linecap="round"/>` }),
+  turnier: kLasse({ shirt: "#1f2a44", pants: "#f4f1ea", shoes: KI, body: `<path d="M46 44l4 10 4-10z" fill="#ffffff" ${kO2}/><path d="M40 74h9v16h-9zM51 74h9v16h-9z" fill="${KI}"/><circle cx="50" cy="60" r="1.6" fill="#ffd23a"/>`, head: helmetRide("#1f2a44") }),
+  // Pokémon
+  pkWald: kLasse({ shirt: "#3fae4a", pants: "#6b5034", shoes: "#8a5a2b", glove: "#e2a983", body: `<path d="M40 46l4 22M60 46l-4 22" stroke="#a8743f" stroke-width="3.4"/>`, head: ashCap }),
+  pkArena: kLasse({ shirt: "#e2402f", pants: "#33507f", shoes: KI, body: `<path d="M50 44v24" stroke="${KI}" stroke-width="2"/><path d="M56 52l3-3 3 3-3 3z" fill="#9aa3b1" ${kO2}/>`, head: ashCap }),
+  dojo: kLasse({ shirt: "#ffffff", pants: "#ffffff", shoes: SKIN10, body: `<path d="M44 44l6 10 6-10" fill="none" stroke="${KI}" stroke-width="2"/><path d="M36 62h28" stroke="${KI}" stroke-width="4"/><path d="M48 62l-3 8M52 62l3 8" stroke="${KI}" stroke-width="3"/>`, head: `<path d="M31 18h38" stroke="#e2402f" stroke-width="5"/><path d="M68 18l8 4M68 18l7-3" stroke="#e2402f" stroke-width="3" stroke-linecap="round"/>` }),
+  psycho: kLasse({ shirt: "#8b5cf6", pants: "#3b2a6a", shoes: "#ffd23a", body: `${kStar(50, 56, 6, "#ffd23a")}`, head: `<path d="M32 16q18-8 36 0" stroke="#ff5fa2" stroke-width="4" fill="none"/><circle cx="50" cy="10" r="4" fill="#ff5fa2" ${kO2}/>` }),
+  vulkan: kLasse({ shirt: "#ff8a1a", pants: "#ff8a1a", shoes: KI, body: `<path d="M36 56h28M36 64h28" stroke="#d9a520" stroke-width="3"/>`, head: `<path d="M33 16h34" stroke="${KI}" stroke-width="3"/><circle cx="42" cy="16" r="5" fill="#9fd8ff" ${kO2}/><circle cx="58" cy="16" r="5" fill="#9fd8ff" ${kO2}/>` }),
+  // Lego (Minifiguren mit gelbem Kopf)
+  legoPolizei: kLasse({ shirt: "#1f3f8a", pants: KI, shoes: KI, hair: false, body: `<path d="M44 48l2 6M56 48l-2 6" stroke="#ffffff" stroke-width="1.6"/><path d="M53 54l4-2 4 2v4l-4 2-4-2z" fill="#ffd23a" ${kO2}/>`, head: `<path d="M32 18q0-14 18-14t18 14z" fill="#1f2a44" ${kO}/><path d="M30 18h40l-4 6H34z" fill="${KI}" ${kO2}/><circle cx="50" cy="12" r="3" fill="#ffd23a" ${kO2}/>` }).replaceAll(SKIN10, "#ffd21f"),
+  astro: kLasse({ shirt: "#f4f4f4", pants: "#f4f4f4", shoes: "#9aa3b1", glove: "#9aa3b1", hair: false, body: `<rect x="42" y="50" width="16" height="10" rx="2" fill="#2b5fd9" ${kO2}/><circle cx="46" cy="55" r="1.6" fill="#e2402f"/><circle cx="51" cy="55" r="1.6" fill="#3fae4a"/>`, head: `<circle cx="50" cy="20" r="21" fill="#9fd8ff33" ${kO}/><path d="M36 10q6-6 14-6" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>` }).replaceAll(SKIN10, "#ffd21f"),
+  // Edelsteine
+  lore: kLasse({ shirt: "#3fae4a", pants: "#2f6b4f", shoes: "#3b2a1e", body: `<path d="M40 50h20v18H40z" fill="#2f6b4f" ${kO2}/><path d="M40 50l-3-6M60 50l3-6" stroke="#2f6b4f" stroke-width="3"/>`, hand: `<path d="M72 68L84 30" stroke="#8a5a2b" stroke-width="4"/><path d="M74 34q12-10 22 2-10-3-12-1z" fill="#c9ced8" ${kO2}/>`, head: `<path d="M33 20q0-16 17-16t17 16z" fill="#e2402f" ${kO}/><rect x="44" y="6" width="12" height="9" rx="3" fill="#c9ced8" ${kO2}/><circle cx="50" cy="10.5" r="2.6" fill="#fff6b0"/>` }),
+  abenteuer: kLasse({ shirt: "#c9a875", pants: "#8a6a3c", shoes: "#5b4636", body: `<path d="M40 50h8v8h-8zM52 50h8v8h-8z" fill="#b8955e" ${kO2}/><path d="M50 44v24" stroke="#8a6a3c" stroke-width="1.6"/>`, head: `<path d="M24 20q26-6 52 0l-4 4H28z" fill="#e8d7a8" ${kO2}/><path d="M34 20q0-16 16-16t16 16z" fill="#e8d7a8" ${kO}/><path d="M34 17h32" stroke="#8a5a2b" stroke-width="3"/>` }),
+  // Schlagzeug
+  konzertWeste: kLasse({ shirt: "#ffffff", pants: KI, shoes: KI, body: `<path d="M38 46h8l4 22H38zM62 46h-8l-4 22h12z" fill="${KI}" ${kO2}/>${bowTie(46)}`, hand: `<path d="M72 68L90 46M74 72L94 56" stroke="#c9935a" stroke-width="3.6" stroke-linecap="round"/>` }),
+  frack: kLasse({ shirt: KI, pants: KI, shoes: KI, body: `<path d="M46 44l4 14 4-14z" fill="#ffffff" ${kO2}/>${bowTie(46).replaceAll(KI, "#e2402f")}<path d="M36 66l-2 12h6zM64 66l2 12h-6z" fill="${KI}"/>`, hand: `<path d="M72 68L90 46M74 72L94 56" stroke="#c9935a" stroke-width="3.6" stroke-linecap="round"/>` }),
+  rocker: kLasse({ shirt: KI, pants: "#33507f", shoes: "#e2402f", body: `<path d="M52 48l-6 9h5l-4 9 9-11h-5l4-7z" fill="#ffd23a"/>`, hand: `<path d="M72 68L90 46M74 72L94 56" stroke="#c9935a" stroke-width="3.6" stroke-linecap="round"/>`, head: `<path d="M31 18q19-10 38 0v4H31z" fill="#e2402f" ${kO}/><circle cx="40" cy="15" r="1.4" fill="#fff"/><circle cx="58" cy="14" r="1.4" fill="#fff"/><path d="M69 20l7 5-6 2" fill="#e2402f" ${kO2}/>` }),
+  // Tennis
+  tennisHalle: kLasse({ shirt: "#2b5fd9", pants: "#ffffff", shoes: "#ffffff", body: `<path d="M38 52h24" stroke="#ffffff" stroke-width="3"/>`, hand: `<path d="M72 68L80 46" stroke="${KI}" stroke-width="4"/><ellipse cx="84" cy="34" rx="9" ry="13" fill="#d7f03c55" stroke="#2b5fd9" stroke-width="3.4" transform="rotate(15 84 34)"/><rect x="28" y="60" width="7" height="5" rx="1.6" fill="#ffffff" ${kO2}/>`, head: `<path d="M33 17q17-6 34 0" stroke="#ffffff" stroke-width="6" fill="none"/><path d="M33 17q17-6 34 0" stroke="${KI}" stroke-width="1.4" fill="none" transform="translate(0 -3)"/>` }),
+  wimbledon: kLasse({ shirt: "#ffffff", pants: "#ffffff", shoes: "#ffffff", body: `<path d="M44 44l6 5 6-5" fill="none" stroke="#5b2a86" stroke-width="2.4"/><path d="M36 66h28" stroke="#2f7a4a" stroke-width="2.4"/>`, hand: `<path d="M72 68L80 46" stroke="${KI}" stroke-width="4"/><ellipse cx="84" cy="34" rx="9" ry="13" fill="#d7f03c55" stroke="#2f7a4a" stroke-width="3.4" transform="rotate(15 84 34)"/>`, head: `<path d="M34 20q0-16 16-16t16 16z" fill="#ffffff" ${kO}/><path d="M32 20h36l-2 4H34z" fill="#ffffff" ${kO2}/><path d="M36 18h28" stroke="#5b2a86" stroke-width="2"/>` }),
+  // Essen
+  foodtruck: kLasse({ shirt: "#ffd23a", pants: "#33507f", shoes: KI, body: `<path d="M40 52h20v18H40z" fill="#2b5fd9" ${kO2}/><path d="M40 52l-2-8M60 52l2-8" stroke="#2b5fd9" stroke-width="2.4"/>`, head: capBack("#2b5fd9") }),
+  pizzaiolo: kLasse({ shirt: "#ffffff", pants: "#33507f", shoes: KI, body: `<path d="M42 44l8 8 8-8z" fill="#e2402f" ${kO2}/><path d="M40 56h20v14H40z" fill="#f4f1ea" ${kO2}/>`, hand: `<path d="M72 68L88 40" stroke="#a8743f" stroke-width="3.4" stroke-linecap="round"/><ellipse cx="91" cy="35" rx="7" ry="5" fill="#c9935a" ${kO2} transform="rotate(-60 91 35)"/>`, head: `<path d="M34 18h32v-8q-16-6-32 0z" fill="#ffffff" ${kO}/>` }),
+  diner: kLasse({ shirt: "#ffffff", pants: "#33507f", shoes: "#e2402f", body: `<path d="M38 50h24M37 56h26M37 62h26" stroke="#e2402f" stroke-width="3"/>`, head: `<path d="M34 18l2-10h28l2 10z" fill="#ffffff" ${kO}/><path d="M36 12h28" stroke="#e2402f" stroke-width="2.4"/>` }),
+  // Familie
+  schule: kLasse({ shirt: "#ff8a1a", pants: "#33507f", shoes: "#ffffff", body: `<path d="M40 46l3 22M60 46l-3 22" stroke="#2b5fd9" stroke-width="3.4"/>`, hand: `<rect x="24" y="56" width="10" height="13" rx="1.6" fill="#ffd23a" ${kO2}/><path d="M29 56v13" stroke="${KI}" stroke-width="1"/>` }),
+  pyjama: kLasse({ shirt: "#8fbfe0", pants: "#8fbfe0", shoes: "#ff8fb1", body: `${[[42, 52], [56, 50], [48, 62], [60, 64]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.8" fill="#ffd23a"/>`).join("")}`, hand: `<g transform="translate(18 50) scale(.42)"><circle cx="18" cy="8" r="7" fill="#b8865a" ${kO2}/><circle cx="38" cy="8" r="7" fill="#b8865a" ${kO2}/><circle cx="28" cy="20" r="14" fill="#b8865a" ${kO2}/><circle cx="23" cy="18" r="1.8" fill="${KI}"/><circle cx="33" cy="18" r="1.8" fill="${KI}"/><ellipse cx="28" cy="40" rx="14" ry="12" fill="#b8865a" ${kO2}/></g>` })
+});
+// Outfit je Schauplatz (Name des Schauplatzes → Lasse-Variante)
+const OUTFIT = {
+  "Bolzplatz": "bolz", "HSV-Campus": "hsvTraining", "Volksparkstadion": "kapitaen",
+  "Reiterhof": "stall", "Ausritt im Wald": "reiten", "Springturnier": "turnier",
+  "Route 1": "pokemon", "Vertania-Wald": "pkWald", "Arena Marmoria": "pkArena", "Kampf-Dojo": "dojo", "Psycho-Arena": "psycho", "Glumandas Vulkan": "vulkan",
+  "Baustelle": "lego", "Lego-Stadt": "legoPolizei", "Raumstation": "astro",
+  "Bergkristall-Höhle": "steine", "Malachit-Mine": "lore", "Türkis-Tempel": "abenteuer",
+  "Konservatorium Hamburg": "konzertWeste", "Laeiszhalle": "frack", "Elbphilharmonie": "schlagzeug",
+  "Sandplatz-Turnier": "tennis", "Tennishalle": "tennisHalle", "Center Court": "wimbledon",
+  "Foodtruck-Festival": "foodtruck", "Pizzeria": "pizzaiolo", "Burger-Diner": "diner",
+  "Sörens Proberaum": "rocker", "Annas Klassenzimmer": "schule", "Idas Zimmer": "pyjama"
+};
 Object.assign(LASSE, {
   fussball: kLasse({ shirt: "#ffffff", pants: "#e2402f", shoes: KI, body: `<g transform="translate(57 52)">${kRaute}</g><text x="44" y="64" font-family="Bangers, Impact, sans-serif" font-size="11" fill="#0a5cb0">7</text>` }),
   reiten: kLasse({ shirt: "#3b5f8a", pants: "#eadfc8", shoes: KI, body: `<path d="M40 74h9v16h-9zM51 74h9v16h-9z" fill="${KI}"/>`, head: `<path d="M34 22q0-18 16-18t16 18z" fill="#222a3a" ${kO}/><path d="M32 22h36l-3 5H35z" fill="#222a3a" ${kO2}/>` }),
@@ -3400,6 +3479,70 @@ THEMES.familie = theme2({
     ])
   ]
 });
+
+// ===== Teil 2 · Essen und Familie: passende Gegenstände statt Kartons, jeder in eigener Farbe =====
+(() => {
+  const SIX = ["#e2402f", "#2b5fd9", "#3fae4a", "#ffd23a", "#8b5cf6", "#ff8a1a"];
+  const EIS = ["#ff8fb1", "#7fe0b0", "#8a5a2b", "#ffe14d", "#8b8cf0", "#ff9a3c"];
+  const light = (c) => `color-mix(in srgb, ${c} 55%, #fff)`, dark = (c) => `color-mix(in srgb, ${c} 70%, #000)`;
+  const D = {
+    // Eisbecher: Glasschale, drei Kugeln in einer Sorte, Sahne, Kirsche, Waffel
+    eis: (c) => `<path d="M36 82h28l-4 6H40z" fill="#cfe9f7" ${kO2}/><path d="M47 70h6v13h-6z" fill="#cfe9f7" ${kO2}/>
+      <circle cx="34" cy="44" r="13" fill="${c}" ${kO}/><circle cx="66" cy="44" r="13" fill="${c}" ${kO}/><circle cx="50" cy="34" r="14" fill="${c}" ${kO}/>
+      <path d="M30 40q3-5 8-5M46 28q4-5 9-4M62 40q3-5 8-5" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".7"/>
+      <path d="M38 22q12-12 24 0-12 4-24 0z" fill="#fffaf0" ${kO2}/><circle cx="50" cy="14" r="5" fill="#d61f3a" ${kO2}/><path d="M50 9q2-6 7-7" stroke="#2f6b3f" stroke-width="1.8" fill="none"/>
+      <path d="M72 30l12-16 4 3-12 16z" fill="#e8b45a" ${kO2}/>
+      <path d="M16 50h68q-4 22-34 22T16 50z" fill="#dff3ffcc" ${kO}/><path d="M22 56q4 8 12 10" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+    // Pizza auf farbigem Teller: Belag in derselben Farbe
+    pizza: (c) => `<circle cx="50" cy="54" r="40" fill="${c}" ${kO}/><circle cx="50" cy="54" r="33" fill="${light(c)}"/>
+      <circle cx="50" cy="52" r="30" fill="#e8b45a" ${kO}/><circle cx="50" cy="52" r="24" fill="#e5533a"/>
+      ${[[40, 44], [58, 42], [46, 60], [62, 58], [34, 54]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="6" fill="#ffe9a8"/>`).join("")}
+      ${[[48, 40], [62, 50], [38, 62], [54, 64], [34, 46]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.2" fill="${dark(c)}" stroke="${KI}" stroke-width="1.2"/>`).join("")}
+      <path d="M50 22v60M22 52h56" stroke="#b8862f" stroke-width="1.4" opacity=".5"/>`,
+    // Burger auf farbigem Einwickelpapier, Fähnchen in derselben Farbe
+    burger: (c) => `<path d="M10 66l40-14 40 14-40 22z" fill="${c}" ${kO}/><path d="M24 70l26-9 26 9" stroke="#fff" stroke-width="2" fill="none" opacity=".6"/>
+      <path d="M20 46q0-26 30-26t30 26z" fill="#e3a14d" ${kO}/>${[[36, 32], [50, 28], [62, 34], [44, 38]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="2.4" ry="1.4" fill="#fff6dc"/>`).join("")}
+      <path d="M17 50q8-6 16 0t17 0 17 0 16 0" fill="#3fae4a" stroke="${KI}" stroke-width="2"/><rect x="18" y="52" width="64" height="9" rx="4" fill="#ffd23a" ${kO2}/>
+      <rect x="18" y="60" width="64" height="10" rx="5" fill="#7a3b1d" ${kO}/><path d="M18 70h64q0 10-32 10t-32-10z" fill="#e3a14d" ${kO}/>
+      <path d="M50 22V4" stroke="${KI}" stroke-width="2"/><path d="M50 4l16 5-16 5z" fill="${c}" ${kO2}/>`,
+    // E-Gitarre: Korpus in der Farbe
+    gitarre: (c) => `<g transform="rotate(-35 50 52)"><rect x="46" y="4" width="8" height="46" rx="2" fill="#a8743f" ${kO2}/>${[12, 20, 28, 36, 44].map(y => `<path d="M46 ${y}h8" stroke="#e9d6a8" stroke-width="1.2"/>`).join("")}
+      <path d="M44 2h12l2-8H42z" fill="${KI}"/><path d="M50 44q-24-2-24 20 0 26 24 26t24-26q0-22-24-20z" fill="${c}" ${kO}/>
+      <path d="M38 56q4-6 10-6" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/><rect x="42" y="62" width="16" height="6" rx="2" fill="#f4f1ea" ${kO2}/><circle cx="50" cy="76" r="3" fill="${KI}"/>
+      <path d="M48 6v70M52 6v70" stroke="#e9e6df" stroke-width=".8"/></g>`,
+    // Dickes Buch: Einband in der Farbe
+    buch: (c) => `<path d="M18 30l50-14 14 6-50 14z" fill="${light(c)}" ${kO2}/><path d="M18 30l14 6v48l-14-6z" fill="${dark(c)}" ${kO}/>
+      <path d="M32 36l50-14v48l-50 14z" fill="${c}" ${kO}/><path d="M32 84l50-14 4 3-50 14z" fill="#fffaf0" ${kO2}/><path d="M82 22l4 3v48l-4-3z" fill="#fffaf0" ${kO2}/>
+      <path d="M42 44l30-8v12l-30 8z" fill="#fffaf0" ${kO2}/><path d="M46 50l22-6" stroke="${KI}" stroke-width="1.6"/><circle cx="60" cy="66" r="5" fill="#ffd23a" ${kO2}/>`,
+    // Teddy: Fell in der Farbe, helles Bäuchlein, Schleife
+    teddy: (c) => `<circle cx="30" cy="22" r="10" fill="${c}" ${kO}/><circle cx="70" cy="22" r="10" fill="${c}" ${kO}/><circle cx="30" cy="22" r="5" fill="${light(c)}"/><circle cx="70" cy="22" r="5" fill="${light(c)}"/>
+      <ellipse cx="50" cy="70" rx="24" ry="20" fill="${c}" ${kO}/><ellipse cx="50" cy="72" rx="13" ry="11" fill="${light(c)}"/>
+      <circle cx="28" cy="84" r="8" fill="${c}" ${kO2}/><circle cx="72" cy="84" r="8" fill="${c}" ${kO2}/><circle cx="24" cy="62" r="7" fill="${c}" ${kO2}/><circle cx="76" cy="62" r="7" fill="${c}" ${kO2}/>
+      <circle cx="50" cy="36" r="21" fill="${c}" ${kO}/><ellipse cx="50" cy="43" rx="9" ry="7" fill="${light(c)}" ${kO2}/><ellipse cx="50" cy="40" rx="3.4" ry="2.4" fill="${KI}"/>
+      <circle cx="42" cy="32" r="2.6" fill="${KI}"/><circle cx="58" cy="32" r="2.6" fill="${KI}"/><path d="M47 46q3 3 6 0" stroke="${KI}" stroke-width="1.6" fill="none"/>
+      <path d="M40 56l10 4 10-4v8l-10-4-10 4z" fill="#fff" ${kO2}/>`
+  };
+  const sets = { eis: EIS, pizza: SIX, burger: SIX, gitarre: SIX, buch: SIX, teddy: ["#b8865a", "#ff8fb1", "#8fbfe0", "#f4efe4", "#9ad97a", "#c9a0ff"] };
+  document.querySelector("svg defs").insertAdjacentHTML("beforeend", Object.entries(sets).map(([k, cols]) => cols.map((c, i) =>
+    `<symbol id="k2${k}-${i}" viewBox="0 0 100 100" overflow="visible"><ellipse cx="50" cy="92" rx="32" ry="5" fill="#0003"/>${D[k](c)}</symbol>`).join("")).join(""));
+  const ids = (k) => sets[k].map((_, i) => `k2${k}-${i}`);
+  const set = (T, kinds, hints, word) => {
+    const at = (l) => kinds[Math.min(kinds.length - 1, Math.floor(l / PER_DESIGN))];
+    T.levelBox = (l) => `k2${at(l)}-0`;
+    T.boxCycle = (l) => ids(at(l));
+    T.hint = (l) => hints[Math.min(hints.length - 1, Math.floor(l / PER_DESIGN))];
+    T.boxWord = word;
+  };
+  THEMES.essen.mapIcon = "k2pizza-0"; THEMES.familie.mapIcon = "k2teddy-1";
+  set(THEMES.essen, ["eis", "pizza", "burger"], [
+    "Bring jeden Eisbecher an einen Tisch. Eisbecher lassen sich nur schieben, nicht ziehen.",
+    "Bring jede Pizza an einen gedeckten Tisch. Pizzen lassen sich nur schieben, nicht ziehen.",
+    "Bring jeden Burger an einen Tisch. Burger lassen sich nur schieben, nicht ziehen."], "Gerichte");
+  set(THEMES.familie, ["gitarre", "buch", "teddy"], [
+    "Stell jede Gitarre an ihren Platz. Gitarren lassen sich nur schieben, nicht ziehen.",
+    "Räum jedes Buch an seinen Platz. Bücher lassen sich nur schieben, nicht ziehen.",
+    "Setz jedes Kuscheltier an seinen Platz. Kuscheltiere lassen sich nur schieben, nicht ziehen."], "Sachen");
+})();
 
 // Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Pokémon-Welten mit Superball-Varianten
 THEMES.fussball.boxColors = [["#2d3036", "#ffffff"], ["#2d3036", "#ffd3e4"], ["#2d3036", "#cfe6ff"], ["#2d3036", "#ffd2a8"], ["#2d3036", "#bff3ee"]];
@@ -5166,6 +5309,35 @@ function renderMap() {
   map.querySelectorAll("[data-w]").forEach(b => b.addEventListener("click", () => { curWorld = +b.dataset.w; if (NL(curWorld) === 1) loadLevel(curWorld, 0); else show("levels"); }));
   if (reveal) { p.seen = lastOpen + 1; save(); }
 }
+// ===== Teil 2 · Graffiti-Tags „LASSES WELT“ zwischen den Welten (nur dort, wo nichts anderes steht) =====
+const TAG_STYLES = [["#ffd23a", -8], ["#4fd1ff", 6], ["#ff5fa2", -4], ["#7dff7a", 8], ["#ff8a1a", -10], ["#c9a0ff", 4]];
+const tagSVG = (c, rot, k) => `<svg viewBox="0 0 170 70" aria-hidden="true"><g transform="rotate(${rot} 85 35)">
+  ${[[18, 14], [150, 18], [30, 58], [140, 56], [96, 8]].map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${1.4 + (i + k) % 3}" fill="${c}" opacity=".75"/>`).join("")}
+  <text x="85" y="44" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="34" letter-spacing="1.5" fill="${c}" stroke="#2d3036" stroke-width="5" paint-order="stroke" stroke-linejoin="round">LASSES WELT</text>
+  ${[40, 72, 118].map((x, i) => `<path d="M${x + (k * 7) % 11} 46v${8 + ((i + k) % 3) * 6}" stroke="${c}" stroke-width="3.4" stroke-linecap="round"/><circle cx="${x + (k * 7) % 11}" cy="${54 + ((i + k) % 3) * 6}" r="2.6" fill="${c}"/>`).join("")}
+  <path d="M150 34l6-6 2 8 8 1-6 6" fill="none" stroke="#2d3036" stroke-width="2.4" stroke-linecap="round"/></g></svg>`;
+function addMapTags() {
+  const map = document.getElementById("map"); if (!map) return;
+  const mr = map.getBoundingClientRect(); if (!mr.width) return;
+  const busy = [...map.querySelectorAll(".world button, .world .wname, .world .wprog, .world .cloud, .mapdeco, .map-lasse, .lb-spot")].map(e => e.getBoundingClientRect()).filter(r => r.width);
+  const hit = (r) => busy.some(b => r.left < b.right + 6 && r.right > b.left - 6 && r.top < b.bottom + 6 && r.bottom > b.top - 6);
+  const n = map.querySelectorAll(".world:not(.kit-entry)").length;
+  let k = 0;
+  for (let i = 1; i < n - 1 && k < TAG_STYLES.length; i++) {
+    // Kandidaten: auf Höhe von Welt i an der Seite der nächsten Welt, sonst zwischen zwei Welten am Rand
+    const y = i * ROW + 60 + 14;
+    for (const [x, dy] of [[MAP_X[i + 1], 0], [100 - MAP_X[i], ROW / 2], [MAP_X[i + 1], ROW / 2]]) {
+      const el = document.createElement("div");
+      el.className = "map-tag"; el.style.left = x + "%"; el.style.top = (y + dy) + "px";
+      const [c, rot] = TAG_STYLES[k % TAG_STYLES.length]; el.innerHTML = tagSVG(c, rot, k);
+      map.appendChild(el);
+      const r = el.getBoundingClientRect();
+      if (r.left < mr.left - 4 || r.right > mr.right + 4 || hit(r)) { el.remove(); continue; }
+      busy.push(r); k++; break;
+    }
+  }
+}
+{ const baseRenderMap = renderMap; renderMap = function () { baseRenderMap(); addMapTags(); }; }
 
 // Levelauswahl
 // Sterne: Silber fürs Lösen, Gold für die kleinste mögliche Schrittzahl
@@ -5183,6 +5355,31 @@ function miniLevel(rows) {
   }));
   return `<svg class="lvl-mini" viewBox="0 0 ${W} ${H}" aria-hidden="true">${s}</svg>`;
 }
+// ===== Teil 2 · Vorschaubild je Level: das Feld in klein, in den Farben des Schauplatzes, mit dem Gegenstand =====
+function scenePreview(rows, wi, l) {
+  const th = THEMES[WORLDS[wi].theme]; if (!th) return miniLevel(rows);
+  const sc = th.levelScenes ? th.levelScenes[l] : th.scenes ? th.scenes[Math.min(th.scenes.length - 1, Math.floor(l / PER_DESIGN))] : null;
+  const H = rows.length, W = Math.max(...rows.map(r => r.length));
+  const wallC = (sc && BASE_WALL[sc.name] && BASE_WALL[sc.name][1]) || "#8a8f99";
+  let floorC = "#e9e4da";
+  try { const m = sc && sc.floor && sc.floor(0, 0, { mid: 0, midY: 0 }).match(/fill="([^"]+)"/); if (m) floorC = m[1]; } catch (e) {}
+  const cyc = th.boxCycle && th.boxCycle(l), box = (i) => cyc ? cyc[i % cyc.length] : (th.levelBox ? th.levelBox(l) : th.box);
+  // Nur Felder, die zum Spielfeld gehören: Innenraum per Flutfüllung ab Lasse, sichtbare Wände drumherum
+  const P = rows.map(r => r.padEnd(W)), start = []; P.forEach((r, y) => [...r].forEach((c, x) => { if ("@+".includes(c)) start.push(x, y); }));
+  const inside = new Set(), st = [start.join(",")];
+  while (st.length) { const k = st.pop(); if (inside.has(k)) continue; const [x, y] = k.split(",").map(Number);
+    if (y < 0 || y >= H || x < 0 || x >= W || P[y][x] === "#") continue; inside.add(k); st.push(`${x + 1},${y}`, `${x - 1},${y}`, `${x},${y + 1}`, `${x},${y - 1}`); }
+  const near = (x, y) => [-1, 0, 1].some(dx => [-1, 0, 1].some(dy => inside.has(`${x + dx},${y + dy}`)));
+  let f = "", w = "", g = "", b = "", n = 0, pl = "";
+  P.forEach((r, y) => [...r].forEach((c, x) => {
+    if (inside.has(`${x},${y}`)) f += `<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${floorC}"/>`;
+    else if (c === "#" && near(x, y)) w += `<rect x="${x + .04}" y="${y + .04}" width=".92" height=".92" rx=".2" fill="${wallC}" stroke="#2d3036" stroke-width=".07"/>`;
+    if (".*+".includes(c)) g += `<circle cx="${x + .5}" cy="${y + .5}" r=".36" fill="#fff6a0" stroke="#e8a21a" stroke-width=".08"/>`;
+    if ("$*".includes(c)) b += `<use href="#${box(n++)}" x="${x - .05}" y="${y - .1}" width="1.1" height="1.1"/>`;
+    if ("@+".includes(c)) pl = `<circle cx="${x + .5}" cy="${y + .55}" r=".34" fill="#e2402f" stroke="#2d3036" stroke-width=".1"/><circle cx="${x + .5}" cy="${y + .25}" r=".22" fill="#f6c945" stroke="#2d3036" stroke-width=".08"/>`;
+  }));
+  return `<svg class="lvl-prev" viewBox="-.3 -.3 ${W + .6} ${H + .6}" aria-hidden="true">${f}${w}${g}${b}${pl}</svg>`;
+}
 function renderLevels() {
   const p = P(), w = WORLDS[curWorld], th = THEMES[w.theme];
   document.getElementById("levels-title").innerHTML = `Welt ${curWorld + 1}${w.theme === "neutral" ? "" : ` · ${esc(w.name)}`}<small>${esc(p.name)} · ${solvedIn(p, curWorld)} von ${NL(curWorld)} geschafft</small>`;
@@ -5195,7 +5392,7 @@ function renderLevels() {
     const open = levelOpen(p, curWorld, l), done = isSolved(p, curWorld, l);
     const cls = ["lvl", done ? "done" : "", !open ? "locked" : "", l === next ? "next" : ""].join(" ");
     return row + `<button type="button" class="${cls}" data-l="${l}" ${open ? "" : "disabled"} aria-label="Level ${l + 1}${done ? ", geschafft" : open ? "" : ", gesperrt"}">
-      ${open ? `<span class="lvl-num">${l + 1}</span>${miniLevel(w.levels[l].m)}` : `<svg viewBox="0 0 24 24"><use href="#schloss"/></svg>`}
+      ${scenePreview(w.levels[l].m, curWorld, l)}<span class="lvl-num">${l + 1}</span>${open ? "" : `<svg class="lvl-lock" viewBox="0 0 24 24"><use href="#schloss"/></svg>`}
       ${th.levelNames && th.levelNames[l] ? `<span class="lvl-name">${esc(th.levelNames[l])}</span>` : ""}
       ${open && (th.levelIcon || th.levelBox) && !th.levelNames && !prize ? `<svg class="lvl-gem" viewBox="0 0 100 100"><use href="#${(th.levelIcon || th.levelBox)(l)}"/></svg>` : ""}
       ${prize ? `<svg class="prize-ico" viewBox="0 0 100 ${th.prize.symbol === "schleife" ? 128 : 100}"><use href="#${th.prize.symbol}"/></svg>`
@@ -5312,6 +5509,13 @@ const BASE_WALL = {
 };
 const baseWallCache = {};
 const baseWall = (name) => { const b = BASE_WALL[name]; if (!b) return null; return baseWallCache[name] || (baseWallCache[name] = BW[b[0]](b[1]).replace("<svg", '<svg data-base="1"')); };
+// Wandmotive, die wie die geschobenen Gegenstände aussehen, kommen dort nicht in die Wand
+const AVOID_WALL = {
+  "Pizzeria": /r="24" fill="#e5533a"|r="28" fill="#e2402f"/, "Burger-Diner": /#e3a14d|M22 50q0-26 28-26t28 26z/,
+  "Sörens Proberaum": /M38 14q-12 30 2 52/, "Annas Klassenzimmer": /<rect x="22" y="20" width="56" height="64" rx="4" fill="#2b5fd9"/,
+  "Idas Zimmer": /<circle cx="32" cy="30" r="9" fill="#b8865a"/
+};
+const unwantedWall = (h) => /<text\b/.test(h) || !!(S && AVOID_WALL[S.name] && AVOID_WALL[S.name].test(h));
 // Motivfelder verteilt: nie zwei direkt nebeneinander oder übereinander
 const motifCell = (x, y) => (x + 2 * y) % 3 === 0;
 
@@ -5366,14 +5570,14 @@ function buildBoard() {
         return v; };
       const bw = S && baseWall(S.name);
       if (bw && !motifCell(x, y)) { const f0 = fn(x, y); if (!/data-plan=/.test(f0)) { wallHtml[k] = bw; html += `<div class="tile wall base" ${pos}>${bw}</div>`; continue; } }
-      let w = fn(x, y), bestV = score(w) + (bw && /<text\b/.test(w) ? 300 : 0);
+      let w = fn(x, y), bestV = score(w) + (bw && unwantedWall(w) ? 300 : 0);
       for (const [dx, dy] of [[13, 7], [29, 17], [41, 3], [57, 23], [71, 11], [83, 31], [97, 5], [109, 43], [127, 19], [139, 61], [151, 37], [163, 89]]) {
         if (!bestV) break;
-        const c = fn(x + dx, y + dy), v = score(c) + (bw && /<text\b/.test(c) ? 300 : 0);
+        const c = fn(x + dx, y + dy), v = score(c) + (bw && unwantedWall(c) ? 300 : 0);
         if (v < bestV) { w = c; bestV = v; }
       }
       // Nur Motive ohne Schrift; findet sich keins, bleibt es bei der Grundwand
-      if (bw && /<text\b/.test(w) && !/data-plan=/.test(w)) { wallHtml[k] = bw; html += `<div class="tile wall base" ${pos}>${bw}</div>`; continue; }
+      if (bw && unwantedWall(w) && !/data-plan=/.test(w)) { wallHtml[k] = bw; html += `<div class="tile wall base" ${pos}>${bw}</div>`; continue; }
       { const id = pid(w); if (id) (persons[id] = persons[id] || []).push([x, y]); }
       if (plain(w)) plainN++;
       used[w] = (used[w] || 0) + 1;
@@ -5452,7 +5656,7 @@ function makeSprites() {
   });
   lasseEl = document.createElement("div");
   lasseEl.className = "sprite"; lasseEl.id = "lasse";
-  lasseEl.innerHTML = `<div class="face-dir">${LASSE[(S && S.lasse) || L.theme]}</div>`;
+  lasseEl.innerHTML = `<div class="face-dir">${LASSE[(S && typeof OUTFIT !== "undefined" && LASSE[OUTFIT[S.name]] && OUTFIT[S.name]) || (S && S.lasse) || L.theme]}</div>`;
   board.appendChild(lasseEl);
   // Kisten, die schon im Ziel starten, nicht beim Aufbau hüpfen lassen
   boxes.forEach((b, i) => { if (goals.has(key(b.x, b.y))) boxEls[i].classList.add("in"); });
