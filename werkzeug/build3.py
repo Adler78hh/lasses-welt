@@ -23,7 +23,7 @@ rep('''font-size="34" letter-spacing="1.5" fill="${c}" stroke="#2d3036" stroke-w
 
 # ---- Level: Microban II, nach kürzester Lösung sortiert; Probe: nur Welt 1 ----
 i = s.index("const WORLD_LEVELS = "); j = s.index("\n", i)
-NW = 2  # fertige Welten
+NW = 3  # fertige Welten
 worlds = [[{"n": l["n"], "m": l["m"]} for l in LV[w * 6:w * 6 + 6]] for w in range(NW)]
 s = s[:i] + "const WORLD_LEVELS = " + json.dumps(worlds, ensure_ascii=False) + ";" + s[j:]
 i = s.index("const OPTIMAL = "); j = s.index("\n", i)

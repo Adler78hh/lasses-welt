@@ -6,7 +6,11 @@ const { chromium } = require('playwright'); const fs = require('fs');
  const res = await p.evaluate(async (LV) => { const out = []; const D = { u: 'u', d: 'd', l: 'l', r: 'r' };
   for (let w = 0; w < WORLDS.length; w++) { if (WORLDS[w].custom) continue; for (let l = 0; l < NL(w); l++) {
    const lv = LV.find(x => x.n === WORLDS[w].levels[l].n); if (!lv) { out.push(`W${w + 1}L${l + 1}: keine Lösung`); continue; }
-   show('game'); loadLevel(w, l); if (ROT) { out.push(`W${w + 1}L${l + 1}: gedreht, übersprungen`); continue; }
+   show('game'); loadLevel(w, l);
+   const missing = [...document.querySelectorAll('#board .box use')].map(u => u.getAttribute('href').slice(1)).filter(id => !document.getElementById(id));
+   if (missing.length) out.push(`W${w + 1}L${l + 1}: Gegenstand ohne Bild: ${[...new Set(missing)].join(', ')} (NICHT ok)`);
+   if (!document.getElementById('hint').textContent.trim()) out.push(`W${w + 1}L${l + 1}: kein Hinweistext (NICHT ok)`);
+   if (ROT) { out.push(`W${w + 1}L${l + 1}: gedreht, übersprungen`); continue; }
    for (const c of lv.sol) { step(D[c.toLowerCase()]); await new Promise(r => setTimeout(r, 0)); }
    await new Promise(r => setTimeout(r, 1500));
    const won = !document.getElementById('win').hidden; out.push(`W${w + 1}L${l + 1} ${lv.n}: ${won ? 'gewonnen' : 'NICHT gewonnen'} (${moves} Schritte, Bestwert ${optOf(w, l)})`); } }
