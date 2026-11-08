@@ -581,3 +581,72 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
     levelName: (l) => SC[at(l)][0], levelBox: (l) => `k3ur${SC[at(l)][5]}-0`, boxCycle: (l) => PL.map((_, i) => `k3ur${SC[at(l)][5]}-${i}`)
   });
 }
+
+// ---------- Welt 8: Atschibella (Alex) – Hochzeit, Hamburg, Klassenzimmer; Aperol zieht sich durch ----------
+{
+  const PL = ["#e2402f", "#2b5fd9", "#3fae4a", "#ffd23a", "#8b5cf6", "#ff8a1a", "#ff5fa2", "#4fd1c5"];
+  const B = (bg, inner) => () => kB(bg, inner);
+  const heart = (x, y, r, c) => `<path d="M${x} ${y + r * .9}c${-r * 1.6} ${-r} ${-r * 1.4} ${-r * 2.2} ${-r * .5} ${-r * 2.2} ${r * .3} 0 ${r * .5} ${r * .3} ${r * .5} ${r * .3}s${r * .2} ${-r * .3} ${r * .5} ${-r * .3}c${r * .9} 0 ${r * 1.1} ${r * 1.2} ${-r * .5} ${r * 2.2}z" fill="${c}" ${kO2}/>`;
+  const aperolGlas = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-14 -24h28q2 22-14 28-16-6-14-28z" fill="#ff7a1a" fill-opacity=".88" ${kO2}/><path d="M0 4v16M-9 22h18" stroke="${KI}" stroke-width="2.2"/><circle cx="12" cy="-24" r="6" fill="#ffb02e" ${kO2}/><circle cx="12" cy="-24" r="3.6" fill="#ffd36b"/><path d="M-6 -24l-4-14" stroke="#ef4b4b" stroke-width="2"/></g>`;
+  const ITEMS = {
+    geschenk: (c) => `<rect x="18" y="38" width="64" height="48" rx="4" fill="${c}" ${kO}/><rect x="14" y="30" width="72" height="14" rx="3" fill="${c}" ${kO}/><path d="M50 30v56" stroke="#fff" stroke-width="7"/><path d="M50 30q-18-20-22-6 4 8 22 6zM50 30q18-20 22-6-4 8-22 6z" fill="#fff" ${kO2}/>`,
+    ballon: (c) => `<path d="M50 70q-2 10 4 22" stroke="${KI}" stroke-width="1.6" fill="none"/>${heart(50, 50, 26, c)}<path d="M36 30q4-6 10-6" stroke="#fff" stroke-width="3" fill="none" opacity=".6" stroke-linecap="round"/><path d="M46 70l4 6 4-6z" fill="${c}" ${kO2}/>`,
+    heft: (c) => `<g transform="rotate(-8 50 52)"><rect x="22" y="16" width="54" height="72" rx="3" fill="${c}" ${kO}/><rect x="30" y="28" width="38" height="16" rx="2" fill="#fff" ${kO2}/><path d="M34 34h28M34 39h20" stroke="${KI}" stroke-width="1.6"/><path d="M22 16v72" stroke="color-mix(in srgb, ${c} 60%, #000)" stroke-width="5"/></g>`
+  };
+  document.querySelector("svg defs").insertAdjacentHTML("beforeend", Object.keys(ITEMS).map(k => PL.map((c, i) =>
+    `<symbol id="k3at${k}-${i}" viewBox="0 0 100 100" overflow="visible"><ellipse cx="50" cy="92" rx="30" ry="5" fill="#0003"/>${ITEMS[k](c)}</symbol>`).join("")).join("") +
+    `<symbol id="k3herz" viewBox="0 0 100 100">${heart(50, 54, 30, "#ff5fa2")}${aperolGlas(70, 74, .6)}</symbol>
+     <symbol id="k3goldring" viewBox="0 0 100 100"><circle cx="42" cy="56" r="24" fill="none" stroke="url(#gold)" stroke-width="10"/><circle cx="62" cy="50" r="24" fill="none" stroke="url(#gold)" stroke-width="10"/><circle cx="42" cy="56" r="24" fill="none" stroke="#9a6404" stroke-width="2"/><path d="M58 22l6-10 6 10z" fill="#9fe8ff" stroke="#2d3036" stroke-width="2"/></symbol>`);
+  const platz = kTarget(`${kGlow(`<rect x="12" y="14" width="76" height="74" opacity="0"/>`)}<rect x="12" y="14" width="76" height="74" rx="12" fill="none" stroke="#ffffff" stroke-width="5" stroke-dasharray="10 7"/>${heart(50, 50, 14, "#ffffff")}`);
+  Object.assign(LASSE, {
+    at_hochzeit: kChristian({ shirt: KI, pants: KI, shoes: KI, body: `<path d="M44 44l6 14 6-14z" fill="#fff" ${kO2}/><path d="M44 46l6 3 6-3-6 3z" fill="${KI}"/><circle cx="60" cy="50" r="3.4" fill="#ff5fa2" ${kO2}/><path d="M60 54v4" stroke="#3fae4a" stroke-width="2"/>` }),
+    at_hamburg: kChristian({ shirt: "#ffd23a", pants: "#2b3a67", shoes: KI, body: `<path d="M50 44v24" stroke="${KI}" stroke-width="2"/>${[50, 58, 64].map(y => `<circle cx="54" cy="${y}" r="1.6" fill="${KI}"/>`).join("")}`, head: `<path d="M32 18q0-12 18-12t18 12z" fill="#1f2a44" ${kO}/><path d="M28 18h40l-4 4H32z" fill="${KI}" ${kO2}/><path d="M34 12h32" stroke="#ffd23a" stroke-width="1.6"/>` }),
+    at_schule: kChristian({ shirt: "#3fae4a", pants: "#33507f", shoes: "#ffffff", body: `<path d="M40 46l3 22M60 46l-3 22" stroke="#e2402f" stroke-width="3.4"/>`, hand: `<path d="M66 38l20 6-10 34z" fill="#ff5fa2" ${kO2}/><path d="M66 38l20 6" stroke="#ffd23a" stroke-width="4"/><path d="M70 32q6 4 14 8" stroke="#3fae4a" stroke-width="3" fill="none"/>` })
+  });
+  // Alex: als Braut mit Schleier, sonst wie immer
+  const alexTile = (bg, extra = "") => () => asPerson(kB(bg, `<g transform="translate(8 10) scale(.84)">${ALEX}</g>${extra}`), "alex");
+  const schleier = `<path d="M22 22q28-26 56 0l8 60q-36 10-72 0z" fill="#ffffff" fill-opacity=".55" stroke="#e9e6df" stroke-width="1.4"/><path d="M34 16q16-8 32 0" stroke="#fff" stroke-width="4" fill="none"/>${[36, 50, 64].map(x => `<circle cx="${x}" cy="14" r="3" fill="#ff8fb1" ${kO2}/>`).join("")}`;
+  const ALH = alexTile("#ffe3f1", schleier), AL = alexTile("#fff0e0"), ALS = alexTile("#e6f2e6", aperolGlas(80, 40, .5));
+  // Hochzeit
+  const torte = B("#fff0f6", `${[[50, 80, 34, 16], [50, 62, 26, 14], [50, 46, 18, 12]].map(([x, y, w, h]) => `<rect x="${x - w}" y="${y - h}" width="${w * 2}" height="${h}" rx="4" fill="#fffaf0" ${kO2}/><path d="M${x - w} ${y - h + 4}q${w / 2} 6 ${w} 0t${w} 0" stroke="#ff8fb1" stroke-width="2" fill="none"/>`).join("")}${heart(50, 26, 7, "#e2402f")}`);
+  const ringe = B("#fff0f6", `<circle cx="40" cy="56" r="18" fill="none" stroke="#ffd23a" stroke-width="7"/><circle cx="60" cy="50" r="18" fill="none" stroke="#ffd23a" stroke-width="7"/><path d="M56 28l5-8 5 8z" fill="#9fe8ff" ${kO2}/>`);
+  const bogen = B("#e6f5d8", `<path d="M16 92V40q34-40 68 0v52" fill="none" stroke="#3fae4a" stroke-width="8"/>${[[18, 50], [30, 26], [50, 16], [70, 26], [82, 50]].map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="7" fill="${["#ff5fa2", "#fff", "#ffd23a", "#fff", "#ff5fa2"][i]}" ${kO2}/>`).join("")}`);
+  const kirche = B("#bfe3ff", `<rect x="30" y="44" width="40" height="48" fill="#f4f1ea" ${kO}/><path d="M26 46L50 24l24 22" fill="#c0392b" ${kO2}/><path d="M50 24V6M44 12h12" stroke="${KI}" stroke-width="3"/><path d="M42 92V70q8-10 16 0v22" fill="#a8743f" ${kO2}/>`);
+  const anstossen = B("#fff0f6", `${aperolGlas(36, 62, 1)}${aperolGlas(64, 62, 1)}<path d="M44 28l6-8 6 8" stroke="#ffd23a" stroke-width="3" fill="none"/>`);
+  // Hamburg
+  const elphi = B("#9fd8ff", `<path d="M14 92V50h72v42z" fill="#a8473a" ${kO2}/><path d="M14 50q10-20 20-6 8-18 18-4 10-16 18 0 8-12 16 10z" fill="#e6eef6" ${kO}/>${[24, 40, 56, 72].map(x => `<path d="M${x} 52v8" stroke="#9fd8ff" stroke-width="4"/>`).join("")}<rect x="4" y="88" width="92" height="8" fill="#2b9fe0"/>`);
+  const michel = B("#bfe3ff", `<path d="M40 92V44h20v48z" fill="#a8473a" ${kO}/><path d="M42 44V30h16v14" fill="#3f8a6a" ${kO2}/><path d="M44 30l6-24 6 24z" fill="#3f8a6a" ${kO2}/><circle cx="50" cy="56" r="5" fill="#ffd23a" ${kO2}/>`);
+  const bruecken = B("#9fd8ff", `<rect x="8" y="56" width="84" height="22" fill="#c9935a" ${kO}/><rect x="62" y="24" width="16" height="32" fill="#c9935a" ${kO2}/><circle cx="70" cy="34" r="5" fill="#fff" ${kO2}/><path d="M60 24l10-10 10 10" fill="#3f8a6a" ${kO2}/><rect x="4" y="80" width="92" height="16" fill="#2b9fe0"/>`);
+  const faehre = B("#2b9fe0", `<path d="M14 56h72l-8 18H22z" fill="#ffffff" ${kO}/><rect x="30" y="40" width="40" height="16" fill="#e2402f" ${kO2}/>${[36, 48, 60].map(x => `<rect x="${x}" y="44" width="6" height="6" fill="#9fd8ff"/>`).join("")}<path d="M4 84q12-4 24 0t24 0 24 0 20 0" stroke="#fff" stroke-width="2" fill="none"/>`);
+  const schloss = B("#f2e3c6", `<path d="M10 40h80" stroke="#9aa3b1" stroke-width="4"/>${[[24, "#ff5fa2"], [50, "#e2402f"], [76, "#ffd23a"]].map(([x, c]) => `<path d="M${x - 6} 44v-6q0-6 6-6t6 6v6" fill="none" stroke="${KI}" stroke-width="2.4"/>${heart(x, 54, 10, c)}`).join("")}`);
+  const aperolHH = B("#fff0e0", `${aperolGlas(40, 62, 1.1)}<path d="M64 90V40h20v50" fill="#ff7a1a" fill-opacity=".85" ${kO2}/><rect x="66" y="30" width="16" height="10" fill="${KI}"/>`);
+  // Klassenzimmer: Mathe und Englisch an der Grundschule
+  const tafelMathe = B("#8a5a2b", `<rect x="8" y="12" width="84" height="64" fill="#2f6b4f" ${kO}/><text x="50" y="40" text-anchor="middle" font-family="Comic Neue, Comic Sans MS, sans-serif" font-weight="700" font-size="17" fill="#ffffff">1 + 1 = 2</text><text x="50" y="64" text-anchor="middle" font-family="Comic Neue, Comic Sans MS, sans-serif" font-weight="700" font-size="17" fill="#ffd23a">3 · 4 = 12</text><path d="M30 80h40" stroke="#f4f1ea" stroke-width="4"/>`);
+  const tafelEnglisch = B("#8a5a2b", `<rect x="8" y="12" width="84" height="64" fill="#2f6b4f" ${kO}/><text x="50" y="38" text-anchor="middle" font-family="Comic Neue, Comic Sans MS, sans-serif" font-weight="700" font-size="16" fill="#ffffff">Hello!</text><text x="50" y="62" text-anchor="middle" font-family="Comic Neue, Comic Sans MS, sans-serif" font-weight="700" font-size="11" fill="#ffffff">How are you?</text>`);
+  const rechenschieber = B("#fff6dc", `<rect x="10" y="16" width="80" height="68" fill="none" stroke="#a8743f" stroke-width="6"/>${[28, 42, 56, 70].map((y, r) => `<path d="M12 ${y}h76" stroke="${KI}" stroke-width="1.4"/>${[0, 1, 2, 3, 4].map(i => `<circle cx="${20 + i * 8 + (r % 2) * 30}" cy="${y}" r="4.4" fill="${i < 3 ? "#e2402f" : "#ffffff"}" ${kO2}/>`).join("")}`).join("")}`);
+  const wortkarte = B("#fff6dc", `<rect x="14" y="14" width="72" height="72" rx="6" fill="#ffffff" ${kO}/><circle cx="50" cy="44" r="18" fill="#c9935a" ${kO2}/><circle cx="44" cy="40" r="2.4" fill="${KI}"/><circle cx="56" cy="40" r="2.4" fill="${KI}"/><ellipse cx="50" cy="48" rx="4" ry="3" fill="${KI}"/><path d="M34 32q-6 8-2 16M66 32q6 8 2 16" stroke="#8a5a2b" stroke-width="5" fill="none"/><text x="50" y="80" text-anchor="middle" font-family="Comic Neue, Comic Sans MS, sans-serif" font-weight="700" font-size="14" fill="#2b5fd9">dog</text>`);
+  const unionjack = B("#fff6dc", `<path d="M4 20q46 14 92 0" stroke="${KI}" stroke-width="1.6" fill="none"/>${[18, 42, 66, 88].map((x, i) => `<g transform="translate(${x - 9} ${22 + (i % 2) * 3})"><path d="M0 0h18l-9 16z" fill="#1f3f8a" ${kO2}/><path d="M9 0v14M2 4l14 0" stroke="#fff" stroke-width="3"/><path d="M9 0v14M2 4l14 0" stroke="#e2402f" stroke-width="1.4"/></g>`).join("")}${[[26, 66, "#ffd23a"], [60, 70, "#3fae4a"]].map(([x, y, c]) => `<rect x="${x - 14}" y="${y - 14}" width="28" height="26" fill="#fff" ${kO2}/><circle cx="${x}" cy="${y - 2}" r="7" fill="${c}"/>`).join("")}`);
+  const pult = B("#fff6dc", `<rect x="10" y="50" width="80" height="10" rx="2" fill="#a8743f" ${kO}/><path d="M18 60v30M82 60v30" stroke="#8a5a2b" stroke-width="5"/><rect x="20" y="38" width="26" height="12" fill="#2b5fd9" ${kO2}/>${aperolGlas(70, 44, .7)}`);
+  const SC = [
+    ["Hochzeit", "at_hochzeit", PAL("#fff0f6", "#fffafc"), kFloor("#fbe8ee", "#fbe8ee", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M50 60c-8-6-8-14-2-14 2 0 2 2 2 2s0-2 2-2c6 0 6 8-2 14z" fill="#ff8fb1" opacity=".6"/>` : ""), [torte, ringe, bogen, kirche, anstossen], "geschenk", ["latten", "#ffffff"], [ALH],
+      "Bring jedes Hochzeitsgeschenk an seinen Platz. Geschenke lassen sich nur schieben, nicht ziehen."],
+    ["Hamburg", "at_hamburg", PAL("#dff1ff", "#f4fbff"), kFloor("#c9ced8", "#c9ced8", () => `<path d="M0 50h100M50 0v50M25 50v50M75 50v50" stroke="#aeb4bf" stroke-width="2"/>`), [elphi, michel, bruecken, faehre, aperolHH], "ballon", ["ziegel", "#a8473a"], [AL],
+      "Bring jeden Herz-Ballon an seinen Platz an der Elbe. Ballons lassen sich nur schieben, nicht ziehen."],
+    ["Klassenzimmer", "at_schule", PAL("#fff6dc", "#fffcf2"), kFloor("#e8c795", "#e8c795", () => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#d1ad75" stroke-width="2"/>`), [tafelMathe, tafelEnglisch, rechenschieber, wortkarte, unionjack, pult], "heft", ["farbe", "#9fc7e8"], [ALS],
+      "Leg jedes Schulheft auf seinen Tisch. Hefte lassen sich nur schieben, nicht ziehen."]
+  ];
+  const at = (l) => Math.min(2, Math.floor(l / 2));
+  const bunt = [["#ff5fa2", "#ffffff", "#ffd23a"], ["#2b5fd9", "#ffffff", "#e2402f"], ["#1f3f8a", "#ffffff", "#e2402f"]];
+  const scenes = SC.map(([name, outfit, pal, floor, walls, kind, base, people], i) => { BASE_WALL[name] = base; OUTFIT[name] = outfit;
+    const sc = kScene(name, outfit, pal, floor, walls, () => bunting(bunt[i])); sc.wall = feierWalls(walls, () => people.map(f => f()));
+    if (kind === "heft") sc.allowText = true; return sc; });
+  THEMES.atschie = theme2({
+    title: "Atschibella", worldName: "Atschibella", emblem: "k3herz", box: "k3atgeschenk-0", mapIcon: "k3herz", boxWord: "Sachen", pushWord: "Schübe",
+    hint: (l) => SC[at(l)][8],
+    winTitle: (l) => ["JA, ICH WILL!", "MOIN!", "VERY GOOD!"][at(l)], winText: (m, p) => `Cheers mit Aperol! ${m} Schritte, ${p} Schübe.`,
+    prize: { symbol: "k3goldring", title: "Goldene Ringe!", text: (m) => `Für Atschibella – Liebe, Hamburg und Aperol! Finale in ${m} Schritten.` },
+    pal: { "--accent": "#ff5fa2", "--accent-dark": "#c2418a" },
+    target: platz, scenes,
+    levelName: (l) => SC[at(l)][0], levelBox: (l) => `k3at${SC[at(l)][5]}-0`, boxCycle: (l) => PL.map((_, i) => `k3at${SC[at(l)][5]}-${i}`)
+  });
+}

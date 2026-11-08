@@ -23,7 +23,7 @@ rep('''font-size="34" letter-spacing="1.5" fill="${c}" stroke="#2d3036" stroke-w
 
 # ---- Level: Microban II, nach kürzester Lösung sortiert; Probe: nur Welt 1 ----
 i = s.index("const WORLD_LEVELS = "); j = s.index("\n", i)
-NW = 7  # fertige Welten
+NW = 8  # fertige Welten
 worlds = [[{"n": l["n"], "m": l["m"]} for l in LV[w * 6:w * 6 + 6]] for w in range(NW)]
 s = s[:i] + "const WORLD_LEVELS = " + json.dumps(worlds, ensure_ascii=False) + ";" + s[j:]
 i = s.index("const OPTIMAL = "); j = s.index("\n", i)
@@ -57,6 +57,10 @@ rep("""      if (pushed) dust(pushed.x - dx, pushed.y - dy, dx, dy, true);
       if (pushed && S && S.fart && Math.random() < .5) { const t = ["PUPS!", "PFFRT!", "PÖRT!"][Math.floor(Math.random() * 3)];
         add("fx-dust", pushed.x - dx, pushed.y - dy, `<svg viewBox="-20 -20 140 140" overflow="visible">${[[30, 60, 16], [50, 50, 20], [70, 62, 15]].map(([cx, cy, r]) => `<circle cx="${cx - dx * 18}" cy="${cy}" r="${r}" fill="#9ad97a" fill-opacity=".85" stroke="${NI}" stroke-width="2"/>`).join("")}<text x="50" y="30" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="24" fill="#3fae4a" stroke="${NI}" stroke-width="1.6" paint-order="stroke">${t}</text></svg>`, 700); }
     },""")
+
+
+# ---- Schrift auf Wandkacheln: je Schauplatz erlaubbar (S.allowText, z. B. Tafel im Klassenzimmer) ----
+rep('const unwantedWall = (h) => /<text\\b/.test(h) ||', 'const unwantedWall = (h) => (!(S && S.allowText) && /<text\\b/.test(h)) ||')
 
 # ---- Christian als Hauptfigur, Fankurve, Y2K-Look ----
 T3_JS = open(os.path.join(os.path.dirname(__file__), "t3.js"), encoding="utf-8").read()
