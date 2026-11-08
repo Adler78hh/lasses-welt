@@ -49,6 +49,15 @@ rep('bonus: i === 10, name: (THEMES[theme] && THEMES[theme].worldName) || ["Fuß
 rep('slots.innerHTML = [...goals].map(() => `<span class="slot"><svg viewBox="0 0 100 100"><use href="#${T.boxIn || boxId()}"/></svg></span>`).join("");',
     'slots.innerHTML = [...goals].map((_, i) => `<span class="slot"><svg viewBox="0 0 100 100"><use href="#${T.slotIcon ? T.slotIcon(curLevel, i) : (T.boxIn || boxId())}"/></svg></span>`).join("");')
 
+
+# ---- Comic-Wörter je Schauplatz (S.words) und Pups-Wolke beim Schieben (S.fart) ----
+rep('const words = () => WORDS[L && L.theme] || ["ZACK!", "BÄM!", "WUMMS!", "YES!"];', 'const words = () => (S && S.words) || WORDS[L && L.theme] || ["ZACK!", "BÄM!", "WUMMS!", "YES!"];')
+rep("""      if (pushed) dust(pushed.x - dx, pushed.y - dy, dx, dy, true);
+    },""", """      if (pushed) dust(pushed.x - dx, pushed.y - dy, dx, dy, true);
+      if (pushed && S && S.fart && Math.random() < .5) { const t = ["PUPS!", "PFFRT!", "PÖRT!"][Math.floor(Math.random() * 3)];
+        add("fx-dust", pushed.x - dx, pushed.y - dy, `<svg viewBox="-20 -20 140 140" overflow="visible">${[[30, 60, 16], [50, 50, 20], [70, 62, 15]].map(([cx, cy, r]) => `<circle cx="${cx - dx * 18}" cy="${cy}" r="${r}" fill="#9ad97a" fill-opacity=".85" stroke="${NI}" stroke-width="2"/>`).join("")}<text x="50" y="30" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="24" fill="#3fae4a" stroke="${NI}" stroke-width="1.6" paint-order="stroke">${t}</text></svg>`, 700); }
+    },""")
+
 # ---- Christian als Hauptfigur, Fankurve, Y2K-Look ----
 T3_JS = open(os.path.join(os.path.dirname(__file__), "t3.js"), encoding="utf-8").read()
 T3_CSS = open(os.path.join(os.path.dirname(__file__), "t3.css"), encoding="utf-8").read()
