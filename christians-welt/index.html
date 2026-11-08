@@ -7,12 +7,12 @@
 <meta name="theme-color" content="#1b2a6b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Christians Welt">
-<link rel="apple-touch-icon" href="icon-192.png?v=2">
-<link rel="icon" href="icon-192.png?v=2">
+<meta name="apple-mobile-web-app-title" content="Schristians Welt">
+<link rel="apple-touch-icon" href="icon-192.png?v=3">
+<link rel="icon" href="icon-192.png?v=3">
 </head>
 <body>
-<title>Christians Welt</title>
+<title>Schristians Welt</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Bungee&family=Audiowide&family=Comic+Neue:wght@400;700&family=Permanent+Marker&display=swap">
@@ -1255,7 +1255,7 @@ button.primary, .lvl.next { background: linear-gradient(180deg, #9ff0ff 0%, #38b
   <section class="screen" id="scr-players">
     <div class="title">
       <div class="hero" id="hero"></div>
-      <h1>Christians <span class="big">Welt</span></h1>
+      <h1>Schristians <span class="big">Welt</span></h1>
       <p>Wer spielt?</p>
     </div>
     <div class="players" id="player-list"></div>
@@ -3809,7 +3809,7 @@ for (const T of Object.values(THEMES)) for (const S of (T.scenes || [])) if (NEW
 }
 
 // Werkzeugkoffer heißt in Teil 2 „Lasses Werkstatt“ (eigenes Gebäude auf dem Stadtplan)
-const KIT_NAME = "Christians Werkstatt";
+const KIT_NAME = "Schristians Werkstatt";
 // Lasses Werkstatt als kleines Comic-Gebäude: rotes Dach, Rolltor mit Warnstreifen, Schild mit Schraubenschlüssel
 const KIT_ICON = "werkstatt";
 document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
@@ -5205,7 +5205,7 @@ const TOTAL = WORLDS.filter(w => !w.bonus).reduce((n, w) => n + w.levels.length,
 
 // ---------- Spieler (nur auf diesem Gerät) ----------
 const STORE = "christians-welt-v1";
-let store = { players: [{ id: "christian", name: "Christian", solved: {}, seen: 1 }], current: null };
+let store = { players: [{ id: "christian", name: "Schristian", solved: {}, seen: 1 }], current: null };
 try {
   const raw = JSON.parse(localStorage.getItem(STORE) || "null");
   if (raw && Array.isArray(raw.players) && raw.players.length) store = raw;
@@ -5350,7 +5350,7 @@ function renderMap() {
 const TAG_STYLES = [["#ffd23a", -8], ["#4fd1ff", 6], ["#ff5fa2", -4], ["#7dff7a", 8], ["#ff8a1a", -10], ["#c9a0ff", 4]];
 const tagSVG = (c, rot, k) => `<svg viewBox="0 0 170 70" aria-hidden="true"><g transform="rotate(${rot} 85 35)">
   ${[[18, 14], [150, 18], [30, 58], [140, 56], [96, 8]].map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${1.4 + (i + k) % 3}" fill="${c}" opacity=".75"/>`).join("")}
-  <text x="85" y="44" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="25" letter-spacing="1" fill="${c}" stroke="#2d3036" stroke-width="5" paint-order="stroke" stroke-linejoin="round">CHRISTIANS WELT</text>
+  <text x="85" y="44" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="23" letter-spacing="1" fill="${c}" stroke="#2d3036" stroke-width="5" paint-order="stroke" stroke-linejoin="round">SCHRISTIANS WELT</text>
   ${[40, 72, 118].map((x, i) => `<path d="M${x + (k * 7) % 11} 46v${8 + ((i + k) % 3) * 6}" stroke="${c}" stroke-width="3.4" stroke-linecap="round"/><circle cx="${x + (k * 7) % 11}" cy="${54 + ((i + k) % 3) * 6}" r="2.6" fill="${c}"/>`).join("")}
   <path d="M150 34l6-6 2 8 8 1-6 6" fill="none" stroke="#2d3036" stroke-width="2.4" stroke-linecap="round"/></g></svg>`;
 function addMapTags() {
@@ -5599,7 +5599,7 @@ Object.assign(OUTFIT, { "Bolzplatz": "c_bolz", "Volksparkstadion": "c_stadion", 
   const bolz = F.scenes.find(sc => sc.name === "Bolzplatz"), volks = F.scenes.find(sc => sc.name === "Volksparkstadion");
   F.scenes = [bolz, volks, FANKURVE];
   F.levelName = (l) => ["Bolzplatz", "Bolzplatz", "Volksparkstadion", "Volksparkstadion", "Fankurve", "Fankurve"][l];
-  F.prize = { symbol: "pokal", title: "Der Pott!", text: (m) => `Meister im Volkspark, Christian! Finale in ${m} Schritten.` };
+  F.prize = { symbol: "pokal", title: "Der Pott!", text: (m) => `Meister im Volkspark, Schristian! Finale in ${m} Schritten.` };
 }
 
 // ---------- Startseite: Christian groß im Y2K-Glanz ----------
@@ -5718,6 +5718,9 @@ const CHRISTIAN_HERO = `<svg viewBox="0 0 240 200" overflow="visible">
     levelName: (l) => SC[l][0], levelBox: () => "k3platte-0", boxCycle: () => ids
   });
 }
+
+// Spitzname: ein früher angelegtes Profil „Christian“ heißt jetzt „Schristian“
+store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian") { p.name = "Schristian"; save(); } });
 
 function buildBoard() {
   let html = "";
@@ -6509,7 +6512,7 @@ const vSel = () => { const k = kitOf(P()); return (k.vsel = k.vsel || {}); };
 const curVar = (kind) => (vSel()[edDesign] || {})[kind] || null;
 const VKINDS = { wall: 1, floor: 1, box: 1 };
 const DICE = `<svg viewBox="0 0 100 100"><rect x="14" y="14" width="72" height="72" rx="16" fill="#ffffff" stroke="currentColor" stroke-width="5"/>${[[34, 34], [66, 34], [50, 50], [34, 66], [66, 66]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="6.5" fill="currentColor"/>`).join("")}</svg>`;
-const TOOLS = [["wall", "Wand"], ["floor", "Boden"], ["box", "Kiste"], ["goal", "Ziel"], ["start", "Christian"], ["erase", "Radierer"]];
+const TOOLS = [["wall", "Wand"], ["floor", "Boden"], ["box", "Kiste"], ["goal", "Ziel"], ["start", "Schristian"], ["erase", "Radierer"]];
 function edTileSize() {
   const room = Math.min(window.innerWidth - 32, 720), byH = (window.innerHeight - 330) / edLevel.h;
   return Math.max(24, Math.min(64, Math.floor(room / edLevel.w), Math.floor(byH)));

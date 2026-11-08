@@ -9,15 +9,17 @@ def rep(a, b, n=1):
     c = s.count(a); assert c == n, (a[:70], c); s = s.replace(a, b)
 
 # ---- Kopf, Titel, Spielstand ----
-rep('<meta name="apple-mobile-web-app-title" content="Große Welt">', '<meta name="apple-mobile-web-app-title" content="Christians Welt">')
+rep('<meta name="apple-mobile-web-app-title" content="Große Welt">', '<meta name="apple-mobile-web-app-title" content="Schristians Welt">')
 rep('<meta name="theme-color" content="#e2402f">', '<meta name="theme-color" content="#1b2a6b">')
-rep('<title>Lasses große Welt</title>', '<title>Christians Welt</title>')
-rep('<h1>Lasses <span class="big">große Welt</span></h1>', '<h1>Christians <span class="big">Welt</span></h1>')
+rep('<title>Lasses große Welt</title>', '<title>Schristians Welt</title>')
+rep('<h1>Lasses <span class="big">große Welt</span></h1>', '<h1>Schristians <span class="big">Welt</span></h1>')
+rep('<link rel="apple-touch-icon" href="icon-192.png?v=2">', '<link rel="apple-touch-icon" href="icon-192.png?v=3">')
+rep('<link rel="icon" href="icon-192.png?v=2">', '<link rel="icon" href="icon-192.png?v=3">')
 rep('const STORE = "lasses-grosse-welt-v1";', 'const STORE = "christians-welt-v1";')
-rep('const KIT_NAME = "Lasses Werkstatt";', 'const KIT_NAME = "Christians Werkstatt";')
+rep('const KIT_NAME = "Lasses Werkstatt";', 'const KIT_NAME = "Schristians Werkstatt";')
 rep('family=Bangers&', 'family=Bangers&family=Bungee&family=Audiowide&')
 rep('''font-size="34" letter-spacing="1.5" fill="${c}" stroke="#2d3036" stroke-width="5" paint-order="stroke" stroke-linejoin="round">LASSES WELT</text>''',
-    '''font-size="25" letter-spacing="1" fill="${c}" stroke="#2d3036" stroke-width="5" paint-order="stroke" stroke-linejoin="round">CHRISTIANS WELT</text>''')
+    '''font-size="23" letter-spacing="1" fill="${c}" stroke="#2d3036" stroke-width="5" paint-order="stroke" stroke-linejoin="round">SCHRISTIANS WELT</text>''')
 
 # ---- Level: Microban II, nach kürzester Lösung sortiert; Probe: nur Welt 1 ----
 i = s.index("const WORLD_LEVELS = "); j = s.index("\n", i)
@@ -32,9 +34,9 @@ rep("Level: Microban von David W. Skinner, frei weitergegeben mit Nennung des Au
 
 
 # ---- Spieler „Christian“ statt „Lasse“, keine Ehrenrunde aus Teil 2 (kommt später als eigener Bonus) ----
-rep('let store = { players: [{ id: "lasse", name: "Lasse", solved: {}, seen: 1 }], current: null };', 'let store = { players: [{ id: "christian", name: "Christian", solved: {}, seen: 1 }], current: null };')
+rep('let store = { players: [{ id: "lasse", name: "Lasse", solved: {}, seen: 1 }], current: null };', 'let store = { players: [{ id: "christian", name: "Schristian", solved: {}, seen: 1 }], current: null };')
 rep('WORLD_LEVELS.push([{ n: 154, m: [', 'if (false) WORLD_LEVELS.push([{ n: 154, m: [')
-rep('["start", "Lasse"]', '["start", "Christian"]')
+rep('["start", "Lasse"]', '["start", "Schristian"]')
 
 
 # ---- Welten von Teil 3 ----

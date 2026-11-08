@@ -41,7 +41,7 @@ Object.assign(OUTFIT, { "Bolzplatz": "c_bolz", "Volksparkstadion": "c_stadion", 
   const bolz = F.scenes.find(sc => sc.name === "Bolzplatz"), volks = F.scenes.find(sc => sc.name === "Volksparkstadion");
   F.scenes = [bolz, volks, FANKURVE];
   F.levelName = (l) => ["Bolzplatz", "Bolzplatz", "Volksparkstadion", "Volksparkstadion", "Fankurve", "Fankurve"][l];
-  F.prize = { symbol: "pokal", title: "Der Pott!", text: (m) => `Meister im Volkspark, Christian! Finale in ${m} Schritten.` };
+  F.prize = { symbol: "pokal", title: "Der Pott!", text: (m) => `Meister im Volkspark, Schristian! Finale in ${m} Schritten.` };
 }
 
 // ---------- Startseite: Christian groß im Y2K-Glanz ----------
@@ -160,3 +160,6 @@ const CHRISTIAN_HERO = `<svg viewBox="0 0 240 200" overflow="visible">
     levelName: (l) => SC[l][0], levelBox: () => "k3platte-0", boxCycle: () => ids
   });
 }
+
+// Spitzname: ein früher angelegtes Profil „Christian“ heißt jetzt „Schristian“
+store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian") { p.name = "Schristian"; save(); } });
