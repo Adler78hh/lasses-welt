@@ -482,7 +482,8 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   const ITEMS = {
     koffer: (c) => `<rect x="18" y="30" width="64" height="54" rx="8" fill="${c}" ${kO}/><path d="M38 30v-8q0-4 4-4h16q4 0 4 4v8" fill="none" stroke="${KI}" stroke-width="4"/><path d="M30 34v46M70 34v46" stroke="color-mix(in srgb, ${c} 65%, #000)" stroke-width="3"/><rect x="40" y="52" width="20" height="12" rx="2" fill="#fff" ${kO2}/><circle cx="28" cy="88" r="4" fill="${KI}"/><circle cx="72" cy="88" r="4" fill="${KI}"/>`,
     surf: (c) => `<g transform="rotate(-35 50 52)"><path d="M50 4q16 20 14 50t-14 40q-14-10-14-40T50 4z" fill="${c}" ${kO}/><path d="M50 8v84" stroke="#fff" stroke-width="3"/><path d="M42 30q8-4 16 0" stroke="#fff" stroke-width="2" fill="none" opacity=".6"/><path d="M46 86l-6 8h20l-6-8" fill="${KI}"/></g>`,
-    kranse: (c) => kranse(.82, 50, 54, c)
+    kranse: (c) => kranse(.82, 50, 54, c),
+    maske: (c) => `<path d="M18 30l8-22 16 16h16l16-16 8 22q6 30-32 54-38-24-32-54z" fill="${c}" ${kO}/><path d="M24 14l4 10 8 2M76 14l-4 10-8 2" fill="#ffb3c6" stroke="${KI}" stroke-width="1.4"/><path d="M30 44q8-8 16 0-8 8-16 0zM54 44q8-8 16 0-8 8-16 0z" fill="#ffd23a" ${kO2}/><path d="M38 40v8M62 40v8" stroke="${KI}" stroke-width="2.4"/><path d="M46 60l4 4 4-4z" fill="#ff8fb1" ${kO2}/>${[[-1, 58], [-1, 64], [1, 58], [1, 64]].map(([d, y]) => `<path d="M${50 + d * 8} ${y}l${d * 22} ${y < 60 ? -4 : 2}" stroke="#fff" stroke-width="1.6"/>`).join("")}`
   };
   document.querySelector("svg defs").insertAdjacentHTML("beforeend", Object.keys(ITEMS).map(k => PL.map((c, i) =>
     `<symbol id="k3ur${k}-${i}" viewBox="0 0 100 100" overflow="visible"><ellipse cx="50" cy="92" rx="32" ry="5" fill="#0003"/>${ITEMS[k](c)}</symbol>`).join("")).join("") +
@@ -492,6 +493,7 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   Object.assign(LASSE, {
     ur_kreta: kChristian({ shirt: "#f4f1ea", pants: "#4fa3e0", shoes: "#c9935a", body: `<path d="M44 44l6 8 6-8" fill="none" stroke="#c9c4ba" stroke-width="2"/>`, head: `<ellipse cx="50" cy="15" rx="26" ry="6" fill="#e8d7a8" ${kO2}/><path d="M36 14q0-13 14-13t14 13z" fill="#e8d7a8" ${kO2}/><path d="M36 11h28" stroke="#2b5fd9" stroke-width="3"/><path d="M37 25h11v4q0 3-3 3h-5q-3 0-3-3zM52 25h11v4q0 3-3 3h-5q-3 0-3-3z" fill="${KI}"/>` }),
     ur_surf: kChristian({ shirt: "#1f2a44", pants: "#1f2a44", shoes: "#1f2a44", glove: "#f6d2b4", body: `<path d="M37 50h26" stroke="#4fd1c5" stroke-width="4"/><path d="M50 44v24" stroke="#4fd1c5" stroke-width="2"/>`, hand: `<g transform="rotate(-20 82 56)"><path d="M82 20q8 12 7 34t-7 30q-7-8-7-30t7-34z" fill="#ff8a1a" ${kO2}/></g>` }),
+    ur_cats: kChristian({ shirt: "#1f2a44", pants: KI, shoes: KI, body: `<path d="M44 44l6 6 6-6" fill="#fff" ${kO2}/>`, head: `<path d="M34 12l4-12 8 9zM66 12l-4-12-8 9z" fill="${KI}" ${kO2}/><path d="M35 8l2-4 3 3zM65 8l-2-4-3 3z" fill="#ff8fb1"/><path d="M50 7q-14-4-16 6M50 7q14-4 16 6" stroke="${KI}" stroke-width="2.4" fill="none"/>${[-1, 1].map(d => `<path d="M${50 + d * 6} 33l${d * 12} -3M${50 + d * 6} 35l${d * 12} 1" stroke="${KI}" stroke-width="1.4"/>`).join("")}<circle cx="50" cy="31" r="2" fill="${KI}"/>` }),
     ur_dk: kChristian({ shirt: "#c8102e", pants: "#2b3a67", shoes: KI, body: `<path d="M37 56h26" stroke="#fff" stroke-width="4"/><path d="M48 46v22" stroke="#fff" stroke-width="4"/>`, hand: `<path d="M72 66l12-30" stroke="#9aa3b1" stroke-width="2"/>${st(85, 32, 7, "#fff6a0")}`, head: `<path d="M32 20q0-18 18-18t18 18z" fill="#ffffff" ${kO}/><path d="M32 18h36" stroke="#c8102e" stroke-width="5"/><circle cx="50" cy="2" r="5" fill="#c8102e" ${kO2}/>` })
   });
   const who = (fig, id, bg) => () => asPerson(kB(bg, `<g transform="translate(8 10) scale(.84)">${fig}</g>`), id);
@@ -510,6 +512,15 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   const welle = B("#2b9fe0", `<path d="M4 80q10-40 50-50 24 0 32 20-20-10-30 4 10 0 14 10-26-10-40 16z" fill="#4fd1ff" ${kO2}/><path d="M54 30q24 0 32 20" stroke="#fff" stroke-width="4" fill="none"/>`);
   const palme = B("#f2c97a", `<path d="M52 92q-6-36 4-60" stroke="#8a5a2b" stroke-width="7" fill="none"/>${[-60, -20, 20, 60, 180].map(a => `<path d="M56 32q${Math.cos(a / 57) * 24} ${Math.sin(a / 57) * 14 - 8} ${Math.cos(a / 57) * 34} ${Math.sin(a / 57) * 20 + 8}" stroke="#2f8a3a" stroke-width="8" fill="none" stroke-linecap="round"/>`).join("")}<circle cx="52" cy="38" r="4" fill="#8a5a2b"/><circle cx="60" cy="38" r="4" fill="#8a5a2b"/>`);
   const windsurfer = B("#2b9fe0", `<path d="M20 78h60" stroke="#fff" stroke-width="6" stroke-linecap="round"/><path d="M50 76V18l26 50z" fill="#ff5fa2" ${kO2}/><path d="M50 18l-22 52h22" fill="#ffd23a" ${kO2}/><path d="M4 88q12-4 24 0t24 0 24 0 20 0" stroke="#fff" stroke-width="2" fill="none"/>`);
+  // Showabend mit Cats: Katzen-Darsteller, Mond, Scheinwerfer, Schrottplatz-Kulisse
+  const catPerf = (fur, eye = "#ffd23a") => `<path d="M30 92q0-30 20-30t20 30z" fill="${fur}" ${kO}/><path d="M30 40l2-24 14 12h8l14-12 2 24q2 22-20 24-22-2-20-24z" fill="${fur}" ${kO}/><path d="M34 22l2 10 6 2M66 22l-2 10-6 2" fill="#ffb3c6" stroke="${KI}" stroke-width="1"/><path d="M38 40q5-5 10 0-5 5-10 0zM52 40q5-5 10 0-5 5-10 0z" fill="${eye}" ${kO2}/><path d="M43 37v6M57 37v6" stroke="${KI}" stroke-width="2"/><path d="M47 50l3 3 3-3z" fill="#ff8fb1"/>${[-1, 1].map(d => `<path d="M${50 + d * 6} 52l${d * 18} -4M${50 + d * 6} 55l${d * 18} 2" stroke="#fff" stroke-width="1.2"/>`).join("")}<path d="M44 26l6 6 6-6" stroke="#fff" stroke-width="2" fill="none"/>`;
+  const buehneKatze1 = B("#2a1f5e", `<circle cx="78" cy="18" r="10" fill="#fff6c8" ${kO2}/>${catPerf("#f4f1ea")}`);
+  const buehneKatze2 = B("#2a1f5e", `${catPerf("#c98a3a", "#4fd1c5")}<path d="M30 86q20-6 40 0" stroke="#e2402f" stroke-width="3" fill="none"/>`);
+  const buehneKatze3 = B("#2a1f5e", `${catPerf("#2d3036", "#3fae4a")}${[[16, 16], [84, 26]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2" fill="#fff"/>`).join("")}`);
+  const vollmond = B("#12205e", `<circle cx="50" cy="44" r="30" fill="#fff6c8" ${kO}/><circle cx="40" cy="38" r="5" fill="#f2e3a8"/><circle cx="60" cy="52" r="7" fill="#f2e3a8"/><path d="M14 92l14-22 14 22M56 92l12-18 12 18" fill="${KI}"/>`);
+  const scheinwerfer = B("#12205e", `<path d="M30 20l-16 72h72l-16-72z" fill="#fff6a0" opacity=".25"/><rect x="34" y="6" width="32" height="18" rx="4" fill="${KI}" ${kO2}/><circle cx="50" cy="22" r="8" fill="#fff6a0"/>`);
+  const schrott = B("#3a3548", `<rect x="14" y="54" width="28" height="36" rx="3" fill="#9aa3b1" ${kO}/><path d="M12 54h32" stroke="${KI}" stroke-width="5"/><path d="M50 90l6-30h26l6 30z" fill="#c9935a" ${kO}/><circle cx="70" cy="40" r="12" fill="none" stroke="#6b7280" stroke-width="5"/><path d="M20 40l20-12" stroke="#8a5a2b" stroke-width="5"/>`);
+  const publikum = B("#2a1f5e", `${[22, 50, 78].map((x, i) => `<g class="fan" style="animation-delay:${i * .3}s"><path d="M${x - 12} 96q0-22 12-22t12 22z" fill="${["#e2402f", "#2b5fd9", "#3fae4a"][i]}" ${kO2}/><circle cx="${x}" cy="64" r="9" fill="#f6cfae" ${kO2}/></g>`).join("")}<path d="M4 50h92" stroke="#e2402f" stroke-width="10"/><path d="M4 46h92" stroke="#ffd23a" stroke-width="2"/>`);
   // Dänemark an Silvester
   const ferienhaus = B("#12205e", `<rect x="14" y="48" width="72" height="42" fill="#b5302a" ${kO}/>${[24, 36, 48, 60, 72].map(x => `<path d="M${x} 50v40" stroke="#8a1f1a" stroke-width="1.6"/>`).join("")}<path d="M8 50l42-26 42 26" fill="${KI}" ${kO2}/><rect x="24" y="58" width="16" height="14" fill="#fff6a0" ${kO2}/><rect x="58" y="62" width="14" height="28" fill="#fff" ${kO2}/>${flagDK(88, 40, .9)}`);
   const feuerwerk = B("#12205e", `${[[28, 30, "#ff5fa2"], [70, 26, "#ffd23a"], [52, 60, "#4fd1ff"]].map(([x, y, c]) => Array.from({ length: 10 }, (_, i) => { const a = i / 10 * Math.PI * 2; return `<path d="M${x} ${y}l${Math.cos(a) * 15} ${Math.sin(a) * 15}" stroke="${c}" stroke-width="2.6" stroke-linecap="round"/>`; }).join("")).join("")}`);
@@ -523,20 +534,23 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
       "Bring jeden Koffer auf sein Zimmer. Koffer lassen sich nur schieben, nicht ziehen."],
     ["Fuerteventura", "ur_surf", PAL("#ffe8c8", "#fff6e8"), kFloor("#f2d79b", "#f2d79b", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M30 60q6-4 12 0" stroke="#d9b56a" stroke-width="2" fill="none"/>` : ""), [duene, strandbar, welle, palme, windsurfer], "surf", ["fels", "#8a5a3a"], [AR, MA],
       "Leg jedes Surfbrett an seinen Platz. Bretter lassen sich nur schieben, nicht ziehen."],
+    ["Showabend mit Cats", "ur_cats", PAL("#1d1640", "#3a2a6b", "#ffe3f1", "#ffffff"), kFloor("#5b3a20", "#5b3a20", () => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#4a2e18" stroke-width="2"/>`), [buehneKatze1, buehneKatze2, buehneKatze3, vollmond, scheinwerfer, schrott, publikum], "maske", ["paneel", "#2a1f5e"], [AR, MA],
+      "Bring jede Katzenmaske auf ihren Platz auf der Bühne. Masken lassen sich nur schieben, nicht ziehen."],
     ["Silvester in Dänemark", "ur_dk", PAL("#12205e", "#2a2f8f", "#d6e2ff", "#ffffff"), kFloor("#d9b98a", "#d9b98a", () => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#c4a272" stroke-width="2"/>`), [ferienhaus, feuerwerk, kransekage, dannebrog, sekt, kamin, schnee], "kranse", ["bretter", "#b5302a"], [AL, EN, AN, LA, SO, ID, AR, MA],
       "Stell jedes Kransekage-Türmchen an seinen Platz. Sie lassen sich nur schieben, nicht ziehen."]
   ];
-  const at = (l) => Math.min(2, Math.floor(l / 2));
-  const bunt = [["#2b5fd9", "#ffffff"], ["#ff8a1a", "#ffd23a", "#4fd1ff"], ["#c8102e", "#ffffff"]];
+  // Kreta, Kreta, Fuerteventura, Showabend, Dänemark, Dänemark
+  const at = (l) => [0, 0, 1, 2, 3, 3][l];
+  const bunt = [["#2b5fd9", "#ffffff"], ["#ff8a1a", "#ffd23a", "#4fd1ff"], ["#ff5fa2", "#ffd23a", "#8b5cf6"], ["#c8102e", "#ffffff"]];
   const scenes = SC.map(([name, outfit, pal, floor, walls, kind, base, people], i) => { BASE_WALL[name] = base; OUTFIT[name] = outfit;
     const sc = kScene(name, outfit, pal, floor, walls, () => bunting(bunt[i])); sc.wall = feierWalls(walls, () => people.map(f => f())); return sc; });
   THEMES.urlaub = theme2({
     title: "Urlaub", worldName: "Urlaub", emblem: "k3sonne", box: "k3urkoffer-0", mapIcon: "k3sonne", boxWord: "Sachen", pushWord: "Schübe",
     hint: (l) => SC[at(l)][8],
-    winTitle: (l) => at(l) === 2 ? "GODT NYTÅR!" : "URLAUB!", winText: (m, p) => `Alles am Platz. ${m} Schritte, ${p} Schübe.`,
-    prize: { symbol: "k3goldkoffer", title: "Goldener Koffer!", text: (m) => `Kreta, Fuerteventura und Silvester in Dänemark – was für Urlaube! Finale in ${m} Schritten.` },
+    winTitle: (l) => at(l) === 3 ? "GODT NYTÅR!" : at(l) === 2 ? "MIAU!" : "URLAUB!", winText: (m, p) => `Alles am Platz. ${m} Schritte, ${p} Schübe.`,
+    prize: { symbol: "k3goldkoffer", title: "Goldener Koffer!", text: (m) => `Kreta, Fuerteventura mit Showabend und Silvester in Dänemark – was für Urlaube! Finale in ${m} Schritten.` },
     pal: { "--accent": "#2b9fe0", "--accent-dark": "#1f6fa8" },
-    target: platz, scenes,
+    target: platz, scenes, levelScenes: [0, 1, 2, 3, 4, 5].map(l => scenes[at(l)]),
     levelName: (l) => SC[at(l)][0], levelBox: (l) => `k3ur${SC[at(l)][5]}-0`, boxCycle: (l) => PL.map((_, i) => `k3ur${SC[at(l)][5]}-${i}`)
   });
 }
