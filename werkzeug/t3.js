@@ -3,7 +3,9 @@
 function kChristian(o) {
   const svg = kLasse({ ...o, head: "", hair: false });
   const a = svg.indexOf('<g transform="rotate(-6 50 28)">'), b = svg.lastIndexOf("</g>\n  </g>\n</svg>");
-  const head = `<g transform="translate(50 27) scale(.92) translate(-50 -27)">${christianHead(50, 27)}</g>` +
+  // etwas größere Nase als in Teil 1 und 2
+  const nose = `<path d="M50 27q-6 9-3 12 3 2.4 7 .4" fill="#efc09c" stroke="#b97c5a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const head = `<g transform="translate(50 27) scale(.92) translate(-50 -27)">${christianHead(50, 27).replace(/<path d="M50 30q-3 6-1 8 2 1 4 0"[^>]*\/>/, nose)}</g>` +
     (o.head ? `<g transform="translate(0 3)">${o.head}</g>` : "");
   return svg.slice(0, a) + head + "\n    " + svg.slice(b);
 }
