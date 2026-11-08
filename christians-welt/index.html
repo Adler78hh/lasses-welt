@@ -5755,8 +5755,8 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
 
   // Freunde in den Wänden
   const who = (fig, id, bg) => () => asPerson(kB(bg, `<g transform="translate(8 10) scale(.84)">${fig}</g>`), id);
-  // Im Reihenendhaus wohnen Schristian, Alex und Enni; zum Grillabend kommen Anna, Lasse, Sören und Ida
-  const AL = who(ALEX, "alex", "#ffe3f1"), EN = who(ENNI, "enni", "#e6f5d8"), AN = who(ANNA, "anna", "#fff0d8"), SO = who(SOEREN, "soeren", "#dfeefb"), ID = who(IDA, "ida", "#f3e6ff");
+  // Im Reihenendhaus wohnen Schristian, Alex und Enni; zum Grillabend kommen Anna, Lasse, Sören, Ida, Arne und Matze, in die Hanf-Ecke Arne und Matze
+  const AL = who(ALEX, "alex", "#ffe3f1"), EN = who(ENNI, "enni", "#e6f5d8"), AN = who(ANNA, "anna", "#fff0d8"), SO = who(SOEREN, "soeren", "#dfeefb"), ID = who(IDA, "ida", "#f3e6ff"), AR = who(ARNE, "arne", "#fff0d8"), MA = who(MATZE, "matze", "#dfeefb");
   const LA = () => asPerson(kB("#fff6c8", `<g transform="translate(14 8) scale(.72)">${LASSE.familie.replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "")}</g>`), "lasse");
   // Reihenhaus-Motive (Klinker, weiße Fenster, Giebel), U1 Langenhorn Markt
   const B = (bg, inner) => () => kB(bg, inner);
@@ -5802,7 +5802,7 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   ];
   const bunt = [["#e2402f", "#ffffff", "#2b5fd9"], ["#2b5fd9", "#ffd23a", "#e2402f"], ["#3fae4a", "#ffd23a", "#ff8fb1"], ["#3fae4a", "#ffd23a", "#ff8fb1"], ["#ffd23a", "#ff5fa2", "#4fd1ff", "#3fae4a", "#ff8a1a"], ["#ffd23a", "#ff5fa2", "#4fd1ff", "#3fae4a"]];
   // Wer in welchem Schauplatz in den Wänden steht – jede Person genau einmal
-  const WHO = [[AL, EN], [AL, EN], [AL, EN], [AL, EN], [AL, EN, AN, LA, SO, ID], [AL]];
+  const WHO = [[AL, EN], [AL, EN], [AL, EN], [AL, EN], [AL, EN, AN, LA, SO, ID, AR, MA], [AL, AR, MA]];
   const scenes = SC.map(([name, outfit, pal, floor, walls, kind, base], i) => { BASE_WALL[name] = base; OUTFIT[name] = outfit;
     const sc = kScene(name, outfit, pal, floor, walls, () => bunting(bunt[i])); sc.wall = feierWalls(walls, () => WHO[i].map(f => f())); return sc; });
   THEMES.garten3 = theme2({
