@@ -5873,6 +5873,27 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   });
 }
 
+// ---------- Welt 4: Scrabble-Steine – jedes Level ein Wort mit vier Buchstaben ----------
+{
+  const WORDS = ["HANF", "HAND", "HALS", "HERZ", "HAUT", "NASE"];
+  const PTS = { A: 1, D: 1, E: 1, F: 4, H: 2, L: 2, N: 1, R: 1, S: 1, T: 1, U: 1, Z: 3 };
+  const COL = ["#e2402f", "#2b5fd9", "#2f8a3a", "#8b5cf6"];
+  // Scrabble-Stein: Holz, Kante, Buchstabe in eigener Farbe, Punktzahl unten rechts
+  const tile = (ch, c) => `<rect x="12" y="16" width="76" height="76" rx="9" fill="#c9a06a" ${kO}/><rect x="12" y="12" width="76" height="72" rx="9" fill="#f2dcae" ${kO}/>
+    <path d="M18 20h60" stroke="#fff6dc" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+    <text x="48" y="66" text-anchor="middle" font-family="Bungee, Arial Black, Impact, sans-serif" font-size="44" fill="${c}" stroke="${KI}" stroke-width="1.6" paint-order="stroke">${ch}</text>
+    <text x="77" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="13" fill="${KI}">${PTS[ch]}</text>`;
+  const ids = (l) => [...WORDS[l]].map((ch, i) => `k3sc-${ch}-${i}`);
+  document.querySelector("svg defs").insertAdjacentHTML("beforeend", [...new Set(WORDS.flatMap((w) => [...w].map((ch, i) => ch + i)))].map(k =>
+    `<symbol id="k3sc-${k[0]}-${k[1]}" viewBox="0 0 100 100" overflow="visible"><ellipse cx="50" cy="94" rx="34" ry="4" fill="#0003"/>${tile(k[0], COL[+k[1]])}</symbol>`).join(""));
+  const T = THEMES.bauernhof;
+  T.boxCycle = (l) => ids(l); T.levelBox = (l) => ids(l)[0]; T.slotIcon = (l, i) => ids(l)[i % 4];
+  T.boxWord = "Scrabble-Steine";
+  T.hint = (l) => `Schieb die Scrabble-Steine ${[...WORDS[l]].join(", ")} auf die Felder – zusammen ergeben sie ${WORDS[l]}. Steine lassen sich nur schieben, nicht ziehen.`;
+  T.winTitle = (l) => WORDS[l] + "!";
+  T.winText = (m, p) => `Wort gelegt! ${m} Schritte, ${p} Schübe.`;
+}
+
 function buildBoard() {
   let html = "";
   const xs = [...inside].map(k => +k.split(",")[0]), ys = [...inside].map(k => +k.split(",")[1]);
@@ -5960,7 +5981,7 @@ function buildBoard() {
   board.querySelectorAll(".target").forEach(el => goalEls[el.dataset.k] = el);
   const slots = document.getElementById("slots");
   slots.classList.toggle("many", goals.size > 5);
-  slots.innerHTML = [...goals].map(() => `<span class="slot"><svg viewBox="0 0 100 100"><use href="#${T.boxIn || boxId()}"/></svg></span>`).join("");
+  slots.innerHTML = [...goals].map((_, i) => `<span class="slot"><svg viewBox="0 0 100 100"><use href="#${T.slotIcon ? T.slotIcon(curLevel, i) : (T.boxIn || boxId())}"/></svg></span>`).join("");
 }
 // Schild mit dem Namen des Fundorts: auf der längsten sichtbaren Wandreihe, bevorzugt oben
 let SIGN = null, SIGN_CELLS = new Set();

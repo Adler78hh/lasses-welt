@@ -44,6 +44,11 @@ rep('const theme = ["fussball", "reiten", "pokemon", "lego", "steine", "schlagze
     'const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pinguine", "urlaub", "atschie", "atributschi", "enni"][i] || "neutral";')
 rep('bonus: i === 10, name: (THEMES[theme] && THEMES[theme].worldName) || ["Fußball", "Reiten",', 'bonus: false, name: (THEMES[theme] && THEMES[theme].worldName) || ["Fußball & HSV", "Reiten",')
 
+
+# ---- Fortschrittskreise: eigenes Bild je Kreis möglich (z. B. Buchstaben eines Wortes) ----
+rep('slots.innerHTML = [...goals].map(() => `<span class="slot"><svg viewBox="0 0 100 100"><use href="#${T.boxIn || boxId()}"/></svg></span>`).join("");',
+    'slots.innerHTML = [...goals].map((_, i) => `<span class="slot"><svg viewBox="0 0 100 100"><use href="#${T.slotIcon ? T.slotIcon(curLevel, i) : (T.boxIn || boxId())}"/></svg></span>`).join("");')
+
 # ---- Christian als Hauptfigur, Fankurve, Y2K-Look ----
 T3_JS = open(os.path.join(os.path.dirname(__file__), "t3.js"), encoding="utf-8").read()
 T3_CSS = open(os.path.join(os.path.dirname(__file__), "t3.css"), encoding="utf-8").read()
