@@ -197,7 +197,9 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
 
   // Freunde in den Wänden
   const who = (fig, id, bg) => () => asPerson(kB(bg, `<g transform="translate(8 10) scale(.84)">${fig}</g>`), id);
-  const AL = who(ALEX, "alex", "#ffe3f1"), EN = who(ENNI, "enni", "#e6f5d8"), AR = who(ARNE, "arne", "#fff0d8"), MA = who(MATZE, "matze", "#dfeefb");
+  // Im Reihenendhaus wohnen Schristian, Alex und Enni; zum Grillabend kommen Anna, Lasse, Sören und Ida
+  const AL = who(ALEX, "alex", "#ffe3f1"), EN = who(ENNI, "enni", "#e6f5d8"), AN = who(ANNA, "anna", "#fff0d8"), SO = who(SOEREN, "soeren", "#dfeefb"), ID = who(IDA, "ida", "#f3e6ff");
+  const LA = () => asPerson(kB("#fff6c8", `<g transform="translate(14 8) scale(.72)">${LASSE.familie.replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "")}</g>`), "lasse");
   // Reihenhaus-Motive (Klinker, weiße Fenster, Giebel), U1 Langenhorn Markt
   const B = (bg, inner) => () => kB(bg, inner);
   const fassade = B("#bfe3ff", `<path d="M10 92V44l40-30 40 30v48z" fill="#a8473a" ${kO}/>${[52, 62, 72, 82].map(y => `<path d="M12 ${y}h76" stroke="#7a2f28" stroke-width="1.2" opacity=".6"/>`).join("")}<rect x="20" y="54" width="20" height="18" fill="#fff" ${kO2}/><path d="M30 54v18M20 63h20" stroke="#9fc7e8" stroke-width="2"/><rect x="58" y="60" width="18" height="32" fill="#2f6b4f" ${kO2}/><circle cx="72" cy="76" r="1.6" fill="#ffd23a"/><path d="M4 46L50 10l46 36" fill="none" stroke="${KI}" stroke-width="6" stroke-linecap="round"/>`);
@@ -227,21 +229,24 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   const sterne = B("#12205e", `<circle cx="66" cy="36" r="16" fill="#fff6c8" ${kO2}/><circle cx="74" cy="30" r="14" fill="#12205e"/>${[[20, 24], [34, 60], [80, 74], [16, 80], [50, 14]].map(([x, y]) => st(x, y, 5)).join("")}`);
 
   const SC = [
-    ["Einzug in Langenhorn", "w3_einzug", PAL("#dff1ff", "#f4fbff"), kFloor("#e9cf9f", "#e9cf9f", () => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#d1b47e" stroke-width="2"/>`), [fassade, ubahn, moebelwagen, sofa, briefkasten, AL], "karton", ["ziegel", "#a8473a"],
+    ["Einzug in Langenhorn", "w3_einzug", PAL("#dff1ff", "#f4fbff"), kFloor("#e9cf9f", "#e9cf9f", () => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#d1b47e" stroke-width="2"/>`), [fassade, ubahn, moebelwagen, sofa, briefkasten], "karton", ["ziegel", "#a8473a"],
       "Bring jeden Umzugskarton an seinen Platz. Kartons lassen sich nur schieben, nicht ziehen."],
-    ["Renovieren", "w3_maler", PAL("#f4efe4", "#fbf8f2"), kFloor("#e6e2da", "#e6e2da", (x, y) => pick(x, y, 1, 3) === 0 ? `<circle cx="${30 + pick(x, y, 2, 40)}" cy="${30 + pick(x, y, 3, 40)}" r="3" fill="${["#2b5fd9", "#ffd23a", "#e2402f"][pick(x, y, 4, 3)]}" opacity=".6"/>` : ""), [leiter, tapete, bohrer, werkzeug, EN], "eimer", ["farbe", "#d9cdb8"],
+    ["Renovieren", "w3_maler", PAL("#f4efe4", "#fbf8f2"), kFloor("#e6e2da", "#e6e2da", (x, y) => pick(x, y, 1, 3) === 0 ? `<circle cx="${30 + pick(x, y, 2, 40)}" cy="${30 + pick(x, y, 3, 40)}" r="3" fill="${["#2b5fd9", "#ffd23a", "#e2402f"][pick(x, y, 4, 3)]}" opacity=".6"/>` : ""), [leiter, tapete, bohrer, werkzeug], "eimer", ["farbe", "#d9cdb8"],
       "Stell jeden Farbeimer an seinen Platz. Eimer lassen sich nur schieben, nicht ziehen."],
-    ["Garten anlegen", "w3_garten", PAL("#dff6d8", "#f4fbf0"), kFloor("#8fd16a", "#8fd16a", (x, y) => pick(x, y, 1, 3) === 0 ? `<path d="M30 60l3-8 3 8M60 40l3-8 3 8" stroke="#5fae4a" stroke-width="2" fill="none"/>` : ""), [schubkarre, zwerg, beet, vogelhaus, AL], "topf", ["hecke", "#4f8a3a"],
+    ["Garten anlegen", "w3_garten", PAL("#dff6d8", "#f4fbf0"), kFloor("#8fd16a", "#8fd16a", (x, y) => pick(x, y, 1, 3) === 0 ? `<path d="M30 60l3-8 3 8M60 40l3-8 3 8" stroke="#5fae4a" stroke-width="2" fill="none"/>` : ""), [schubkarre, zwerg, beet, vogelhaus], "topf", ["hecke", "#4f8a3a"],
       "Stell jeden Blumentopf an seinen Platz. Töpfe lassen sich nur schieben, nicht ziehen."],
-    ["Gartenhaus", "w3_gartenhaus", PAL("#dff6d8", "#f4fbf0"), kFloor("#9ad97a", "#9ad97a", (x, y) => pick(x, y, 1, 4) === 0 ? `<ellipse cx="50" cy="50" rx="18" ry="12" fill="#c9c4ba" stroke="#a8a294" stroke-width="2"/>` : ""), [gartenhaus, maeher, schirm, waesche, EN], "kanne", ["latten", "#a8743f"],
+    ["Gartenhaus", "w3_gartenhaus", PAL("#dff6d8", "#f4fbf0"), kFloor("#9ad97a", "#9ad97a", (x, y) => pick(x, y, 1, 4) === 0 ? `<ellipse cx="50" cy="50" rx="18" ry="12" fill="#c9c4ba" stroke="#a8a294" stroke-width="2"/>` : ""), [gartenhaus, maeher, schirm, waesche], "kanne", ["latten", "#a8743f"],
       "Bring jede Gießkanne an ihren Platz. Kannen lassen sich nur schieben, nicht ziehen."],
-    ["Grillabend", "w3_grill", PAL("#ffe0b8", "#fff2de"), kFloor("#d9c9a8", "#d9c9a8", () => `<path d="M0 50h100M50 0v50M25 50v50M75 50v50" stroke="#bfae8a" stroke-width="2"/>`), [grill, lichter, bierbank, AR, MA, AL], "kuehlbox", ["ziegel", "#a8473a"],
+    ["Grillabend", "w3_grill", PAL("#ffe0b8", "#fff2de"), kFloor("#d9c9a8", "#d9c9a8", () => `<path d="M0 50h100M50 0v50M25 50v50M75 50v50" stroke="#bfae8a" stroke-width="2"/>`), [grill, lichter, bierbank], "kuehlbox", ["ziegel", "#a8473a"],
       "Stell jede Kühlbox an ihren Platz. Kühlboxen lassen sich nur schieben, nicht ziehen."],
-    ["Hanf-Ecke", "w3_chill", PAL("#12205e", "#2a2f8f", "#d6e2ff", "#ffffff"), kFloor("#bfb08e", "#bfb08e", () => `<path d="M0 50h100M50 0v50M25 50v50M75 50v50" stroke="#a89a78" stroke-width="2"/>`), [feuerschale, haengematte, lava, gitarre, sterne, AR, MA], "hanf", ["hecke", "#2f6b3f"],
+    ["Hanf-Ecke", "w3_chill", PAL("#12205e", "#2a2f8f", "#d6e2ff", "#ffffff"), kFloor("#bfb08e", "#bfb08e", () => `<path d="M0 50h100M50 0v50M25 50v50M75 50v50" stroke="#a89a78" stroke-width="2"/>`), [feuerschale, haengematte, lava, gitarre, sterne], "hanf", ["hecke", "#2f6b3f"],
       "Stell jeden Hanf-Kübel an seinen Platz. Kübel lassen sich nur schieben, nicht ziehen."]
   ];
   const bunt = [["#e2402f", "#ffffff", "#2b5fd9"], ["#2b5fd9", "#ffd23a", "#e2402f"], ["#3fae4a", "#ffd23a", "#ff8fb1"], ["#3fae4a", "#ffd23a", "#ff8fb1"], ["#ffd23a", "#ff5fa2", "#4fd1ff", "#3fae4a", "#ff8a1a"], ["#ffd23a", "#ff5fa2", "#4fd1ff", "#3fae4a"]];
-  const scenes = SC.map(([name, outfit, pal, floor, walls, kind, base], i) => { BASE_WALL[name] = base; OUTFIT[name] = outfit; return kScene(name, outfit, pal, floor, walls, () => bunting(bunt[i])); });
+  // Wer in welchem Schauplatz in den Wänden steht – jede Person genau einmal
+  const WHO = [[AL, EN], [AL, EN], [AL, EN], [AL, EN], [AL, EN, AN, LA, SO, ID], [AL]];
+  const scenes = SC.map(([name, outfit, pal, floor, walls, kind, base], i) => { BASE_WALL[name] = base; OUTFIT[name] = outfit;
+    const sc = kScene(name, outfit, pal, floor, walls, () => bunting(bunt[i])); sc.wall = feierWalls(walls, () => WHO[i].map(f => f())); return sc; });
   THEMES.garten3 = theme2({
     title: "Reihenendhaus", worldName: "Reihenendhaus", emblem: "k3haus", box: "k3karton-0", mapIcon: "k3haus", boxWord: "Sachen", pushWord: "Schübe",
     hint: (l) => SC[l][7],
