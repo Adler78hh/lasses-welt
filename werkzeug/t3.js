@@ -403,3 +403,67 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
     levelName: (l) => SC[at(l)][0], levelBox: (l) => `k3lg${SC[at(l)][5]}-0`, boxCycle: (l) => PL.map((_, i) => `k3lg${SC[at(l)][5]}-${i}`)
   });
 }
+
+// ---------- Welt 6: Pinguine – rund um den Kuscheltier-Pinguin ----------
+{
+  const PL = ["#e2402f", "#2b5fd9", "#3fae4a", "#ffd23a", "#8b5cf6", "#ff8a1a", "#ff5fa2", "#4fd1c5"];
+  // Kuschel-Pinguin: weiches, rundes Plüschtier mit Naht, Schal und Bommelmütze in der Farbe
+  const plush = (c, s = 1, x = 50, y = 52) => `<g transform="translate(${x} ${y}) scale(${s}) translate(-50 -52)">
+    <ellipse cx="50" cy="60" rx="28" ry="30" fill="#2b3352" ${kO}/><ellipse cx="50" cy="66" rx="18" ry="22" fill="#f4f1ea"/>
+    <path d="M23 56q-10 10-4 22 6-6 8-16M77 56q10 10 4 22-6-6-8-16" fill="#2b3352" ${kO2}/>
+    <ellipse cx="40" cy="90" rx="9" ry="4" fill="#ff8a1a" ${kO2}/><ellipse cx="60" cy="90" rx="9" ry="4" fill="#ff8a1a" ${kO2}/>
+    <circle cx="42" cy="44" r="3.4" fill="${KI}"/><circle cx="58" cy="44" r="3.4" fill="${KI}"/><circle cx="43" cy="43" r="1.1" fill="#fff"/><circle cx="59" cy="43" r="1.1" fill="#fff"/>
+    <path d="M45 50l5 6 5-6z" fill="#ff8a1a" ${kO2}/><ellipse cx="36" cy="52" rx="4" ry="2.4" fill="#ff9a8a" opacity=".6"/><ellipse cx="64" cy="52" rx="4" ry="2.4" fill="#ff9a8a" opacity=".6"/>
+    <path d="M50 70v18" stroke="#c9c4ba" stroke-width="1.4" stroke-dasharray="2 2"/>
+    <path d="M28 58q22 10 44 0v7q-22 10-44 0z" fill="${c}" ${kO2}/><path d="M60 64l4 16 7-2-3-15" fill="${c}" ${kO2}/>
+    <path d="M30 34q0-20 20-20t20 20z" fill="${c}" ${kO2}/><path d="M30 33h40" stroke="#fff" stroke-width="4"/><circle cx="50" cy="12" r="6" fill="#fff" ${kO2}/></g>`;
+  document.querySelector("svg defs").insertAdjacentHTML("beforeend", PL.map((c, i) =>
+    `<symbol id="k3pingu-${i}" viewBox="0 0 100 100" overflow="visible"><ellipse cx="50" cy="93" rx="28" ry="4" fill="#0003"/>${plush(c, .9, 50, 50)}</symbol>`).join("") +
+    `<symbol id="k3pinguin" viewBox="0 0 100 100">${plush("#4fd1c5")}</symbol>
+     <symbol id="k3goldpingu" viewBox="0 0 100 100"><ellipse cx="50" cy="60" rx="28" ry="30" fill="url(#gold)" stroke="#9a6404" stroke-width="3"/><ellipse cx="50" cy="66" rx="18" ry="22" fill="#fff6c8"/><circle cx="42" cy="44" r="3.4" fill="#9a6404"/><circle cx="58" cy="44" r="3.4" fill="#9a6404"/><path d="M45 50l5 6 5-6z" fill="#ff8a1a"/><path d="M30 34q0-20 20-20t20 20z" fill="url(#gold)" stroke="#9a6404" stroke-width="3"/></symbol>`);
+  const platz = kTarget(`${kGlow(`<ellipse cx="50" cy="56" rx="38" ry="30" opacity="0"/>`)}<ellipse cx="50" cy="56" rx="38" ry="30" fill="none" stroke="#ffffff" stroke-width="5" stroke-dasharray="10 7"/><path d="M38 56q12 12 24 0" stroke="#ffffff" stroke-width="4" fill="none"/>`);
+  Object.assign(LASSE, {
+    pi_kuschel: kChristian({ shirt: "#8fbfe0", pants: "#33507f", shoes: "#c9ced8", body: `<path d="M44 44q6 6 12 0" fill="none" stroke="${KI}" stroke-width="2"/>`, hand: `<g transform="translate(60 48) scale(.32)">${plush("#4fd1c5")}</g>` }),
+    pi_zoo: kChristian({ shirt: "#3fae4a", pants: "#c9a875", shoes: "#8a5a2b", body: `<path d="M40 46l3 22M60 46l-3 22" stroke="#8a5a2b" stroke-width="3"/>`, head: `<path d="M34 16q0-14 16-14t16 14z" fill="#e8d7a8" ${kO}/><path d="M28 16h44" stroke="#e8d7a8" stroke-width="5"/><path d="M34 13h32" stroke="#3fae4a" stroke-width="3"/>`, hand: `<g transform="translate(62 50) scale(.28)">${plush("#e2402f")}</g>` }),
+    pi_polar: kChristian({ shirt: "#e2402f", pants: "#2b3a67", shoes: KI, glove: "#2b5fd9", body: `<path d="M50 44v24" stroke="${KI}" stroke-width="2"/><path d="M38 46h24" stroke="#f4f1ea" stroke-width="5"/>`, head: `<path d="M32 22q0-20 18-20t18 20z" fill="#2b5fd9" ${kO}/><path d="M32 20h36" stroke="#fff" stroke-width="4"/><circle cx="50" cy="2" r="5" fill="#fff" ${kO2}/>` })
+  });
+  const B = (bg, inner) => () => kB(bg, inner);
+  const st = (x, y, r, c = "#fff6a0") => `<path d="M${x} ${y - r}l${r * .25} ${r * .75} ${r * .75} ${r * .25}-${r * .75} ${r * .25}-${r * .25} ${r * .75}-${r * .25}-${r * .75}-${r * .75}-${r * .25} ${r * .75}-${r * .25}z" fill="${c}" ${kO2}/>`;
+  const realPingu = (x, y, s = 1, flip = 1) => `<g transform="translate(${x} ${y}) scale(${s * flip} ${s})"><ellipse cx="0" cy="0" rx="12" ry="20" fill="${KI}" ${kO2}/><ellipse cx="0" cy="4" rx="7" ry="14" fill="#fff"/><circle cx="-3" cy="-11" r="1.6" fill="#fff"/><path d="M2 -9l8 2-8 2z" fill="#ff8a1a"/><path d="M-6 20h5M2 20h5" stroke="#ff8a1a" stroke-width="3"/><path d="M-12 -2l-6 12" stroke="${KI}" stroke-width="4" stroke-linecap="round"/></g>`;
+  // Kuschelecke
+  const grossPingu = B("#ffe3f1", plush("#4fd1c5", .95, 50, 50));
+  const bett = B("#cfe2ff", `<rect x="8" y="50" width="84" height="30" rx="4" fill="#ffffff" ${kO}/><rect x="8" y="58" width="84" height="22" fill="#8fbfe0" ${kO2}/><rect x="12" y="40" width="26" height="16" rx="6" fill="#fff" ${kO2}/><g transform="translate(46 34) scale(.38)">${plush("#ffd23a")}</g><path d="M8 80v10M92 80v10" stroke="${KI}" stroke-width="4"/>`);
+  const regal = B("#f4e6cf", `${[34, 64].map(y => `<path d="M8 ${y}h84" stroke="#a8743f" stroke-width="4"/>`).join("")}<g transform="translate(8 2) scale(.32)">${plush("#e2402f")}</g><g transform="translate(36 2) scale(.32)">${plush("#3fae4a")}</g><g transform="translate(64 2) scale(.32)">${plush("#8b5cf6")}</g><rect x="14" y="44" width="10" height="20" fill="#2b5fd9" ${kO2}/><rect x="26" y="40" width="10" height="24" fill="#ffd23a" ${kO2}/><circle cx="66" cy="54" r="10" fill="#ff8a1a" ${kO2}/>`);
+  const nachtlicht = B("#2b3a67", `<circle cx="50" cy="50" r="30" fill="#fff6a0" opacity=".25"/><path d="M38 70q-2-30 12-36 14 6 12 36z" fill="#fff6c8" ${kO2}/>${[[18, 20], [80, 24], [22, 78], [82, 74]].map(([x, y]) => st(x, y, 5)).join("")}`);
+  const decke = B("#ffd6ec", `${[0, 1, 2, 3].map(r => [0, 1, 2, 3].map(c => `<rect x="${8 + c * 21}" y="${8 + r * 21}" width="21" height="21" fill="${(r + c) % 2 ? "#ffb3d1" : "#fff"}"/>`).join("")).join("")}<rect x="8" y="8" width="84" height="84" fill="none" stroke="${KI}" stroke-width="2"/>`);
+  // Zoo
+  const gehege = B("#9fd8ff", `<rect x="4" y="60" width="92" height="32" fill="#4fa3e0"/><path d="M4 64q12-4 24 0t24 0 24 0 20 0" stroke="#fff" stroke-width="2" fill="none"/><path d="M8 60l20-30 22 30z" fill="#e9eef5" ${kO2}/>${realPingu(66, 44, .9)}${realPingu(84, 48, .7, -1)}`);
+  const eimer = B("#e9eef5", `<path d="M26 40h48l-6 44H32z" fill="#9aa3b1" ${kO}/><path d="M26 40q24-26 48 0" fill="none" stroke="${KI}" stroke-width="3"/>${[[36, 38], [48, 34], [60, 38]].map(([x, y]) => `<path d="M${x - 8} ${y}q8-8 16 0-8 8-16 0z M${x + 8} ${y}l5-5v10z" fill="#9fd8ff" ${kO2}/>`).join("")}`);
+  const scheibe = B("#cfe2ff", `<rect x="8" y="10" width="84" height="80" rx="4" fill="#9fd8ff" fill-opacity=".6" ${kO}/><path d="M18 20l20 20M30 14l14 14" stroke="#fff" stroke-width="4" opacity=".7"/>${realPingu(56, 58, 1.1)}`);
+  const shop = B("#ffe3c8", `<rect x="10" y="40" width="80" height="50" fill="#fff" ${kO}/><path d="M6 40h88l-6-16H12z" fill="#2b5fd9" ${kO2}/>${[20, 36, 52, 68].map(x => `<path d="M${x} 24v16" stroke="#fff" stroke-width="4"/>`).join("")}<g transform="translate(14 44) scale(.4)">${plush("#e2402f")}</g><g transform="translate(48 44) scale(.4)">${plush("#ffd23a")}</g>`);
+  const fels = B("#cfe2ff", `<path d="M10 90l14-40 22-14 18 10 20 20 6 24z" fill="#9aa3b1" ${kO}/><path d="M24 50l22-14 18 10" fill="#e9eef5"/>${realPingu(46, 30, .7)}`);
+  // Antarktis-Traum
+  const iglu = B("#bfe3ff", `<path d="M14 84q0-48 36-48t36 48z" fill="#f4f8ff" ${kO}/><path d="M18 70h64M24 56h52M50 36v14M34 56v14M66 56v14" stroke="#c9d6ea" stroke-width="2"/><path d="M40 84q0-16 10-16t10 16z" fill="#2b3a67" ${kO2}/>`);
+  const polarlicht = B("#12205e", `<path d="M0 50q25-30 50-10t50-20" stroke="#4fd1c5" stroke-width="10" fill="none" opacity=".7"/><path d="M0 64q25-24 50-8t50-18" stroke="#8b5cf6" stroke-width="8" fill="none" opacity=".6"/>${[[20, 20], [80, 14], [60, 80]].map(([x, y]) => st(x, y, 4)).join("")}`);
+  const kolonie = B("#e9eef5", `${[[22, 52, .8, 1], [42, 46, .9, -1], [62, 54, .8, 1], [80, 48, .7, -1], [34, 74, .7, 1], [56, 76, .75, -1]].map(([x, y, s, f]) => realPingu(x, y, s, f)).join("")}`);
+  const scholle = B("#4fa3e0", `<path d="M10 60l20-14h44l18 16-12 14H22z" fill="#f4f8ff" ${kO}/><path d="M10 60l12 16h58" fill="none" stroke="#c9d6ea" stroke-width="3"/>${realPingu(50, 40, .8)}<path d="M4 84q12-4 24 0t24 0 24 0 20 0" stroke="#fff" stroke-width="2" fill="none"/>`);
+  const SC = [
+    ["Kuschelecke", "pi_kuschel", PAL("#ffe9f3", "#fff7fb"), kFloor("#f2e3d3", "#f2e3d3", (x, y) => pick(x, y, 1, 4) === 0 ? `<circle cx="${30 + pick(x, y, 2, 40)}" cy="${30 + pick(x, y, 3, 40)}" r="3" fill="#ffb3d1"/>` : ""), [grossPingu, bett, regal, nachtlicht, decke], ["farbe", "#8fbfe0"],
+      "Bring jeden Kuschel-Pinguin an seinen Kuschelplatz. Pinguine lassen sich nur schieben, nicht ziehen."],
+    ["Pinguine im Zoo", "pi_zoo", PAL("#dff1ff", "#f4fbff"), kFloor("#d9dee6", "#d9dee6", () => `<path d="M0 50h100M50 0v100" stroke="#c4c9d2" stroke-width="2"/>`), [gehege, eimer, scheibe, shop, fels, grossPingu], ["stein", "#9aa3b1"],
+      "Setz jeden Kuschel-Pinguin auf seinen Platz am Gehege. Pinguine lassen sich nur schieben, nicht ziehen."],
+    ["Traum von der Antarktis", "pi_polar", PAL("#12205e", "#2a2f8f", "#d6e2ff", "#ffffff"), kFloor("#f4f8ff", "#f4f8ff", (x, y) => pick(x, y, 1, 3) === 0 ? `<path d="M30 60l10-6 12 4" stroke="#c9d6ea" stroke-width="2" fill="none"/>` : ""), [iglu, polarlicht, kolonie, scholle, grossPingu], ["fels", "#9fc7e8"],
+      "Bring jeden Kuschel-Pinguin zu seinem Platz im Eis. Pinguine lassen sich nur schieben, nicht ziehen."]
+  ];
+  const at = (l) => Math.min(2, Math.floor(l / 2));
+  const scenes = SC.map(([name, outfit, pal, floor, walls, base]) => { BASE_WALL[name] = base; OUTFIT[name] = outfit; return kScene(name, outfit, pal, floor, walls, () => bunting(["#4fd1c5", "#ffffff", "#2b5fd9", "#ff5fa2"])); });
+  THEMES.pinguine = theme2({
+    title: "Pinguine", worldName: "Pinguine", emblem: "k3pinguin", box: "k3pingu-0", mapIcon: "k3pinguin", boxWord: "Kuschel-Pinguine", pushWord: "Schübe",
+    hint: (l) => SC[at(l)][6],
+    winTitle: "KUSCHELN!", winText: (m, p) => `Alle Pinguine am Kuschelplatz. ${m} Schritte, ${p} Schübe.`,
+    prize: { symbol: "k3goldpingu", title: "Goldener Pinguin!", text: (m) => `Der Kuschel-Pinguin ist stolz auf dich, Schristian! Finale in ${m} Schritten.` },
+    pal: { "--accent": "#2b5fd9", "--accent-dark": "#1f3f8a" },
+    target: platz, scenes,
+    levelName: (l) => SC[at(l)][0], levelBox: () => "k3pingu-0", boxCycle: () => PL.map((_, i) => `k3pingu-${i}`)
+  });
+}
