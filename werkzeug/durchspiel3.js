@@ -10,8 +10,9 @@ const { chromium } = require('playwright'); const fs = require('fs');
    const missing = [...document.querySelectorAll('#board .box use')].map(u => u.getAttribute('href').slice(1)).filter(id => !document.getElementById(id));
    if (missing.length) out.push(`W${w + 1}L${l + 1}: Gegenstand ohne Bild: ${[...new Set(missing)].join(', ')} (NICHT ok)`);
    if (!document.getElementById('hint').textContent.trim()) out.push(`W${w + 1}L${l + 1}: kein Hinweistext (NICHT ok)`);
-   if (ROT) { out.push(`W${w + 1}L${l + 1}: gedreht, übersprungen`); continue; }
-   for (const c of lv.sol) { step(D[c.toLowerCase()]); await new Promise(r => setTimeout(r, 0)); }
+   // gedrehte Level (im Uhrzeigersinn): oben→rechts, rechts→unten, unten→links, links→oben
+   const RD = ROT ? { u: 'r', r: 'd', d: 'l', l: 'u' } : D;
+   for (const c of lv.sol) { step(RD[c.toLowerCase()]); await new Promise(r => setTimeout(r, 0)); }
    await new Promise(r => setTimeout(r, 1500));
    const won = !document.getElementById('win').hidden; out.push(`W${w + 1}L${l + 1} ${lv.n}: ${won ? 'gewonnen' : 'NICHT gewonnen'} (${moves} Schritte, Bestwert ${optOf(w, l)})`); } }
   return out; }, LV);
