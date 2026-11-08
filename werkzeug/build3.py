@@ -21,10 +21,11 @@ rep('''font-size="34" letter-spacing="1.5" fill="${c}" stroke="#2d3036" stroke-w
 
 # ---- Level: Microban II, nach kürzester Lösung sortiert; Probe: nur Welt 1 ----
 i = s.index("const WORLD_LEVELS = "); j = s.index("\n", i)
-world1 = [{"n": l["n"], "m": l["m"]} for l in LV[:6]]
-s = s[:i] + "const WORLD_LEVELS = " + json.dumps([world1], ensure_ascii=False) + ";" + s[j:]
+NW = 2  # fertige Welten
+worlds = [[{"n": l["n"], "m": l["m"]} for l in LV[w * 6:w * 6 + 6]] for w in range(NW)]
+s = s[:i] + "const WORLD_LEVELS = " + json.dumps(worlds, ensure_ascii=False) + ";" + s[j:]
 i = s.index("const OPTIMAL = "); j = s.index("\n", i)
-s = s[:i] + "const OPTIMAL = " + json.dumps({f"0-{k}": LV[k]["opt"] for k in range(6)}) + ";" + s[j:]
+s = s[:i] + "const OPTIMAL = " + json.dumps({f"{w}-{k}": LV[w * 6 + k]["opt"] for w in range(NW) for k in range(6)}) + ";" + s[j:]
 rep("// Level: 30 Reserve-Level aus Teil 1 + 30 weitere Microban-Level, nach Schwierigkeit sortiert, 6 pro Welt.",
     "// Level: Microban II von David W. Skinner, nach kürzester Lösung sortiert, 6 pro Welt.")
 rep("Level: Microban von David W. Skinner, frei weitergegeben mit Nennung des Autors.", "Level: Microban II von David W. Skinner, frei weitergegeben mit Nennung des Autors.")
@@ -34,6 +35,12 @@ rep("Level: Microban von David W. Skinner, frei weitergegeben mit Nennung des Au
 rep('let store = { players: [{ id: "lasse", name: "Lasse", solved: {}, seen: 1 }], current: null };', 'let store = { players: [{ id: "christian", name: "Christian", solved: {}, seen: 1 }], current: null };')
 rep('WORLD_LEVELS.push([{ n: 154, m: [', 'if (false) WORLD_LEVELS.push([{ n: 154, m: [')
 rep('["start", "Lasse"]', '["start", "Christian"]')
+
+
+# ---- Welten von Teil 3 ----
+rep('const theme = ["fussball", "reiten", "pokemon", "lego", "steine", "schlagzeug", "tennis", "essen", "pokemon2", "familie", "garten"][i] || "neutral";',
+    'const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pinguine", "urlaub", "atschie", "atributschi", "enni"][i] || "neutral";')
+rep('bonus: i === 10, name: (THEMES[theme] && THEMES[theme].worldName) || ["Fußball", "Reiten",', 'bonus: false, name: (THEMES[theme] && THEMES[theme].worldName) || ["Fußball & HSV", "Reiten",')
 
 # ---- Christian als Hauptfigur, Fankurve, Y2K-Look ----
 T3_JS = open(os.path.join(os.path.dirname(__file__), "t3.js"), encoding="utf-8").read()
