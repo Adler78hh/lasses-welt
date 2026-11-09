@@ -2,7 +2,7 @@
 import json, os, re
 SRC = "/home/user/lasses-welt/grosse-welt/index.html"
 OUT = "/home/user/lasses-welt/christians-welt/index.html"
-LV = json.load(open(os.path.join(os.path.dirname(__file__), "../solver/t3-levels.json")))
+LV = json.load(open(os.path.join(os.path.dirname(__file__), "t3-levels.json") if os.path.exists(os.path.join(os.path.dirname(__file__), "t3-levels.json")) else os.path.join(os.path.dirname(__file__), "../solver/t3-levels.json")))
 s = open(SRC, encoding="utf-8").read()
 def rep(a, b, n=1):
     global s
