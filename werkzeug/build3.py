@@ -2,7 +2,7 @@
 import json, os, re
 SRC = "/home/user/lasses-welt/grosse-welt/index.html"
 OUT = "/home/user/lasses-welt/christians-welt/index.html"
-LV = json.load(open(os.path.join(os.path.dirname(__file__), "t3-levels.json") if os.path.exists(os.path.join(os.path.dirname(__file__), "t3-levels.json")) else os.path.join(os.path.dirname(__file__), "../solver/t3-levels.json")))
+LV = json.load(open(os.path.join(os.path.dirname(__file__), "../solver/t3-levels.json")))
 s = open(SRC, encoding="utf-8").read()
 def rep(a, b, n=1):
     global s
@@ -23,7 +23,7 @@ rep('''font-size="34" letter-spacing="1.5" fill="${c}" stroke="#2d3036" stroke-w
 
 # ---- Level: Microban II, nach kürzester Lösung sortiert; Probe: nur Welt 1 ----
 i = s.index("const WORLD_LEVELS = "); j = s.index("\n", i)
-NW = 8  # fertige Welten
+NW = 10  # fertige Welten
 worlds = [[{"n": l["n"], "m": l["m"]} for l in LV[w * 6:w * 6 + 6]] for w in range(NW)]
 s = s[:i] + "const WORLD_LEVELS = " + json.dumps(worlds, ensure_ascii=False) + ";" + s[j:]
 i = s.index("const OPTIMAL = "); j = s.index("\n", i)
