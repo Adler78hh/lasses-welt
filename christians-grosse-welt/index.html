@@ -6108,18 +6108,25 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
     affe: (c) => `<circle cx="22" cy="40" r="10" fill="${c}" ${kO2}/><circle cx="78" cy="40" r="10" fill="${c}" ${kO2}/><circle cx="22" cy="40" r="5" fill="#eedecf"/><circle cx="78" cy="40" r="5" fill="#eedecf"/>
       <ellipse cx="50" cy="74" rx="20" ry="16" fill="${c}" ${kO}/><circle cx="50" cy="40" r="24" fill="${c}" ${kO}/><ellipse cx="50" cy="48" rx="16" ry="12" fill="#eedecf" ${kO2}/><path d="M40 30q4-6 8 0M52 30q4-6 8 0" fill="#eedecf" ${kO2}/>
       <circle cx="43" cy="36" r="3" fill="${KI}"/><circle cx="57" cy="36" r="3" fill="${KI}"/><path d="M42 52q8 7 16 0" fill="#c18781" ${kO2}/><path d="M70 80q16 0 14-16" stroke="${c}" stroke-width="5" fill="none" stroke-linecap="round"/>`,
-    maske: (c) => `<path d="M18 30l8-22 16 16h16l16-16 8 22q6 30-32 54-38-24-32-54z" fill="${c}" ${kO}/><path d="M24 14l4 10 8 2M76 14l-4 10-8 2" fill="#f3d4d8" stroke="${KI}" stroke-width="1.4"/><path d="M30 44q8-8 16 0-8 8-16 0zM54 44q8-8 16 0-8 8-16 0z" fill="#e7d69f" ${kO2}/><path d="M38 40v8M62 40v8" stroke="${KI}" stroke-width="2.4"/><path d="M46 60l4 4 4-4z" fill="#efc5ce" ${kO2}/>${[[-1, 58], [-1, 64], [1, 58], [1, 64]].map(([d, y]) => `<path d="M${50 + d * 8} ${y}l${d * 22} ${y < 60 ? -4 : 2}" stroke="#f8f6f3" stroke-width="1.6"/>`).join("")}`
+    amp: (c) => `<rect x="16" y="22" width="68" height="64" rx="6" fill="${c}" ${kO}/><rect x="22" y="28" width="56" height="10" rx="2" fill="#898b8f"/>${[30, 42, 54, 66].map(x => `<circle cx="${x}" cy="33" r="2.6" fill="#ebe8df"/>`).join("")}<rect x="22" y="42" width="56" height="38" rx="4" fill="#898b8f" ${kO2}/><circle cx="50" cy="61" r="15" fill="#929398" ${kO2}/><circle cx="50" cy="61" r="5" fill="#a4a4a6"/><path d="M24 22l4-8h44l4 8" fill="none" stroke="#898b8f" stroke-width="3"/>`,
   };
   document.querySelector("svg defs").insertAdjacentHTML("beforeend", Object.keys(ITEMS).map(k => PL.map((c, i) =>
     `<symbol id="k3ur${k}-${i}" viewBox="0 0 100 100" overflow="visible"><ellipse cx="50" cy="92" rx="32" ry="5" fill="#75737133"/>${ITEMS[k](c)}</symbol>`).join("")).join("") +
     `<symbol id="k3sonne" viewBox="0 0 100 100"><circle cx="50" cy="50" r="22" fill="#e7d69f" ${kO}/>${Array.from({ length: 10 }, (_, i) => { const a = i / 10 * Math.PI * 2; return `<path d="M${50 + Math.cos(a) * 30} ${50 + Math.sin(a) * 30}L${50 + Math.cos(a) * 42} ${50 + Math.sin(a) * 42}" stroke="#e4ba92" stroke-width="6" stroke-linecap="round"/>`; }).join("")}</symbol>
      <symbol id="k3goldkoffer" viewBox="0 0 100 100"><rect x="18" y="30" width="64" height="54" rx="8" fill="url(#gold)" stroke="#d5ab62" stroke-width="3"/><path d="M38 30v-8q0-4 4-4h16q4 0 4 4v8" fill="none" stroke="#d5ab62" stroke-width="4"/>${flagDK(58, 70, 1.2)}</symbol>`);
   const platz = kTarget(`${kGlow(`<rect x="12" y="14" width="76" height="74" opacity="0"/>`)}<rect x="12" y="14" width="76" height="74" rx="10" fill="none" stroke="#f8f6f3" stroke-width="5" stroke-dasharray="10 7"/>${st(50, 52, 12, "#f8f6f3")}`);
+  const BADEHOSE = "#da8e8f";
+  const kreta = (hand = "") => kChristian({ shirt: SKIN10, pants: BADEHOSE, shoes: "#a0bbce", hand,
+      body: `<path d="M44 52q6 3 12 0" stroke="#d5c3b6" stroke-width="1.4" fill="none"/><circle cx="50" cy="60" r="1" fill="#d5c3b6"/>`,
+      head: `<ellipse cx="50" cy="15" rx="26" ry="6" fill="#e7dfcb" ${kO2}/><path d="M36 14q0-13 14-13t14 13z" fill="#e7dfcb" ${kO2}/><path d="M36 11h28" stroke="#da8e8f" stroke-width="3"/>` })
+    // Beine bis zur Hüfte nackt, Badehose nur oben (Boxer-Brief bis knapp über die Knie)
+    .replace(`<path d="M42 74l-2 16M57 74l2 16" stroke="${BADEHOSE}" stroke-width="5" stroke-linecap="round"/>`, `<path d="M42 74l-2 16M57 74l2 16" stroke="${SKIN10}" stroke-width="5" stroke-linecap="round"/><path d="M41.6 74l-.6 5M57.4 74l.6 5" stroke="${BADEHOSE}" stroke-width="5.4"/>`);
   Object.assign(LASSE, {
-    ur_kreta: kChristian({ shirt: "#f2efe9", pants: "#aac5d7", shoes: "#d3bea8", body: `<path d="M44 44l6 8 6-8" fill="none" stroke="#dbd7d1" stroke-width="2"/>`, head: `<ellipse cx="50" cy="15" rx="26" ry="6" fill="#e7dfcb" ${kO2}/><path d="M36 14q0-13 14-13t14 13z" fill="#e7dfcb" ${kO2}/><path d="M36 11h28" stroke="#9aaad0" stroke-width="3"/><path d="M37 25h11v4q0 3-3 3h-5q-3 0-3-3zM52 25h11v4q0 3-3 3h-5q-3 0-3-3z" fill="${KI}"/>` }),
+    // Kreta: knallrote Badehose als Boxer-Brief, freier Oberkörper, Strohhut, Flip-Flops
+    ur_kreta: kreta(),
     ur_surf: kChristian({ shirt: "#7984a0", pants: "#7984a0", shoes: "#7984a0", glove: "#efdfd1", body: `<path d="M37 50h26" stroke="#a9d3cc" stroke-width="4"/><path d="M50 44v24" stroke="#a9d3cc" stroke-width="2"/>`, hand: `<g transform="rotate(-20 82 56)"><path d="M82 20q8 12 7 34t-7 30q-7-8-7-30t7-34z" fill="#e4ba92" ${kO2}/></g>` }),
-    ur_klong: kChristian({ shirt: "#aac5d7", pants: "#eee7d9", shoes: "#d3bea8", body: `${[[42, 52], [56, 50], [48, 62]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.6" fill="#f8f6f3"/>`).join("")}`, hand: `${[0, 1, 2].map(i => `<rect x="${68 + i * 5}" y="${44 - i * 3}" width="12" height="17" rx="2" fill="${["#f2efe9", "#e7d69f", "#d3bea8"][i]}" ${kO2} transform="rotate(${-10 + i * 12} ${74 + i * 5} 52)"/>`).join("")}` }),
-    ur_cats: kChristian({ shirt: "#7984a0", pants: KI, shoes: KI, body: `<path d="M44 44l6 6 6-6" fill="#f8f6f3" ${kO2}/>`, head: `<path d="M34 12l4-12 8 9zM66 12l-4-12-8 9z" fill="${KI}" ${kO2}/><path d="M35 8l2-4 3 3zM65 8l-2-4-3 3z" fill="#efc5ce"/><path d="M50 7q-14-4-16 6M50 7q14-4 16 6" stroke="${KI}" stroke-width="2.4" fill="none"/>${[-1, 1].map(d => `<path d="M${50 + d * 6} 33l${d * 12} -3M${50 + d * 6} 35l${d * 12} 1" stroke="${KI}" stroke-width="1.4"/>`).join("")}<circle cx="50" cy="31" r="2" fill="${KI}"/>` }),
+    ur_klong: kreta(`${[0, 1, 2].map(i => `<rect x="${68 + i * 5}" y="${44 - i * 3}" width="12" height="17" rx="2" fill="${["#f2efe9", "#e7d69f", "#aac5d7"][i]}" ${kO2}/>`).join("")}`),
+    ur_cats: kChristian({ shirt: "#7984a0", pants: KI, shoes: KI, body: `<path d="M44 44l6 6 6-6" fill="#f8f6f3" ${kO2}/>`, hand: `<path d="M70 44l4 22M74 44l4 22" stroke="#e7d69f" stroke-width="2.4" stroke-linecap="round"/>` }),
     ur_jungle: kChristian({ shirt: "#d6818c", pants: "#828caf", shoes: KI, body: `<path d="M37 56h26" stroke="#f8f6f3" stroke-width="4"/><path d="M48 46v22" stroke="#f8f6f3" stroke-width="4"/>`, hand: `<rect x="66" y="56" width="20" height="16" rx="4" fill="#e7d69f" ${kO2}/><circle cx="76" cy="58" r="7" fill="#d9a198" ${kO2}/>` }),
     ur_dk: kChristian({ shirt: "#d6818c", pants: "#828caf", shoes: KI, body: `<path d="M37 56h26" stroke="#f8f6f3" stroke-width="4"/><path d="M48 46v22" stroke="#f8f6f3" stroke-width="4"/>`, hand: `<path d="M72 66l12-30" stroke="#c6c7c9" stroke-width="2"/>${st(85, 32, 7, "#f1ecc9")}`, head: `<path d="M32 20q0-18 18-18t18 18z" fill="#f8f6f3" ${kO}/><path d="M32 18h36" stroke="#d6818c" stroke-width="5"/><circle cx="50" cy="2" r="5" fill="#d6818c" ${kO2}/>` })
   });
@@ -6155,14 +6162,17 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   const bananen = B("#8abd8c", `${[0, 1, 2].map(i => `<path d="M${30 + i * 8} 30q-14 30 10 50 4-2 2-6-16-18-6-44z" fill="#e7d69f" ${kO2}/>`).join("")}<path d="M42 26l6-8" stroke="#bba37f" stroke-width="4"/>`);
   const pupsAffe = B("#8abd8c", `${affeW("#c1afe2", 58)}${[[16, 74, 9], [28, 82, 11], [14, 88, 7]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#c7dbb7" fill-opacity=".9" ${kO2}/>`).join("")}`);
   const fenster = B("#d6818c", `<rect x="16" y="16" width="68" height="68" fill="#6976b6" ${kO}/><path d="M50 16v68M16 50h68" stroke="#f8f6f3" stroke-width="5"/>${[[28, 28], [66, 30], [36, 64], [72, 70], [58, 22]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.6" fill="#f8f6f3"/>`).join("")}`);
-  // Showabend mit Cats: Katzen-Darsteller, Mond, Scheinwerfer, Schrottplatz-Kulisse
-  const catPerf = (fur, eye = "#e7d69f") => `<path d="M30 92q0-30 20-30t20 30z" fill="${fur}" ${kO}/><path d="M30 40l2-24 14 12h8l14-12 2 24q2 22-20 24-22-2-20-24z" fill="${fur}" ${kO}/><path d="M34 22l2 10 6 2M66 22l-2 10-6 2" fill="#f3d4d8" stroke="${KI}" stroke-width="1"/><path d="M38 40q5-5 10 0-5 5-10 0zM52 40q5-5 10 0-5 5-10 0z" fill="${eye}" ${kO2}/><path d="M43 37v6M57 37v6" stroke="${KI}" stroke-width="2"/><path d="M47 50l3 3 3-3z" fill="#efc5ce"/>${[-1, 1].map(d => `<path d="M${50 + d * 6} 52l${d * 18} -4M${50 + d * 6} 55l${d * 18} 2" stroke="#f8f6f3" stroke-width="1.2"/>`).join("")}<path d="M44 26l6 6 6-6" stroke="#f8f6f3" stroke-width="2" fill="none"/>`;
-  const buehneKatze1 = B("#8174b0", `<circle cx="78" cy="18" r="10" fill="#f5efda" ${kO2}/>${catPerf("#f2efe9")}`);
-  const buehneKatze2 = B("#8174b0", `${catPerf("#d0b99b", "#a9d3cc")}<path d="M30 86q20-6 40 0" stroke="#d9a198" stroke-width="3" fill="none"/>`);
-  const buehneKatze3 = B("#8174b0", `${catPerf("#898b8f", "#9cc69c")}${[[16, 16], [84, 26]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2" fill="#f8f6f3"/>`).join("")}`);
-  const vollmond = B("#6976b6", `<circle cx="50" cy="44" r="30" fill="#f5efda" ${kO}/><circle cx="40" cy="38" r="5" fill="#ece4cc"/><circle cx="60" cy="52" r="7" fill="#ece4cc"/><path d="M14 92l14-22 14 22M56 92l12-18 12 18" fill="${KI}"/>`);
+  // Showabend mit Cats: die Band „Cats“ spielt – Sängerin, Gitarrist, Saxofonist, Schlagzeuger, Keyboarderin (erfundene Musiker)
+  const musiker = (skin, hair, shirt, longHair = false) => `<path d="M26 96q0-24 24-24t24 24z" fill="${shirt}" ${kO}/><rect x="45" y="60" width="10" height="14" rx="4" fill="${skin}" ${kO2}/>
+    ${longHair ? `<path d="M34 46q-4 22 4 28h24q8-6 4-28z" fill="${hair}" ${kO2}/>` : ""}<circle cx="50" cy="48" r="15" fill="${skin}" ${kO}/><path d="M35 46q0-16 15-16t15 16q-6-8-15-8t-15 8z" fill="${hair}" ${kO2}/>
+    <circle cx="45" cy="49" r="1.8" fill="${KI}"/><circle cx="55" cy="49" r="1.8" fill="${KI}"/><path d="M45 55q5 4 10 0" stroke="${KI}" stroke-width="1.6" fill="none"/>`;
+  const spot = `<path d="M30 0l-14 96h68L70 0z" fill="#f5efda" opacity=".14"/>`;
+  const saengerin = B("#8174b0", `${spot}${musiker("#ecdecf", "#bb8d7f", "#d9a198", true)}<path d="M66 96V60" stroke="#c6c7c9" stroke-width="2.4"/><path d="M66 60l-8-6" stroke="#c6c7c9" stroke-width="2.4"/><ellipse cx="56" cy="53" rx="3" ry="4" fill="${KI}" transform="rotate(-40 56 53)"/>`);
+  const gitarrist = B("#8174b0", `${spot}${musiker("#ddcab9", "#898b8f", "#9aaad0")}<g transform="rotate(-28 50 82)"><ellipse cx="42" cy="84" rx="13" ry="10" fill="#d3a88a" ${kO2}/><circle cx="42" cy="84" r="3.4" fill="${KI}"/><rect x="54" y="81" width="34" height="5" fill="#c0a182" ${kO2}/><rect x="86" y="79" width="8" height="9" rx="2" fill="#c0a182" ${kO2}/></g>`);
+  const saxofonist = B("#8174b0", `${spot}${musiker("#bda18f", "#807e87", "#9cc69c")}<path d="M58 60v22q0 10-10 10t-10-8l4-2q2 5 6 5t6-5V60z" fill="#ddcb9d" ${kO2}/><path d="M56 58l6-4" stroke="#ddcb9d" stroke-width="3"/>`);
+  const schlagzeuger = B("#8174b0", `${spot}${musiker("#ecdecf", "#d6c08e", "#c1afe2")}<ellipse cx="50" cy="88" rx="22" ry="8" fill="#f2efe9" ${kO}/><path d="M28 88v8M72 88v8" stroke="${KI}" stroke-width="2"/><ellipse cx="20" cy="70" rx="12" ry="3" fill="#ddcb9d" ${kO2}/><ellipse cx="80" cy="70" rx="12" ry="3" fill="#ddcb9d" ${kO2}/><path d="M34 66l-10-10M66 66l10-10" stroke="#d3bea8" stroke-width="2.4" stroke-linecap="round"/>`);
+  const keyboarderin = B("#8174b0", `${spot}${musiker("#efe1d5", "#d6818c", "#e4ba92", true)}<rect x="14" y="80" width="72" height="14" rx="2" fill="${KI}" ${kO2}/>${Array.from({ length: 9 }, (_, i) => `<rect x="${17 + i * 7.6}" y="82" width="6.4" height="10" fill="#f8f6f3"/>`).join("")}`);
   const scheinwerfer = B("#6976b6", `<path d="M30 20l-16 72h72l-16-72z" fill="#f1ecc9" opacity=".25"/><rect x="34" y="6" width="32" height="18" rx="4" fill="${KI}" ${kO2}/><circle cx="50" cy="22" r="8" fill="#f1ecc9"/>`);
-  const schrott = B("#918a9a", `<rect x="14" y="54" width="28" height="36" rx="3" fill="#c6c7c9" ${kO}/><path d="M12 54h32" stroke="${KI}" stroke-width="5"/><path d="M50 90l6-30h26l6 30z" fill="#d3bea8" ${kO}/><circle cx="70" cy="40" r="12" fill="none" stroke="#adaeb1" stroke-width="5"/><path d="M20 40l20-12" stroke="#c0a182" stroke-width="5"/>`);
   const publikum = B("#8174b0", `${[22, 50, 78].map((x, i) => `<g class="fan" style="animation-delay:${i * .3}s"><path d="M${x - 12} 96q0-22 12-22t12 22z" fill="${["#d9a198", "#9aaad0", "#9cc69c"][i]}" ${kO2}/><circle cx="${x}" cy="64" r="9" fill="#eedecf" ${kO2}/></g>`).join("")}<path d="M4 50h92" stroke="#d9a198" stroke-width="10"/><path d="M4 46h92" stroke="#e7d69f" stroke-width="2"/>`);
   // Dänemark an Silvester
   const ferienhaus = B("#6976b6", `<rect x="14" y="48" width="72" height="42" fill="#cc918c" ${kO}/>${[24, 36, 48, 60, 72].map(x => `<path d="M${x} 50v40" stroke="#c67a73" stroke-width="1.6"/>`).join("")}<path d="M8 50l42-26 42 26" fill="${KI}" ${kO2}/><rect x="24" y="58" width="16" height="14" fill="#f1ecc9" ${kO2}/><rect x="58" y="62" width="14" height="28" fill="#f8f6f3" ${kO2}/>${flagDK(88, 40, .9)}`);
@@ -6179,8 +6189,8 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
       "Bring jeden Klong-Würfel an seinen Platz. Würfel lassen sich nur schieben, nicht ziehen."],
     ["Fuerteventura", "ur_surf", PAL("#f5eada", "#f8f1e7"), kFloor("#ebdfc6", "#ebdfc6", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M30 60q6-4 12 0" stroke="#dbcdb0" stroke-width="2" fill="none"/>` : ""), [duene, strandbar, welle, palme, windsurfer], "surf", ["fels", "#bda18d"], [AR, MA],
       "Leg jedes Surfbrett an seinen Platz. Bretter lassen sich nur schieben, nicht ziehen."],
-    ["Showabend mit Cats", "ur_cats", PAL("#796ea2", "#8e7fb1", "#f8e8ec", "#f8f6f3"), kFloor("#b38f72", "#b38f72", () => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#ac896c" stroke-width="2"/>`), [buehneKatze1, buehneKatze2, buehneKatze3, vollmond, scheinwerfer, schrott, publikum], "maske", ["paneel", "#8174b0"], [AR, MA],
-      "Bring jede Katzenmaske auf ihren Platz auf der Bühne. Masken lassen sich nur schieben, nicht ziehen."],
+    ["Showabend mit Cats", "ur_cats", PAL("#796ea2", "#8e7fb1", "#f8e8ec", "#f8f6f3"), kFloor("#b38f72", "#b38f72", () => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#ac896c" stroke-width="2"/>`), [saengerin, gitarrist, saxofonist, schlagzeuger, keyboarderin, scheinwerfer, publikum], "amp", ["paneel", "#8174b0"], [AR, MA],
+      "Stell jeden Verstärker an seinen Platz auf der Bühne – gleich spielt die Band. Verstärker lassen sich nur schieben, nicht ziehen."],
     ["Silvester in Dänemark", "ur_dk", PAL("#6976b6", "#8788bd", "#e4e8f2", "#f8f6f3"), kFloor("#ded1be", "#ded1be", () => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#d3c5b2" stroke-width="2"/>`), [ferienhaus, feuerwerk, kransekage, dannebrog, sekt, kamin, schnee], "kranse", ["bretter", "#cc918c"], [AL, EN, AN, LA, SO, ID, AR, MA],
       "Stell jedes Kransekage-Türmchen an seinen Platz. Sie lassen sich nur schieben, nicht ziehen."],
     ["Jungle Party", "ur_jungle", PAL("#6976b6", "#8788bd", "#e4e8f2", "#f8f6f3"), kFloor("#ded1be", "#ded1be", () => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#d3c5b2" stroke-width="2"/>`), [fernseher, konsole, buzzer, liane, bananen, pupsAffe, fenster], "affe", ["bretter", "#cc918c"], [AL, EN, AN, LA, SO, ID, AR, MA],
@@ -6413,7 +6423,14 @@ const k3Platz = (deco) => kTarget(`${kGlow(`<rect x="12" y="14" width="76" heigh
 // Schristian mit natürlichen Proportionen: Hemd, Chino, Sneaker; je Welt nur eine kleine Abwandlung.
 const T4_LINE = `stroke="#4a3f37" stroke-opacity=".55" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"`;
 const T4_SKIN = "#ead2bd", T4_SKIN2 = "#dcbea6";
-function kAdult({ shirt = "#b9c8d6", pants = "#c9b79c", shoes = "#f3efe8", style = "hemd", jacket = "", scarf = "", raute = false, tie = "" }) {
+function kAdult(o) {
+  // Badehose (z. B. Kreta): freier Oberkörper, Beine nackt, Boxer-Brief in der Hosenfarbe
+  if (o.swim) { const svg = kAdult({ ...o, swim: "", shirt: T4_SKIN, pants: T4_SKIN, style: "nackt" });
+    return svg.replace('<rect x="43" y="54" width="14" height="2.6" rx=".8" fill="#5b4638"/><rect x="48.8" y="54.2" width="2.4" height="2.2" rx=".4" fill="#c9b28a"/>',
+      `<path d="M43 54.5h14l.9 11.5h-6.4L50 61l-1.5 5h-6.4z" fill="${o.swim}"/><path d="M43 55.6h14" stroke="#ffffff" stroke-width=".8" opacity=".7"/><path d="M45 38q5 2 10 0M50 44v10" stroke="#c9a68c" stroke-width=".8" fill="none"/>`); }
+  return kAdultBase(o);
+}
+function kAdultBase({ shirt = "#b9c8d6", pants = "#c9b79c", shoes = "#f3efe8", style = "hemd", jacket = "", scarf = "", raute = false, tie = "" }) {
   const dk = (c) => `color-mix(in srgb, ${c} 82%, #2a2420)`;
   const top = jacket || shirt;
   const face = christianHead(50, 17)
@@ -6423,10 +6440,11 @@ function kAdult({ shirt = "#b9c8d6", pants = "#c9b79c", shoes = "#f3efe8", style
   const head = `<g transform="translate(50 15.5) scale(.54) translate(-50 -17)">${face}</g>`;
   const collar = style === "polo" ? `<path d="M45 30l5 5 5-5-2 7h-6z" fill="${dk(shirt)}"/><path d="M50 35v6" stroke="${dk(shirt)}" stroke-width=".9"/>`
     : style === "strick" ? `<path d="M44.5 30.5q5.5 5 11 0" fill="none" stroke="${dk(shirt)}" stroke-width="1.6"/><path d="M47 31l3 3 3-3" fill="#f3efe8"/>`
+    : style === "nackt" ? ""
     : `<path d="M44.6 30l5.4 4.6L47.6 37zM55.4 30l-5.4 4.6 2.4 2.4z" fill="${jacket ? "#f6f3ee" : dk(shirt)}" opacity="${jacket ? 1 : .55}"/>${jacket ? "" : `<path d="M50 35v21" stroke="${dk(shirt)}" stroke-width=".7"/>${[40, 45, 50].map(y => `<circle cx="50" cy="${y}" r=".55" fill="#f3efe8"/>`).join("")}`}`;
   const jack = jacket ? `<path d="M50 34v4l-2 18H39l-1-23q4-3 7-3zM50 34v4l2 18h9l1-23q-4-3-7-3z" fill="${jacket}"/><path d="M45.5 30.5L50 38M54.5 30.5L50 38" stroke="${dk(jacket)}" stroke-width="1.2"/>${tie ? `<path d="M50 35l-1.2 2 1.2 9 1.2-9z" fill="${tie}"/>` : ""}` : "";
   const sleeve = (x1, y1, x2, y2, x3, y3) => `<path d="M${x1} ${y1}L${x2} ${y2}" stroke="${top}" stroke-width="6" stroke-linecap="round"/>` +
-    (jacket || style === "strick" ? `<path d="M${x2} ${y2}L${x3} ${y3}" stroke="${top}" stroke-width="5" stroke-linecap="round"/>` :
+    (jacket || style === "strick" || style === "nackt" ? `<path d="M${x2} ${y2}L${x3} ${y3}" stroke="${top}" stroke-width="5" stroke-linecap="round"/>` :
       `<path d="M${x2} ${y2}L${x3} ${y3}" stroke="${T4_SKIN}" stroke-width="4.2" stroke-linecap="round"/><path d="M${x2 - .6} ${y2 - 1.6}l1.2 3.2" stroke="${dk(top)}" stroke-width="5.6" stroke-linecap="round" opacity=".55"/>`) +
     `<circle cx="${x3}" cy="${y3 + .8}" r="2.3" fill="${T4_SKIN}"/>`;
   return `<svg viewBox="0 0 100 100" overflow="visible">
@@ -6463,7 +6481,7 @@ function kAdult({ shirt = "#b9c8d6", pants = "#c9b79c", shoes = "#f3efe8", style
     atributschi: { shirt: "#4e5b4a" },
     enni: { shirt: "#a9b7a2", style: "strick" }
   };
-  const SZ = { "Silvester in Dänemark": { shirt: "#6e3b3f", pants: "#3f4550", style: "strick", scarf: "#e4dccd" }, "Hochzeit": { shirt: "#f6f3ee", jacket: "#3b3c42", pants: "#3b3c42", shoes: "#2b2522", tie: "#9a8f86" } };
+  const SZ = { "Kreta": { swim: "#d8202a", shoes: "#4f7480" }, "Klong! auf Kreta": { swim: "#d8202a", shoes: "#4f7480" }, "Showabend mit Cats": { shirt: "#2b2f3a", pants: "#2b2f3a", shoes: "#2b2522" }, "Silvester in Dänemark": { shirt: "#6e3b3f", pants: "#3f4550", style: "strick", scarf: "#e4dccd" }, "Hochzeit": { shirt: "#f6f3ee", jacket: "#3b3c42", pants: "#3b3c42", shoes: "#2b2522", tie: "#9a8f86" } };
   for (const k of Object.keys(V)) { const th = THEMES[k]; if (!th) continue;
     (th.scenes || []).forEach(sc => { const key = "t4_" + k + "_" + sc.name; LASSE[key] = kAdult(SZ[sc.name] || V[k]); OUTFIT[sc.name] = key; }); }
   LASSE.avatar = LASSE.fussball = kAdult(V.basis);
@@ -6513,7 +6531,7 @@ for (const th of Object.values(THEMES)) {
 FX.place = (x, y) => { const b = document.getElementById("board"); if (!b || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const el = document.createElement("div"); el.className = "fx-pop fx-soft"; el.style.cssText = `--x:${x};--y:${y}`; b.appendChild(el); setTimeout(() => el.remove(), 900); };
 // ---------- Wände: ruhige, flache Flächen; Motive hängen als gerahmte Bilder darauf ----------
-for (const k of Object.keys(BW)) { const o = BW[k]; BW[k] = (c) => svgT(`<rect width="100" height="100" fill="${c}"/><g opacity=".12">${o(c)}</g>`); }
+for (const k of Object.keys(BW)) { const o = BW[k]; BW[k] = (c) => svgT(`<rect width="100" height="100" fill="color-mix(in srgb, ${c} 84%, #6b5848)"/><g opacity=".12">${o(c)}</g>`); }
 
 function buildBoard() {
   let html = "";

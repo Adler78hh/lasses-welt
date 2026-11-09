@@ -3,7 +3,14 @@
 // Schristian mit natürlichen Proportionen: Hemd, Chino, Sneaker; je Welt nur eine kleine Abwandlung.
 const T4_LINE = `stroke="#4a3f37" stroke-opacity=".55" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"`;
 const T4_SKIN = "#ead2bd", T4_SKIN2 = "#dcbea6";
-function kAdult({ shirt = "#b9c8d6", pants = "#c9b79c", shoes = "#f3efe8", style = "hemd", jacket = "", scarf = "", raute = false, tie = "" }) {
+function kAdult(o) {
+  // Badehose (z. B. Kreta): freier Oberkörper, Beine nackt, Boxer-Brief in der Hosenfarbe
+  if (o.swim) { const svg = kAdult({ ...o, swim: "", shirt: T4_SKIN, pants: T4_SKIN, style: "nackt" });
+    return svg.replace('<rect x="43" y="54" width="14" height="2.6" rx=".8" fill="#5b4638"/><rect x="48.8" y="54.2" width="2.4" height="2.2" rx=".4" fill="#c9b28a"/>',
+      `<path d="M43 54.5h14l.9 11.5h-6.4L50 61l-1.5 5h-6.4z" fill="${o.swim}"/><path d="M43 55.6h14" stroke="#ffffff" stroke-width=".8" opacity=".7"/><path d="M45 38q5 2 10 0M50 44v10" stroke="#c9a68c" stroke-width=".8" fill="none"/>`); }
+  return kAdultBase(o);
+}
+function kAdultBase({ shirt = "#b9c8d6", pants = "#c9b79c", shoes = "#f3efe8", style = "hemd", jacket = "", scarf = "", raute = false, tie = "" }) {
   const dk = (c) => `color-mix(in srgb, ${c} 82%, #2a2420)`;
   const top = jacket || shirt;
   const face = christianHead(50, 17)
@@ -13,10 +20,11 @@ function kAdult({ shirt = "#b9c8d6", pants = "#c9b79c", shoes = "#f3efe8", style
   const head = `<g transform="translate(50 15.5) scale(.54) translate(-50 -17)">${face}</g>`;
   const collar = style === "polo" ? `<path d="M45 30l5 5 5-5-2 7h-6z" fill="${dk(shirt)}"/><path d="M50 35v6" stroke="${dk(shirt)}" stroke-width=".9"/>`
     : style === "strick" ? `<path d="M44.5 30.5q5.5 5 11 0" fill="none" stroke="${dk(shirt)}" stroke-width="1.6"/><path d="M47 31l3 3 3-3" fill="#f3efe8"/>`
+    : style === "nackt" ? ""
     : `<path d="M44.6 30l5.4 4.6L47.6 37zM55.4 30l-5.4 4.6 2.4 2.4z" fill="${jacket ? "#f6f3ee" : dk(shirt)}" opacity="${jacket ? 1 : .55}"/>${jacket ? "" : `<path d="M50 35v21" stroke="${dk(shirt)}" stroke-width=".7"/>${[40, 45, 50].map(y => `<circle cx="50" cy="${y}" r=".55" fill="#f3efe8"/>`).join("")}`}`;
   const jack = jacket ? `<path d="M50 34v4l-2 18H39l-1-23q4-3 7-3zM50 34v4l2 18h9l1-23q-4-3-7-3z" fill="${jacket}"/><path d="M45.5 30.5L50 38M54.5 30.5L50 38" stroke="${dk(jacket)}" stroke-width="1.2"/>${tie ? `<path d="M50 35l-1.2 2 1.2 9 1.2-9z" fill="${tie}"/>` : ""}` : "";
   const sleeve = (x1, y1, x2, y2, x3, y3) => `<path d="M${x1} ${y1}L${x2} ${y2}" stroke="${top}" stroke-width="6" stroke-linecap="round"/>` +
-    (jacket || style === "strick" ? `<path d="M${x2} ${y2}L${x3} ${y3}" stroke="${top}" stroke-width="5" stroke-linecap="round"/>` :
+    (jacket || style === "strick" || style === "nackt" ? `<path d="M${x2} ${y2}L${x3} ${y3}" stroke="${top}" stroke-width="5" stroke-linecap="round"/>` :
       `<path d="M${x2} ${y2}L${x3} ${y3}" stroke="${T4_SKIN}" stroke-width="4.2" stroke-linecap="round"/><path d="M${x2 - .6} ${y2 - 1.6}l1.2 3.2" stroke="${dk(top)}" stroke-width="5.6" stroke-linecap="round" opacity=".55"/>`) +
     `<circle cx="${x3}" cy="${y3 + .8}" r="2.3" fill="${T4_SKIN}"/>`;
   return `<svg viewBox="0 0 100 100" overflow="visible">
@@ -53,7 +61,7 @@ function kAdult({ shirt = "#b9c8d6", pants = "#c9b79c", shoes = "#f3efe8", style
     atributschi: { shirt: "#4e5b4a" },
     enni: { shirt: "#a9b7a2", style: "strick" }
   };
-  const SZ = { "Silvester in Dänemark": { shirt: "#6e3b3f", pants: "#3f4550", style: "strick", scarf: "#e4dccd" }, "Hochzeit": { shirt: "#f6f3ee", jacket: "#3b3c42", pants: "#3b3c42", shoes: "#2b2522", tie: "#9a8f86" } };
+  const SZ = { "Kreta": { swim: "#d8202a", shoes: "#4f7480" }, "Klong! auf Kreta": { swim: "#d8202a", shoes: "#4f7480" }, "Showabend mit Cats": { shirt: "#2b2f3a", pants: "#2b2f3a", shoes: "#2b2522" }, "Silvester in Dänemark": { shirt: "#6e3b3f", pants: "#3f4550", style: "strick", scarf: "#e4dccd" }, "Hochzeit": { shirt: "#f6f3ee", jacket: "#3b3c42", pants: "#3b3c42", shoes: "#2b2522", tie: "#9a8f86" } };
   for (const k of Object.keys(V)) { const th = THEMES[k]; if (!th) continue;
     (th.scenes || []).forEach(sc => { const key = "t4_" + k + "_" + sc.name; LASSE[key] = kAdult(SZ[sc.name] || V[k]); OUTFIT[sc.name] = key; }); }
   LASSE.avatar = LASSE.fussball = kAdult(V.basis);
@@ -103,4 +111,4 @@ for (const th of Object.values(THEMES)) {
 FX.place = (x, y) => { const b = document.getElementById("board"); if (!b || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const el = document.createElement("div"); el.className = "fx-pop fx-soft"; el.style.cssText = `--x:${x};--y:${y}`; b.appendChild(el); setTimeout(() => el.remove(), 900); };
 // ---------- Wände: ruhige, flache Flächen; Motive hängen als gerahmte Bilder darauf ----------
-for (const k of Object.keys(BW)) { const o = BW[k]; BW[k] = (c) => svgT(`<rect width="100" height="100" fill="${c}"/><g opacity=".12">${o(c)}</g>`); }
+for (const k of Object.keys(BW)) { const o = BW[k]; BW[k] = (c) => svgT(`<rect width="100" height="100" fill="color-mix(in srgb, ${c} 84%, #6b5848)"/><g opacity=".12">${o(c)}</g>`); }
