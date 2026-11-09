@@ -42,7 +42,7 @@ rep('["start", "Lasse"]', '["start", "Schristian"]')
 # ---- Welten von Teil 3 ----
 rep('const theme = ["fussball", "reiten", "pokemon", "lego", "steine", "schlagzeug", "tennis", "essen", "pokemon2", "familie", "garten"][i] || "neutral";',
     'const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pinguine", "urlaub", "atschie", "atributschi", "enni"][i] || "neutral";')
-rep('bonus: i === 10, name: (THEMES[theme] && THEMES[theme].worldName) || ["Fußball", "Reiten",', 'bonus: false, name: (THEMES[theme] && THEMES[theme].worldName) || ["Fußball & HSV", "Reiten",')
+rep('bonus: i === 10, name: (THEMES[theme] && THEMES[theme].worldName) || ["Fußball", "Reiten",', 'bonus: false, name: ["Fußball & HSV", "Musikalische Hunde", "Reihenendhaus", "Bauernhof", "Lego", "Pinguine", "Urlaub", "Atschibella", "Atributschi", "Enni"][i] || (THEMES[theme] && THEMES[theme].worldName) || ["Fußball & HSV", "Reiten",')
 
 
 # ---- Fortschrittskreise: eigenes Bild je Kreis möglich (z. B. Buchstaben eines Wortes) ----

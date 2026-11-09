@@ -5197,7 +5197,7 @@ THEMES.neutral = {
 // Alle zehn Welten haben ihr Thema; die neutrale Welt bleibt als Rückfall.
 const WORLDS = WORLD_LEVELS.map((levels, i) => {
   const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pinguine", "urlaub", "atschie", "atributschi", "enni"][i] || "neutral";
-  return { theme, bonus: false, name: (THEMES[theme] && THEMES[theme].worldName) || ["Fußball & HSV", "Reiten", "Pokémon", "Lego", "Edelsteine", "Schlagzeug", "Tennis", "Essen", "Pokémon 2", "Familie", "Lasses Ehrenrunde"][i] || `Welt ${i + 1}`, levels };
+  return { theme, bonus: false, name: ["Fußball & HSV", "Musikalische Hunde", "Reihenendhaus", "Bauernhof", "Lego", "Pinguine", "Urlaub", "Atschibella", "Atributschi", "Enni"][i] || (THEMES[theme] && THEMES[theme].worldName) || ["Fußball & HSV", "Reiten", "Pokémon", "Lego", "Edelsteine", "Schlagzeug", "Tennis", "Essen", "Pokémon 2", "Familie", "Lasses Ehrenrunde"][i] || `Welt ${i + 1}`, levels };
 });
 const PER_WORLD = 9;
 // Anzahl Level je Welt: 9, der Bonus-Garten hat eins
