@@ -5891,7 +5891,11 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   document.querySelector("svg defs").insertAdjacentHTML("beforeend", [...new Set(WORDS.flatMap((w) => [...w].map((ch, i) => ch + i)))].map(k =>
     `<symbol id="k3sc-${k[0]}-${k[1]}" viewBox="0 0 100 100" overflow="visible"><ellipse cx="50" cy="94" rx="34" ry="4" fill="#0003"/>${tile(k[0], COL[+k[1]])}</symbol>`).join(""));
   const T = THEMES.bauernhof;
-  T.boxCycle = (l) => ids(l); T.levelBox = (l) => ids(l)[0]; T.slotIcon = (l, i) => ids(l)[i % 4];
+  // Startbuchstaben so verteilt, dass nach der Lösung aus dem Lösungsbuch das Wort lesbar im Ziel liegt
+  // (je Level: Rang des Zielfelds für jeden Stein in Lesereihenfolge; [ungedreht, gedreht])
+  const ENDWORT = {"II-57": [[2, 0, 3, 1], [1, 0, 3, 2]], "II-50": [[2, 0, 3, 1], [2, 0, 3, 1]], "II-64": [[0, 1, 2, 3], [3, 1, 0, 2]], "II-62": [[1, 2, 3, 0], [2, 1, 0, 3]], "II-122": [[0, 2, 3, 1], [1, 2, 3, 0]], "II-98": [[0, 2, 1, 3], [3, 1, 2, 0]], "III-72": [[2, 0, 1, 3], [1, 3, 2, 0]], "III-103": [[2, 0, 1, 3], [1, 3, 2, 0]], "III-16": [[2, 3, 0, 1], [2, 3, 0, 1]], "II-45": [[3, 0, 1, 2], [2, 1, 3, 0]], "II-26": [[1, 0, 3, 2], [3, 2, 0, 1]], "III-37": [[2, 3, 0, 1], [2, 3, 0, 1]]};
+  const lvId = (l) => { const w = WORLDS.find(x => x.theme === "bauernhof"); return w && w.levels[l] && w.levels[l].n; };
+  T.boxCycle = (l) => { const pm = ENDWORT[lvId(l)]; return pm ? pm[ROT ? 1 : 0].map(r => ids(l)[r]) : ids(l); }; T.levelBox = (l) => ids(l)[0]; T.slotIcon = (l, i) => ids(l)[i % 4];
   T.boxWord = "Scrabble-Steine";
   T.hint = (l) => `Schieb die Scrabble-Steine ${[...WORDS[l]].join(", ")} auf die Felder – zusammen ergeben sie ${WORDS[l]}. Steine lassen sich nur schieben, nicht ziehen.`;
   T.winTitle = (l) => WORDS[l] + "!";

@@ -98,7 +98,7 @@ function kAdult({ shirt = "#b9c8d6", pants = "#c9b79c", shoes = "#f3efe8", style
 for (const th of Object.values(THEMES)) {
   (th.scenes || []).forEach(sc => { sc.fart = false; });
   if (typeof th.hint === "function") { const h0 = th.hint; th.hint = (l) => String(h0(l) || "").replace(/\s*[^.!]*lassen sich nur schieben, nicht ziehen\./, "").replace(/\s*Sie\s*$/, "").trim(); }
-  th.winTitle = () => "Geschafft.";
+  if (th === THEMES.bauernhof) { const w0 = th.winTitle; th.winTitle = (l) => String(w0(l)).replace("!", "."); } else th.winTitle = () => "Geschafft.";
 }
 FX.place = (x, y) => { const b = document.getElementById("board"); if (!b || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const el = document.createElement("div"); el.className = "fx-pop fx-soft"; el.style.cssText = `--x:${x};--y:${y}`; b.appendChild(el); setTimeout(() => el.remove(), 900); };
