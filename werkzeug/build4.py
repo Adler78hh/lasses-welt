@@ -39,6 +39,22 @@ s = s.replace("// Level: Microban II von David W. Skinner, nach kürzester Lösu
 rep('const kO = `stroke="${KI}" stroke-width="2.4"', 'const kO = `stroke="${KI}" stroke-width="1.8"')
 rep('const kO2 = `stroke="${KI}" stroke-width="1.7"', 'const kO2 = `stroke="${KI}" stroke-width="1.3"')
 
+# ---- Teil 4 im Stil 2026: Atelier statt Werkstatt, Bildkacheln gerahmt, leise Töne, Goldpunkt statt Stern ----
+rep('const KIT_NAME = "Schristians Werkstatt";', 'const KIT_NAME = "Schristians Atelier";')
+rep('const KIT_ICON = "werkstatt";', 'const KIT_ICON = "t4i-atelier";')
+rep('class="tray on">Werkstatt<small>', 'class="tray on">Atelier<small>')
+s = s.replace("in der Werkstatt", "im Atelier").replace("Zurück in die Werkstatt", "Zurück ins Atelier").replace("Bau in der Werkstatt", "Bau im Atelier")
+s = re.sub(r'(<button type="button" class="back" data-go="toolbox">.*?</svg>)Werkstatt</button>', r'\1Atelier</button>', s)
+i = s.index("const kB = (fill, inner = \"\", r = 12) => svgT("); j = s.index("\n", s.index("\n", i) + 1)
+s = s[:i] + 'const kB = (fill, inner = "", r = 12) => svgT(`<rect x="0" y="0" width="100" height="100" fill="${fill}"/>${inner}`);' + s[j:]
+rep('html += `<div class="tile wall" ${pos}>${w}</div>`;', 'html += `<div class="tile wall${bw ? " motif" : ""}" ${pos}>${bw ? `${bw}<div class="print">${w}</div>` : w}</div>`;')
+rep('<span class="wgold">★ ${g}</span>', '<span class="wgold">● ${g}</span>')
+rep("  let ctx = null, muted = false;", """  let ctx = null, muted = false;
+  // Teil 4: alle Töne leiser und weicher (gemeinsamer Ausgang mit Tiefpass)
+  const t4out = (c) => c._t4 || (c._t4 = (() => { const g = c.createGain(), f = c.createBiquadFilter(); g.gain.value = .32; f.type = "lowpass"; f.frequency.value = 1800; g.connect(f).connect(c.destination); return g; })());""")
+k0 = s.index("const t4out"); k1 = s.index("\n", k0)
+s = s[:k1] + s[k1:].replace("c.destination", "t4out(c)", 10)
+
 # ---- Alle Farben pastellig und warm: weniger Sättigung, heller, ein Hauch Beige ----
 BEIGE = (239, 230, 216)
 def pastel(m):
@@ -47,9 +63,9 @@ def pastel(m):
     a = h[6:] if len(h) == 8 else ""
     r, g, b = (int(h[k:k + 2], 16) / 255 for k in (0, 2, 4))
     hh, l, ss = colorsys.rgb_to_hls(r, g, b)
-    ss = min(1, ss * .72); l = .34 + l * .64
+    ss = min(1, ss * .62); l = .34 + l * .64
     r, g, b = colorsys.hls_to_rgb(hh, l, ss)
-    r, g, b = (round(v * 255 * .84 + bb * .16) for v, bb in zip((r, g, b), BEIGE))
+    r, g, b = (round(v * 255 * .8 + bb * .2) for v, bb in zip((r, g, b), BEIGE))
     return f"{pre}#{r:02x}{g:02x}{b:02x}{a}"
 def recolor(m):
     if re.search(r'(href=["\']?|url\(["\']?)$', m.string[max(0, m.start() - 6):m.start()]): return m.group(0)
@@ -58,6 +74,8 @@ k = s.index("<body>")  # Kopf (Meta-Farbe) bleibt
 s = s[:k] + re.sub(r'(?<![\w&#])()#([0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})(?![\w-])', recolor, s[k:])
 
 s = re.sub(r'const KI = "#[0-9a-f]{6}"', 'const KI = "#5b524a"', s)
+T4_JS = open(os.path.join(D, "t4.js"), encoding="utf-8").read()
+k = s.index("function buildBoard() {"); s = s[:k] + T4_JS + "\n" + s[k:]
 T4_CSS = open(os.path.join(D, "t4.css"), encoding="utf-8").read()
 k = s.rindex("</style>"); s = s[:k] + T4_CSS + s[k:]
 open(OUT, "w", encoding="utf-8").write(s)
