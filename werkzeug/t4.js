@@ -61,7 +61,7 @@ function kAdultBase({ shirt = "#b9c8d6", pants = "#c9b79c", shoes = "#f3efe8", s
     atributschi: { shirt: "#4e5b4a" },
     enni: { shirt: "#a9b7a2", style: "strick" }
   };
-  const SZ = { "Kreta": { swim: "#d8202a", shoes: "#4f7480" }, "Klong! auf Kreta": { swim: "#d8202a", shoes: "#4f7480" }, "Showabend mit Cats": { shirt: "#2b2f3a", pants: "#2b2f3a", shoes: "#2b2522" }, "Silvester in Dänemark": { shirt: "#6e3b3f", pants: "#3f4550", style: "strick", scarf: "#e4dccd" }, "Hochzeit": { shirt: "#f6f3ee", jacket: "#3b3c42", pants: "#3b3c42", shoes: "#2b2522", tie: "#9a8f86" } };
+  const SZ = { "Kreta": { swim: "#d8202a", shoes: "#4f7480" }, "Schrein oder Grill": { swim: "#d8202a", shoes: "#4f7480" }, "Klong! auf Kreta": { swim: "#d8202a", shoes: "#4f7480" }, "Showabend mit Cats": { shirt: "#2b2f3a", pants: "#2b2f3a", shoes: "#2b2522" }, "Silvester in Dänemark": { shirt: "#6e3b3f", pants: "#3f4550", style: "strick", scarf: "#e4dccd" }, "Hochzeit": { shirt: "#f6f3ee", jacket: "#3b3c42", pants: "#3b3c42", shoes: "#2b2522", tie: "#9a8f86" } };
   for (const k of Object.keys(V)) { const th = THEMES[k]; if (!th) continue;
     (th.scenes || []).forEach(sc => { const key = "t4_" + k + "_" + sc.name; LASSE[key] = kAdult(SZ[sc.name] || V[k]); OUTFIT[sc.name] = key; }); }
   LASSE.avatar = LASSE.fussball = kAdult(V.basis);
@@ -105,7 +105,7 @@ function kAdultBase({ shirt = "#b9c8d6", pants = "#c9b79c", shoes = "#f3efe8", s
 // ---------- Ruhige Rückmeldungen: kein Comic-Wort, kein Pups, sachliche Hinweise, „Geschafft.“ ----------
 for (const th of Object.values(THEMES)) {
   (th.scenes || []).forEach(sc => { sc.fart = false; });
-  if (typeof th.hint === "function") { const h0 = th.hint; th.hint = (l) => String(h0(l) || "").replace(/\s*[^.!]*lassen sich nur schieben, nicht ziehen\./, "").replace(/\s*Sie\s*$/, "").trim(); }
+  if (typeof th.hint === "function") { const h0 = th.hint; th.hint = (l) => String(h0(l) || "").replace(/\s*[^.!?]*lassen sich nur schieben, nicht ziehen\./, "").replace(/\s*Sie\s*$/, "").trim(); }
   if (th === THEMES.bauernhof) { const w0 = th.winTitle; th.winTitle = (l) => String(w0(l)).replace("!", "."); } else th.winTitle = () => "Geschafft.";
 }
 FX.place = (x, y) => { const b = document.getElementById("board"); if (!b || matchMedia("(prefers-reduced-motion: reduce)").matches) return;

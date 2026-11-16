@@ -472,6 +472,7 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   });
 }
 
+let T3_DK = null;
 // ---------- Welt 7: Urlaub – Kreta und Fuerteventura mit Matze und Arne, Silvester in Dänemark mit allen acht ----------
 {
   const PL = ["#e2402f", "#2b5fd9", "#3fae4a", "#ffd23a", "#8b5cf6", "#ff8a1a", "#ff5fa2", "#4fd1c5"];
@@ -488,6 +489,10 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
     surf: (c) => `<g transform="rotate(-35 50 52)"><path d="M50 4q16 20 14 50t-14 40q-14-10-14-40T50 4z" fill="${c}" ${kO}/><path d="M50 8v84" stroke="#fff" stroke-width="3"/><path d="M42 30q8-4 16 0" stroke="#fff" stroke-width="2" fill="none" opacity=".6"/><path d="M46 86l-6 8h20l-6-8" fill="${KI}"/></g>`,
     kranse: (c) => kranse(.82, 50, 54, c),
     wuerfel: (c) => `<path d="M24 38l26-14 26 14v32L50 84 24 70z" fill="${c}" ${kO}/><path d="M24 38l26 14 26-14M50 52v32" fill="none" stroke="${KI}" stroke-width="2.2"/><path d="M24 38l26-14 26 14-26 14z" fill="color-mix(in srgb, ${c} 70%, #fff)"/><path d="M24 38l26-14 26 14-26 14z" fill="none" ${kO2}/><path d="M50 52v32L24 70V38z" fill="color-mix(in srgb, ${c} 82%, #000)" opacity=".5"/>`,
+    // Kreta: Kapellchen am Straßenrand (Kandylaki) auf einem Pfahl – sieht fast aus wie ein Grill
+    kapelle: (c) => `<path d="M50 92V62" stroke="#8a8f99" stroke-width="5"/><path d="M38 92h24" stroke="#8a8f99" stroke-width="4"/><rect x="28" y="36" width="44" height="28" rx="2" fill="#f4f1ea" ${kO}/><path d="M26 38q24-28 48 0z" fill="${c}" ${kO}/><path d="M50 10v12M45 15h10" stroke="#e8b83a" stroke-width="3"/><rect x="40" y="42" width="20" height="18" rx="9" fill="#3d4048" ${kO2}/><ellipse cx="50" cy="54" rx="4" ry="5" fill="#ffb03a"/><path d="M50 49q-2 3 0 5 2-2 0-5z" fill="#fff6c8"/>`,
+    // Fuerteventura: Postkarte – meist mit dem falschen Inselnamen
+    karte: (c) => `<g transform="rotate(-8 50 56)"><rect x="12" y="28" width="76" height="52" rx="3" fill="#fffaf0" ${kO}/><rect x="16" y="32" width="38" height="44" fill="${c}"/><path d="M16 64q10-12 20-4t18-6v22H16z" fill="#f2c97a"/><circle cx="44" cy="42" r="5" fill="#ffd23a"/><rect x="66" y="34" width="16" height="18" fill="${c}" stroke="#ffffff" stroke-width="2" stroke-dasharray="2 2"/><path d="M60 60h22M60 66h22M60 72h16" stroke="${KI}" stroke-width="1.6" opacity=".6"/></g>`,
     affe: (c) => `<circle cx="22" cy="40" r="10" fill="${c}" ${kO2}/><circle cx="78" cy="40" r="10" fill="${c}" ${kO2}/><circle cx="22" cy="40" r="5" fill="#f6cfae"/><circle cx="78" cy="40" r="5" fill="#f6cfae"/>
       <ellipse cx="50" cy="74" rx="20" ry="16" fill="${c}" ${kO}/><circle cx="50" cy="40" r="24" fill="${c}" ${kO}/><ellipse cx="50" cy="48" rx="16" ry="12" fill="#f6cfae" ${kO2}/><path d="M40 30q4-6 8 0M52 30q4-6 8 0" fill="#f6cfae" ${kO2}/>
       <circle cx="43" cy="36" r="3" fill="${KI}"/><circle cx="57" cy="36" r="3" fill="${KI}"/><path d="M42 52q8 7 16 0" fill="#8a2f2a" ${kO2}/><path d="M70 80q16 0 14-16" stroke="${c}" stroke-width="5" fill="none" stroke-linecap="round"/>`,
@@ -529,6 +534,25 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   const welle = B("#2b9fe0", `<path d="M4 80q10-40 50-50 24 0 32 20-20-10-30 4 10 0 14 10-26-10-40 16z" fill="#4fd1ff" ${kO2}/><path d="M54 30q24 0 32 20" stroke="#fff" stroke-width="4" fill="none"/>`);
   const palme = B("#f2c97a", `<path d="M52 92q-6-36 4-60" stroke="#8a5a2b" stroke-width="7" fill="none"/>${[-60, -20, 20, 60, 180].map(a => `<path d="M56 32q${Math.cos(a / 57) * 24} ${Math.sin(a / 57) * 14 - 8} ${Math.cos(a / 57) * 34} ${Math.sin(a / 57) * 20 + 8}" stroke="#2f8a3a" stroke-width="8" fill="none" stroke-linecap="round"/>`).join("")}<circle cx="52" cy="38" r="4" fill="#8a5a2b"/><circle cx="60" cy="38" r="4" fill="#8a5a2b"/>`);
   const windsurfer = B("#2b9fe0", `<path d="M20 78h60" stroke="#fff" stroke-width="6" stroke-linecap="round"/><path d="M50 76V18l26 50z" fill="#ff5fa2" ${kO2}/><path d="M50 18l-22 52h22" fill="#ffd23a" ${kO2}/><path d="M4 88q12-4 24 0t24 0 24 0 20 0" stroke="#fff" stroke-width="2" fill="none"/>`);
+  // Schrein oder Grill: Kretas Kapellchen am Wegrand sehen aus wie Grills
+  const kandylaki = (x, y, s, dome) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 0v34" stroke="#8a8f99" stroke-width="4"/><rect x="-14" y="-24" width="28" height="22" rx="2" fill="#f4f1ea" ${kO2}/><path d="M-16 -22q16-20 32 0z" fill="${dome}" ${kO2}/><path d="M0 -42v8M-3 -38h6" stroke="#e8b83a" stroke-width="2"/><rect x="-7" y="-19" width="14" height="14" rx="7" fill="#3d4048"/><ellipse cx="0" cy="-10" rx="2.6" ry="3.4" fill="#ffb03a"/></g>`;
+  const grillW = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-12 0l-6 34M12 0l6 34M0 0v34" stroke="${KI}" stroke-width="3"/><path d="M-18 -20q18 0 36 0v8q-18 18-36 0z" fill="#2d3036" ${kO2}/><path d="M-18 -20q18-22 36 0z" fill="#3d4048" ${kO2}/><rect x="-7" y="-15" width="14" height="10" rx="2" fill="#ff6a1a"/>${[-10, 0, 10].map(d => `<path class="steam" d="M${d} -34q-3-5 0-10" stroke="#fff" stroke-width="2" fill="none" opacity=".7"/>`).join("")}</g>`;
+  const wegKapelle = B("#9fd8ff", `<path d="M4 92q30-16 92-6v10H4z" fill="#d9c08a"/>${kandylaki(50, 56, 1.2, "#2b5fd9")}`);
+  const kapelleGrill = B("#f2e3c6", `${kandylaki(30, 58, .95, "#2b5fd9")}${grillW(72, 58, .95)}<path d="M50 30q0-8 4-10" stroke="${KI}" stroke-width="2" fill="none"/><circle cx="54" cy="44" r="2" fill="${KI}"/><path d="M48 24q6-12 12 0 0 6-6 8" stroke="${KI}" stroke-width="2.4" fill="none"/>`);
+  const wurstKapelle = B("#9fd8ff", `${kandylaki(50, 58, 1.2, "#c8643c")}<path d="M38 40q12-4 24 0" stroke="#a8432a" stroke-width="5" stroke-linecap="round"/><path d="M40 46q10-3 20 0" stroke="#b5542f" stroke-width="5" stroke-linecap="round"/>`);
+  const serpentine = B("#9fd8ff", `<path d="M4 60q20-30 46-20t46-24v80H4z" fill="#c9b07a" ${kO2}/><path d="M10 92q30-10 20-28t40-20 26-30" stroke="#8a8f99" stroke-width="8" fill="none"/>${kandylaki(24, 70, .5, "#2b5fd9")}${kandylaki(66, 46, .5, "#2b5fd9")}${kandylaki(84, 26, .4, "#2b5fd9")}`);
+  // Erster Kreta-Level: ein Schild „Doppelpups und Hitze“
+  const pupsSchild = () => asPerson(kB("#9fd8ff", `<path d="M30 92V60M70 92V60" stroke="#8a5a2b" stroke-width="5"/><rect x="8" y="20" width="84" height="44" rx="4" fill="#f2e3c6" stroke="#8a5a2b" stroke-width="3"/><text x="50" y="39" text-anchor="middle" font-family="Fredoka, Arial Black, sans-serif" font-weight="700" font-size="14" textLength="74" lengthAdjust="spacingAndGlyphs" fill="#c8102e">DOPPELPUPS</text><text x="50" y="57" text-anchor="middle" font-family="Fredoka, Arial Black, sans-serif" font-weight="700" font-size="14" textLength="62" lengthAdjust="spacingAndGlyphs" fill="#c8102e">UND HITZE</text>`), "schild-pups");
+  // Gran Canaria? Fuerteventura wird ständig verwechselt
+  // Wegweiser: falscher Name groß und durchgestrichen, darunter der Pfeil nach FUERTEVENTURA
+  const T_ = (x, y, t, size, w, fill) => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Fredoka, Arial Black, sans-serif" font-weight="700" font-size="${size}" textLength="${w}" lengthAdjust="spacingAndGlyphs" fill="${fill}">${t}</text>`;
+  const wegweiser = (a, b) => B("#9fd8ff", `<path d="M50 96V60" stroke="#8a5a2b" stroke-width="5"/><rect x="6" y="8" width="88" height="${b ? 42 : 26}" rx="3" fill="#ffffff" ${kO2}/>
+    ${T_(50, 26, a, 17, Math.min(80, a.length * 11), KI)}${b ? T_(50, 44, b, 17, Math.min(80, b.length * 11), KI) : ""}<path d="M10 ${b ? 32 : 22}L90 ${b ? 24 : 18}" stroke="#c8102e" stroke-width="4" stroke-linecap="round"/>
+    <path d="M8 56h76l8 9-8 9H8z" fill="#ffd23a" ${kO2}/>${T_(46, 70, "FUERTEVENTURA", 12, 72, KI)}`);
+  const schildGC = wegweiser("GRAN", "CANARIA");
+  const schildLZ = wegweiser("LANZAROTE");
+  const schildTF = wegweiser("TENERIFFA");
+  const gruss = B("#9fd8ff", `<g transform="rotate(5 50 50)"><rect x="10" y="22" width="80" height="56" rx="3" fill="#fffaf0" ${kO}/><text x="50" y="44" text-anchor="middle" font-family="Fredoka, Arial Black, sans-serif" font-weight="700" font-size="10" fill="${KI}">GRÜSSE AUS</text><text x="50" y="60" text-anchor="middle" font-family="Fredoka, Arial Black, sans-serif" font-weight="700" font-size="10.5" fill="#2b9fe0">GRAN CANARIA</text><path d="M18 56h64" stroke="#c8102e" stroke-width="3" transform="rotate(-4 50 56)"/><text x="50" y="72" text-anchor="middle" font-family="Fredoka, Arial Black, sans-serif" font-weight="700" font-size="8" fill="#c8102e">FUERTEVENTURA!</text></g>`);
   // Klong! auf Kreta: Drache, Dungeon-Plan, Artefakte, Karten, Beutel, Figuren
   const drache = B("#3a2a22", `<path d="M20 70q0-30 30-34 26 0 34 20-10-4-14 2 8 4 8 14-14-6-22 2-20 10-36-4z" fill="#c0392b" ${kO}/><path d="M50 36l-6-18 12 10 6-14 4 18" fill="#c0392b" ${kO2}/><circle cx="64" cy="48" r="3.4" fill="#ffd23a"/><path d="M80 56q8 2 12-4" stroke="#ff8a1a" stroke-width="4" fill="none" class="flame"/><path d="M28 56q-14-14-20-2 10 0 14 10" fill="#a8301f" ${kO2}/>`);
   const dungeon = B("#c9a875", `<rect x="10" y="10" width="80" height="80" rx="4" fill="#e8d7a8" ${kO}/>${[[22, 22], [50, 30], [76, 22], [30, 54], [62, 58], [24, 80], [72, 80]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#8a6a3c" ${kO2}/>`).join("")}<path d="M22 22L50 30 76 22M50 30L30 54 62 58 72 80M30 54L24 80" stroke="#8a6a3c" stroke-width="2.4" fill="none"/><path d="M60 40l6-4 4 6z" fill="#c0392b"/>`);
@@ -566,7 +590,7 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   const kamin = B("#e9e4d6", `<rect x="16" y="20" width="68" height="70" fill="#b5302a" ${kO}/><path d="M28 90V52q0-14 22-14t22 14v38z" fill="${KI}"/><path class="flame" d="M38 90q-2-20 8-26 0 10 4 12 2-8 8-12 0 16 4 26z" fill="#ff8a1a"/><rect x="10" y="16" width="80" height="8" fill="#8a5a2b" ${kO2}/>`);
   const schnee = B("#bfe3ff", `<path d="M4 76q24-12 46-2t46 0v20H4z" fill="#ffffff" ${kO2}/>${[[20, 20], [44, 34], [70, 18], [84, 44], [30, 52], [62, 56]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="#fff"/>`).join("")}`);
   const SC = [
-    ["Kreta", "ur_kreta", PAL("#dff3ff", "#f4fbff"), kFloor("#f4efe4", "#f4efe4", () => `<path d="M0 50h100M50 0v100" stroke="#e2d8c6" stroke-width="2"/>`), [haeuser, olive, taverne, windmuehle, sonne], "koffer", ["stein", "#f2efe6"], [AR, MA],
+    ["Kreta", "ur_kreta", PAL("#dff3ff", "#f4fbff"), kFloor("#f4efe4", "#f4efe4", () => `<path d="M0 50h100M50 0v100" stroke="#e2d8c6" stroke-width="2"/>`), [haeuser, olive, taverne, windmuehle, sonne], "koffer", ["stein", "#f2efe6"], [AR, MA, pupsSchild],
       "Bring jeden Koffer auf sein Zimmer. Koffer lassen sich nur schieben, nicht ziehen."],
     ["Klong! auf Kreta", "ur_klong", PAL("#f2e3c6", "#fbf4e6"), kFloor("#d9b98a", "#d9b98a", () => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#c4a272" stroke-width="2"/>`), [drache, dungeon, artefakt, karten, beutel, figuren], "wuerfel", ["stein", "#f2efe6"], [AR, MA],
       "Bring jeden Klong-Würfel an seinen Platz. Würfel lassen sich nur schieben, nicht ziehen."],
@@ -577,21 +601,30 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
     ["Silvester in Dänemark", "ur_dk", PAL("#12205e", "#2a2f8f", "#d6e2ff", "#ffffff"), kFloor("#d9b98a", "#d9b98a", () => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#c4a272" stroke-width="2"/>`), [ferienhaus, feuerwerk, kransekage, dannebrog, sekt, kamin, schnee], "kranse", ["bretter", "#b5302a"], [AL, EN, AN, LA, SO, ID, AR, MA],
       "Stell jedes Kransekage-Türmchen an seinen Platz. Sie lassen sich nur schieben, nicht ziehen."],
     ["Jungle Party", "ur_jungle", PAL("#12205e", "#2a2f8f", "#d6e2ff", "#ffffff"), kFloor("#d9b98a", "#d9b98a", () => `<path d="M0 25h100M0 50h100M0 75h100" stroke="#c4a272" stroke-width="2"/>`), [fernseher, konsole, buzzer, liane, bananen, pupsAffe, fenster], "affe", ["bretter", "#b5302a"], [AL, EN, AN, LA, SO, ID, AR, MA],
-      "Bring jeden bunten Affen auf seinen Platz – Vorsicht, sie pupsen! Affen lassen sich nur schieben, nicht ziehen."]
+      "Bring jeden bunten Affen auf seinen Platz – Vorsicht, sie pupsen! Affen lassen sich nur schieben, nicht ziehen."],
+    ["Schrein oder Grill", "ur_kreta", PAL("#dff3ff", "#f4fbff"), kFloor("#e6d6ae", "#e6d6ae", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M26 60l8-3 8 3" stroke="#cdb886" stroke-width="2" fill="none"/>` : ""), [wegKapelle, kapelleGrill, wurstKapelle, serpentine, olive, sonne], "kapelle", ["stein", "#f2efe6"], [AR, MA],
+      "Stell jedes Kapellchen an den Wegrand – oder ist das doch ein Grill? Kapellchen lassen sich nur schieben, nicht ziehen."],
+    ["Gran Canaria?", "ur_surf", PAL("#ffe8c8", "#fff6e8"), kFloor("#f2d79b", "#f2d79b", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M30 60q6-4 12 0" stroke="#d9b56a" stroke-width="2" fill="none"/>` : ""), [schildGC, schildLZ, schildTF, gruss, duene, palme], "karte", ["fels", "#8a5a3a"], [AR, MA],
+      "Bring jede Postkarte an ihren Platz – und schreib diesmal Fuerteventura drauf! Karten lassen sich nur schieben, nicht ziehen."]
   ];
-  // Kreta, Klong!, Fuerteventura, Showabend, Silvester in Dänemark, Jungle Party (auch in Dänemark)
-  const at = (l) => [0, 1, 2, 3, 4, 5][l];
-  const bunt = [["#2b5fd9", "#ffffff"], ["#e2402f", "#2b5fd9", "#3fae4a", "#ffd23a"], ["#ff8a1a", "#ffd23a", "#4fd1ff"], ["#ff5fa2", "#ffd23a", "#8b5cf6"], ["#c8102e", "#ffffff"], ["#e2402f", "#2b5fd9", "#3fae4a", "#ffd23a"]];
+  // Kreta, Klong!, Schrein oder Grill, Fuerteventura, Gran Canaria?, Showabend – die beiden Dänemark-Level gehören jetzt zu Atributschi
+  const at = (l) => [0, 1, 6, 2, 7, 3][l];
+  const bunt = [["#2b5fd9", "#ffffff"], ["#e2402f", "#2b5fd9", "#3fae4a", "#ffd23a"], ["#ff8a1a", "#ffd23a", "#4fd1ff"], ["#ff5fa2", "#ffd23a", "#8b5cf6"], ["#c8102e", "#ffffff"], ["#e2402f", "#2b5fd9", "#3fae4a", "#ffd23a"], ["#2b5fd9", "#ffffff"], ["#ff8a1a", "#ffd23a", "#4fd1ff"]];
   const scenes = SC.map(([name, outfit, pal, floor, walls, kind, base, people], i) => { BASE_WALL[name] = base; OUTFIT[name] = outfit;
     const sc = kScene(name, outfit, pal, floor, walls, () => bunting(bunt[i])); sc.wall = feierWalls(walls, () => people.map(f => f()));
-    if (kind === "affe") { sc.fart = true; sc.words = ["PUPS!", "PFFRT!", "HUH-HUH!"]; } return sc; });
+    if (kind === "affe") { sc.fart = true; sc.words = ["PUPS!", "PFFRT!", "HUH-HUH!"]; }
+    if (name === "Kreta" || name === "Gran Canaria?") sc.allowText = true;
+    if (name === "Schrein oder Grill") sc.words = ["AMEN!", "BRUTZEL!", "HALLELUJA!"];
+    if (name === "Gran Canaria?") sc.words = ["FUERTE!", "FALSCH!", "VENTURA!"]; return sc; });
+  // Dänemark-Level für Welt 9 (Atributschi) bereitstellen
+  T3_DK = { jungle: { scene: scenes[5], name: SC[5][0], kind: SC[5][5], hint: SC[5][8] }, dk: { scene: scenes[4], name: SC[4][0], kind: SC[4][5], hint: SC[4][8] } };
   THEMES.urlaub = theme2({
     title: "Urlaub", worldName: "Urlaub", emblem: "k3sonne", box: "k3urkoffer-0", mapIcon: "k3sonne", boxWord: "Sachen", pushWord: "Schübe",
     hint: (l) => SC[at(l)][8],
-    winTitle: (l) => at(l) === 5 ? "PUPS-PARTY!" : at(l) === 4 ? "GODT NYTÅR!" : at(l) === 3 ? "MIAU!" : at(l) === 1 ? "KLONG!" : "URLAUB!", winText: (m, p) => `Alles am Platz. ${m} Schritte, ${p} Schübe.`,
-    prize: { symbol: "k3goldkoffer", title: "Goldener Koffer!", text: (m) => `Kreta, Fuerteventura mit Showabend und Silvester in Dänemark – was für Urlaube! Finale in ${m} Schritten.` },
+    winTitle: (l) => ({ 1: "KLONG!", 3: "BRAVO!", 6: "AMEN!", 7: "FUERTEVENTURA!" })[at(l)] || "URLAUB!", winText: (m, p) => `Alles am Platz. ${m} Schritte, ${p} Schübe.`,
+    prize: { symbol: "k3goldkoffer", title: "Goldener Koffer!", text: (m) => `Kreta mit Kapellchen und Grill, Fuerteventura (nicht Gran Canaria!) und der Showabend – was für Urlaube! Finale in ${m} Schritten.` },
     pal: { "--accent": "#2b9fe0", "--accent-dark": "#1f6fa8" },
-    target: platz, scenes, levelScenes: [0, 1, 2, 3, 4, 5].map(l => scenes[at(l)]),
+    target: platz, scenes: [0, 1, 2, 3, 4, 5].map(l => scenes[at(l)]), levelScenes: [0, 1, 2, 3, 4, 5].map(l => scenes[at(l)]),
     levelName: (l) => SC[at(l)][0], levelBox: (l) => `k3ur${SC[at(l)][5]}-0`, boxCycle: (l) => PL.map((_, i) => `k3ur${SC[at(l)][5]}-${i}`)
   });
 }
@@ -671,16 +704,16 @@ const k3World = ({ key, prefix, title, emblem, items, emblemSvg, prizeSym, prize
   document.querySelector("svg defs").insertAdjacentHTML("beforeend", Object.keys(items).map(k => PL.map((c, i) =>
     `<symbol id="${prefix}${k}-${i}" viewBox="0 0 100 100" overflow="visible"><ellipse cx="50" cy="92" rx="30" ry="5" fill="#0003"/>${items[k](c)}</symbol>`).join("")).join("") +
     `<symbol id="${emblem}" viewBox="0 0 100 100">${emblemSvg}</symbol><symbol id="${prizeSym}" viewBox="0 0 100 100">${prizeSvg}</symbol>`);
-  const scenes = SC.map(s => { BASE_WALL[s.name] = s.base; OUTFIT[s.name] = s.outfit;
+  const scenes = SC.map(s => { if (s.scene) return s.scene; BASE_WALL[s.name] = s.base; OUTFIT[s.name] = s.outfit;
     const sc = kScene(s.name, s.outfit, s.pal, s.floor, s.walls, () => bunting(s.bunt || ["#ffd23a", "#ff5fa2", "#4fd1ff", "#3fae4a"]));
     if (s.people) sc.wall = feierWalls(s.walls, () => s.people.map(f => f()));
     if (s.allowText) sc.allowText = true; if (s.words) sc.words = s.words; return sc; });
   THEMES[key] = theme2({
-    title, worldName: title, emblem, box: `${prefix}${SC[0].kind}-0`, mapIcon: emblem, boxWord: "Sachen", pushWord: "Schübe",
+    title, worldName: title, emblem, box: `${SC[0].prefix || prefix}${SC[0].kind}-0`, mapIcon: emblem, boxWord: "Sachen", pushWord: "Schübe",
     hint: (l) => SC[l].hint, winTitle: (l) => winTitles[l], winText,
     prize: { symbol: prizeSym, title: prize[0], text: prize[1] },
     pal: { "--accent": accent, "--accent-dark": accentDark }, target, scenes, levelScenes: scenes,
-    levelName: (l) => SC[l].name, levelBox: (l) => `${prefix}${SC[l].kind}-0`, boxCycle: (l) => PL.map((_, i) => `${prefix}${SC[l].kind}-${i}`)
+    levelName: (l) => SC[l].name, levelBox: (l) => `${SC[l].prefix || prefix}${SC[l].kind}-0`, boxCycle: (l) => PL.map((_, i) => `${SC[l].prefix || prefix}${SC[l].kind}-${i}`)
   });
 };
 const k3B = (bg, inner) => () => kB(bg, inner);
@@ -733,16 +766,17 @@ const k3Platz = (deco) => kTarget(`${kGlow(`<rect x="12" y="14" width="76" heigh
   k3World({ key: "atributschi", prefix: "k3ab", title: "Atributschi", emblem: "k3abemblem", items,
     emblemSvg: `${items.wuerfel("#e2402f").replace('x="18" y="18" width="64" height="64"', 'x="10" y="22" width="52" height="52"')}<g transform="translate(40 20) scale(.6)">${items.flasche("#3fae4a")}</g>`,
     prizeSym: "k3abpreis", prizeSvg: `<path d="M30 20h40v20q0 18-20 18T30 40z" fill="url(#gold)" stroke="#9a6404" stroke-width="3"/><path d="M50 58v14M36 86h28l-4-14H40z" fill="url(#gold)" stroke="#9a6404" stroke-width="3"/>${pips(5).map(([x, y]) => `<circle cx="${30 + x * .4}" cy="${16 + y * .4}" r="2" fill="#9a6404"/>`).join("")}`,
-    prize: ["Goldener Atributschi-Pokal!", (m) => `Spielen, Kochen, Essen und Prost – die beste Runde der Welt! Finale in ${m} Schritten.`],
+    prize: ["Goldener Atributschi-Pokal!", (m) => `Spielen, Kochen, Prost, Jungle Party und Silvester in Dänemark – die beste Runde der Welt! Finale in ${m} Schritten.`],
     accent: "#8b5cf6", accentDark: "#5b2a86", target: k3Platz(k3Star(50, 52, 12, "#ffffff")),
-    winTitles: ["GEWONNEN!", "SIEG!", "LECKER!", "MAHLZEIT!", "PROST!", "PROST!"], winText: (m, p) => `Die Atributschi sind zufrieden. ${m} Schritte, ${p} Schübe.`,
+    winTitles: ["GEWONNEN!", "LECKER!", "PROST!", "PROST!", "PUPS-PARTY!", "GODT NYTÅR!"], winText: (m, p) => `Die Atributschi sind zufrieden. ${m} Schritte, ${p} Schübe.`,
     SC: [
       { name: "Spieleabend", outfit: "ab_spiel", pal: P("#ece4ff", "#f8f4ff"), floor: fl("#e8c795", `<path d="M0 50h100" stroke="#d1ad75" stroke-width="2"/>`), walls: [spielbrett, chips, karten, sanduhr], kind: "wuerfel", base: ["farbe", "#b9a6e8"], people: FR, hint: "Bring jeden Würfel an seinen Platz. Würfel lassen sich nur schieben, nicht ziehen." },
-      { name: "Brettspiel-Duell", outfit: "ab_duell", pal: P("#ece4ff", "#f8f4ff"), floor: fl("#e8c795", `<path d="M0 50h100" stroke="#d1ad75" stroke-width="2"/>`), walls: [siedler, pokal, sanduhr, karten], kind: "figur", base: ["bretter", "#8a5a32"], people: FR, hint: "Zieh jede Spielfigur auf ihr Feld. Figuren lassen sich nur schieben, nicht ziehen." },
       { name: "Gemeinsam kochen", outfit: "ab_koch", pal: P("#fff3df", "#fffaf2"), floor: fl("#e6e2da", `<path d="M0 50h100M50 0v100" stroke="#cfcac0" stroke-width="2"/>`), walls: [herd, schneidebrett, kraeuter], kind: "topf", base: ["fliesen", "#4fa3e0"], people: FR, hint: "Stell jeden Topf auf seinen Platz. Töpfe lassen sich nur schieben, nicht ziehen." },
-      { name: "Großes Essen", outfit: "ab_essen", pal: P("#fff3df", "#fffaf2"), floor: fl("#e8c795", `<path d="M0 25h100M0 75h100" stroke="#d1ad75" stroke-width="2"/>`), walls: [lasagne, tafel, brot], kind: "auflauf", base: ["farbe", "#e8a06a"], people: FR, hint: "Stell jede Auflaufform auf die Tafel. Formen lassen sich nur schieben, nicht ziehen." },
       { name: "Prost-Runde", outfit: "ab_prost", pal: P("#2a1f5e", "#5b2a86", "#ffe3f1", "#ffffff"), floor: fl("#c9935a", `<path d="M0 25h100M0 50h100M0 75h100" stroke="#a8743f" stroke-width="2"/>`), walls: [theke, lichterkette, prostGlaeser], kind: "kiste", base: ["ziegel", "#8a3a2a"], people: FR, words: ["PROST!", "PROSIT!", "SKÅL!"], hint: "Stell jede Getränkekiste an ihren Platz. Kisten lassen sich nur schieben, nicht ziehen." },
-      { name: "Absacker", outfit: "ab_absacker", pal: P("#12205e", "#2a2f8f", "#d6e2ff", "#ffffff"), floor: fl("#c9b48a", `<path d="M0 50h100M50 0v100" stroke="#b39d70" stroke-width="2"/>`), walls: [disco, pizzakarton, mond, lichterkette], kind: "flasche", base: ["paneel", "#2b3352"], people: FR, words: ["PROST!", "NOCH EINEN!", "HICKS!"], hint: "Stell jede Flasche an ihren Platz. Flaschen lassen sich nur schieben, nicht ziehen." }
+      { name: "Absacker", outfit: "ab_absacker", pal: P("#12205e", "#2a2f8f", "#d6e2ff", "#ffffff"), floor: fl("#c9b48a", `<path d="M0 50h100M50 0v100" stroke="#b39d70" stroke-width="2"/>`), walls: [disco, pizzakarton, mond, lichterkette], kind: "flasche", base: ["paneel", "#2b3352"], people: FR, words: ["PROST!", "NOCH EINEN!", "HICKS!"], hint: "Stell jede Flasche an ihren Platz. Flaschen lassen sich nur schieben, nicht ziehen." },
+      // aus der Urlaubswelt: Jungle Party und Silvester in Dänemark (mit allen acht und Kransekage)
+      { ...T3_DK.jungle, prefix: "k3ur" },
+      { ...T3_DK.dk, prefix: "k3ur" }
     ] });
 }
 
