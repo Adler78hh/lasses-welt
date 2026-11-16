@@ -61,7 +61,7 @@ function kAdultBase({ shirt = "#b9c8d6", pants = "#c9b79c", shoes = "#f3efe8", s
     atributschi: { shirt: "#4e5b4a" },
     enni: { shirt: "#a9b7a2", style: "strick" }
   };
-  const SZ = { "Kreta": { swim: "#d8202a", shoes: "#4f7480" }, "Schrein oder Grill": { swim: "#d8202a", shoes: "#4f7480" }, "Klong! auf Kreta": { swim: "#d8202a", shoes: "#4f7480" }, "Showabend mit Cats": { shirt: "#2b2f3a", pants: "#2b2f3a", shoes: "#2b2522" }, "Silvester in Dänemark": { shirt: "#6e3b3f", pants: "#3f4550", style: "strick", scarf: "#e4dccd" }, "Hochzeit": { shirt: "#f6f3ee", jacket: "#3b3c42", pants: "#3b3c42", shoes: "#2b2522", tie: "#9a8f86" } };
+  const SZ = { "Kreta": { swim: "#d8202a", shoes: "#4f7480" }, "Schrein oder Grill": { swim: "#d8202a", shoes: "#4f7480" }, "Klong! auf Kreta": { swim: "#d8202a", shoes: "#4f7480" }, "Showabend mit Cats": { shirt: "#2b2f3a", pants: "#2b2f3a", shoes: "#2b2522" }, "Silvester in Dänemark": { shirt: "#6e3b3f", pants: "#3f4550", style: "strick", scarf: "#e4dccd" }, "Hochzeit im Hafen": { shirt: "#f6f3ee", jacket: "#3b3c42", pants: "#3b3c42", shoes: "#2b2522", tie: "#9a8f86" }, "Party im weißen Zelt": { shirt: "#f6f3ee", jacket: "#3b3c42", pants: "#3b3c42", shoes: "#2b2522", tie: "#9a8f86" } };
   for (const k of Object.keys(V)) { const th = THEMES[k]; if (!th) continue;
     (th.scenes || []).forEach(sc => { const key = "t4_" + k + "_" + sc.name; LASSE[key] = kAdult(SZ[sc.name] || V[k]); OUTFIT[sc.name] = key; }); }
   LASSE.avatar = LASSE.fussball = kAdult(V.basis);
