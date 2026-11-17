@@ -5581,9 +5581,9 @@ Object.assign(LASSE, {
 });
 // Überall, wo sonst Lasse steht (Karte, Spielerliste), steht Christian
 LASSE.fussball = LASSE.c_bolz; LASSE.avatar = LASSE.c_bolz;
-Object.assign(OUTFIT, { "Bolzplatz": "c_bolz", "Volksparkstadion": "c_stadion", "Fankurve": "c_kurve" });
+Object.assign(OUTFIT, { "Schulhof-Kicker": "c_schulhof", "Bolzplatz": "c_bolz", "Volksparkstadion": "c_stadion", "Bengalo Fankurve": "c_kurve", "Superbowl": "c_superbowl", "Deutscher Meister 2037": "c_meister" });
 
-// ---------- Welt 1: Bolzplatz · Volksparkstadion · Fankurve ----------
+// ---------- Welt 1: Schulhof-Kicker · Bolzplatz · Volksparkstadion · Bengalo Fankurve · Superbowl · Deutscher Meister 2037 ----------
 {
   const fan = (x, y, shirt, scarfUp) => `<g class="fan">${kPerson(["#7a5233", "#f3c93f", KI, "#c9631f"][pick(x, y, 1, 4)], shirt, scarfUp)}</g>`;
   const scarfRow = (y) => `<path d="M6 ${y}h88" stroke="#0a5cb0" stroke-width="9"/>${[14, 34, 54, 74].map(x => `<path d="M${x} ${y - 4}h8v8h-8z" fill="#ffffff"/>`).join("")}<path d="M6 ${y}h88" stroke="${KI}" stroke-width="1" opacity=".4"/>`;
@@ -5595,15 +5595,66 @@ Object.assign(OUTFIT, { "Bolzplatz": "c_bolz", "Volksparkstadion": "c_stadion", 
     (x, y) => kB("#1b2a6b", `${[18, 50, 82].map((cx, i) => `<g class="fan" style="animation-delay:${i * .3}s"><path d="M${cx - 12} 96q0-24 12-24t12 24z" fill="${["#0a5cb0", "#ffffff", KI][(i + pick(x, y, 2, 3)) % 3]}" ${kO2}/><circle cx="${cx}" cy="60" r="9" fill="#f6cfae" ${kO2}/><path d="M${cx - 10} 70l-6-26M${cx + 10} 70l6-26" stroke="#f6cfae" stroke-width="4" stroke-linecap="round"/></g>`).join("")}<path d="M8 22h84" stroke="#0a5cb0" stroke-width="8"/>${[16, 36, 56, 76].map(xx => `<path d="M${xx} 18h8v8h-8z" fill="#fff"/>`).join("")}`),
     () => kB("#1b2a6b", `<path d="M14 92V30M14 30l60 10-60 14" fill="#ffffff" stroke="${KI}" stroke-width="2.4" stroke-linejoin="round"/><path d="M14 30l60 10-60 14z" fill="#0a5cb0" opacity=".9"/><path d="M14 42l60-2" stroke="#ffffff" stroke-width="4"/><circle cx="76" cy="70" r="10" fill="#ff8a1a" opacity=".85"/><circle cx="76" cy="70" r="5" fill="#ffd23a"/>`)
   ];
-  const FANKURVE = kScene("Fankurve", "fussball", PAL("#0b1640", "#1d2f6b", "#d6e2ff", "#ffffff"),
+  // Bengalos: rote Fackeln mit Rauch in der Kurve
+  const bengaloFan = (x, shirt) => `<path d="M${x - 12} 96q0-22 12-22t12 22z" fill="${shirt}" ${kO2}/><circle cx="${x}" cy="66" r="8" fill="#f1cfb0" ${kO2}/><path d="M${x + 8} 80l8-26" stroke="${KI}" stroke-width="4" stroke-linecap="round"/><circle cx="${x + 17}" cy="50" r="7" fill="#ff3b1f"/><circle cx="${x + 17}" cy="50" r="3.4" fill="#fff6a0"/>`;
+  const rauchWolke = (op) => `${[[24, 26, 14], [44, 18, 16], [66, 24, 14], [82, 34, 10], [34, 40, 10]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#ff8a7a" opacity="${op}"/>`).join("")}`;
+  const bengalo = () => kB("#1b2a6b", `${rauchWolke(.55)}${bengaloFan(34, "#0a5cb0")}${bengaloFan(66, "#ffffff")}`);
+  const bengalo2 = () => kB("#1b2a6b", `${rauchWolke(.4)}<rect x="4" y="60" width="92" height="12" fill="#0a5cb0"/>${[14, 34, 54, 74].map(x => `<path d="M${x} 56h8v8h-8z" fill="#ffffff"/>`).join("")}${bengaloFan(50, KI)}`);
+  const rauch = () => kB("#2a1f3a", `${rauchWolke(.7)}<path d="M4 70q24-10 46 0t46 0v26H4z" fill="#ff3b1f" opacity=".35"/>${[20, 50, 80].map(x => `<circle cx="${x}" cy="74" r="4" fill="#fff6a0"/>`).join("")}`);
+  const FANKURVE = kScene("Bengalo Fankurve", "c_kurve", PAL("#0b1640", "#1d2f6b", "#d6e2ff", "#ffffff"),
     kFloor("#a7adb5", "#a7adb5", (x, y) => `<path d="M0 34h100M0 68h100" stroke="#868c95" stroke-width="3"/><path d="M0 37h100M0 71h100" stroke="#c4c9d0" stroke-width="1.6"/>`),
-    FK, () => bunting(["#0a5cb0", "#ffffff", "#2d3036"]));
-  BASE_WALL["Fankurve"] = ["paneel", "#0a5cb0"];
+    [...FK, bengalo, bengalo2, rauch], () => bunting(["#0a5cb0", "#ffffff", "#2d3036"]));
+  BASE_WALL["Bengalo Fankurve"] = ["paneel", "#0a5cb0"];
+  const B1 = (bg, inner) => () => kB(bg, inner);
+  const TX1 = (x, y, t, size, w, fill) => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Fredoka, Arial Black, sans-serif" font-weight="700" font-size="${size}" textLength="${w}" lengthAdjust="spacingAndGlyphs" fill="${fill}">${t}</text>`;
+  const PLF = ["#e2402f", "#2b5fd9", "#3fae4a", "#ffd23a", "#8b5cf6", "#ff8a1a", "#ff5fa2", "#4fd1c5"];
+  // Football für den Superbowl: brauner Ball, Streifen in eigener Farbe
+  document.querySelector("svg defs").insertAdjacentHTML("beforeend", PLF.map((c, i) => `<symbol id="k3football-${i}" viewBox="0 0 100 100" overflow="visible"><ellipse cx="50" cy="90" rx="30" ry="5" fill="#0003"/><g transform="rotate(-25 50 52)"><path d="M10 52q40-40 80 0-40 40-80 0z" fill="#8a4a24" ${kO}/><path d="M24 40q-4 12 0 24M76 40q4 12 0 24" stroke="${c}" stroke-width="6" fill="none"/><path d="M38 52h24" stroke="#ffffff" stroke-width="3"/>${[42, 48, 54, 60].map(x => `<path d="M${x} 47v10" stroke="#ffffff" stroke-width="2"/>`).join("")}</g></symbol>`).join(""));
+  // Schulhof-Kicker
+  const schule = B1("#bfe3ff", `<rect x="8" y="30" width="84" height="62" fill="#d97a4c" ${kO}/>${[18, 38, 58, 78].map(x => [40, 64].map(y => `<rect x="${x - 6}" y="${y}" width="12" height="14" fill="#9fd8ff" ${kO2}/>`).join("")).join("")}<circle cx="50" cy="20" r="9" fill="#ffffff" ${kO2}/><path d="M50 20v-5M50 20l4 2" stroke="${KI}" stroke-width="1.6"/><rect x="42" y="74" width="16" height="18" fill="#8a5a2b" ${kO2}/>`);
+  const rucksackTor = B1("#9aa3b1", `${[[22, "#e2402f"], [78, "#2b5fd9"]].map(([x, c]) => `<rect x="${x - 12}" y="44" width="24" height="30" rx="6" fill="${c}" ${kO}/><path d="M${x - 8} 44q8-10 16 0" stroke="${KI}" stroke-width="2.4" fill="none"/><rect x="${x - 8}" y="56" width="16" height="10" rx="2" fill="color-mix(in srgb, ${c} 70%, #000)"/>`).join("")}<path d="M34 80h32" stroke="#ffffff" stroke-width="3" stroke-dasharray="4 4"/><circle cx="50" cy="56" r="9" fill="#ffffff" ${kO2}/><path d="M50 50l3 4-3 4-3-4z" fill="${KI}"/>`);
+  const huepfkaesten = B1("#9aa3b1", `${[[38, 74], [38, 54], [26, 34], [50, 34], [38, 14]].map(([x, y], i) => `<rect x="${x - 10}" y="${y - 2}" width="${i === 2 || i === 3 ? 22 : 24}" height="18" fill="none" stroke="#ffffff" stroke-width="2.4"/><text x="${x + 2}" y="${y + 12}" text-anchor="middle" font-family="Fredoka, Arial, sans-serif" font-size="10" fill="#ffffff">${i + 1}</text>`).join("")}<circle cx="78" cy="60" r="7" fill="#ffd23a" ${kO2}/>`);
+  const klettergeruest = B1("#bfe3ff", `<path d="M14 92V36h72v56M14 54h72M14 72h72M38 36v56M62 36v56" stroke="#e2402f" stroke-width="5" fill="none"/><path d="M14 36l36-20 36 20" stroke="#ffd23a" stroke-width="5" fill="none"/>`);
+  const pausenbrot = B1("#9aa3b1", `<rect x="20" y="40" width="60" height="40" rx="6" fill="#3fae4a" ${kO}/><path d="M28 48h44v24H28z" fill="#e8c795" ${kO2}/><path d="M30 54q20-6 40 0" stroke="#e2402f" stroke-width="4" fill="none"/><circle cx="76" cy="30" r="9" fill="#e2402f" ${kO2}/><path d="M76 21q2-6 6-6" stroke="#3fae4a" stroke-width="2.4" fill="none"/>`);
+  // Superbowl: Fußball durchgestrichen, Football daneben
+  const fussballFootball = B1("#12205e", `<rect x="6" y="14" width="88" height="72" rx="4" fill="#ffffff" ${kO}/>${TX1(50, 40, "FUSSBALL", 15, 72, KI)}<path d="M10 34L90 30" stroke="#e2402f" stroke-width="4" stroke-linecap="round"/>${TX1(50, 70, "FOOTBALL", 17, 76, "#2b5fd9")}`);
+  const goalpost = B1("#3fae4a", `${[18, 38, 58, 78].map(y => `<path d="M6 ${y}h88" stroke="#ffffff" stroke-width="2.4" opacity=".7"/>`).join("")}<path d="M50 92V60M28 60h44M28 60V8M72 60V8" stroke="#ffd23a" stroke-width="6" stroke-linecap="round"/>`);
+  const scoreboard = B1("#12205e", `<rect x="8" y="16" width="84" height="54" rx="4" fill="#1d1d24" ${kO}/>${TX1(30, 40, "HOME", 9, 30, "#ffd23a")}${TX1(70, 40, "GUEST", 9, 32, "#ffd23a")}${TX1(30, 60, "28", 16, 22, "#ff5b4a")}${TX1(70, 60, "24", 16, 22, "#ff5b4a")}<path d="M50 30v34" stroke="#3d4048" stroke-width="2"/><path d="M40 70v20M60 70v20" stroke="#9aa3b1" stroke-width="4"/>`);
+  const halbzeitshow = B1("#12205e", `${[[24, 28, "#ff5fa2"], [72, 22, "#ffd23a"], [50, 50, "#4fd1ff"]].map(([x, y, c]) => Array.from({ length: 10 }, (_, i) => { const a = i / 10 * Math.PI * 2; return `<path d="M${x} ${y}l${(Math.cos(a) * 14).toFixed(1)} ${(Math.sin(a) * 14).toFixed(1)}" stroke="${c}" stroke-width="2.6" stroke-linecap="round"/>`; }).join("")).join("")}<rect x="20" y="76" width="60" height="16" fill="#3d4048" ${kO2}/><circle cx="50" cy="70" r="6" fill="#f1cfb0" ${kO2}/>`);
+  const cheerleader = B1("#3fae4a", `${[[30, "#e2402f"], [70, "#2b5fd9"]].map(([x, c]) => `<path d="M${x - 10} 96l4-26h12l4 26z" fill="${c}" ${kO2}/><circle cx="${x}" cy="58" r="8" fill="#f1cfb0" ${kO2}/><path d="M${x - 8} 54q8-12 16 0" fill="#7a3b2a"/>${[-1, 1].map(d => `${Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4; return `<path d="M${x + d * 16} 40l${(Math.cos(a) * 8).toFixed(1)} ${(Math.sin(a) * 8).toFixed(1)}" stroke="#ffd23a" stroke-width="3" stroke-linecap="round"/>`; }).join("")}`).join("")}`).join("")}`);
+  // Deutscher Meister 2037: HSV holt die Schale
+  const meisterBanner = B1("#0a5cb0", `<rect x="4" y="18" width="92" height="64" fill="#ffffff" ${kO}/>${TX1(50, 40, "DEUTSCHER", 14, 74, "#0a5cb0")}${TX1(50, 58, "MEISTER", 16, 70, "#0a5cb0")}${TX1(50, 76, "2037", 15, 40, "#e2402f")}`);
+  const schale = B1("#0a5cb0", `<ellipse cx="50" cy="54" rx="38" ry="30" fill="#d9dee6" ${kO}/><ellipse cx="50" cy="54" rx="28" ry="21" fill="#eef1f5" ${kO2}/>${Array.from({ length: 12 }, (_, i) => { const a = i / 12 * Math.PI * 2; return `<circle cx="${(50 + Math.cos(a) * 33).toFixed(1)}" cy="${(54 + Math.sin(a) * 25.5).toFixed(1)}" r="2.4" fill="#3fae4a"/>`; }).join("")}<g transform="translate(50 54) scale(2.2)">${kRaute}</g>`);
+  const rauteFahne = B1("#bfe3ff", `<path d="M16 92V10" stroke="${KI}" stroke-width="4"/><rect x="16" y="12" width="70" height="46" fill="#ffffff" ${kO}/><rect x="16" y="12" width="70" height="15" fill="#0a5cb0"/><rect x="16" y="43" width="70" height="15" fill="${KI}"/><g transform="translate(51 35) scale(1.8)">${kRaute}</g>`);
+  const konfetti = B1("#0a5cb0", `${Array.from({ length: 22 }, (_, i) => `<rect x="${(i * 37) % 88 + 4}" y="${(i * 53) % 84 + 6}" width="6" height="3" fill="${["#ffffff", "#e2402f", "#ffd23a", "#1d1d24"][i % 4]}" transform="rotate(${(i * 47) % 180} ${(i * 37) % 88 + 7} ${(i * 53) % 84 + 7})"/>`).join("")}${[[30, "#0a5cb0"], [70, "#ffffff"]].map(([x, c]) => `<path d="M${x - 12} 96q0-20 12-20t12 20z" fill="${c}" ${kO2}/><circle cx="${x}" cy="68" r="8" fill="#f1cfb0" ${kO2}/><path d="M${x - 10} 76l-6-20M${x + 10} 76l6-20" stroke="${c}" stroke-width="5" stroke-linecap="round"/>`).join("")}`);
+  const feuerwerkHH = B1("#12205e", `${[[26, 30, "#0a5cb0"], [70, 24, "#ffffff"], [52, 56, "#e2402f"]].map(([x, y, c]) => Array.from({ length: 10 }, (_, i) => { const a = i / 10 * Math.PI * 2; return `<path d="M${x} ${y}l${(Math.cos(a) * 15).toFixed(1)} ${(Math.sin(a) * 15).toFixed(1)}" stroke="${c}" stroke-width="2.6" stroke-linecap="round"/>`; }).join("")).join("")}<path d="M4 88h92" stroke="#1d1d24" stroke-width="10"/>`);
+  Object.assign(LASSE, {
+    c_schulhof: kChristian({ shirt: "#e2402f", pants: "#33507f", shoes: "#ffffff", head: `<path d="M34 16q0-14 16-14t16 14z" fill="#0a5cb0" ${kO}/><path d="M60 14h12l-1 4H60z" fill="#0a5cb0" ${kO2}/>`, hand: `<rect x="66" y="46" width="16" height="20" rx="4" fill="#3fae4a" ${kO2}/>` }),
+    c_superbowl: kChristian({ shirt: "#1f3f8a", pants: "#ffffff", shoes: KI, body: `<path d="M34 46q16-10 32 0l-2 6H36z" fill="#1f3f8a" ${kO2}/><text x="50" y="66" text-anchor="middle" font-family="Fredoka, Arial Black, sans-serif" font-weight="700" font-size="11" fill="#ffffff">12</text>`, hand: `<g transform="translate(64 46) scale(.3)"><use href="#k3football-3" width="100" height="100"/></g>` }),
+    c_meister: kChristian({ shirt: "#ffffff", pants: "#0a5cb0", shoes: KI, body: `<g transform="translate(57 52)">${kRaute}</g><path d="M36 50h28" stroke="#0a5cb0" stroke-width="2"/>`, hand: `<ellipse cx="78" cy="48" rx="12" ry="9" fill="#d9dee6" ${kO2}/><ellipse cx="78" cy="48" rx="7" ry="5" fill="#eef1f5"/>` })
+  });
+  const SCH = kScene("Schulhof-Kicker", "c_schulhof", PAL("#e8eef6", "#f8fafd"), kFloor("#9aa3b1", "#9aa3b1", (x, y) => pick(x, y, 1, 5) === 0 ? `<path d="M30 40h14v14H30z" fill="none" stroke="#ffffff" stroke-width="2" opacity=".6"/>` : ""), [schule, rucksackTor, huepfkaesten, klettergeruest, pausenbrot], () => bunting(["#e2402f", "#ffd23a", "#2b5fd9", "#3fae4a"]));
+  BASE_WALL["Schulhof-Kicker"] = ["ziegel", "#d97a4c"];
+  const SB = kScene("Superbowl", "c_superbowl", PAL("#0b1640", "#1d2f6b", "#d6e2ff", "#ffffff"), kFloor("#3f9a4a", "#48a653", (x, y, ctx) => y === ctx.midY ? `<rect x="0" y="46" width="100" height="8" fill="#fff" opacity=".85"/>` : `<path d="M0 50h100" stroke="#ffffff" stroke-width="1.6" opacity=".4"/>`), [fussballFootball, goalpost, scoreboard, halbzeitshow, cheerleader], () => bunting(["#e2402f", "#ffffff", "#2b5fd9"]));
+  BASE_WALL["Superbowl"] = ["paneel", "#1f3f8a"];
+  SB.allowText = true;
+  const DM = kScene("Deutscher Meister 2037", "c_meister", PAL("#0b1640", "#1d2f6b", "#d6e2ff", "#ffffff"), kFloor("#3f9a4a", "#48a653", (x, y) => pick(x, y, 1, 3) === 0 ? `<rect x="40" y="30" width="6" height="3" fill="#ffffff" transform="rotate(30 43 31)"/><rect x="60" y="60" width="6" height="3" fill="#e2402f"/>` : ""), [meisterBanner, schale, rauteFahne, konfetti, feuerwerkHH], () => bunting(["#0a5cb0", "#ffffff", "#2d3036"]));
+  BASE_WALL["Deutscher Meister 2037"] = ["paneel", "#0a5cb0"];
+  DM.allowText = true;
   const F = THEMES.fussball;
   const bolz = F.scenes.find(sc => sc.name === "Bolzplatz"), volks = F.scenes.find(sc => sc.name === "Volksparkstadion");
-  F.scenes = [bolz, volks, FANKURVE];
-  F.levelName = (l) => ["Bolzplatz", "Bolzplatz", "Volksparkstadion", "Volksparkstadion", "Fankurve", "Fankurve"][l];
-  F.prize = { symbol: "pokal", title: "Der Pott!", text: (m) => `Meister im Volkspark, Schristian! Finale in ${m} Schritten.` };
+  F.scenes = [SCH, bolz, volks, FANKURVE, SB, DM]; F.levelScenes = F.scenes;
+  F.levelName = (l) => F.scenes[l].name;
+  F.boxCycle = (l) => l === 4 ? PLF.map((_, i) => `k3football-${i}`) : null;
+  F.hint = (l) => ["Kick jeden Ball zwischen die Rucksack-Tore. Bälle lassen sich nur schieben, nicht ziehen.",
+    "Kick jeden Ball in ein Kreide-Tor. Bälle lassen sich nur schieben, nicht ziehen.",
+    "Kick jeden Ball ins Tor im Volkspark. Bälle lassen sich nur schieben, nicht ziehen.",
+    "Bring jeden Ball in die Kurve – durch den Bengalo-Rauch. Bälle lassen sich nur schieben, nicht ziehen.",
+    "Trag jeden Football in die Endzone – hier heißt es Football, nicht Fußball! Bälle lassen sich nur schieben, nicht ziehen.",
+    "Kick jeden Ball an seinen Platz – der HSV wird Deutscher Meister! Bälle lassen sich nur schieben, nicht ziehen."][l];
+  F.winTitle = (l) => ["TOR!", "TOOOR!", "TOOOR!", "TOOOR!", "TOUCHDOWN!", "MEISTER!"][l];
+  F.prize = { symbol: "pokal", title: "Deutscher Meister!", text: (m) => `HSV – Deutscher Meister 2037, mit Schristian! Finale in ${m} Schritten.` };
+
 }
 
 // ---------- Startseite: Christian groß im Y2K-Glanz ----------
@@ -5902,7 +5953,7 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   T.winText = (m, p) => `Wort gelegt! ${m} Schritte, ${p} Schübe.`;
 }
 
-// ---------- Welt 5: Lego – Schiffe, Lego-Markt, Lego City, Football, Farm-Simulator, Tweety ----------
+// ---------- Welt 5: Lego – Schiffe, Lego-Markt, Lego City, Football, Farm-Simulator, Piepmatz ----------
 {
   const PL = ["#e2402f", "#2b5fd9", "#3fae4a", "#ffd23a", "#8b5cf6", "#ff8a1a", "#ff5fa2", "#4fd1c5"];
   const YEL = "#ffd21f";
@@ -5914,7 +5965,7 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
     lg_feuerwehr: mini({ shirt: "#1f2a44", pants: "#1f2a44", shoes: KI, body: `<path d="M37 60h26M37 68h26" stroke="#ffd23a" stroke-width="3"/>`, head: `<path d="M30 18q0-16 20-16t20 16z" fill="#e2402f" ${kO}/><path d="M26 18h48l-2 5H28z" fill="#e2402f" ${kO2}/><rect x="45" y="5" width="10" height="9" rx="2" fill="#ffd23a" ${kO2}/>` }),
     lg_football: mini({ shirt: "#1f3f8a", pants: "#ffffff", shoes: KI, body: `<path d="M34 48q16-10 32 0l-2 6H36z" fill="#1f3f8a" ${kO2}/><text x="50" y="66" text-anchor="middle" font-family="Fredoka, Arial Black, sans-serif" font-weight="700" font-size="11" fill="#ffffff">12</text>`, head: `<path d="M30 22q0-20 20-20t20 20v6H30z" fill="#e2402f" ${kO}/><path d="M50 2v20" stroke="#ffffff" stroke-width="3"/><path d="M58 26h14M58 32h12M66 22v14" stroke="#9aa3b1" stroke-width="2.4"/>` }),
     lg_farmer: mini({ shirt: "#c0392b", pants: "#2b5fd9", shoes: "#6b4a2a", body: `<path d="M38 50h24M38 58h24M44 46v22M56 46v22" stroke="#7a1f16" stroke-width="1.6" opacity=".6"/>`, head: `<path d="M32 18q0-16 18-16t18 16z" fill="#3fae4a" ${kO}/><path d="M64 16h12l-1 4H64z" fill="#3fae4a" ${kO2}/>` }),
-    lg_tweety: mini({ shirt: "#ffd23a", pants: "#2b5fd9", shoes: KI, body: `<circle cx="50" cy="56" r="6" fill="#ffe680" ${kO2}/><circle cx="48" cy="55" r="1.4" fill="#2b5fd9"/><circle cx="52" cy="55" r="1.4" fill="#2b5fd9"/><path d="M48 59l2 2 2-2z" fill="#ff8a1a"/>` }),
+    lg_piepmatz: mini({ shirt: "#ffd23a", pants: "#2b5fd9", shoes: KI, body: `<circle cx="50" cy="56" r="6" fill="#ffe680" ${kO2}/><circle cx="51" cy="55" r="1.2" fill="${KI}"/><path d="M48 59l2 2 2-2z" fill="#ff8a1a"/>` }),
   });
   // Gegenstände: Lego-Container, Einkaufswagen, Lego-Auto
   const ITEMS = {
@@ -5967,13 +6018,14 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   const ballenWand = B("#e8c27a", `${[[30, 60], [68, 60], [49, 34]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="18" ry="15" fill="#f2d070" ${kO2}/><path d="M${x - 12} ${y}q12-5 24 0" stroke="#d9b14a" stroke-width="2" fill="none"/>`).join("")}`);
   const simulator = B("#2b3a67", `<rect x="8" y="12" width="84" height="56" rx="4" fill="${KI}" ${kO}/><rect x="13" y="17" width="74" height="46" fill="#9fd8ff"/><path d="M13 48h74v15H13z" fill="#c9a06a"/>${[52, 56, 60].map(y => `<path d="M13 ${y}h74" stroke="#a8743f" stroke-width="1.4"/>`).join("")}<rect x="42" y="34" width="18" height="12" rx="2" fill="#3fae4a" ${kO2}/><circle cx="56" cy="48" r="5" fill="${KI}"/><circle cx="44" cy="49" r="3.4" fill="${KI}"/><path d="M40 68v8h20v-8" fill="#5b5f69"/><path d="M22 84q0-6 8-6h40q8 0 8 6v4H22z" fill="#5b5f69" ${kO2}/><circle cx="36" cy="84" r="3" fill="#e2402f"/><circle cx="64" cy="84" r="3" fill="#3fae4a"/>`);
   const feldReihen = B("#8a5a2b", `${[16, 32, 48, 64, 80].map(y => `<path d="M4 ${y}h92" stroke="#6b4423" stroke-width="5"/>${[14, 34, 54, 74].map(x => `<path d="M${x + (y % 32 ? 6 : 0)} ${y - 2}q2-8 6-10" stroke="#3fae4a" stroke-width="3" fill="none"/>`).join("")}`).join("")}`);
-  // Lego-Tweety: der gelbe Vogel als Lego-Figur (Fan-Zeichnung für die Familie)
-  const tweetyKopf = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><circle cx="0" cy="0" r="22" fill="#ffd21f" ${kO}/><path d="M-4 -22q2-10 6-12M2 -22q4-8 9-8M-2 -22q-2-8 1-12" stroke="#ffd21f" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="-8" cy="-2" rx="7" ry="10" fill="#ffffff" ${kO2}/><ellipse cx="8" cy="-2" rx="7" ry="10" fill="#ffffff" ${kO2}/><circle cx="-7" cy="0" r="4.4" fill="#2b5fd9"/><circle cx="9" cy="0" r="4.4" fill="#2b5fd9"/><circle cx="-6" cy="-1" r="2" fill="${KI}"/><circle cx="10" cy="-1" r="2" fill="${KI}"/><path d="M-6 10q6 6 12 0-6-2-12 0z" fill="#ff8a1a" ${kO2}/><path d="M-14 -12l4 2M14 -12l-4 2" stroke="${KI}" stroke-width="1.6"/></g>`;
-  const tweetyFigur = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-12 24h24l4 24H-16z" fill="#ffd21f" ${kO}/><path d="M-14 48h10v8h-14zM4 48h10l4 8H4z" fill="#ff8a1a" ${kO2}/>${tweetyKopf(0, 0, 1)}</g>`;
-  const tweetyKaefig = B("#bfe3ff", `<path d="M20 90V42q0-30 30-30t30 30v48" fill="none" stroke="#ffd23a" stroke-width="3"/>${[32, 42, 58, 68].map(x => `<path d="M${x} 20v70" stroke="#ffd23a" stroke-width="2"/>`).join("")}<path d="M28 74h44" stroke="#a8743f" stroke-width="3"/>${tweetyFigur(50, 30, .62)}`);
-  const tweetySchaukel = B("#bfe3ff", `<path d="M30 4v64M70 4v64" stroke="${KI}" stroke-width="1.6"/><rect x="24" y="66" width="52" height="6" rx="2" fill="#e2402f" ${kO2}/>${tweetyFigur(50, 26, .7)}`);
-  const tweetyGross = B("#9fd8ff", `${tweetyKopf(50, 46, 1.6)}${studs("#ffd21f", 2)}`);
-  const kater = B("#ffe680", `<path d="M30 30l6-22 12 14h4l12-14 6 22q6 30-20 34-26-4-20-34z" fill="${KI}" ${kO}/><path d="M38 46q12 16 24 0l-4 14q-8 6-16 0z" fill="#ffffff"/><ellipse cx="42" cy="34" rx="5" ry="6" fill="#ffffff"/><ellipse cx="58" cy="34" rx="5" ry="6" fill="#ffffff"/><circle cx="43" cy="35" r="2.4" fill="#3fae4a"/><circle cx="57" cy="35" r="2.4" fill="#3fae4a"/><ellipse cx="50" cy="46" rx="5" ry="3" fill="#ff8fb1"/><path d="M26 92q0-28 24-28t24 28z" fill="${KI}" ${kO2}/><path d="M40 92q10-14 20 0" fill="#ffffff"/>`);
+  // Lego-Piepmatz: Käfig, Schaukel, Vogelhäuschen und ein rot getigerter Kater
+  // Lego-Piepmatz: ein eigener kleiner Kanarienvogel aus Legosteinen
+  const vogelKopf = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="4" rx="18" ry="16" fill="#ffd21f" ${kO}/><path d="M-14 8q-10 4-6 14 8-2 10-10z" fill="#f2b81a" ${kO2}/><circle cx="6" cy="0" r="2.6" fill="${KI}"/><circle cx="7" cy="-1" r=".9" fill="#fff"/><path d="M16 2l9 3-9 4z" fill="#ff8a1a" ${kO2}/><ellipse cx="2" cy="10" rx="4" ry="2.4" fill="#ffb3a0" opacity=".6"/></g>`;
+  const vogelFigur = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="30" rx="16" ry="18" fill="#ffd21f" ${kO}/><path d="M-6 46l-3 8M6 46l3 8" stroke="#ff8a1a" stroke-width="3"/><path d="M-14 26q-12 8-4 20 10-4 10-14z" fill="#f2b81a" ${kO2}/>${vogelKopf(0, 4, .8)}</g>`;
+  const vogelKaefig = B("#bfe3ff", `<path d="M20 90V42q0-30 30-30t30 30v48" fill="none" stroke="#ffd23a" stroke-width="3"/>${[32, 42, 58, 68].map(x => `<path d="M${x} 20v70" stroke="#ffd23a" stroke-width="2"/>`).join("")}<path d="M28 74h44" stroke="#a8743f" stroke-width="3"/>${vogelFigur(50, 30, .62)}`);
+  const vogelSchaukel = B("#bfe3ff", `<path d="M30 4v64M70 4v64" stroke="${KI}" stroke-width="1.6"/><rect x="24" y="66" width="52" height="6" rx="2" fill="#e2402f" ${kO2}/>${vogelFigur(50, 26, .7)}`);
+  const vogelGross = B("#9fd8ff", `${vogelKopf(50, 46, 1.6)}${studs("#ffd21f", 2)}`);
+  const kater = B("#ffe680", `<path d="M30 30l6-22 12 14h4l12-14 6 22q6 30-20 34-26-4-20-34z" fill="#e8913a" ${kO}/>${[40, 50, 60].map(x => `<path d="M${x} 20v8" stroke="#b5541f" stroke-width="3"/>`).join("")}<path d="M38 48q12 12 24 0l-3 10q-9 5-18 0z" fill="#fff6dc"/><ellipse cx="42" cy="36" rx="4" ry="5" fill="#fff6dc"/><ellipse cx="58" cy="36" rx="4" ry="5" fill="#fff6dc"/><path d="M42 33v6M58 33v6" stroke="${KI}" stroke-width="2.4"/><path d="M48 46l2 2 2-2z" fill="${KI}"/><path d="M26 92q0-28 24-28t24 28z" fill="#e8913a" ${kO2}/>${[36, 46, 56, 66].map(x => `<path d="M${x} 72q2 8 0 18" stroke="#b5541f" stroke-width="3" fill="none"/>`).join("")}`);
   const vogelhaus = B("#9fd8ff", `<path d="M50 92V60" stroke="#8a5a2b" stroke-width="5"/><rect x="28" y="30" width="44" height="32" fill="#2b5fd9" ${kO}/><path d="M22 32l28-20 28 20z" fill="#e2402f" ${kO2}/><circle cx="50" cy="46" r="8" fill="${KI}"/>${studs("#e2402f", 2)}`);
   const SC = [
     ["Lego-Schiffe", "lg_kapitaen", PAL("#cfe8ff", "#eef7ff"), plate("#9aa3b1"), [containerschiff, leuchtturm, kran, kutter, anker, moewe], "container", ["lego", "#2b5fd9"],
@@ -5986,7 +6038,7 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
       "Trag jeden Football-Helm in die Endzone. Helme lassen sich nur schieben, nicht ziehen."],
     ["Lego-Farm-Simulator", "lg_farmer", PAL("#e6f5d8", "#f6fbf0"), plate("#a8743f"), [traktorLego, maehdrescher, silo, ballenWand, simulator, feldReihen], "ballen", ["lego", "#3fae4a"],
       "Fahr jeden Heuballen an seinen Platz – ganz wie im Simulator. Ballen lassen sich nur schieben, nicht ziehen."],
-    ["Lego-Tweety", "lg_tweety", PAL("#fff6c8", "#fffbe6"), plate("#9fd8ff"), [tweetyKaefig, tweetySchaukel, tweetyGross, kater, vogelhaus], "kaefig", ["lego", "#ffd21f"],
+    ["Lego-Piepmatz", "lg_piepmatz", PAL("#fff6c8", "#fffbe6"), plate("#9fd8ff"), [vogelKaefig, vogelSchaukel, vogelGross, kater, vogelhaus], "kaefig", ["lego", "#ffd21f"],
       "Stell jeden Vogelkäfig an seinen Platz – der Kater lauert schon. Käfige lassen sich nur schieben, nicht ziehen."]
   ];
   const at = (l) => l;
