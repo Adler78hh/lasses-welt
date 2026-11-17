@@ -5860,14 +5860,16 @@ store.players.forEach(p => { if (p.id === "christian" && p.name === "Christian")
   const WHO = [[AL, EN], [AL, EN], [AL, EN], [AL, EN], [AL, EN, AN, LA, SO, ID, AR, MA], [AL, AR, MA]];
   const scenes = SC.map(([name, outfit, pal, floor, walls, kind, base], i) => { BASE_WALL[name] = base; OUTFIT[name] = outfit;
     const sc = kScene(name, outfit, pal, floor, walls, () => bunting(bunt[i])); sc.wall = feierWalls(walls, () => WHO[i].map(f => f())); return sc; });
+  // Reihenfolge: erst Renovieren, dann der Einzug in Langenhorn
+  const at = (l) => [1, 0, 2, 3, 4, 5][l];
   THEMES.garten3 = theme2({
     title: "Reihenendhaus", worldName: "Reihenendhaus", emblem: "k3haus", box: "k3karton-0", mapIcon: "k3haus", boxWord: "Sachen", pushWord: "Schübe",
-    hint: (l) => SC[l][7],
+    hint: (l) => SC[at(l)][7],
     winTitle: "ZUHAUSE!", winText: (m, p) => `Alles am Platz. ${m} Schritte, ${p} Schübe.`,
     prize: { symbol: "k3schluessel", title: "Goldener Hausschlüssel!", text: (m) => `Das Reihenendhaus in Langenhorn ist fertig! Finale in ${m} Schritten.` },
     pal: { "--accent": "#a8473a", "--accent-dark": "#7a2f28" },
-    target: platz, levelScenes: scenes, scenes,
-    levelName: (l) => SC[l][0], levelBox: (l) => `k3${SC[l][5]}-0`, boxCycle: (l) => PL.map((_, i) => `k3${SC[l][5]}-${i}`)
+    target: platz, levelScenes: [0, 1, 2, 3, 4, 5].map(l => scenes[at(l)]), scenes,
+    levelName: (l) => SC[at(l)][0], levelBox: (l) => `k3${SC[at(l)][5]}-0`, boxCycle: (l) => PL.map((_, i) => `k3${SC[at(l)][5]}-${i}`)
   });
 }
 
