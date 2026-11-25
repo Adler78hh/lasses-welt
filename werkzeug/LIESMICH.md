@@ -15,9 +15,9 @@ Die Spiele selbst sind die fertigen Dateien `index.html`, `grosse-welt/index.htm
 - Ablauf: erst `build3.py`, dann `build4.py`. Prüfen mit `durchspiel3.js <datei> t4-levels.json`.
 
 ## Idas Welt (`idas-welt/`)
-- `build5.py` baut Idas Welt aus der fertigen Datei von Schristians Welt: Figur Ida (8 Jahre), Arne und Matze als Onkel, eigener Look (`t5.css`), sieben schlichte Welten mit je 6 Leveln (`t5.js`) und Welt 7–9 im Design von Lasses Welt (`t5-lasse.js`: Duplo, Monster, Idas Kinderzimmer).
+- `build5.py` baut Idas Welt aus Lasses Welt (Teil 1, `index.html`): Ida im Zeichenstil von Lasse, schlichte Welten 1–6 und 10 (`t5.js`), Welt 7–9 aus Lasses Themen Lego/Duplo, Taschenmonster und Familie (`t5-lasse.js`), am Ende Ida statt Lasse und die Onkel in allen Schauplätzen (`t5-ende.js`).
 - `t5-levels.json` – 60 Level aus Microban I, II und III (`microban1.json`), nach Bestwert sortiert, die leichtesten in Welt 1.
-- Ablauf: `build3.py`, dann `build5.py`. Prüfen mit `durchspiel3.js idas-welt/index.html t5-levels.json` und `check2.js`.
+- Ablauf: nur `build5.py`. Prüfen mit `durchspiel3.js idas-welt/index.html t5-levels.json` und `check2.js`.
 
 ## Bereinigung
 - `build3.py` ersetzt beim Bauen den aus Lasses großer Welt übernommenen Figuren-Code durch eigene Fantasie-Monster und eigene Fangkugeln und entfernt alle Namen dazu (Abschnitt „Bereinigung“ in `build3.py`).

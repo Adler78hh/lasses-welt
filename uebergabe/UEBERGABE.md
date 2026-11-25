@@ -30,6 +30,7 @@ Commits als `Adler78hh` mit der E-Mail des Kontoinhabers.
 - Keine Schrift auf Wandkacheln, außer wo ein Schauplatz es erlaubt (`allowText`).
 - Keine echten Markenlogos selbst zeichnen. Logos, die der Nutzer schickt, dürfen als Bild eingesetzt werden
   (z. B. Nacht des Wissens, PriMa).
+- Idas Welt ist auf Lasses Welt aufgebaut (nicht auf Christians Spiel) und übernimmt Lasses Taschenmonster unverändert. Ausdrücklicher Wunsch.
 - Lösungsbuch nur im Cheat-Profil. In Christians Spielen und Idas Welt kommen die Lösungen beim Bauen aus `t3-`, `t4-` bzw. `t5-levels.json` (über den Levelnamen zugeordnet).
 
 ## So werden die Spiele gebaut
@@ -38,7 +39,8 @@ Alle Werkzeuge liegen in `werkzeug/` (siehe auch `werkzeug/LIESMICH.md`).
 
 1. `python3 werkzeug/build3.py` – baut **Schristians Welt** aus `grosse-welt/index.html` + `t3.js` + `t3.css`.
 2. `python3 werkzeug/build4.py` – baut **Schristians große Welt** aus Schristians Welt + `t4.js` + `t4.css`.
-3. `python3 werkzeug/build5.py` – baut **Idas Welt** aus Schristians Welt + `t5.js` + `t5.css` (Level: `t5-levels.json`).
+3. `python3 werkzeug/build5.py` – baut **Idas Welt** aus **Lasses Welt** (`index.html`) + `t5.js` + `t5-lasse.js` + `t5-ende.js` (Level: `t5-levels.json`).
+   Rahmen, Weltkarte, Knöpfe und Schauplätze 7–9 kommen direkt von Lasse; Lasses Datei selbst wird dabei nicht verändert.
 
 `build3.py` ersetzt dabei den übernommenen Figuren-Code durch eigene Fantasie-Monster.
 Änderungen an Christians Spielen also immer in `t3.js` (gilt für beide Christian-Teile) bzw. `t4.js`,
@@ -89,18 +91,16 @@ node werkzeug/check2.js $PWD/<ordner>/index.html
 
 Teil 1 im Y2K-Look, Teil 2 im ruhigen Stil 2026 (Hemd und Chino, Strich-Symbole, Atelier, dunkler Modus).
 
-**Idas Welt** (10 Welten × 6 Level aus Microban I, II, III, nach Bestwert sortiert, leichteste zuerst): Ida (8 J., blonder
-Bauernzopf, Grau und blasses Pink), Arne und Matze als Onkel (je einmal pro Level an der Wand).
-Welten 1–6 und 10 im gleichen schlichten Design (Grundwand, ruhiger Boden, Bildkacheln wie Herz, Stern, Blume, Regenbogen), je Welt
-ein eigener Gegenstand: Rosa Ziegel (Kisten) · Holzhaus (Geschenke) · Wolkenzimmer (Ballons) · Heckengarten (Bälle) · Steinburg (Truhen) ·
-Fliesenbad (Eimer) · Sternenschloss (Laternen).
-Welten 7–9 im Design von Lasses Welt (Teil 1), Code in `werkzeug/t5-lasse.js`:
-7. Duplo: Duplo-Zoo (aus Lasses Welt, ohne ZOO-Schild) · Duplo-Bauernhof · Duplo-Traumhaus (beide neu im gleichen Duplo-Stil), je 2 Level, Duplo-Steine in 8 Farben
-8. Monster: Wasser · Pflanzen · Blitz · Kampf · Psycho · Feuer (ein Schauplatz pro Level, wie Lasses Taschenmonster-Welten, aber mit eigenen
-   Fantasie-Monstern und Fangkugeln), Ida als Trainerin
-9. Idas Kinderzimmer (aus Lasses Familien-Welt): Teddy, Puppen, Bett, Puppenhaus, Einhorn, Buch, Mobile; Papa Sören, Mama Anna, Arne und Matze
-   je einmal als Bild; geschoben werden die Buchstaben-Klötze I, D, A
-`build5.py` sichert dafür Lasses Themen (`IDA_T1`) im Code, bevor Teil 2 sie ersetzt.
+**Idas Welt** (10 Welten × 6 Level aus Microban I, II, III, nach Bestwert sortiert, leichteste zuerst), gebaut auf **Lasses Welt (Teil 1)**:
+gleicher Rahmen, gleiche Weltkarte und Knöpfe wie bei Lasse. Ida (8 J., blonder Bauernzopf, Grau und blasses Pink) im Zeichenstil von Lasse
+(Lasses Körper, eigener Kopf; in Lasses Schauplätzen trägt sie Lasses Outfits). Arne und Matze als Onkel (je einmal pro Level an der Wand).
+Welten 1–6 und 10 schlicht (Grundwand, ruhiger Boden, Bildkacheln wie Herz, Stern, Blume, Regenbogen), je Welt ein eigener Gegenstand:
+Rosa Ziegel (Kisten) · Holzhaus (Geschenke) · Wolkenzimmer (Ballons) · Heckengarten (Bälle) · Steinburg (Truhen) · Fliesenbad (Eimer) · Sternenschloss (Laternen).
+Welten 7–9 direkt aus Lasses Welt (Themen `lego`, `pokemon`, `familie` werden in `t5-lasse.js` angepasst):
+7. Duplo: Duplo-Zoo (wie bei Lasse) · Duplo-Bauernhof · Duplo-Traumhaus (beide neu im gleichen Duplo-Stil), je 2 Level
+8. Taschenmonster: Lasses Welt mit allen sechs Schauplätzen und Lasses Monstern (Panzerli, Apfelbrumm, Blitzi, Kiesel, Gedankling, Glutdrache), ein Schauplatz pro Level
+9. Idas Kinderzimmer (aus Lasses Familien-Welt): Teddy, Puppen und Lasses Zusatzbilder; Papa Sören, Mama Anna, Arne und Matze je einmal als Bild;
+   geschoben werden die Buchstaben-Klötze I, D, A
 
 ## Offene Punkte
 
