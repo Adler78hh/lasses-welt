@@ -98,5 +98,5 @@ Felsenpfad · Kuschelzimmer · Sternenschloss.
 
 ## Offene Punkte
 
-- Idas Welt: Themen und Namen der Welten festlegen, Ida-Figur ggf. nachschärfen.
+- Idas Welt: Themen und Namen der Welten festlegen (Welt 3 hat jetzt das Design von Lasses Welt 3, Modul `werkzeug/t5-w3.js`), Ida-Figur ggf. nachschärfen.
 - Download-Seite: Christian-Spiele und Idas Welt fehlen noch.

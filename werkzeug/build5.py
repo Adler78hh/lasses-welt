@@ -42,8 +42,11 @@ rep('const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pingu
 a = s.index('bonus: false, name: ["Fußball & HSV",'); b = s.index("][i]", a)
 s = s[:a] + 'bonus: false, name: ["Rosa Ziegel", "Holzhaus", "Monster-Welt", "Heckengarten", "Steinburg", "Fliesenbad", "Bausteinstadt", "Felsenpfad", "Kuschelzimmer", "Sternenschloss"' + s[b:]
 
+# ---- Welt 3 im Design von Lasses Welt 3: alte Schauplätze sichern, bevor Teil 2 sie ersetzt ----
+rep("THEMES.taschenmonster = theme2({", "const IDA_T1_MON = { mon: THEMES.taschenmonster, mon2: THEMES.taschenmonster2 };\nTHEMES.taschenmonster = theme2({")
+
 # ---- Ida, Welten, Look ----
-k = s.index("function buildBoard() {"); s = s[:k] + open(os.path.join(D, "t5.js"), encoding="utf-8").read() + "\n" + s[k:]
+k = s.index("function buildBoard() {"); s = s[:k] + open(os.path.join(D, "t5.js"), encoding="utf-8").read() + "\n" + open(os.path.join(D, "t5-w3.js"), encoding="utf-8").read() + "\n" + s[k:]
 k = s.rindex("</style>"); s = s[:k] + open(os.path.join(D, "t5.css"), encoding="utf-8").read() + s[k:]
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 s = rename(s)
