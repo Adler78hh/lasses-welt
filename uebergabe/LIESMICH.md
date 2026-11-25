@@ -14,5 +14,10 @@ Die Spiele selbst sind die fertigen Dateien `index.html`, `grosse-welt/index.htm
 - `t4-levels.json` – 60 weitere Level aus Microban II und III (`microban3.json`), mit Bestwert und Lösung. Welt 4 hat nur Level mit 4 Kisten (Scrabble-Wörter).
 - Ablauf: erst `build3.py`, dann `build4.py`. Prüfen mit `durchspiel3.js <datei> t4-levels.json`.
 
+## Idas Welt (`idas-welt/`)
+- `build5.py` baut Idas Welt aus der fertigen Datei von Schristians Welt: Figur Ida (8 Jahre), Arne und Matze als Onkel, eigener Look (`t5.css`), zehn schlichte Welten mit je 9 Leveln (`t5.js`).
+- `t5-levels.json` – 90 Level, je Welt 3 aus Microban I, II und III (`microban1.json`), die leichtesten in Welt 1.
+- Ablauf: `build3.py`, dann `build5.py`. Prüfen mit `durchspiel3.js idas-welt/index.html t5-levels.json` und `check2.js`.
+
 ## Bereinigung
 - `neutral.py` ersetzt beim Bauen den aus Lasses großer Welt übernommenen Figuren-Code durch eigene Fantasie-Monster (`monster.js`) und eigene Fangkugeln und entfernt alle Namen dazu. Wird von `build3.py` aufgerufen.

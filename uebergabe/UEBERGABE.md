@@ -11,6 +11,7 @@ Erste Nachricht im neuen Chat zum Beispiel: **„Lies `uebergabe/UEBERGABE.md` u
 | Lasses große Welt (Teil 2) | `grosse-welt/` | https://adler78hh.github.io/lasses-welt/grosse-welt/ | https://claude.ai/artifact/T7kP4vPNka4zsqTEszUPHR |
 | Schristians Welt | `christians-welt/` | https://adler78hh.github.io/lasses-welt/christians-welt/ | https://claude.ai/artifact/FRSA9bvQSAj2goJ7PwXngd |
 | Schristians große Welt | `christians-grosse-welt/` | https://adler78hh.github.io/lasses-welt/christians-grosse-welt/ | https://claude.ai/artifact/QnbWFuGbFNYmhv3g4pfVX4 |
+| Idas Welt | `idas-welt/` | https://adler78hh.github.io/lasses-welt/idas-welt/ | https://claude.ai/artifact/1nvrSSJ4nBxGxAmVbQ8wCf (Stand vor dem Umbau) |
 
 Weitere Seiten: Übersicht aller Welten der Christian-Spiele https://claude.ai/artifact/5ywBJtudkXU6J8BDZZa9mz ·
 Download-Seite https://claude.ai/artifact/Rx4FyxmazweiSnHAvez2Se (enthält nur Lasses Spiele) ·
@@ -39,6 +40,7 @@ Alle Werkzeuge liegen in `werkzeug/` (siehe auch `werkzeug/LIESMICH.md`).
 
 1. `python3 werkzeug/build3.py` – baut **Schristians Welt** aus `grosse-welt/index.html` + `t3.js` + `t3.css`.
 2. `python3 werkzeug/build4.py` – baut **Schristians große Welt** aus Schristians Welt + `t4.js` + `t4.css`.
+3. `python3 werkzeug/build5.py` – baut **Idas Welt** aus Schristians Welt + `t5.js` + `t5.css` (Level: `t5-levels.json`).
 
 `werkzeug/neutral.py` ersetzt dabei den übernommenen Figuren-Code durch eigene Fantasie-Monster (`monster.js`).
 Änderungen an Christians Spielen also immer in `t3.js` (gilt für beide Christian-Teile) bzw. `t4.js`,
@@ -55,6 +57,7 @@ Playwright ist nötig (`require('playwright')`).
 ```
 node werkzeug/durchspiel3.js $PWD/christians-welt/index.html werkzeug/t3-levels.json
 node werkzeug/durchspiel3.js $PWD/christians-grosse-welt/index.html werkzeug/t4-levels.json
+node werkzeug/durchspiel3.js $PWD/idas-welt/index.html werkzeug/t5-levels.json
 node werkzeug/check2.js $PWD/<ordner>/index.html
 ```
 
@@ -88,6 +91,15 @@ node werkzeug/check2.js $PWD/<ordner>/index.html
 
 Teil 1 im Y2K-Look, Teil 2 im ruhigen Stil 2026 (Hemd und Chino, Strich-Symbole, Atelier, dunkler Modus).
 
+**Idas Welt** (10 Welten × 9 Level, je 3 aus Microban I, II, III, leichteste zuerst): Ida (8 J., dunkelblonder
+Bauernzopf, Grau und blasses Pink), Arne und Matze als Onkel (je einmal pro Level an der Wand). Alle zehn Welten im gleichen
+schlichten Design (Grundwand, ruhiger Boden, Bildkacheln wie Herz, Stern, Blume, Regenbogen), je Welt ein eigener Gegenstand:
+Rosa Ziegel (Kisten) · Holzhaus (Geschenke) · Wolkenzimmer (Ballons) · Heckengarten (Bälle) · Steinburg (Truhen) ·
+Fliesenbad (Eimer) · Bausteinstadt (Bausteine) · Felsenpfad (Würfel) · Kuschelzimmer (Kissen) · Sternenschloss (Laternen).
+Keine Monster-Welt, keine fremden Figuren.
+
 ## Offene Punkte
+
+- Idas Welt: Themen der Welten festlegen, wenn gewünscht.
 
 - Download-Seite: die Christian-Spiele fehlen noch.
