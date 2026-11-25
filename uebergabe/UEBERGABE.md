@@ -30,8 +30,6 @@ Commits als `Adler78hh` mit der E-Mail des Kontoinhabers.
 - Keine Schrift auf Wandkacheln, außer wo ein Schauplatz es erlaubt (`allowText`).
 - Keine echten Markenlogos selbst zeichnen. Logos, die der Nutzer schickt, dürfen als Bild eingesetzt werden
   (z. B. Nacht des Wissens, PriMa).
-- Keine bekannten, geschützten Figuren aus Zeichentrick- oder Spielserien nachzeichnen. Stattdessen eigene Figuren
-  (Fantasie-Monster, Kanarienvogel …).
 - Lösungsbuch nur im Cheat-Profil.
 
 ## So werden die Spiele gebaut
