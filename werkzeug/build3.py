@@ -4,8 +4,7 @@ SRC = "/home/user/lasses-welt/grosse-welt/index.html"
 OUT = "/home/user/lasses-welt/christians-welt/index.html"
 LV = json.load(open(os.path.join(os.path.dirname(__file__), "t3-levels.json") if os.path.exists(os.path.join(os.path.dirname(__file__), "t3-levels.json")) else os.path.join(os.path.dirname(__file__), "../solver/t3-levels.json")))
 s = open(SRC, encoding="utf-8").read()
-from neutral import neutralize, rename
-s = neutralize(s, os.path.dirname(os.path.abspath(__file__)))
+from neutral import clean
 def rep(a, b, n=1):
     global s
     c = s.count(a); assert c == n, (a[:70], c); s = s.replace(a, b)
@@ -42,8 +41,7 @@ rep('["start", "Lasse"]', '["start", "Schristian"]')
 
 
 # ---- Welten von Teil 3 ----
-rep('const theme = ["fussball", "reiten", "pok\u0065mon", "lego", "steine", "schlagzeug", "tennis", "essen", "pok\u0065mon2", "familie", "garten"][i] || "neutral";',
-    'const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pinguine", "urlaub", "atschie", "atributschi", "enni"][i] || "neutral";')
+s, k = re.subn(r'const theme = \[[^\]]*\]\[i\] \|\| "neutral";', 'const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pinguine", "urlaub", "atschie", "atributschi", "enni"][i] || "neutral";', s); assert k == 1
 rep('bonus: i === 10, name: (THEMES[theme] && THEMES[theme].worldName) || ["Fußball", "Reiten",', 'bonus: false, name: ["Fußball & HSV", "Musikalische Hunde", "Reihenendhaus", "Bauernhof", "Lego", "Pinguine", "Urlaub", "Atschibella", "Atributschi", "Enni"][i] || (THEMES[theme] && THEMES[theme].worldName) || ["Fußball & HSV", "Reiten",')
 
 
@@ -74,6 +72,6 @@ s = s[:k] + T3_JS + "\n" + s[k:]
 k = s.rindex("</style>")
 s = s[:k] + T3_CSS + s[k:]
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
-s = rename(s)
+s = clean(s, os.path.dirname(os.path.abspath(__file__)))
 open(OUT, "w", encoding="utf-8").write(s)
 print("geschrieben", OUT, len(s))

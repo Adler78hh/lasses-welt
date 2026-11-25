@@ -6,6 +6,5 @@ Private Sokoban-Spiele für Lasse. Level: Microban von David W. Skinner (frei we
 - Teil 2: Lasses große Welt – `grosse-welt/index.html`
 - Schristians Welt – `christians-welt/index.html`
 - Schristians große Welt – `christians-grosse-welt/index.html`
-- Idas Welt – `idas-welt/index.html`
 
 Alle laufen als Web-App über GitHub Pages, auch offline. Der Spielstand bleibt auf dem jeweiligen Gerät.

@@ -1,13 +1,10 @@
-// ===================== Idas Welt: eigene Fantasie-Monster statt fremder Figuren =====================
-// Jedes Monster wird aus seinem Namen erzeugt: Typ (Wasser, Pflanze, Blitz, Feuer, Stein, Kampf, Psycho, Flug) bestimmt Farbe, Ohren und Schwanz.
-const MON_TYP = { schiggy: "wasser", karpador: "wasser", enton: "wasser", sterndu: "wasser", bisasam: "pflanze", myrapla: "pflanze", endivie: "pflanze", raupy: "pflanze",
-  pikachu: "blitz", pichu: "blitz", magnetilo: "blitz", glumanda: "feuer", glutexo: "feuer", glurak: "feuer", onix: "stein", kleinstein: "stein",
-  lucario: "kampf", machollo: "kampf", mewtu: "psycho", psiana: "psycho", taubsi: "flug" };
+// ===================== Eigene Fantasie-Monster =====================
+// Jedes Monster wird aus seinem Namen erzeugt: der Typ am Namensanfang (wasser, pflanze, blitz, feuer, stein, kampf, psycho, flug) bestimmt Farbe, Ohren und Schwanz.
 const MON_FARBE = { wasser: ["#6ec6e8", "#e6f7ff"], pflanze: ["#86c96e", "#eaf8df"], blitz: ["#b9a6f2", "#f3eeff"], feuer: ["#f2875a", "#ffe8d6"], stein: ["#aaa49a", "#ecebe6"],
   kampf: ["#e3a05c", "#fff0de"], psycho: ["#f0a8d8", "#fff0fa"], flug: ["#d9c08a", "#fbf5e6"] };
 const monHash = (s) => [...String(s)].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
 function MON(name, size = 1) {
-  const typ = MON_TYP[name] || ["wasser", "pflanze", "blitz", "feuer", "stein", "kampf", "psycho", "flug"][monHash(name) % 8];
+  const typ = Object.keys(MON_FARBE).find(t => String(name).startsWith(t)) || Object.keys(MON_FARBE)[monHash(name) % 8];
   const [c, b] = MON_FARBE[typ], h = monHash(name), r = 24 + (h % 5), O = `stroke="#2d3036" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
   const ohren = { wasser: `<path d="M30 46q-14-4-12-16 10 0 16 10zM70 46q14-4 12-16-10 0-16 10z" fill="${c}" ${O}/>`,
     pflanze: `<path d="M50 34q-4-18 10-24 4 14-10 24z" fill="#5fae4a" ${O}/><path d="M55 22l-4 10" stroke="#3f8a32" stroke-width="1.6"/>`,
@@ -28,6 +25,6 @@ function MON(name, size = 1) {
     ${[-1, 1].map(d => `<ellipse cx="${50 + d * augenAbstand}" cy="58" rx="4.2" ry="5" fill="#2d3036"/><circle cx="${50 + d * augenAbstand + 1.4}" cy="56.4" r="1.6" fill="#ffffff"/>`).join("")}
     <ellipse cx="${50 - augenAbstand - 5}" cy="65" rx="3.4" ry="2" fill="#ff8fb1" opacity=".7"/><ellipse cx="${50 + augenAbstand + 5}" cy="65" rx="3.4" ry="2" fill="#ff8fb1" opacity=".7"/>${mund}</g>`;
 }
-const MON1 = (name) => `<g class="poke">${MON(name)}</g>`;
+const MON1 = (name) => `<g class="tier">${MON(name)}</g>`;
 // Eigene Fangkugel: helle Kapsel, farbige Kappe mit Stern, keine Mittelband-Knopf-Optik
 const FANGKUGEL = (cap = "#e2402f") => `<circle cx="50" cy="54" r="32" fill="#fbf7ef" stroke="#2d3036" stroke-width="3"/><path d="M22 40q28-26 56 0q-28 10-56 0z" fill="${cap}" stroke="#2d3036" stroke-width="3" stroke-linejoin="round"/><path d="M50 22l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z" fill="#ffd23a" stroke="#2d3036" stroke-width="1.6"/><path d="M30 66q20 14 40 0" stroke="#d9d2c4" stroke-width="3" fill="none"/><ellipse cx="36" cy="52" rx="5" ry="3" fill="#ffffff" opacity=".8"/>`;

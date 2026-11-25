@@ -8,7 +8,7 @@ const { chromium } = require('playwright');
      const m = t.innerHTML.match(/data-person="([^"]+)"/); if (m) (at[m[1]] = at[m[1]] || []).push([+t.style.getPropertyValue('--x'), +t.style.getPropertyValue('--y')]); });
    for (const [id, ps] of Object.entries(at)) { let md = 99; ps.forEach((a, i) => ps.forEach((c, j) => { if (i < j) md = Math.min(md, Math.max(Math.abs(a[0] - c[0]), Math.abs(a[1] - c[1]))); }));
      if (ps.length > 4 || md < 3) out.push(`W${wi + 1}L${l + 1}: ${id} ${ps.length}x Abstand ${md}`); }
-   if (w.theme === 'pok' + 'emon2') { const ids = Object.keys(at).filter(k => /justus|peter|bob|^[0-2]$/.test(k)); out.push(`W${wi + 1}L${l + 1} Detektive: ${Object.keys(at).join(',')}`); }
+   if (w.theme === (process.env.DREI_WELT || '')) { const ids = Object.keys(at).filter(k => /justus|peter|bob|^[0-2]$/.test(k)); out.push(`W${wi + 1}L${l + 1} Detektive: ${Object.keys(at).join(',')}`); }
   }); });
   return { n, base, motif, txt, out }; });
  console.log(JSON.stringify(r, null, 1), errs); await b.close(); })();

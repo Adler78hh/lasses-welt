@@ -306,14 +306,14 @@ button:disabled { cursor: default; }
   .pennant, .fly, .fly .wings, .bird, .bird .wing, .fan, .clap, .pony .graze, .horse .peek, .trainer .notes, .win-card.prize .emblem { animation: none !important; }
   .fly, .bird { display: none; }
 }
-/* Taschenmonster-Welt */
-.pokewall .poke { transform-origin: 50% 90%; transform-box: view-box; animation: pokebob 2.6s ease-in-out infinite; }
-.pokewall .blink { transform-origin: 50% 50%; transform-box: fill-box; animation: blink 4.2s infinite; }
-.pokewall .sway { transform-origin: 50% 90%; animation: sway 3s ease-in-out infinite; }
-.pokewall .float { animation: floaty 2.4s ease-in-out infinite; }
-.pokewall .spin-slow { transform-origin: 50% 52%; transform-box: view-box; animation: spinslow 9s linear infinite; }
-.pokewall .cheek { animation: spark 3s ease-in-out infinite; }
-@keyframes pokebob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+/* Monster-Welt */
+.tierwall .tier { transform-origin: 50% 90%; transform-box: view-box; animation: tierbob 2.6s ease-in-out infinite; }
+.tierwall .blink { transform-origin: 50% 50%; transform-box: fill-box; animation: blink 4.2s infinite; }
+.tierwall .sway { transform-origin: 50% 90%; animation: sway 3s ease-in-out infinite; }
+.tierwall .float { animation: floaty 2.4s ease-in-out infinite; }
+.tierwall .spin-slow { transform-origin: 50% 52%; transform-box: view-box; animation: spinslow 9s linear infinite; }
+.tierwall .cheek { animation: spark 3s ease-in-out infinite; }
+@keyframes tierbob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
 @keyframes sway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
 @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 @keyframes spinslow { to { transform: rotate(360deg); } }
@@ -325,11 +325,11 @@ button:disabled { cursor: default; }
 .zap { position: absolute; width: 18px; height: 26px; opacity: 0; background: #f7d02c; clip-path: polygon(60% 0, 10% 55%, 45% 55%, 30% 100%, 90% 40%, 55% 40%); animation: zap 4s steps(1) infinite; }
 @keyframes zap { 0%, 86%, 100% { opacity: 0; } 88%, 92% { opacity: 1; } 90% { opacity: .3; } }
 @media (prefers-reduced-motion: reduce) {
-  .pokewall .poke, .pokewall .blink, .pokewall .sway, .pokewall .float, .pokewall .spin-slow, .pokewall .cheek { animation: none !important; }
+  .tierwall .tier, .tierwall .blink, .tierwall .sway, .tierwall .float, .tierwall .spin-slow, .tierwall .cheek { animation: none !important; }
   .bubble, .leaf, .zap { display: none; }
 }
 /* Lego-Welt */
-.bob { animation: pokebob 2.4s ease-in-out infinite; }
+.bob { animation: tierbob 2.4s ease-in-out infinite; }
 .siren { animation: siren 1s steps(1) infinite; }
 .siren.blue { animation-delay: .5s; }
 @keyframes siren { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
@@ -601,7 +601,7 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
 .map-lasse .ml-in { width: 100%; height: 100%; animation: mapbob 2.6s ease-in-out infinite; }
 .map-lasse svg { width: 100%; height: 100%; overflow: visible; display: block; }
 @media (prefers-reduced-motion: reduce) { .lv-card, .map-lasse .ml-in, .world button.gold-new svg.goldworld { animation: none; } }
-/* Schlapfel: Begleiter, großer Schlapfel am Rand, Bild im Levelauftritt */
+/* Begleiter, großes Monster am Rand, Bild im Levelauftritt */
 .sprite.companion { z-index: 2; pointer-events: none; transition: transform 260ms ease; }
 .sprite.companion .face-dir { transform-origin: 50% 80%; }
 .sprite.companion svg { transform: scale(.82) translateY(6%); }
@@ -965,7 +965,7 @@ button.primary, .lvl.next { background: linear-gradient(180deg, #9ff0ff 0%, #38b
       <path d="M17 44q-3 12 0 22M83 44q3 12 0 22" fill="none" stroke="#5a3a22" stroke-width="1.6" stroke-dasharray="3 3" opacity=".45"/>
       <ellipse cx="34" cy="88" rx="8" ry="4.5" fill="#5a3a22"/><ellipse cx="66" cy="88" rx="8" ry="4.5" fill="#5a3a22"/>
     </symbol>
-    <symbol id="pokeball" viewBox="0 0 100 100"><ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/><circle cx="50" cy="54" r="32" fill="#fbf7ef" stroke="#2d3036" stroke-width="3"/><path d="M22 40q28-26 56 0q-28 10-56 0z" fill="var(--c1, #e3350d)" stroke="#2d3036" stroke-width="3" stroke-linejoin="round"/><path d="M50 22l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z" fill="#ffd23a" stroke="#2d3036" stroke-width="1.6"/><path d="M30 66q20 14 40 0" stroke="#d9d2c4" stroke-width="3" fill="none"/></symbol>
+    <symbol id="tierball" viewBox="0 0 100 100"><ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/><circle cx="50" cy="54" r="32" fill="#fbf7ef" stroke="#2d3036" stroke-width="3"/><path d="M22 40q28-26 56 0q-28 10-56 0z" fill="var(--c1, #e3350d)" stroke="#2d3036" stroke-width="3" stroke-linejoin="round"/><path d="M50 22l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z" fill="#ffd23a" stroke="#2d3036" stroke-width="1.6"/><path d="M30 66q20 14 40 0" stroke="#d9d2c4" stroke-width="3" fill="none"/></symbol>
     <symbol id="netzball" viewBox="0 0 100 100">
       <ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/>
       <clipPath id="netzball-top"><path d="M16 50a34 34 0 0168 0z"/></clipPath>
@@ -1437,7 +1437,7 @@ const LASSE = {
 
 // ---------- Themen und Schauplätze ----------
 const THEMES = {};
-// Personen und Taschenmonster in Wandbildern tragen eine Kennung; das Spiel setzt jede höchstens viermal pro Level und gut verteilt
+// Personen und Monster in Wandbildern tragen eine Kennung; das Spiel setzt jede höchstens viermal pro Level und gut verteilt
 const personId = (s) => { let h = 5381; for (let i = 0; i < s.length; i++) h = (h * 33 + s.charCodeAt(i)) >>> 0; return h.toString(36); };
 const asPerson = (svg, id) => svg.replace("<svg", `<svg data-person="${id}"`);
 // Jede Welt hat drei Schauplätze (Level 1–3, 4–6, 7–9). Kiste und Ziel bleiben in der Welt gleich,
@@ -1719,16 +1719,14 @@ const TRAINER = `<svg viewBox="0 0 100 100" class="trainer">
   <g class="notes" fill="#2d3036"><text x="66" y="34" font-size="14" font-family="sans-serif">♪</text><text x="76" y="22" font-size="11" font-family="sans-serif">♪</text></g>
 </svg>`;
 
-// ===================== Idas Welt: eigene Fantasie-Monster statt fremder Figuren =====================
-// Jedes Monster wird aus seinem Namen erzeugt: Typ (Wasser, Pflanze, Blitz, Feuer, Stein, Kampf, Psycho, Flug) bestimmt Farbe, Ohren und Schwanz.
-const MON_TYP = { schiggy: "wasser", karpador: "wasser", enton: "wasser", sterndu: "wasser", bisasam: "pflanze", myrapla: "pflanze", endivie: "pflanze", raupy: "pflanze",
-  pikachu: "blitz", pichu: "blitz", magnetilo: "blitz", glumanda: "feuer", glutexo: "feuer", glurak: "feuer", onix: "stein", kleinstein: "stein",
-  lucario: "kampf", machollo: "kampf", mewtu: "psycho", psiana: "psycho", taubsi: "flug" };
+// ----- Monster (Welt 3) -----
+// ===================== Eigene Fantasie-Monster =====================
+// Jedes Monster wird aus seinem Namen erzeugt: der Typ am Namensanfang (wasser, pflanze, blitz, feuer, stein, kampf, psycho, flug) bestimmt Farbe, Ohren und Schwanz.
 const MON_FARBE = { wasser: ["#6ec6e8", "#e6f7ff"], pflanze: ["#86c96e", "#eaf8df"], blitz: ["#b9a6f2", "#f3eeff"], feuer: ["#f2875a", "#ffe8d6"], stein: ["#aaa49a", "#ecebe6"],
   kampf: ["#e3a05c", "#fff0de"], psycho: ["#f0a8d8", "#fff0fa"], flug: ["#d9c08a", "#fbf5e6"] };
 const monHash = (s) => [...String(s)].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
 function MON(name, size = 1) {
-  const typ = MON_TYP[name] || ["wasser", "pflanze", "blitz", "feuer", "stein", "kampf", "psycho", "flug"][monHash(name) % 8];
+  const typ = Object.keys(MON_FARBE).find(t => String(name).startsWith(t)) || Object.keys(MON_FARBE)[monHash(name) % 8];
   const [c, b] = MON_FARBE[typ], h = monHash(name), r = 24 + (h % 5), O = `stroke="#2d3036" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
   const ohren = { wasser: `<path d="M30 46q-14-4-12-16 10 0 16 10zM70 46q14-4 12-16-10 0-16 10z" fill="${c}" ${O}/>`,
     pflanze: `<path d="M50 34q-4-18 10-24 4 14-10 24z" fill="#5fae4a" ${O}/><path d="M55 22l-4 10" stroke="#3f8a32" stroke-width="1.6"/>`,
@@ -1749,12 +1747,11 @@ function MON(name, size = 1) {
     ${[-1, 1].map(d => `<ellipse cx="${50 + d * augenAbstand}" cy="58" rx="4.2" ry="5" fill="#2d3036"/><circle cx="${50 + d * augenAbstand + 1.4}" cy="56.4" r="1.6" fill="#ffffff"/>`).join("")}
     <ellipse cx="${50 - augenAbstand - 5}" cy="65" rx="3.4" ry="2" fill="#ff8fb1" opacity=".7"/><ellipse cx="${50 + augenAbstand + 5}" cy="65" rx="3.4" ry="2" fill="#ff8fb1" opacity=".7"/>${mund}</g>`;
 }
-const MON1 = (name) => `<g class="poke">${MON(name)}</g>`;
+const MON1 = (name) => `<g class="tier">${MON(name)}</g>`;
 // Eigene Fangkugel: helle Kapsel, farbige Kappe mit Stern, keine Mittelband-Knopf-Optik
 const FANGKUGEL = (cap = "#e2402f") => `<circle cx="50" cy="54" r="32" fill="#fbf7ef" stroke="#2d3036" stroke-width="3"/><path d="M22 40q28-26 56 0q-28 10-56 0z" fill="${cap}" stroke="#2d3036" stroke-width="3" stroke-linejoin="round"/><path d="M50 22l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z" fill="#ffd23a" stroke="#2d3036" stroke-width="1.6"/><path d="M30 66q20 14 40 0" stroke="#d9d2c4" stroke-width="3" fill="none"/><ellipse cx="36" cy="52" rx="5" ry="3" fill="#ffffff" opacity=".8"/>`;
 
-// ----- Taschenmonster (Welt 3) -----
-// Eigene, vereinfachte Zeichnungen für ein privates Spiel. Je Schauplatz sitzen Taschenmonster des Typs in den Wänden.
+// Eigene, vereinfachte Zeichnungen für ein privates Spiel. Je Schauplatz sitzen Monster des Typs in den Wänden.
 const P_BASE = { "--ink": "#2d3036", "--muted": "#6b7590", "--accent": "#e3350d", "--accent-dark": "#a8240a", "--soft": "#fdecea", "--edge": "#e9d3cf", "--on-bg": "#5d6782" };
 const pad = (top, side, hi = "#ffffff") => `<rect x="3" y="9" width="94" height="88" rx="16" fill="${side}"/><rect x="3" y="3" width="94" height="86" rx="16" fill="${top}"/><rect x="3" y="3" width="94" height="86" rx="16" fill="url(#softlight)"/><rect x="14" y="10" width="26" height="6" rx="3" fill="${hi}" opacity=".35"/>`;
 const eye = (cx, cy, r = 4.5) => `<ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r * 1.15}" fill="#1a1a22"/><circle cx="${cx + r * .35}" cy="${cy - r * .4}" r="${r * .4}" fill="#ffffff"/>`;
@@ -1762,32 +1759,32 @@ const OL = `stroke="#2d3036" stroke-width="2.4" stroke-linejoin="round"`;
 
 // Wasser
 const waterPad = `${pad("#4aa8f0", "#2a78c8")}<path d="M10 40q8-6 16 0t16 0 16 0 16 0 16 0M10 64q8-6 16 0t16 0 16 0 16 0 16 0" fill="none" stroke="#ffffff" stroke-width="3" opacity=".45" stroke-linecap="round"/>`;
-const SCHIGGY = MON1("schiggy");
-const KARPADOR = MON1("karpador");
-const ENTON = MON1("enton");
-const STERNDU = MON1("sterndu");
+const WASSER4 = MON1("wasser4");
+const MONSTER1 = MON1("monster1");
+const MONSTER2 = MON1("monster2");
+const MONSTER3 = MON1("monster3");
 
 // Pflanzen
 const bushPad = `${pad("#4fb058", "#2f8a3a")}<g fill="#6fd06f" opacity=".6"><circle cx="22" cy="70" r="6"/><circle cx="80" cy="30" r="5"/><circle cx="74" cy="74" r="4"/></g>`;
-const BISASAM = MON1("bisasam");
-const MYRAPLA = MON1("myrapla");
-const ENDIVIE = MON1("endivie");
+const WASSER2 = MON1("wasser2");
+const MONSTER4 = MON1("monster4");
+const MONSTER5 = MON1("monster5");
 
 // Blitz
 const voltPad = `${pad("#ffd84a", "#d9a90c")}<path d="M3 72h94v14q0 3-3 3H6q-3 0-3-3z" fill="#2d3036"/><path d="M10 72l-6 17M24 72l-6 17M38 72l-6 17M52 72l-6 17M66 72l-6 17M80 72l-6 17M94 72l-6 17" stroke="#ffd84a" stroke-width="5"/>`;
-const PIKACHU = MON1("pikachu");
-const PICHU = MON1("pichu");
-const MAGNETILO = MON1("magnetilo");
+const WASSER1 = MON1("wasser1");
+const MONSTER6 = MON1("monster6");
+const MONSTER7 = MON1("monster7");
 
-const pokeTile = (padSvg, mon) => `<svg data-person="pk${personId(mon)}" viewBox="0 0 100 100" class="pokewall">${padSvg}<g transform="translate(6 2) scale(.88)">${mon}</g></svg>`;
+const tierTile = (padSvg, mon) => `<svg data-person="pk${personId(mon)}" viewBox="0 0 100 100" class="tierwall">${padSvg}<g transform="translate(6 2) scale(.88)">${mon}</g></svg>`;
 
-THEMES.taschenmonster = {
-  title: "Taschenmonster", emblem: "pokeball", box: "pokeball", rolls: true,
+THEMES.monsterwelt = {
+  title: "Monster", emblem: "tierball", box: "tierball", rolls: true,
   boxWord: "Fangkugeln", pushWord: "Würfe",
   hint: "Roll jeden Fangkugel auf eine Arena-Plattform. Fangkugeln lassen sich nur schieben, nicht ziehen.",
   winTitle: "Volltreffer!", winText: (m, p) => `Alle Fangkugeln liegen bereit. ${m} Schritte, ${p} Würfe.`,
   confetti: ["#e3350d", "#ffffff", "#2d3036", "#f7d02c"],
-  prize: { symbol: "orden", title: "Arena-Orden!", text: (m) => `Du hast die Taschenmonster-Welt gemeistert! Finale in ${m} Schritten.` },
+  prize: { symbol: "orden", title: "Arena-Orden!", text: (m) => `Du hast die Monster-Welt gemeistert! Finale in ${m} Schritten.` },
   pal: { ...P_BASE, "--bg": "#fff1ec", "--bg-2": "#fffaf8", "--floor-a": "#f3e2b3", "--floor-b": "#eed9a3" },
   target: () => `<svg viewBox="0 0 100 100">
     <ellipse cx="50" cy="56" rx="38" ry="30" fill="#2d303622"/>
@@ -1800,34 +1797,34 @@ THEMES.taschenmonster = {
     </g>
   </svg>`,
   scenes: [
-    { name: "Wasser-Taschenmonster",
+    { name: "Wasser-Monster",
       pal: { "--bg": "#dff3ff", "--bg-2": "#f5fbff", "--floor-a": "#f3e2b3", "--floor-b": "#eed9a3" },
       floor: (x, y) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${(x + y) % 2 ? "var(--floor-b)" : "var(--floor-a)"}"/>
         ${pick(x, y, 1, 6) === 0 ? `<path d="M${30 + pick(x, y, 2, 40)} 60q6-10 12 0z" fill="#f7a8b8" stroke="#c97a8a" stroke-width="1.6"/>` : ""}
         <g fill="#d9c08a" opacity=".6"><circle cx="${20 + pick(x, y, 3, 60)}" cy="${20 + pick(x, y, 4, 60)}" r="1.8"/></g></svg>`,
-      wall: (x, y) => { const k = pick(x, y, 0, 8); const mons = [SCHIGGY, KARPADOR, ENTON, STERNDU]; return k < 4 ? pokeTile(waterPad, mons[k]) : `<svg viewBox="0 0 100 100">${waterPad}</svg>`; },
+      wall: (x, y) => { const k = pick(x, y, 0, 8); const mons = [WASSER4, MONSTER1, MONSTER2, MONSTER3]; return k < 4 ? tierTile(waterPad, mons[k]) : `<svg viewBox="0 0 100 100">${waterPad}</svg>`; },
       deco: (x, y) => pick(x, y, 9, 5) === 0 ? `<svg viewBox="0 0 100 100"><path d="M36 70q14-30 28 0z" fill="#f7a8b8" stroke="#c97a8a" stroke-width="2.4"/><path d="M50 44v26M42 50l6 20M58 50l-6 20" stroke="#c97a8a" stroke-width="1.6"/></svg>` : "",
       extras: () => [0, 1, 2, 3].map(i => `<span class="bubble" style="left:${12 + i * 24}%;animation-delay:${-i * 1.7}s"></span>`).join("") },
-    { name: "Pflanzen-Taschenmonster",
+    { name: "Pflanzen-Monster",
       pal: { "--bg": "#e4f6dc", "--bg-2": "#f7fdf3", "--floor-a": "#b5e39a", "--floor-b": "#a9da8c" },
       floor: (x, y) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${(x + y) % 2 ? "var(--floor-b)" : "var(--floor-a)"}"/>
         ${pick(x, y, 1, 4) === 0 ? `<path d="M${25 + pick(x, y, 2, 40)} ${30 + pick(x, y, 3, 40)}q8-8 14 0-8 8-14 0z" fill="#6cbf57"/>` : ""}</svg>`,
-      wall: (x, y) => { const k = pick(x, y, 0, 7); const mons = [BISASAM, MYRAPLA, ENDIVIE]; return k < 3 ? pokeTile(bushPad, mons[k]) : `<svg viewBox="0 0 100 100">${bushPad}</svg>`; },
+      wall: (x, y) => { const k = pick(x, y, 0, 7); const mons = [WASSER2, MONSTER4, MONSTER5]; return k < 3 ? tierTile(bushPad, mons[k]) : `<svg viewBox="0 0 100 100">${bushPad}</svg>`; },
       deco: (x, y) => { const k = pick(x, y, 9, 5); return k === 0 ? `<svg viewBox="0 0 100 100"><rect x="44" y="56" width="12" height="20" rx="4" fill="#f6e3c6" stroke="#2d3036" stroke-width="2"/><path d="M30 58q20-30 40 0z" fill="#e83b3b" stroke="#2d3036" stroke-width="2.2"/><circle cx="44" cy="48" r="3" fill="#fff"/><circle cx="56" cy="52" r="2.4" fill="#fff"/></svg>` : k === 1 ? `<svg viewBox="0 0 100 100">${flower(50, 56, "#ffe066", 5)}</svg>` : ""; },
       extras: () => [0, 1, 2].map(i => `<span class="leaf" style="left:${15 + i * 32}%;animation-delay:${-i * 2.6}s"></span>`).join("") },
-    { name: "Blitz-Taschenmonster",
+    { name: "Blitz-Monster",
       pal: { "--bg": "#fff8d6", "--bg-2": "#fffdf2", "--floor-a": "#dfe3ea", "--floor-b": "#d5dae2" },
       floor: (x, y) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${(x + y) % 2 ? "var(--floor-b)" : "var(--floor-a)"}"/>
         <rect x="3" y="3" width="94" height="94" rx="6" fill="none" stroke="#c3c9d3" stroke-width="2"/>
         <g fill="#aeb5c1"><circle cx="10" cy="10" r="2.4"/><circle cx="90" cy="10" r="2.4"/><circle cx="10" cy="90" r="2.4"/><circle cx="90" cy="90" r="2.4"/></g></svg>`,
-      wall: (x, y) => { const k = pick(x, y, 0, 7); const mons = [PIKACHU, PIKACHU, PICHU, MAGNETILO]; return k < 4 ? pokeTile(voltPad, mons[k]) : `<svg viewBox="0 0 100 100">${voltPad}<path d="M54 14L34 48h14l-6 24 22-36H50z" fill="#ffffff" stroke="#2d3036" stroke-width="2.4" stroke-linejoin="round"/></svg>`; },
+      wall: (x, y) => { const k = pick(x, y, 0, 7); const mons = [WASSER1, WASSER1, MONSTER6, MONSTER7]; return k < 4 ? tierTile(voltPad, mons[k]) : `<svg viewBox="0 0 100 100">${voltPad}<path d="M54 14L34 48h14l-6 24 22-36H50z" fill="#ffffff" stroke="#2d3036" stroke-width="2.4" stroke-linejoin="round"/></svg>`; },
       deco: (x, y) => pick(x, y, 9, 5) === 0 ? `<svg viewBox="0 0 100 100"><path d="M56 26L38 54h12l-6 22 20-32H52z" fill="#f7d02c" stroke="#2d3036" stroke-width="2.2" stroke-linejoin="round"/></svg>` : "",
       extras: () => [0, 1, 2].map(i => `<span class="zap" style="left:${18 + i * 30}%;top:${20 + (i % 2) * 40}%;animation-delay:${-i * 1.3}s"></span>`).join("") }
   ]
 };
 
-// Lasse als Taschenmonster-Trainer: rot-weiße Kappe, blaue Jacke, Jeans, rote Turnschuhe
-LASSE.taschenmonster = "";
+// Lasse als Monster-Trainer: rot-weiße Kappe, blaue Jacke, Jeans, rote Turnschuhe
+LASSE.monsterwelt = "";
 
 // ----- Lego (Welt 4) -----
 // Duplo, Lego City (Feuerwehr, Polizei), Lego Weltraum. Geschoben werden bunte Legosteine.
@@ -2291,7 +2288,7 @@ LASSE.schulkind = `<svg viewBox="0 0 100 100">
   </g>
 </svg>`;
 
-// ===== Welten 7–10: Tennis, Essen, Taschenmonster 2, Familie =====
+// ===== Welten 7–10: Tennis, Essen, Monster 2, Familie =====
 const svgT = (inner) => `<svg viewBox="0 0 100 100">${inner}</svg>`;
 const K = `stroke="#2d3036" stroke-width="2.2" stroke-linejoin="round"`;
 const dashTarget = (shape, fxColor = "#ffcc33") => `<svg viewBox="0 0 100 100">${shape}
@@ -2449,40 +2446,40 @@ LASSE.koch = lasseBase("#ffffff", "#3d5bb8", "#ffffff",
   `<path d="M26 33q-3 6 1 10 1-6 4-8zM74 33q3 6-1 10-1-6-4-8z" fill="${HAIR}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
    <path d="M28 26h44v-6q8-2 6-10-2-8-12-4-4-10-16-6-12-4-16 6-10-4-12 4-2 8 6 10z" fill="#ffffff" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><path d="M28 26q22 4 44 0" stroke="${INK}" stroke-width="2" fill="none"/>`);
 
-// ---------- Welt 9: Taschenmonster 2 (Kampf, Psycho, Feuer) ----------
+// ---------- Welt 9: Monster 2 (Kampf, Psycho, Feuer) ----------
 const dojoPad = `${pad("#c9a06a", "#8a6a3c")}<path d="M3 30h94M3 60h94" stroke="#8a6a3c" stroke-width="3"/>`;
 const psyPad = `${pad("#b07ad6", "#7a4aa6")}<path d="M50 30a12 12 0 1 1-12 12 8 8 0 1 1 8-8" fill="none" stroke="#e7d4ff" stroke-width="3" opacity=".7"/>`;
 const lavaPad = `${pad("#5a3a34", "#3a2420")}<path d="M12 70l14-10 10 8 16-14 12 10 14-8 10 6" fill="none" stroke="#ff7a1a" stroke-width="3.4" class="lava"/>`;
-const MACHOLLO = MON1("machollo");
-const MENKI = MON1("menki");
-const ABRA = MON1("abra");
-const TRAUMATO = MON1("traumato");
-const MEW = MON1("mew");
-const GLUMANDA = MON1("glumanda");
-const FUKANO = MON1("fukano");
-const PONITA = MON1("ponita");
-const VULPIX = MON1("vulpix");
-THEMES.taschenmonster2 = {
-  title: "Taschenmonster 2", emblem: "superball", box: "superball", rolls: true,
+const KAMPF1 = MON1("kampf1");
+const MONSTER8 = MON1("monster8");
+const MONSTER9 = MON1("monster9");
+const MONSTER10 = MON1("monster10");
+const MONSTER11 = MON1("monster11");
+const FEUER1 = MON1("feuer1");
+const MONSTER12 = MON1("monster12");
+const MONSTER13 = MON1("monster13");
+const MONSTER14 = MON1("monster14");
+THEMES.monsterwelt2 = {
+  title: "Monster 2", emblem: "superball", box: "superball", rolls: true,
   boxWord: "Superbälle", pushWord: "Würfe",
   hint: "Roll jeden Superball auf eine Arena-Plattform. Bälle lassen sich nur schieben, nicht ziehen.",
   winTitle: "Volltreffer!", winText: (m, p) => `Alle Superbälle liegen bereit. ${m} Schritte, ${p} Würfe.`,
   confetti: ["#2f7ae5", "#ef4b4b", "#ffffff", "#ffb02e"],
-  prize: { symbol: "meisterorden", title: "Meister-Orden!", text: (m) => `Du bist Taschenmonster-Meister! Finale in ${m} Schritten.` },
+  prize: { symbol: "meisterorden", title: "Meister-Orden!", text: (m) => `Du bist Monster-Meister! Finale in ${m} Schritten.` },
   pal: { ...P_BASE, "--accent": "#2f7ae5", "--accent-dark": "#1a4bae", "--soft": "#e6efff", "--edge": "#cddcf5", "--bg": "#eef2ff", "--bg-2": "#fafbff", "--floor-a": "#e9d7b0", "--floor-b": "#e2cfa6" },
-  target: () => THEMES.taschenmonster.target(),
+  target: () => THEMES.monsterwelt.target(),
   scenes: [
-    { name: "Kampf-Taschenmonster", lasse: "taschenmonster", pal: { "--bg": "#fdf0e4", "--bg-2": "#fffaf4" },
+    { name: "Kampf-Monster", lasse: "monsterwelt", pal: { "--bg": "#fdf0e4", "--bg-2": "#fffaf4" },
       floor: (x, y) => svgT(`<rect width="100" height="100" fill="${(x + y) % 2 ? "#d9c58a" : "#e2cf96"}"/><rect x="3" y="3" width="94" height="94" fill="none" stroke="#2a3b2a" stroke-width="3"/><path d="M50 3v94" stroke="#c4b077" stroke-width="2"/>`),
-      wall: (x, y) => { const k = pick(x, y, 0, 6); const mons = [MACHOLLO, MENKI, MACHOLLO]; return k < 3 ? pokeTile(dojoPad, mons[k]) : k === 3 ? svgT(`${dojoPad}<path d="M50 6v14" stroke="#2d3036" stroke-width="3"/><rect x="36" y="20" width="28" height="64" rx="12" fill="#ef4b4b" ${K}/><path d="M36 40h28M36 64h28" stroke="#ffffff" stroke-width="3"/>`) : svgT(dojoPad); },
+      wall: (x, y) => { const k = pick(x, y, 0, 6); const mons = [KAMPF1, MONSTER8, KAMPF1]; return k < 3 ? tierTile(dojoPad, mons[k]) : k === 3 ? svgT(`${dojoPad}<path d="M50 6v14" stroke="#2d3036" stroke-width="3"/><rect x="36" y="20" width="28" height="64" rx="12" fill="#ef4b4b" ${K}/><path d="M36 40h28M36 64h28" stroke="#ffffff" stroke-width="3"/>`) : svgT(dojoPad); },
       deco: () => "", extras: () => "" },
-    { name: "Psycho-Taschenmonster", lasse: "taschenmonster", pal: { "--bg": "#f3e9ff", "--bg-2": "#fcf9ff" },
+    { name: "Psycho-Monster", lasse: "monsterwelt", pal: { "--bg": "#f3e9ff", "--bg-2": "#fcf9ff" },
       floor: (x, y) => svgT(`<rect width="100" height="100" fill="${(x + y) % 2 ? "#e2d2f2" : "#ead9f8"}"/>${pick(x, y, 1, 4) === 0 ? `<circle cx="50" cy="50" r="14" fill="none" stroke="#c9a8ea" stroke-width="3"/>` : ""}`),
-      wall: (x, y) => { const k = pick(x, y, 0, 6); const mons = [ABRA, TRAUMATO, MEW, ABRA]; return k < 4 ? pokeTile(psyPad, mons[k]) : svgT(psyPad); },
+      wall: (x, y) => { const k = pick(x, y, 0, 6); const mons = [MONSTER9, MONSTER10, MONSTER11, MONSTER9]; return k < 4 ? tierTile(psyPad, mons[k]) : svgT(psyPad); },
       deco: () => "", extras: () => Array.from({ length: 8 }, (_, i) => `<span class="glint" style="left:${(i * 37) % 100}%;top:${(i * 53) % 100}%;animation-delay:${-i * .5}s;background:#e7b8ff"></span>`).join("") },
-    { name: "Feuer-Taschenmonster", lasse: "taschenmonster", pal: { "--bg": "#2a1612", "--bg-2": "#4a241a", "--on-bg": "#ffd9c2", "--on-bg-strong": "#fff1e6" },
+    { name: "Feuer-Monster", lasse: "monsterwelt", pal: { "--bg": "#2a1612", "--bg-2": "#4a241a", "--on-bg": "#ffd9c2", "--on-bg-strong": "#fff1e6" },
       floor: (x, y) => svgT(`<rect width="100" height="100" fill="${(x + y) % 2 ? "#6b4a40" : "#73514a"}"/>${pick(x, y, 1, 4) === 0 ? `<path d="M20 70l16-10 14 6 18-12" fill="none" stroke="#ff7a1a" stroke-width="3" class="lava"/>` : ""}`),
-      wall: (x, y) => { const k = pick(x, y, 0, 7); const mons = [GLUMANDA, GLUMANDA, FUKANO, PONITA, VULPIX]; return k < 5 ? pokeTile(lavaPad, mons[k]) : svgT(`${lavaPad}<path class="tailflame" d="M50 20q18 20 4 44-20-6-14-24 4 8 10 6-6-16 0-26z" fill="#ffb02e"/>`); },
+      wall: (x, y) => { const k = pick(x, y, 0, 7); const mons = [FEUER1, FEUER1, MONSTER12, MONSTER13, MONSTER14]; return k < 5 ? tierTile(lavaPad, mons[k]) : svgT(`${lavaPad}<path class="tailflame" d="M50 20q18 20 4 44-20-6-14-24 4 8 10 6-6-16 0-26z" fill="#ffb02e"/>`); },
       deco: () => "", extras: () => Array.from({ length: 8 }, (_, i) => `<span class="ember" style="left:${(i * 29) % 100}%;animation-delay:${-i * .8}s"></span>`).join("") }
   ]
 };
@@ -2669,7 +2666,7 @@ LASSE.drummer = lasseBase("#2d3036", "#3d5bb8", "#ffffff",
   `<path d="M50 54l2.4 5 5.6.8-4 4 1 5.6-5-2.8-5 2.8 1-5.6-4-4 5.6-.8z" fill="#ffd35a"/>
    <g class="pick"><path d="M70 66L90 40M72 70L94 50" stroke="#c9935a" stroke-width="4" stroke-linecap="round"/><circle cx="90" cy="40" r="2.6" fill="#f6ead2"/><circle cx="94" cy="50" r="2.6" fill="#f6ead2"/></g>`,
   `${HAIR_STRUBBEL}<path d="M26 36q0-32 24-32t24 32" fill="none" stroke="#2d3036" stroke-width="5"/><rect x="20" y="30" width="11" height="18" rx="5.5" fill="#e0483a" stroke="${INK}" stroke-width="2"/><rect x="69" y="30" width="11" height="18" rx="5.5" fill="#e0483a" stroke="${INK}" stroke-width="2"/>`);
-// ===== Teil 2: Taschenmonster im Anime-Look (Cel-Shading: Grundfarbe, Schattenfläche, Glanzlicht, Tuschekontur) =====
+// ===== Teil 2: Monster im Anime-Look (Cel-Shading: Grundfarbe, Schattenfläche, Glanzlicht, Tuschekontur) =====
 const KI = "#2d3036";
 const kO = `stroke="${KI}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
 const kO2 = `stroke="${KI}" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"`;
@@ -2683,8 +2680,8 @@ const kBolt = (x, y, s = 1, c = "#ffe14d") => `<path transform="translate(${x} $
 
 const PK = new Proxy({}, { get: (_, k) => typeof k === "string" ? () => MON(k) : undefined });
 
-// Kachel: farbiger Hintergrund (Gras, Fels, Dojo …) + Taschenmonster im Vordergrund
-const kMon = (bg, name, back = "") => () => asPerson(kB(bg, `${back}<g class="poke">${PK[name]()}</g>`), "pk-" + name);
+// Kachel: farbiger Hintergrund (Gras, Fels, Dojo …) + Monster im Vordergrund
+const kMon = (bg, name, back = "") => () => asPerson(kB(bg, `${back}<g class="tier">${PK[name]()}</g>`), "pk-" + name);
 // Hintergründe
 const bgGrass = `<path d="M4 72q24-8 46 0t46 0v24H4z" fill="#3f9a4a"/><path d="M10 74l4-10 4 10M80 72l4-10 4 10" fill="#2f7a3a"/>`;
 const bgForest = `<path d="M4 60h92v36H4z" fill="#2f5a2a"/><path d="M14 10l10 20H4zM86 6l10 22H76z" fill="#1f4a2a" opacity=".7"/>`;
@@ -2866,7 +2863,7 @@ Object.assign(LASSE, {
   // Reiten
   stall: kLasse({ shirt: "#c0392b", pants: "#33507f", shoes: "#3f7a35", body: `<path d="M37 52h26M36 60h28M44 46v22M56 46v22" stroke="#8a231a" stroke-width="2"/><path d="M40 82h8v8h-8zM52 82h8v8h-8z" fill="#3f7a35"/>`, hand: `<path d="M70 70L86 30" stroke="#a8743f" stroke-width="3.6" stroke-linecap="round"/><path d="M80 32l4-14M85 34l5-13M90 36l5-12M80 32q8 4 15 4" stroke="#9aa3b1" stroke-width="2.4" fill="none" stroke-linecap="round"/>` }),
   turnier: kLasse({ shirt: "#1f2a44", pants: "#f4f1ea", shoes: KI, body: `<path d="M46 44l4 10 4-10z" fill="#ffffff" ${kO2}/><path d="M40 74h9v16h-9zM51 74h9v16h-9z" fill="${KI}"/><circle cx="50" cy="60" r="1.6" fill="#ffd23a"/>`, head: helmetRide("#1f2a44") }),
-  // Taschenmonster
+  // Monster
   pkWald: kLasse({ shirt: "#3fae4a", pants: "#6b5034", shoes: "#8a5a2b", glove: "#e2a983", body: `<path d="M40 46l4 22M60 46l-4 22" stroke="#a8743f" stroke-width="3.4"/>`, head: ashCap }),
   pkArena: kLasse({ shirt: "#e2402f", pants: "#33507f", shoes: KI, body: `<path d="M50 44v24" stroke="${KI}" stroke-width="2"/><path d="M56 52l3-3 3 3-3 3z" fill="#9aa3b1" ${kO2}/>`, head: ashCap }),
   dojo: kLasse({ shirt: "#ffffff", pants: "#ffffff", shoes: SKIN10, body: `<path d="M44 44l6 10 6-10" fill="none" stroke="${KI}" stroke-width="2"/><path d="M36 62h28" stroke="${KI}" stroke-width="4"/><path d="M48 62l-3 8M52 62l3 8" stroke="${KI}" stroke-width="3"/>`, head: `<path d="M31 18h38" stroke="#e2402f" stroke-width="5"/><path d="M68 18l8 4M68 18l7-3" stroke="#e2402f" stroke-width="3" stroke-linecap="round"/>` }),
@@ -2897,7 +2894,7 @@ Object.assign(LASSE, {
 const OUTFIT = {
   "Bolzplatz": "bolz", "HSV-Campus": "hsvTraining", "Volksparkstadion": "kapitaen",
   "Reiterhof": "stall", "Ausritt im Wald": "reiten", "Springturnier": "turnier",
-  "Wasser-Ufer": "taschenmonster", "Blätterwald": "pkWald", "Funkenfelsen": "pkArena", "Trainingshalle": "dojo", "Traumwolke": "psycho", "Feuerberg": "vulkan",
+  "Wasser-Ufer": "monsterwelt", "Blätterwald": "pkWald", "Funkenfelsen": "pkArena", "Trainingshalle": "dojo", "Traumwolke": "psycho", "Feuerberg": "vulkan",
   "Baustelle": "lego", "Lego-Stadt": "legoPolizei", "Raumstation": "astro",
   "Bergkristall-Höhle": "steine", "Malachit-Mine": "lore", "Türkis-Tempel": "abenteuer",
   "Konservatorium Hamburg": "konzertWeste", "Laeiszhalle": "frack", "Elbphilharmonie": "schlagzeug",
@@ -2908,14 +2905,14 @@ const OUTFIT = {
 Object.assign(LASSE, {
   fussball: kLasse({ shirt: "#ffffff", pants: "#e2402f", shoes: KI, body: `<g transform="translate(57 52)">${kRaute}</g><text x="44" y="64" font-family="Bangers, Impact, sans-serif" font-size="11" fill="#0a5cb0">7</text>` }),
   reiten: kLasse({ shirt: "#3b5f8a", pants: "#eadfc8", shoes: KI, body: `<path d="M40 74h9v16h-9zM51 74h9v16h-9z" fill="${KI}"/>`, head: `<path d="M34 22q0-18 16-18t16 18z" fill="#222a3a" ${kO}/><path d="M32 22h36l-3 5H35z" fill="#222a3a" ${kO2}/>` }),
-  taschenmonster: kLasse({ shirt: "#2b5fd9", pants: "#33507f", shoes: "#e2402f", glove: "#3fae4a", body: `<path d="M44 40l6 6 6-6" fill="#fff" ${kO2}/><path d="M46 46v24M54 46v24" stroke="${KI}" stroke-width="5"/>`, head: ashCap + `<g class="buddy"><path d="M66 36l-4-10 8 6zM78 36l4-10-8 6z" fill="#f7d02c" ${kO2}/><ellipse cx="72" cy="42" rx="8" ry="7" fill="#f7d02c" ${kO2}/><circle cx="69" cy="41" r="1.3" fill="${KI}"/><circle cx="75" cy="41" r="1.3" fill="${KI}"/><circle cx="66" cy="44" r="1.6" fill="#e8402c"/><circle cx="78" cy="44" r="1.6" fill="#e8402c"/></g>` }),
+  monsterwelt: kLasse({ shirt: "#2b5fd9", pants: "#33507f", shoes: "#e2402f", glove: "#3fae4a", body: `<path d="M44 40l6 6 6-6" fill="#fff" ${kO2}/><path d="M46 46v24M54 46v24" stroke="${KI}" stroke-width="5"/>`, head: ashCap + `<g class="buddy"><path d="M66 36l-4-10 8 6zM78 36l4-10-8 6z" fill="#f7d02c" ${kO2}/><ellipse cx="72" cy="42" rx="8" ry="7" fill="#f7d02c" ${kO2}/><circle cx="69" cy="41" r="1.3" fill="${KI}"/><circle cx="75" cy="41" r="1.3" fill="${KI}"/><circle cx="66" cy="44" r="1.6" fill="#e8402c"/><circle cx="78" cy="44" r="1.6" fill="#e8402c"/></g>` }),
   lego: kLasse({ shirt: "#ffd23a", pants: "#33507f", shoes: "#e2402f", body: `<rect x="44" y="50" width="12" height="8" rx="1.6" fill="#e2402f" ${kO2}/>`, head: `<path d="M33 18q0-14 17-14t17 14z" fill="#ff8a1a" ${kO}/><rect x="30" y="17" width="40" height="5" rx="2" fill="#ff8a1a" ${kO2}/>` }),
   legoNoppe: kLasse({ shirt: "#ffd23a", pants: "#33507f", shoes: "#e2402f", hair: false, body: `<rect x="44" y="50" width="12" height="8" rx="1.6" fill="#e2402f" ${kO2}/>`, under: `<path d="M43.5 10.8V6.5h13v4.3" fill="${SKIN10}" ${kO2}/><ellipse cx="50" cy="6.5" rx="6.5" ry="2.2" fill="${SKIN10}" ${kO2}/><path d="M46.5 9v1" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".7"/>` }).replaceAll(SKIN10, "#ffd21f"),
   steine: kLasse({ shirt: "#a7473c", pants: "#5b4636", shoes: "#3b2a1e", body: `<path d="M40 44v26M50 42v28M60 44v26M33 56h35" stroke="#7a2f28" stroke-width="2"/>`, hand: `<path d="M72 68L84 30" stroke="#8a5a2b" stroke-width="4"/><path d="M74 34q12-10 22 2-10-3-12-1z" fill="#c9ced8" ${kO2}/>`, head: `<path d="M33 20q0-16 17-16t17 16z" fill="#ffd23a" ${kO}/><rect x="44" y="6" width="12" height="9" rx="3" fill="#c9ced8" ${kO2}/><circle cx="50" cy="10.5" r="2.6" fill="#fff6b0"/>` }),
   schlagzeug: kLasse({ shirt: KI, pants: "#33507f", shoes: "#ffffff", body: kStar(50, 54, 6, "#ffd23a"), hand: `<path d="M72 68L90 46M74 72L94 56" stroke="#c9935a" stroke-width="3.6" stroke-linecap="round"/>`, head: `<path d="M33 26q0-24 17-24t17 24" fill="none" stroke="${KI}" stroke-width="4"/><rect x="29" y="20" width="9" height="14" rx="4" fill="#e2402f" ${kO2}/><rect x="62" y="20" width="9" height="14" rx="4" fill="#e2402f" ${kO2}/>` }),
   tennis: kLasse({ shirt: "#ffffff", pants: "#ffffff", shoes: "#ffffff", body: `<path d="M44 42l6 5 6-5" fill="none" stroke="#2f7a4a" stroke-width="2.4"/>`, hand: `<path d="M72 68L80 46" stroke="${KI}" stroke-width="4"/><ellipse cx="84" cy="34" rx="9" ry="13" fill="#d7f03c55" stroke="#e2402f" stroke-width="3.4" transform="rotate(15 84 34)"/>`, head: `<path d="M35 16q15-6 30 0" stroke="#e2402f" stroke-width="5" fill="none"/>` }),
   essen: kLasse({ shirt: "#ffffff", pants: "#33507f", shoes: KI, body: `<path d="M40 50h20v20H40z" fill="#e2402f" ${kO2}/>`, head: `<path d="M36 16h28v-6q6-2 4-8-2-6-10-2-3-6-8-4-6-2-8 4-8-4-10 2-2 6 4 8z" fill="#ffffff" ${kO}/>` }),
-  taschenmonster2: kLasse({ shirt: KI, pants: "#33507f", shoes: "#e2402f", glove: "#3fae4a", body: `<path d="M34 48q0-8 16-8l-4 30H32zM66 48q0-8-16-8l4 30h14z" fill="#2b5fd9" ${kO2}/>`, head: ashCap }),
+  monsterwelt2: kLasse({ shirt: KI, pants: "#33507f", shoes: "#e2402f", glove: "#3fae4a", body: `<path d="M34 48q0-8 16-8l-4 30H32zM66 48q0-8-16-8l4 30h14z" fill="#2b5fd9" ${kO2}/>`, head: ashCap }),
   familie: kLasse({ shirt: "#3fae4a", pants: "#33507f", shoes: "#ffffff", body: `<path d="M38 56h24v12H38z" fill="#2f8a3a" ${kO2}/><path d="M42 44q8 6 16 0" fill="none" stroke="${KI}" stroke-width="1.6"/>`, head: `<path d="M33 18q0-14 17-14t17 14z" fill="#2b5fd9" ${kO}/><path d="M30 18h12v4H30z" fill="#2b5fd9" ${kO2}/>` })
 });
 LASSE.neutral = LASSE.familie;
@@ -2927,7 +2924,7 @@ const K_BOXES = {
   k2netz: `<clipPath id="k2netz-top"><path d="M18 52a32 32 0 0164 0z"/></clipPath><circle cx="50" cy="52" r="32" fill="#fff" ${kO}/><path d="M18 52a32 32 0 0164 0z" fill="#3fb6c8"/><g clip-path="url(#k2netz-top)"><path d="M30 14v38M42 14v38M58 14v38M70 14v38M14 30h72M14 42h72" stroke="${KI}" stroke-width="2.2"/></g><path d="M18 52a32 32 0 0164 0z" fill="none" ${kO}/><path d="M18 52h64" stroke="${KI}" stroke-width="5"/><circle cx="50" cy="52" r="9" fill="#fff" ${kO}/>`,
   k2tauch: `<clipPath id="k2tauch-top"><path d="M18 52a32 32 0 0164 0z"/></clipPath><circle cx="50" cy="52" r="32" fill="#fff" ${kO}/><path d="M18 52a32 32 0 0164 0z" fill="#2b5fd9"/><g clip-path="url(#k2tauch-top)"><path d="M16 30q6-5 12 0t12 0 12 0 12 0 12 0 12 0M16 42q6-5 12 0t12 0 12 0 12 0 12 0 12 0" stroke="#9fdcff" stroke-width="4" fill="none"/></g><path d="M18 52a32 32 0 0164 0z" fill="none" ${kO}/><path d="M18 52h64" stroke="${KI}" stroke-width="5"/><circle cx="50" cy="52" r="9" fill="#fff" ${kO}/>`,
   k2hyper: `<clipPath id="k2hyper-top"><path d="M18 52a32 32 0 0164 0z"/></clipPath><circle cx="50" cy="52" r="32" fill="#fff" ${kO}/><path d="M18 52a32 32 0 0164 0z" fill="#2d3036"/><g clip-path="url(#k2hyper-top)"><path d="M33 14v38M67 14v38" stroke="#ffd23a" stroke-width="9"/></g><path d="M18 52a32 32 0 0164 0z" fill="none" ${kO}/><path d="M18 52h64" stroke="${KI}" stroke-width="5"/><circle cx="50" cy="52" r="9" fill="#fff" ${kO}/>`,
-  k2poke: `${FANGKUGEL("var(--c1, #e2402f)")}`,
+  k2tier: `${FANGKUGEL("var(--c1, #e2402f)")}`,
   k2lego: `<rect x="12" y="30" width="76" height="54" rx="5" fill="var(--c1, #ffd23a)" ${kO}/>${[30, 50, 70].map(a => `<rect x="${a - 8}" y="20" width="16" height="11" rx="3" fill="var(--c1, #ffd23a)" ${kO2}/>`).join("")}<path d="M18 40v36" stroke="#fff" stroke-width="4" opacity=".6"/>`,
   k2kristall: `<path d="M28 84l-6-34 14-26h28l14 26-6 34z" fill="var(--g1, #d6f6ff)" ${kO}/><path d="M36 24l14 30 14-30M22 50h56M50 54v30" stroke="${KI}" stroke-width="2" opacity=".55"/><path d="M34 34l6 12" stroke="#fff" stroke-width="4"/>`,
   k2snare: `<path d="M14 38v32q36 20 72 0V38" fill="#d7dce4" ${kO}/><path d="M14 50q36 18 72 0v8q-36 18-72 0z" fill="var(--c1, #e2402f)"/><ellipse cx="50" cy="38" rx="36" ry="12" fill="#fbf7ef" ${kO}/><path d="M58 16l-8 20M74 18L58 34" stroke="#c9935a" stroke-width="4"/>`,
@@ -3023,34 +3020,34 @@ THEMES.reiten = theme2({
   ]
 });
 
-// ---------- 3 Taschenmonster ----------
+// ---------- 3 Monster ----------
 const kGrass = (n = 5) => Array.from({ length: n }, (_, i) => { const x = 10 + i * (80 / (n - 1)); return `<path d="M${x - 8} 92l8-52 8 52" fill="#2f7a3a" ${kO2}/>`; }).join("");
-const kMonPeek = (inner) => `<g class="poke">${inner}</g>`;
-THEMES.taschenmonster = theme2({
-  title: "Taschenmonster", emblem: "pokeball", box: "k2poke", rolls: true, boxWord: "Fangkugeln", pushWord: "Würfe",
+const kMonPeek = (inner) => `<g class="tier">${inner}</g>`;
+THEMES.monsterwelt = theme2({
+  title: "Monster", emblem: "tierball", box: "k2tier", rolls: true, boxWord: "Fangkugeln", pushWord: "Würfe",
   hint: "Roll jeden Fangkugel in eine Arena-Markierung. Bälle lassen sich nur schieben, nicht ziehen.",
   winTitle: "Gefangen!", winText: (m, p) => `Alle Fangkugeln bereit. ${m} Schritte, ${p} Würfe.`,
   prize: { symbol: "orden", title: "Felsorden!", text: (m) => `Funkenfelsen geschafft! Finale in ${m} Schritten.` },
   pal: { "--accent": "#e2402f", "--accent-dark": "#a82f22" },
   target: kTarget(`${kGlow(`<circle cx="50" cy="52" r="34" opacity="0"/>`)}<circle cx="50" cy="52" r="34" fill="none" stroke="#fff" stroke-width="6"/><circle cx="50" cy="52" r="34" fill="none" stroke="${KI}" stroke-width="2" stroke-dasharray="7 6"/>${kStar(50, 52, 12, "#fff")}`),
   scenes: [
-    kScene("Wasser-Ufer", "taschenmonster", PAL("#eef6e2", "#fafdf4"), kFloor("#ebd59a", "#e6cf91", (x, y) => pick(x, y, 1, 4) === 0 ? `<circle cx="${30 + pick(x, y, 2, 40)}" cy="60" r="3" fill="#b89a5a"/>` : ""), [
-      () => kB("#3f9a4a", kGrass(5)), kMon("#bfe3f6", "pikachu", bgGrass), kMon("#bfe3f6", "bisasam", bgGrass),
+    kScene("Wasser-Ufer", "monsterwelt", PAL("#eef6e2", "#fafdf4"), kFloor("#ebd59a", "#e6cf91", (x, y) => pick(x, y, 1, 4) === 0 ? `<circle cx="${30 + pick(x, y, 2, 40)}" cy="60" r="3" fill="#b89a5a"/>` : ""), [
+      () => kB("#3f9a4a", kGrass(5)), kMon("#bfe3f6", "wasser1", bgGrass), kMon("#bfe3f6", "wasser2", bgGrass),
       () => kB("#8f8a80", `<path d="M14 80q4-40 34-46 30 4 38 46z" fill="#a8a196" ${kO}/>`), () => kB("#3f9a4a", `<rect x="44" y="56" width="12" height="34" fill="#7a4a2a" ${kO2}/><circle cx="50" cy="40" r="28" fill="#2f7a3a" ${kO}/>`),
-      kMon("#bfe3f6", "taubsi", bgGrass), kMon("#bfe3f6", "schiggy", bgGrass),
+      kMon("#bfe3f6", "wasser3", bgGrass), kMon("#bfe3f6", "wasser4", bgGrass),
       () => kB("#c9b48c", `<rect x="18" y="20" width="64" height="40" fill="#fff" ${kO2}/>${kHand("ROUTE 1", KI, 15, 46)}<path d="M50 60v32" stroke="#8a5a2b" stroke-width="6"/>`)
     ], () => birdHTML()),
-    kScene("Blätterwald", "taschenmonster", PAL("#d9e8d0", "#eef6ea"), kFloor("#7a8a52", "#73844c", (x, y) => pick(x, y, 1, 5) === 0 ? `<path d="M30 40q6-8 12 0-6 6-12 0z" fill="#4f6a2a"/>` : ""), [
+    kScene("Blätterwald", "monsterwelt", PAL("#d9e8d0", "#eef6ea"), kFloor("#7a8a52", "#73844c", (x, y) => pick(x, y, 1, 5) === 0 ? `<path d="M30 40q6-8 12 0-6 6-12 0z" fill="#4f6a2a"/>` : ""), [
       () => kB("#1f4a2a", `<path d="M50 6l30 34H20zM50 22l34 38H16z" fill="#1f5a2f" ${kO2}/><rect x="44" y="60" width="12" height="32" fill="#4a3018" ${kO2}/>`),
-      kMon("#5f8a4a", "raupy", bgForest), kMon("#5f8a4a", "pikachu", bgForest),
-      kMon("#5f8a4a", "bisasam", bgForest),
+      kMon("#5f8a4a", "pflanze1", bgForest), kMon("#5f8a4a", "wasser1", bgForest),
+      kMon("#5f8a4a", "wasser2", bgForest),
       () => kB("#1f4a2a", `<path d="M10 70q20-30 40-10t40-10" stroke="#4a3018" stroke-width="10" fill="none"/><circle cx="70" cy="40" r="6" fill="#ffd23a" opacity=".8"/>`),
       () => kB("#2f5a2a", `<path d="M20 90q0-40 30-40t30 40z" fill="#3f7a3a" ${kO2}/>${[[30, 60], [50, 54], [68, 62]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="5" fill="#2b5fd9" ${kO2} stroke-width="1"/>`).join("")}`)
     ], () => [0, 1, 2].map(i => `<span class="leaf" style="left:${15 + i * 32}%;animation-delay:${-i * 2.6}s"></span>`).join("")),
-    kScene("Funkenfelsen", "taschenmonster", PAL("#ece6dc", "#f8f5ef"), kFloor("#b8b0a2", "#aea597", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M30 30l10 8-6 10" stroke="${KI}" stroke-width="1.6" fill="none" opacity=".4"/>` : ""), [
+    kScene("Funkenfelsen", "monsterwelt", PAL("#ece6dc", "#f8f5ef"), kFloor("#b8b0a2", "#aea597", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M30 30l10 8-6 10" stroke="${KI}" stroke-width="1.6" fill="none" opacity=".4"/>` : ""), [
       () => kB("#7a7266", `<path d="M14 84q4-40 34-46 30 4 38 46z" fill="#9a9184" ${kO}/><path d="M30 60q10-8 20-4" stroke="#fff" stroke-width="3" fill="none" opacity=".5"/>`),
-      kMon("#cfc6b6", "kleinstein", bgRock),
-      kMon("#cfc6b6", "onix", bgRock),
+      kMon("#cfc6b6", "stein1", bgRock),
+      kMon("#cfc6b6", "stein2", bgRock),
       () => kB("#e8e0d0", `<rect x="16" y="16" width="68" height="40" fill="#fff" ${kO2}/>${kHand("ARENA", "#e2402f", 18, 44)}<use href="#orden" x="36" y="58" width="28" height="28"/>`),
       () => kB("#7a7266", `<path d="M20 90l10-40h40l10 40z" fill="#c9c0b0" ${kO2}/><path d="M50 20l14 30H36z" fill="#9a9184" ${kO2}/>`)
     ])
@@ -3234,31 +3231,31 @@ THEMES.essen = theme2({
   ]
 });
 
-// ---------- 9 Taschenmonster 2 ----------
-THEMES.taschenmonster2 = theme2({
-  title: "Taschenmonster 2", emblem: "superball", box: "k2super", rolls: true, boxWord: "Superbälle", pushWord: "Würfe",
+// ---------- 9 Monster 2 ----------
+THEMES.monsterwelt2 = theme2({
+  title: "Monster 2", emblem: "superball", box: "k2super", rolls: true, boxWord: "Superbälle", pushWord: "Würfe",
   hint: "Roll jeden Superball in eine Arena-Markierung. Bälle lassen sich nur schieben, nicht ziehen.",
   winTitle: "Volltreffer!", winText: (m, p) => `Alle Superbälle bereit. ${m} Schritte, ${p} Würfe.`,
-  prize: { symbol: "meisterorden", title: "Vulkanorden!", text: (m) => `Du bist Taschenmonster-Meister! Finale in ${m} Schritten.` },
+  prize: { symbol: "meisterorden", title: "Vulkanorden!", text: (m) => `Du bist Monster-Meister! Finale in ${m} Schritten.` },
   pal: { "--accent": "#2b5fd9", "--accent-dark": "#1a3f99" },
-  target: THEMES.taschenmonster.target,
+  target: THEMES.monsterwelt.target,
   scenes: [
-    kScene("Trainingshalle", "taschenmonster2", PAL("#f6ece0", "#fcf8f2"), kFloor("#e2cf96", "#d9c58a", () => `<rect x="3" y="3" width="94" height="94" fill="none" stroke="#2a3b2a" stroke-width="3"/>`), [
-      kMon("#f6ead2", "machollo", bgDojo), kMon("#f6ead2", "lucario", bgDojo),
+    kScene("Trainingshalle", "monsterwelt2", PAL("#f6ece0", "#fcf8f2"), kFloor("#e2cf96", "#d9c58a", () => `<rect x="3" y="3" width="94" height="94" fill="none" stroke="#2a3b2a" stroke-width="3"/>`), [
+      kMon("#f6ead2", "kampf1", bgDojo), kMon("#f6ead2", "kampf2", bgDojo),
       () => kB("#c9a06a", `<rect x="22" y="24" width="56" height="48" fill="#f6ead2" ${kO2}/><text x="50" y="58" text-anchor="middle" font-family="serif" font-weight="700" font-size="28" fill="${KI}">力</text>`),
       () => kB("#c9a06a", `<path d="M50 6v14" stroke="${KI}" stroke-width="3"/><rect x="36" y="20" width="28" height="64" rx="12" fill="#e2402f" ${kO2}/>`),
       (x, y) => kBricks("#8a6a4a", kGraffiti(x, y, ["POW!", "KAMPF"], ["#ffd23a", "#ff5fa2"]))
     ]),
-    kScene("Traumwolke", "taschenmonster2", PAL("#efe4ff", "#faf6ff"), kFloor("#e2d2f2", "#d8c6ec", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M50 38a12 12 0 1 1-12 12 8 8 0 1 1 8-8" fill="none" stroke="#a98ad0" stroke-width="3"/>` : ""), [
-      kMon("#4a2a7a", "mewtu", bgPsy),
-      kMon("#4a2a7a", "psiana", bgPsy),
+    kScene("Traumwolke", "monsterwelt2", PAL("#efe4ff", "#faf6ff"), kFloor("#e2d2f2", "#d8c6ec", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M50 38a12 12 0 1 1-12 12 8 8 0 1 1 8-8" fill="none" stroke="#a98ad0" stroke-width="3"/>` : ""), [
+      kMon("#4a2a7a", "psycho1", bgPsy),
+      kMon("#4a2a7a", "psycho2", bgPsy),
       () => kB("#7a4aa6", `<circle cx="50" cy="50" r="24" fill="#f6e8ff" ${kO2}/><path d="M34 50q16-14 32 0-16 14-32 0z" fill="#fff" ${kO2}/><circle cx="50" cy="50" r="6" fill="#8b5cf6"/>`),
       () => kB("#7a4aa6", `<g class="float">${[[34, 44], [62, 36], [50, 64]].map(([a, b]) => `<path d="M${a} ${b - 10}l7 10-7 10-7-10z" fill="#e7b8ff" ${kO2}/>`).join("")}</g>`)
     ], () => Array.from({ length: 8 }, (_, i) => `<span class="glint" style="left:${(i * 37) % 100}%;top:${(i * 53) % 100}%;animation-delay:${-i * .5}s;background:#e7b8ff"></span>`).join("")),
-    kScene("Feuerberg", "taschenmonster2", PAL("#22100c", "#45201a", "#ffd9c2", "#fff1e6"), kFloor("#523a35", "#4a3430", (x, y) => pick(x, y, 1, 4) === 0 ? `<path class="lava" d="M10 70l20-10 16 8 22-14 22 10" fill="none" stroke="#ff7a1a" stroke-width="4"/>` : ""), [
+    kScene("Feuerberg", "monsterwelt2", PAL("#22100c", "#45201a", "#ffd9c2", "#fff1e6"), kFloor("#523a35", "#4a3430", (x, y) => pick(x, y, 1, 4) === 0 ? `<path class="lava" d="M10 70l20-10 16 8 22-14 22 10" fill="none" stroke="#ff7a1a" stroke-width="4"/>` : ""), [
       () => kB("#3a2622", `<path class="lava" d="M10 76l20-14 14 10 20-18 26 14" fill="none" stroke="#ff7a1a" stroke-width="5"/>`),
-      kMon("#6a2a1a", "glumanda", bgLava), kMon("#6a2a1a", "glurak", bgLava),
-      kMon("#6a2a1a", "glutexo", bgLava),
+      kMon("#6a2a1a", "feuer1", bgLava), kMon("#6a2a1a", "feuer2", bgLava),
+      kMon("#6a2a1a", "feuer3", bgLava),
       () => kB("#3a2622", `<path class="tailflame" d="M50 14q20 22 6 46-22-6-16-26 4 8 10 6-6-16 0-26z" fill="#ff7a1a" ${kO2}/>`),
       (x, y) => kBricks("#4a2a24", kGraffiti(x, y, ["FEUER", "GLUT"], ["#ffb02e", "#ff5fa2"]))
     ], () => Array.from({ length: 8 }, (_, i) => `<span class="ember" style="left:${(i * 29) % 100}%;animation-delay:${-i * .8}s"></span>`).join(""))
@@ -3363,9 +3360,9 @@ THEMES.familie = theme2({
     "Setz jedes Kuscheltier an seinen Platz. Kuscheltiere lassen sich nur schieben, nicht ziehen."], "Sachen");
 })();
 
-// Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Taschenmonster-Welten mit Superball-Varianten
+// Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Monster-Welten mit Superball-Varianten
 THEMES.fussball.boxColors = [["#2d3036", "#ffffff"], ["#2d3036", "#ffd3e4"], ["#2d3036", "#cfe6ff"], ["#2d3036", "#ffd2a8"], ["#2d3036", "#bff3ee"]];
-THEMES.taschenmonster.box = "k2super"; // gleiche Bälle wie in Taschenmonster 2: Superball, Meisterball, Premierball, Heilball
+THEMES.monsterwelt.box = "k2super"; // gleiche Bälle wie in Monster 2: Superball, Meisterball, Premierball, Heilball
 // ===== Lasses große Welt – Comic-Ebene: Bolzplatz mit Graffiti, Ball, Tor, Farbstimmungen und Effekte =====
 // Linien: sehr dunkles Grau, ca. 2 px, runde Enden. Flächen: kräftig, Cel-Shading mit einer zweiten dunkleren Fläche, keine Verläufe.
 const NI = KI;
@@ -3466,9 +3463,9 @@ const FX = (() => {
     el.style.cssText = `--x:${x};--y:${y};${extra}`; el.innerHTML = html; board().appendChild(el); setTimeout(() => el.remove(), life); };
   const dust = (x, y, dx, dy, big) => add("fx-dust", x, y, `<svg viewBox="0 0 100 100">${[[-14, 6, 9], [0, 0, 12], [14, 7, 8]].map(([ox, oy, r]) => `<circle cx="${50 + ox - dx * 10}" cy="${80 + oy}" r="${r * (big ? 1.25 : 1)}" fill="#ffffff" stroke="${NI}" stroke-width="2"/>`).join("")}</svg>`, 480, `--dx:${-dx};--dy:${-dy}`);
   // Passende Comic-Wörter je Welt
-  const WORDS = { fussball: ["TOR!", "ZACK!", "BÄM!"], reiten: ["HÜ!", "YEEHAA!", "HOPP!"], taschenmonster: ["GEFANGEN!", "ZACK!", "YES!"], lego: ["KLACK!", "KLICK!", "PASST!"],
+  const WORDS = { fussball: ["TOR!", "ZACK!", "BÄM!"], reiten: ["HÜ!", "YEEHAA!", "HOPP!"], monsterwelt: ["GEFANGEN!", "ZACK!", "YES!"], lego: ["KLACK!", "KLICK!", "PASST!"],
     steine: ["BLING!", "FUNKEL!", "GLITZER!"], schlagzeug: ["BUMM!", "TSCHING!", "BADUMM!"], tennis: ["ASS!", "PLOPP!", "OUT? NEIN!"], essen: ["LECKER!", "MJAM!", "HMMM!"],
-    taschenmonster2: ["GEFANGEN!", "WUMMS!", "SUPER!"], familie: ["SUPER!", "YES!", "TOLL!"], garten: ["CHAMPION!", "YES!"] };
+    monsterwelt2: ["GEFANGEN!", "WUMMS!", "SUPER!"], familie: ["SUPER!", "YES!", "TOLL!"], garten: ["CHAMPION!", "YES!"] };
   const words = () => (S && S.words) || WORDS[L && L.theme] || ["ZACK!", "BÄM!", "WUMMS!", "YES!"];
   // Lasse zeigt kurz eine Stimmung (Klasse am Sprite, wird nach der Animation wieder entfernt)
   const mood = (cls, ms) => { const el = document.getElementById("lasse"); if (!el) return; el.classList.remove("m-happy", "m-oops"); void el.offsetWidth; el.classList.add(cls);
@@ -3546,7 +3543,7 @@ const NEW_WALLS = {
   "Springturnier": [() => nTile("#7cc3f0", "#62a8d6", `<path d="M16 86V40M84 86V40" stroke="${NWK}" stroke-width="5"/><path d="M16 86V40M84 86V40" stroke="#ffffff" stroke-width="3"/>
       ${[48, 62].map(y => `<rect x="16" y="${y}" width="68" height="7" rx="3" fill="#e2402f" ${NW1}/>${[30, 50, 70].map(x => `<rect x="${x - 5}" y="${y}" width="10" height="7" fill="#ffffff"/>`).join("")}`).join("")}
       <g transform="translate(50 24)"><circle r="12" fill="#2a6ae0" ${NW1}/><circle r="6" fill="#ffd23a" ${NW1}/><path d="M-6 10l-4 14 6-4 4 6 0-14z" fill="#2a6ae0" ${NW1}/></g>`)],
-  // Taschenmonster
+  // Monster
   "Wasser-Ufer": [() => nTile("#8fd36b", "#73b852", `<path d="M14 50l36-24 36 24z" fill="#e2402f" ${NW1}/><rect x="20" y="50" width="60" height="36" fill="#ffffff" ${NW1}/>
       <rect x="42" y="64" width="16" height="22" fill="#6fc3ff" ${NW1}/><path d="M50 32v12M44 38h12" stroke="#ffffff" stroke-width="4"/><rect x="24" y="56" width="12" height="10" fill="#6fc3ff" ${NW1}/><rect x="64" y="56" width="12" height="10" fill="#6fc3ff" ${NW1}/>`)],
   "Blätterwald": [() => nTile("#4f9a4a", "#3e823a", `${[[30, 70, 16, "#e2402f"], [62, 60, 20, "#ff8a3d"], [72, 80, 10, "#e2402f"]].map(([x, y, r, c]) => `<rect x="${x - r * .3}" y="${y}" width="${r * .6}" height="${r * .9}" rx="3" fill="#f5e6c8" ${NW1}/><path d="M${x - r} ${y + 2}q0-${r}${r} -${r}t${r} ${r}z" fill="${c}" ${NW1}/><circle cx="${x - r * .35}" cy="${y - r * .35}" r="${r * .18}" fill="#ffffff"/>`).join("")}`)],
@@ -3578,7 +3575,7 @@ const NEW_WALLS = {
       <path d="M30 86V62q0-14 20-14t20 14v24z" fill="#2d3036" ${NW1}/><path d="M36 82q4-14 14-8 10-6 14 8" fill="#ff8a3d"/><path d="M42 82q3-8 8-4 5-4 8 4" fill="#ffd23a"/>`)],
   "Burger-Diner": [() => nTile("#4fc3c9", "#3aa9af", `<path d="M34 36h32l-4 46H38z" fill="#ffffff" ${NW1}/><path d="M36 50h28l-2 30H38z" fill="#ff8fb1"/><path d="M34 36h32l-4 46H38z" fill="none" ${NW1}/>
       <path d="M38 36q0-12 12-12t12 12" fill="#ffffff" ${NW1}/><circle cx="50" cy="20" r="4" fill="#e2402f" ${NW1}/><path d="M56 30l10-22" stroke="#e2402f" stroke-width="3" stroke-linecap="round"/>`)],
-  // Taschenmonster 2
+  // Monster 2
   "Trainingshalle": [() => nTile("#c9965c", "#b07c44", `<path d="M20 20h60" stroke="${NWK}" stroke-width="5"/><path d="M30 20v66M70 20v66" stroke="${NWK}" stroke-width="3"/><circle cx="50" cy="52" r="22" fill="#e8b81a" ${NW1}/><circle cx="50" cy="52" r="12" fill="none" stroke="#c99a12" stroke-width="2"/><path d="M50 30v-10" stroke="${NWK}" stroke-width="2"/>`)],
   "Traumwolke": [() => nTile("#8a6bd1", "#7458b8", `<path d="M30 80h40l-6-10H36z" fill="#4a3a7a" ${NW1}/><circle cx="50" cy="50" r="20" fill="#e3d4ff" ${NW1}/><path d="M50 30a20 20 0 0 1 20 20" fill="none" stroke="#ffffff" stroke-width="3" opacity=".7"/><path d="M44 50q6-8 12 0-6 8-12 0z" fill="#b98cff"/>`)],
   "Feuerberg": [() => nTile("#5a2a1e", "#481f16", `<path d="M14 88l22-44h28l22 44z" fill="#7a3a26" ${NW1}/><path d="M36 44q4-16 14-6 10-10 14 6" fill="#ff8a3d" ${NW1}/><path d="M42 44l4 20M58 44l-2 26" stroke="#ff8a3d" stroke-width="4" stroke-linecap="round"/><circle cx="48" cy="22" r="4" fill="#ffd23a"/><circle cx="58" cy="14" r="3" fill="#ff8a3d"/>`)],
@@ -3612,7 +3609,7 @@ document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
     <circle cx="60" cy="32" r="2.4" fill="#2d3036"/>
   </symbol>`);
 // ===== Mehr Vielfalt in Teil 2: neue, kräftige Comic-Wandmotive für eintönige Schauplätze =====
-// Mischen sich zu 40 % unter die bisherigen Wände. Taschenmonster kommen hier nicht vor (sie zählen wie Personen).
+// Mischen sich zu 40 % unter die bisherigen Wände. Monster kommen hier nicht vor (sie zählen wie Personen).
 const MO = NK2, MI = NI;
 const mUse = (id, x = 20, y = 18, s = 60) => `<use href="#${id}" x="${x}" y="${y}" width="${s}" height="${s}"/>`;
 const mCup = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-14 -16h28v8q0 14-14 16-14-2-14-16z" fill="#ffd23a" ${MO}/><path d="M-14 -12q-8 0-8 6t8 6M14 -12q8 0 8 6t-8 6" fill="none" ${MO}/><rect x="-4" y="8" width="8" height="8" fill="#ffd23a" ${MO}/><rect x="-10" y="16" width="20" height="6" rx="2" fill="#8a5a2b" ${MO}/></g>`;
@@ -3642,9 +3639,9 @@ const MEHR_WAENDE = {
     () => nTile("#7cc3f0", "#62a8d6", mCup(50, 56, 1.6)),
     () => nTile("#8fd36b", "#73b852", `<path d="M20 86V30M80 86V30" stroke="${MI}" stroke-width="4"/>${[36, 50, 64].map((y, i) => `<rect x="20" y="${y}" width="60" height="7" rx="3" fill="${["#e2402f", "#fff", "#2b5fd9"][i]}" ${MO}/>`).join("")}`)
   ],
-  // --- Taschenmonster (nur Gegenstände) ---
+  // --- Monster (nur Gegenstände) ---
   "Wasser-Ufer": [
-    () => nTile("#8fd36b", "#73b852", mUse("pokeball", 22, 18, 56)),
+    () => nTile("#8fd36b", "#73b852", mUse("tierball", 22, 18, 56)),
     () => nTile("#8fd36b", "#73b852", `<rect x="20" y="20" width="60" height="40" rx="4" fill="#d9a066" ${MO}/><path d="M50 60v26" stroke="#8a5a2b" stroke-width="7"/>${nWord("ROUTE 1", 50, 46, 16, "#fff", 0)}`),
     () => nTile("#8fd36b", "#73b852", `<path d="M50 86V40" stroke="#8a5a2b" stroke-width="7"/><circle cx="50" cy="36" r="26" fill="#3fae4a" ${MO}/>${[[38, 30], [58, 26], [52, 46], [36, 46]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#2b5fd9" ${MO}/>`).join("")}`)
   ],
@@ -3725,7 +3722,7 @@ const MEHR_WAENDE = {
     () => nTile("#4fc3c9", "#3aa9af", `<rect x="16" y="20" width="68" height="46" rx="20" fill="#ff8fb1" ${MO}/>${nWord("OPEN", 50, 52, 22, "#fff", 0)}<path d="M50 66v20" stroke="${MI}" stroke-width="4"/>`),
     () => nTile("#ffd23a", "#e8b81a", `<rect x="36" y="20" width="14" height="66" rx="5" fill="#e2402f" ${MO}/><rect x="54" y="26" width="14" height="60" rx="5" fill="#ffd23a" ${MO}/><rect x="38" y="12" width="10" height="10" fill="#e2402f" ${MO}/><rect x="56" y="18" width="10" height="10" fill="#ffd23a" ${MO}/>`)
   ],
-  // --- Taschenmonster 2 (nur Gegenstände) ---
+  // --- Monster 2 (nur Gegenstände) ---
   "Trainingshalle": [
     () => nTile("#c9965c", "#b07c44", `${[[36, "#e2402f"], [64, "#2b5fd9"]].map(([x, c]) => `<path d="M${x - 14} 30q0-12 14-12t14 12v30q0 12-14 12t-14-12z" fill="${c}" ${MO}/><rect x="${x - 12}" y="66" width="24" height="12" rx="3" fill="#fff" ${MO}/>`).join("")}`),
     () => nTile("#c9965c", "#b07c44", `<rect x="10" y="44" width="80" height="10" rx="4" fill="#5b6475" ${MO}/>${[16, 26, 74, 84].map((x, i) => `<rect x="${x - 4}" y="${i % 3 ? 34 : 28}" width="8" height="${i % 3 ? 30 : 42}" rx="3" fill="#2d3036" ${MO}/>`).join("")}`),
@@ -3799,7 +3796,7 @@ document.querySelector("svg defs").insertAdjacentHTML("beforeend",
     <path d="M24 36q10-8 20-8" stroke="#fff" stroke-width="4" fill="none" opacity=".8"/></symbol>`);
 
 // Wände: Reihenfolge entlang des Weges → Welt 1 am Start, Welt 10 am Ende der Runde
-const T2_WORLDS = ["fussball", "reiten", "taschenmonster", "lego", "steine", "schlagzeug", "tennis", "essen", "taschenmonster2", "familie"];
+const T2_WORLDS = ["fussball", "reiten", "monsterwelt", "lego", "steine", "schlagzeug", "tennis", "essen", "monsterwelt2", "familie"];
 let lapCache = null;
 function lapWorld(x, y) {
   if (!lapCache || lapCache.start !== start) {
@@ -3984,7 +3981,7 @@ const EXTRA_WALLS = {};
     if (typeof EXTRA_SHARE !== "undefined") EXTRA_SHARE[name] = Math.max(EXTRA_SHARE[name] || 4, 5);
   }
 })();
-// ===== Umbau: eine Taschenmonster-Welt mit sechs Designs, Welt 9 wird „Die drei ??? Kids“ (Teil 1 und Teil 2) =====
+// ===== Umbau: eine Monster-Welt mit sechs Designs, Welt 9 wird „Die drei ??? Kids“ (Teil 1 und Teil 2) =====
 // Welt 3: Wasser, Pflanzen, Blitz, Kampf, Psycho, Feuer (je ein Level). Welt 9: Justus und die Kaffeekanne,
 // Peter und Rocky Beach, Bobs Recherchen und Archiv. Geschoben werden Lupen, die Ziele sind Fußspuren.
 (() => {
@@ -3994,11 +3991,11 @@ const EXTRA_WALLS = {};
   const T1PAD = (top, side) => `<rect x="3" y="9" width="94" height="88" rx="16" fill="${side}"/><rect x="3" y="3" width="94" height="86" rx="16" fill="${top}"/><rect x="14" y="10" width="26" height="6" rx="3" fill="#ffffff" opacity=".3"/>`;
   const tile = (top, side) => (inner) => COMIC ? kB(top, inner) : svgT(`${T1PAD(top, side)}${inner}`);
 
-  // ---------- 1. Taschenmonster: sechs Designs in einer Welt ----------
-  const PK = THEMES.taschenmonster, P2 = THEMES.taschenmonster2;
+  // ---------- 1. Monster: sechs Designs in einer Welt ----------
+  const PK = THEMES.monsterwelt, P2 = THEMES.monsterwelt2;
   const SIX = [...PK.scenes, ...P2.scenes];
   PK.scenes = SIX; PK.levelScenes = SIX;
-  PK.levelNames = COMIC ? ["Wasser-Ufer", "Blätterwald", "Funkenfelsen", "Dojo", "Psycho", "Vulkan"] : ["Wasser", "Pflanzen", "Blitz", "Kampf", "Psycho", "Feuer"];
+  PK.levelNames = COMIC ? ["Ufer", "Wald", "Felsen", "Halle", "Wolke", "Feuer"] : ["Wasser", "Pflanzen", "Blitz", "Kampf", "Psycho", "Feuer"];
 
   // ---------- 2. Gemeinsame Symbole: Lupe, drei Fragezeichen, Detektiv-Ausweis ----------
   document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
@@ -4262,12 +4259,12 @@ const EXTRA_WALLS = {};
     scenes: SC
   };
   D.mapIcon = "karte-fragen"; // Weltkarte: die drei Fragezeichen in Weiß, Rot und Blau
-  THEMES.taschenmonster2 = COMIC ? theme2(D) : D;
+  THEMES.monsterwelt2 = COMIC ? theme2(D) : D;
   // Weltkarte: Justus, Peter und Bob stehen bei Welt 9
   const baseDeco = mapDeco;
   mapDeco = function (shown, open, pts) {
     let html = baseDeco(shown, open, pts);
-    const i = shown.findIndex(w => w.theme === "taschenmonster2"), wi = WORLDS.indexOf(shown[i]);
+    const i = shown.findIndex(w => w.theme === "monsterwelt2"), wi = WORLDS.indexOf(shown[i]);
     // erst sichtbar, wenn die Welt der drei ??? komplett geschafft ist (im Cheat-Profil sofort)
     if (i < 0 || (!P().unlockAll && solvedIn(P(), wi) < NL(wi))) return html;
     const left = pts[i][0] < 50;
@@ -4979,7 +4976,7 @@ THEMES.neutral = {
 // Alle zehn Welten haben ihr Thema; die neutrale Welt bleibt als Rückfall.
 const WORLDS = WORLD_LEVELS.map((levels, i) => {
   const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pinguine", "urlaub", "atschie", "atributschi", "enni"][i] || "neutral";
-  return { theme, bonus: false, name: ["Fußball & HSV", "Musikalische Hunde", "Reihenendhaus", "Bauernhof", "Lego", "Pinguine", "Urlaub", "Atschibella", "Atributschi", "Enni"][i] || (THEMES[theme] && THEMES[theme].worldName) || ["Fußball & HSV", "Reiten", "Taschenmonster", "Lego", "Edelsteine", "Schlagzeug", "Tennis", "Essen", "Taschenmonster 2", "Familie", "Lasses Ehrenrunde"][i] || `Welt ${i + 1}`, levels };
+  return { theme, bonus: false, name: ["Fußball & HSV", "Musikalische Hunde", "Reihenendhaus", "Bauernhof", "Lego", "Pinguine", "Urlaub", "Atschibella", "Atributschi", "Enni"][i] || (THEMES[theme] && THEMES[theme].worldName) || ["Fußball & HSV", "Reiten", "Monster", "Lego", "Edelsteine", "Schlagzeug", "Tennis", "Essen", "Monster 2", "Familie", "Lasses Ehrenrunde"][i] || `Welt ${i + 1}`, levels };
 });
 const PER_WORLD = 9;
 // Anzahl Level je Welt: 9, der Bonus-Garten hat eins
@@ -6369,7 +6366,7 @@ function buildBoard() {
       // Gleiche Wandteile nicht direkt neben- oder übereinander: notfalls eine andere Variante ziehen
       const fn = S ? S.wall : T.wall;
       // Auswahl unter mehreren Kandidaten (fest je Feld, daher bei jedem Neuaufbau gleich):
-      // Personen und Taschenmonster höchstens viermal und mit mindestens drei Feldern Abstand, gleiche Bilder nicht direkt nebeneinander,
+      // Personen und Monster höchstens viermal und mit mindestens drei Feldern Abstand, gleiche Bilder nicht direkt nebeneinander,
       // höchstens drei leere Flächen ohne Motiv, und ein Motiv möglichst nicht öfter als fünfmal
       const pid = (h) => (h.match(/data-person="([^"]+)"/) || [])[1];
       const plain = (h) => !/<(path|circle|ellipse|g|text|use|polygon|polyline|line|image)\b/.test(h.replace(/<g[^>]*class="(detail)?"/g, ""));
@@ -7376,7 +7373,7 @@ const LOESUNGEN = {"0-0":"drrruUlUdrruLuLLulldRDDlddrUdrrruuuulLulDrrrddlUruLL",
   };
 })();
 // ===== Begleiter und eigener Siegtitel je Schauplatz (Teil 1 und Teil 2) =====
-// Ein Taschenmonster läuft einen Schritt hinter Lasse her; S.winTitle ersetzt den Siegtitel des Themas.
+// Ein Monster läuft einen Schritt hinter Lasse her; S.winTitle ersetzt den Siegtitel des Themas.
 // Begleiter läuft einen Schritt hinter Lasse her (nur Bild, blockiert nichts)
 (() => {
   let prev = null, comp = null;
