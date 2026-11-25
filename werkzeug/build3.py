@@ -180,5 +180,11 @@ k = s.rindex("</style>")
 s = s[:k] + T3_CSS + s[k:]
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 s = clean(s, os.path.dirname(os.path.abspath(__file__)))
+# ---- Lösungsbuch: die Lösungen dieses Spiels, über den Levelnamen den Leveln zugeordnet ----
+SOL = json.dumps({l["n"]: l["sol"] for l in LV}, ensure_ascii=False)
+s, k = re.subn(r"const LOESUNGEN_N = \{[^\n]*?\};", lambda m: f"const LOESUNGEN_N = {SOL};", s)
+if not k:
+    s, k = re.subn(r"const LOESUNGEN = \{[^\n]*?\};", lambda m: f"const LOESUNGEN_N = {SOL};\nconst LOESUNGEN = new Proxy({{}}, {{ get: (_, k) => {{ const [w, l] = String(k).split(\"-\").map(Number), lv = WORLDS[w] && WORLDS[w].levels[l]; return lv ? LOESUNGEN_N[lv.n] : undefined; }} }});", s)
+assert k == 1, "Lösungsbuch nicht gefunden"
 open(OUT, "w", encoding="utf-8").write(s)
 print("geschrieben", OUT, len(s))

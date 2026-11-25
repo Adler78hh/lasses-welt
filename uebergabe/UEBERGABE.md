@@ -30,7 +30,7 @@ Commits als `Adler78hh` mit der E-Mail des Kontoinhabers.
 - Keine Schrift auf Wandkacheln, außer wo ein Schauplatz es erlaubt (`allowText`).
 - Keine echten Markenlogos selbst zeichnen. Logos, die der Nutzer schickt, dürfen als Bild eingesetzt werden
   (z. B. Nacht des Wissens, PriMa).
-- Lösungsbuch nur im Cheat-Profil.
+- Lösungsbuch nur im Cheat-Profil. In Christians Spielen und Idas Welt kommen die Lösungen beim Bauen aus `t3-`, `t4-` bzw. `t5-levels.json` (über den Levelnamen zugeordnet).
 
 ## So werden die Spiele gebaut
 
