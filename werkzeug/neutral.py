@@ -58,6 +58,7 @@ def scrub(s):
 
 def rename(s):
     for a, b in [(R("Cbxéoäyyra"), "Fangkugeln"), (R("Cbxéoäyyr"), "Fangkugeln"), (R("Cbxéonyy"), "Fangkugel"),
+                 ("Taschenmonster", "Monster"),  # Lasses Spiele sagen seit November 2026 „Taschenmonster“
                  (WG, "Monster"), (WG.upper(), "MONSTER"), (R("Cbxé"), "Fang"),
                  (W, "monsterwelt"), (W.capitalize(), "Monsterwelt"), (W.upper(), "MONSTERWELT"),
                  (W[:4].upper(), "TIER"), (W[:4].capitalize(), "Tier"), (W[:4], "tier")]:
