@@ -11,7 +11,7 @@ Erste Nachricht im neuen Chat zum Beispiel: **„Lies `uebergabe/UEBERGABE.md` u
 | Lasses große Welt (Teil 2) | `grosse-welt/` | https://adler78hh.github.io/lasses-welt/grosse-welt/ | https://claude.ai/artifact/T7kP4vPNka4zsqTEszUPHR |
 | Schristians Welt | `christians-welt/` | https://adler78hh.github.io/lasses-welt/christians-welt/ | https://claude.ai/artifact/FRSA9bvQSAj2goJ7PwXngd |
 | Schristians große Welt | `christians-grosse-welt/` | https://adler78hh.github.io/lasses-welt/christians-grosse-welt/ | https://claude.ai/artifact/QnbWFuGbFNYmhv3g4pfVX4 |
-| Idas Welt | `idas-welt/` | https://adler78hh.github.io/lasses-welt/idas-welt/ | https://claude.ai/artifact/1nvrSSJ4nBxGxAmVbQ8wCf (Stand vor dem Umbau) |
+| Idas Welt | `idas-welt/` | https://adler78hh.github.io/lasses-welt/idas-welt/ | https://claude.ai/artifact/1nvrSSJ4nBxGxAmVbQ8wCf |
 
 Weitere Seiten: Übersicht aller Welten der Christian-Spiele https://claude.ai/artifact/5ywBJtudkXU6J8BDZZa9mz ·
 Download-Seite https://claude.ai/artifact/Rx4FyxmazweiSnHAvez2Se (enthält nur Lasses Spiele) ·
