@@ -22,9 +22,7 @@ Commits als `Adler78hh` mit der E-Mail des Kontoinhabers.
 
 ## Wichtige Absprachen
 
-- **Lasses Welt und Lasses große Welt nicht verändern.** Ausdrücklicher Wunsch. Ausnahme auf Wunsch: Das Wort „Pokémon“ ist dort durch „Taschenmonster“ ersetzt, die Figuren- und Ortsnamen durch eigene (z. B. Blitzi, Panzerli, Apfelbrumm, Blätterwald), „Pokéball“ durch „Superball“.
-  Die Zeichnungen der Figuren sind dort noch die alten. `neutral.py` holt beim Bauen der Christian-Spiele die alten Stellen
-  zurück und macht daraus wie bisher „Monster“ und „Fangkugel“.
+- **Lasses Welt und Lasses große Welt nicht verändern.** Ausdrücklicher Wunsch.
 - Antworten auf Deutsch, am Ende Screenshots und Links.
 - Wenn um Besprechen oder Warten gebeten wird: erst fragen, dann bauen.
 - Jede Person höchstens einmal pro Level an der Wand (geprüft mit `werkzeug/check2.js`).
@@ -98,7 +96,6 @@ Bauernzopf, Grau und blasses Pink), Arne und Matze als Onkel (je einmal pro Leve
 schlichten Design (Grundwand, ruhiger Boden, Bildkacheln wie Herz, Stern, Blume, Regenbogen), je Welt ein eigener Gegenstand:
 Rosa Ziegel (Kisten) · Holzhaus (Geschenke) · Wolkenzimmer (Ballons) · Heckengarten (Bälle) · Steinburg (Truhen) ·
 Fliesenbad (Eimer) · Bausteinstadt (Bausteine) · Felsenpfad (Würfel) · Kuschelzimmer (Kissen) · Sternenschloss (Laternen).
-Keine Monster-Welt, keine fremden Figuren.
 
 ## Offene Punkte
 
