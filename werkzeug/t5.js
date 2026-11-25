@@ -91,7 +91,7 @@ const IDA8_HERO = `<svg viewBox="0 0 240 200" overflow="visible"><circle cx="120
       winTitle: () => ["SUPER!", "TOLL!", "JUCHHU!", "KLASSE!"][wi % 4], winText: (m, p) => `Geschafft! ${m} Schritte, ${p} Schübe.`,
       prize: { symbol: "i5preis", title: "Goldener Stern!", text: (m) => `Welt „${title}“ geschafft! Finale in ${m} Schritten.` },
       pal: { "--accent": "#d97b98", "--accent-dark": "#b05a78" }, target: platz, scenes,
-      levelScenes: [0, 0, 0, 1, 1, 1, 2, 2, 2].map(i => scenes[i]),
+      levelScenes: [0, 0, 1, 1, 2, 2].map(i => scenes[i]),
       levelName: (l) => title, levelBox: () => `i5${item}-0`, boxCycle: () => PL.map((_, i) => `i5${item}-${i}`)
     });
   });

@@ -89,7 +89,7 @@ node werkzeug/check2.js $PWD/<ordner>/index.html
 
 Teil 1 im Y2K-Look, Teil 2 im ruhigen Stil 2026 (Hemd und Chino, Strich-Symbole, Atelier, dunkler Modus).
 
-**Idas Welt** (10 Welten × 9 Level, je 3 aus Microban I, II, III, leichteste zuerst): Ida (8 J., blonder
+**Idas Welt** (10 Welten × 6 Level aus Microban I, II, III, nach Bestwert sortiert, leichteste zuerst): Ida (8 J., blonder
 Bauernzopf, Grau und blasses Pink), Arne und Matze als Onkel (je einmal pro Level an der Wand). Alle zehn Welten im gleichen
 schlichten Design (Grundwand, ruhiger Boden, Bildkacheln wie Herz, Stern, Blume, Regenbogen), je Welt ein eigener Gegenstand:
 Rosa Ziegel (Kisten) · Holzhaus (Geschenke) · Wolkenzimmer (Ballons) · Heckengarten (Bälle) · Steinburg (Truhen) ·

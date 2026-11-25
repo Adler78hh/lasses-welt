@@ -1,5 +1,5 @@
 # Idas Welt: Grundlage ist die fertige Datei von Schristians Welt (Teil 3). Eigene Figur Ida, Arne und Matze als Onkel,
-# 90 leichte Level aus Microban I, II und III (9 je Welt), zehn Welten im gleichen schlichten Design, eigener Look in Grau und Pink.
+# 60 leichte Level aus Microban I, II und III (6 je Welt, nach Bestwert sortiert), zehn Welten im gleichen schlichten Design, eigener Look in Grau und Pink.
 import json, os, re
 D = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(D, "../christians-welt/index.html")
@@ -28,11 +28,11 @@ rep('let store = { players: [{ id: "christian", name: "Schristian", solved: {}, 
 a = s.index('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?'); b = s.index(">", a) + 1
 s = s[:a] + '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;700;800&display=swap">' + s[b:]
 
-# ---- Level: 10 Welten mit je 9 Leveln ----
+# ---- Level: 10 Welten mit je 6 Leveln ----
 i = s.index("const WORLD_LEVELS = "); j = s.index("\n", i)
-s = s[:i] + "const WORLD_LEVELS = " + json.dumps([[{"n": l["n"], "m": l["m"]} for l in LV[w * 9:w * 9 + 9]] for w in range(10)], ensure_ascii=False) + ";" + s[j:]
+s = s[:i] + "const WORLD_LEVELS = " + json.dumps([[{"n": l["n"], "m": l["m"]} for l in LV[w * 6:w * 6 + 6]] for w in range(10)], ensure_ascii=False) + ";" + s[j:]
 i = s.index("const OPTIMAL = "); j = s.index("\n", i)
-s = s[:i] + "const OPTIMAL = " + json.dumps({f"{w}-{k}": LV[w * 9 + k]["opt"] for w in range(10) for k in range(9)}) + ";" + s[j:]
+s = s[:i] + "const OPTIMAL = " + json.dumps({f"{w}-{k}": LV[w * 6 + k]["opt"] for w in range(10) for k in range(6)}) + ";" + s[j:]
 
 # ---- Welten von Idas Welt: zehn schlichte Welten ----
 rep('const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pinguine", "urlaub", "atschie", "atributschi", "enni"][i] || "neutral";',
