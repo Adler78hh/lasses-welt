@@ -10,6 +10,9 @@ NEU6 = ["Wasser-Ufer", "Blätterwald", "Funkenfelsen", "Trainingshalle", "Traumw
 KURZ6 = ["Ufer", "Wald", "Felsen", "Halle", "Wolke", "Feuer"]
 KUGEL = lambda cap: f'<ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/><circle cx="50" cy="54" r="32" fill="#fbf7ef" stroke="#2d3036" stroke-width="3"/><path d="M22 40q28-26 56 0q-28 10-56 0z" fill="{cap}" stroke="#2d3036" stroke-width="3" stroke-linejoin="round"/><path d="M50 22l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z" fill="#ffd23a" stroke="#2d3036" stroke-width="1.6"/><path d="M30 66q20 14 40 0" stroke="#d9d2c4" stroke-width="3" fill="none"/>'
 
+# Lasses Spiele sagen seit November 2026 „Superball“; vor dem Bereinigen die alten Stellen zurückholen, damit hier weiter Fangkugeln stehen
+BALL_ALT = [('  obkJbeq: "Fhcreoäyyr", chfuJbeq: "Jüesr",\n  uvag: "Ebyy wrqra Fhcreonyy nhs rvar Neran-Cynggsbez. Fhcreoäyyr ynffra fvpu ahe fpuvrora, avpug mvrura.",\n  jvaGvgyr: "Ibyygerssre!", jvaGrkg: (z, c) => `Nyyr Fhcreoäyyr yvrtra orervg. ${z} Fpuevggr, ${c} Jüesr.`,', '  obkJbeq: "Cbxéoäyyr", chfuJbeq: "Jüesr",\n  uvag: "Ebyy wrqra Cbxéonyy nhs rvar Neran-Cynggsbez. Cbxéoäyyr ynffra fvpu ahe fpuvrora, avpug mvrura.",\n  jvaGvgyr: "Ibyygerssre!", jvaGrkg: (z, c) => `Nyyr Cbxéoäyyr yvrtra orervg. ${z} Fpuevggr, ${c} Jüesr.`,'), ('  gvgyr: "Gnfpurazbafgre", rzoyrz: "cbxronyy", obk: "x2cbxr", ebyyf: gehr, obkJbeq: "Fhcreoäyyr", chfuJbeq: "Jüesr",\n  uvag: "Ebyy wrqra Fhcreonyy va rvar Neran-Znexvrehat. Oäyyr ynffra fvpu ahe fpuvrora, avpug mvrura.",\n  jvaGvgyr: "Trsnatra!", jvaGrkg: (z, c) => `Nyyr Fhcreoäyyr orervg. ${z} Fpuevggr, ${c} Jüesr.`,', '  gvgyr: "Gnfpurazbafgre", rzoyrz: "cbxronyy", obk: "x2cbxr", ebyyf: gehr, obkJbeq: "Cbxéoäyyr", chfuJbeq: "Jüesr",\n  uvag: "Ebyy wrqra Cbxéonyy va rvar Neran-Znexvrehat. Oäyyr ynffra fvpu ahe fpuvrora, avpug mvrura.",\n  jvaGvgyr: "Trsnatra!", jvaGrkg: (z, c) => `Nyyr Cbxéoäyyr orervg. ${z} Fpuevggr, ${c} Jüesr.`,'), ('    // Fhcreoäyyr: Zrvfgreonyy, Cerzvreonyy, Urvyonyy (qre Ulcreonyy truöeg fpuba mh qra Fhcreoäyyra)', '    // Fhcreoäyyr: Zrvfgreonyy, Cerzvreonyy, Urvyonyy (qre Ulcreonyy truöeg fpuba mh qra Cbxéoäyyra)'), ('  // Rvtrar Ervurasbytra (Fhcreoäyyr, Vqnf Xyögmr) unora Ibeenat', '  // Rvtrar Ervurasbytra (Cbxéoäyyr, Vqnf Xyögmr) unora Ibeenat')]
+
 def neutralize(s, D):
     if "const MON_FARBE" in s:
         return s
@@ -66,4 +69,5 @@ def rename(s):
     return s
 
 def clean(s, D):
+    for neu, alt in BALL_ALT: s = s.replace(R(neu), R(alt))
     return rename(scrub(neutralize(s, D)))

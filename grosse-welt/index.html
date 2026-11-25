@@ -1786,9 +1786,9 @@ const pokeTile = (padSvg, mon) => `<svg data-person="pk${personId(mon)}" viewBox
 
 THEMES.pokemon = {
   title: "Taschenmonster", emblem: "pokeball", box: "pokeball", rolls: true,
-  boxWord: "Pokébälle", pushWord: "Würfe",
-  hint: "Roll jeden Pokéball auf eine Arena-Plattform. Pokébälle lassen sich nur schieben, nicht ziehen.",
-  winTitle: "Volltreffer!", winText: (m, p) => `Alle Pokébälle liegen bereit. ${m} Schritte, ${p} Würfe.`,
+  boxWord: "Superbälle", pushWord: "Würfe",
+  hint: "Roll jeden Superball auf eine Arena-Plattform. Superbälle lassen sich nur schieben, nicht ziehen.",
+  winTitle: "Volltreffer!", winText: (m, p) => `Alle Superbälle liegen bereit. ${m} Schritte, ${p} Würfe.`,
   confetti: ["#e3350d", "#ffffff", "#2d3036", "#f7d02c"],
   prize: { symbol: "orden", title: "Arena-Orden!", text: (m) => `Du hast die Taschenmonster-Welt gemeistert! Finale in ${m} Schritten.` },
   pal: { ...P_BASE, "--bg": "#fff1ec", "--bg-2": "#fffaf8", "--floor-a": "#f3e2b3", "--floor-b": "#eed9a3" },
@@ -3208,9 +3208,9 @@ THEMES.reiten = theme2({
 const kGrass = (n = 5) => Array.from({ length: n }, (_, i) => { const x = 10 + i * (80 / (n - 1)); return `<path d="M${x - 8} 92l8-52 8 52" fill="#2f7a3a" ${kO2}/>`; }).join("");
 const kMonPeek = (inner) => `<g class="poke">${inner}</g>`;
 THEMES.pokemon = theme2({
-  title: "Taschenmonster", emblem: "pokeball", box: "k2poke", rolls: true, boxWord: "Pokébälle", pushWord: "Würfe",
-  hint: "Roll jeden Pokéball in eine Arena-Markierung. Bälle lassen sich nur schieben, nicht ziehen.",
-  winTitle: "Gefangen!", winText: (m, p) => `Alle Pokébälle bereit. ${m} Schritte, ${p} Würfe.`,
+  title: "Taschenmonster", emblem: "pokeball", box: "k2poke", rolls: true, boxWord: "Superbälle", pushWord: "Würfe",
+  hint: "Roll jeden Superball in eine Arena-Markierung. Bälle lassen sich nur schieben, nicht ziehen.",
+  winTitle: "Gefangen!", winText: (m, p) => `Alle Superbälle bereit. ${m} Schritte, ${p} Würfe.`,
   prize: { symbol: "orden", title: "Felsorden!", text: (m) => `Funkenfelsen geschafft! Finale in ${m} Schritten.` },
   pal: { "--accent": "#e2402f", "--accent-dark": "#a82f22" },
   target: kTarget(`${kGlow(`<circle cx="50" cy="52" r="34" opacity="0"/>`)}<circle cx="50" cy="52" r="34" fill="none" stroke="#fff" stroke-width="6"/><circle cx="50" cy="52" r="34" fill="none" stroke="${KI}" stroke-width="2" stroke-dasharray="7 6"/>${kStar(50, 52, 12, "#fff")}`),
@@ -4964,7 +4964,7 @@ const FAMILY_HERO = `<svg viewBox="${typeof COMIC_LOGO === "undefined" ? "34 54 
     // Pommestüten: gleiche Pommes, Streifen in Blau, Grün, Lila (Original Rot)
     pommes: [[{ "#ef4b4b": "#2f7ae5" }], [{ "#ef4b4b": "#3fae4a" }], [{ "#ef4b4b": "#8b5cf6" }]],
     muffin: [[{ "#b8763e": "#ff9fc0", "#4a2a14": "#d6262b", "#f4f1ea": "#ffe3ef" }], [{ "#b8763e": "#c9b8f0", "#4a2a14": "#3a3a9a", "#f4f1ea": "#e3edff" }], [{ "#b8763e": "#ffe680", "#4a2a14": "#ffffff", "#f4f1ea": "#fff6c8" }]],
-    // Superbälle: Meisterball, Premierball, Heilball (der Hyperball gehört schon zu den Pokébällen)
+    // Superbälle: Meisterball, Premierball, Heilball (der Hyperball gehört schon zu den Superbällen)
     // danach weitere Bälle in eigenen Farben, damit auch große Level keine doppelten haben: Türkis, Orange, Gelb, Grün, Rot, Schwarz-Gold, Braun
     superball: [[{ "#2f7ae5": "#8b5cf6", "#ef4b4b": "#ff8fb1" }], [{ "#2f7ae5": "#ffffff" }], [{ "#2f7ae5": "#ff8fc8", "#ef4b4b": "#ffffff" }], ...MORE_BALLS("#2f7ae5", "#ef4b4b")],
     k2super: [[{ "#2b5fd9": "#8b5cf6", "#e2402f": "#ff8fb1" }], [{ "#2b5fd9": "#ffffff" }], [{ "#2b5fd9": "#ff8fc8", "#e2402f": "#ffffff" }], ...MORE_BALLS("#2b5fd9", "#e2402f")],
@@ -4989,7 +4989,7 @@ const FAMILY_HERO = `<svg viewBox="${typeof COMIC_LOGO === "undefined" ? "34 54 
     });
     VARIANTS[id] = ids;
   }
-  // Eigene Reihenfolgen (Pokébälle, Idas Klötze) haben Vorrang
+  // Eigene Reihenfolgen (Superbälle, Idas Klötze) haben Vorrang
   for (const T of Object.values(THEMES)) {
     const own = T.boxCycle;
     T.boxCycle = (l) => (own && own(l)) || VARIANTS[T.levelBox ? T.levelBox(l) : T.box] || null;
