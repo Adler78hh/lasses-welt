@@ -13,38 +13,9 @@ def rep(a, b, n=1):
 # ---- Y2K-Look von Teil 3 entfernen ----
 rep(open(os.path.join(D, "t3.css"), encoding="utf-8").read(), "")
 
-# ---- fremde Figuren ersetzen: eigene Monster und Fangkugeln ----
-MONJS = open(os.path.join(D, "t5-mon.js"), encoding="utf-8").read()
-k = s.index("// ----- Pokémon (Welt 3) -----"); s = s[:k] + MONJS + "\n" + s[k:]
-for name in ["SCHIGGY", "KARPADOR", "ENTON", "STERNDU", "BISASAM", "MYRAPLA", "ENDIVIE", "PIKACHU", "PICHU", "MAGNETILO"]:
-    m = re.search(r"const " + name + r" = `[\s\S]*?`;\n", s); assert m, name
-    s = s[:m.start()] + f'const {name} = MON1("{name.lower()}");\n' + s[m.end():]
-a = s.index("const PK = {"); b = s.index("\n};\n", a) + 4
-s = s[:a] + "const PK = new Proxy({}, { get: (_, k) => typeof k === \"string\" ? () => MON(k) : undefined });\n" + s[b:]
-# alle übrigen Einzelzeichnungen fremder Figuren (eine Zeile je Figur) durch eigene Monster ersetzen
-lines = s.split("\n")
-for i, line in enumerate(lines):
-    m = re.match(r'const ([A-Z_]+) = `<g class="poke">.*`;$', line)
-    if m: lines[i] = f'const {m.group(1)} = MON1("{m.group(1).lower()}");'
-s = "\n".join(lines)
-for m in list(re.finditer(r'const ([A-Z_]+) = `<g class="poke[^"]*">[\s\S]*?</g>`;', s))[::-1]:
-    s = s[:m.start()] + f'const {m.group(1)} = MON1("{m.group(1).lower()}");' + s[m.end():]
-# Trainer-Look aus Lasses erstem Teil (mit fremder Figur auf der Schulter) entfernen; Ida bekommt ihren eigenen
-s = re.sub(r"LASSE\.pokemon = `<svg[\s\S]*?</svg>`;", 'LASSE.pokemon = "";', s, count=1)
-# Ortsnamen der Monster-Welt neutral benennen (Schlüssel überall gleich ersetzt)
-for a, b in [("Glumandas Vulkan", "Feuerberg"), ("Arena Marmoria", "Funkenfelsen"), ("Vertania-Wald", "Blätterwald"), ("Psycho-Arena", "Traumwolke"), ("Kampf-Dojo", "Trainingshalle"),
-             ('"Route 1"', '"Wasser-Ufer"'), ('"Vertania"', '"Blätterwald"'), ('"Marmoria"', '"Funkenfelsen"')]:
-    s = s.replace(a, b)
-# Hauptrollen-Abschnitt (fremde Figuren mit Namen und Rufen) ganz entfernen
-a = s.index("// ===== Hauptrollen in den übrigen Pokémon-Leveln"); b = s.index("// ===== Begleiter und eigener Siegtitel je Schauplatz", a)
-s = s[:a] + s[b:]
-KUGEL = lambda cap: f'<ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/><circle cx="50" cy="54" r="32" fill="#fbf7ef" stroke="#2d3036" stroke-width="3"/><path d="M22 40q28-26 56 0q-28 10-56 0z" fill="{cap}" stroke="#2d3036" stroke-width="3" stroke-linejoin="round"/><path d="M50 22l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z" fill="#ffd23a" stroke="#2d3036" stroke-width="1.6"/><path d="M30 66q20 14 40 0" stroke="#d9d2c4" stroke-width="3" fill="none"/>'
-for sid, cap in [("pokeball", "var(--c1, #e3350d)"), ("superball", "#2f7ae5")]:
-    a = s.index(f'<symbol id="{sid}" viewBox="0 0 100 100">'); b = s.index("</symbol>", a)
-    s = s[:a] + f'<symbol id="{sid}" viewBox="0 0 100 100">' + KUGEL(cap) + s[b:]
-for kid, cap in [("k2poke", "var(--c1, #e2402f)"), ("k2super", "#2b5fd9")]:
-    a = s.index(f"  {kid}: `"); b = s.index("`,\n", a) + 3
-    s = s[:a] + f'  {kid}: `${{FANGKUGEL("{cap}")}}`,\n' + s[b:]
+# ---- fremde Figuren ersetzen: eigene Monster und Fangkugeln (gemeinsames Werkzeug) ----
+from neutral import neutralize, rename
+s = neutralize(s, D)
 
 # ---- Kopf, Titel, Spielstand ----
 rep('<meta name="theme-color" content="#1b2a6b">', '<meta name="theme-color" content="#f6e9ee">')
@@ -67,7 +38,7 @@ s = s[:i] + "const OPTIMAL = " + json.dumps({f"{w}-{k}": LV[w * 9 + k]["opt"] fo
 
 # ---- Welten von Idas Welt (Welt 3: Monster-Welt) ----
 rep('const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pinguine", "urlaub", "atschie", "atributschi", "enni"][i] || "neutral";',
-    'const theme = ["i5w1", "i5w2", "pokemon", "i5w4", "i5w5", "i5w6", "i5w7", "i5w8", "i5w9", "i5w10"][i] || "neutral";')
+    'const theme = ["i5w1", "i5w2", "taschenmonster", "i5w4", "i5w5", "i5w6", "i5w7", "i5w8", "i5w9", "i5w10"][i] || "neutral";')
 a = s.index('bonus: false, name: ["Fußball & HSV",'); b = s.index("][i]", a)
 s = s[:a] + 'bonus: false, name: ["Rosa Ziegel", "Holzhaus", "Monster-Welt", "Heckengarten", "Steinburg", "Fliesenbad", "Bausteinstadt", "Felsenpfad", "Kuschelzimmer", "Sternenschloss"' + s[b:]
 
@@ -75,5 +46,6 @@ s = s[:a] + 'bonus: false, name: ["Rosa Ziegel", "Holzhaus", "Monster-Welt", "He
 k = s.index("function buildBoard() {"); s = s[:k] + open(os.path.join(D, "t5.js"), encoding="utf-8").read() + "\n" + s[k:]
 k = s.rindex("</style>"); s = s[:k] + open(os.path.join(D, "t5.css"), encoding="utf-8").read() + s[k:]
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
+s = rename(s)
 open(OUT, "w", encoding="utf-8").write(s)
 print("geschrieben", OUT, len(s))

@@ -29,7 +29,7 @@ LASSE.ida = kIda8({ body: `<path d="M42 44q8 6 16 0" stroke="${IDA8_GRAU}" strok
 // Monster-Trainerin: graue Jacke über dem pinken Shirt, Kappe in Pink und Grau
 LASSE.ida_trainer = kIda8({ shirt: IDA8_GRAU, body: `<path d="M44 44v24" stroke="${IDA8_PINK}" stroke-width="5"/><path d="M50 44v24" stroke="#2d3036" stroke-width="1.2"/>`,
   head: `<path d="M31 22q0-17 19-17t19 17z" fill="${IDA8_PINK}" stroke="#2d3036" stroke-width="2.2"/><path d="M31 22h38" stroke="${IDA8_GRAU}" stroke-width="4"/><path d="M62 21h14l-2 4H62z" fill="${IDA8_GRAU}" stroke="#2d3036" stroke-width="1.6"/><path d="M50 10l2 4 4 .5-3 3 .8 4-3.8-2-3.8 2 .8-4-3-3 4-.5z" fill="#ffffff"/>` });
-LASSE.avatar = LASSE.fussball = LASSE.familie = LASSE.pokemon = LASSE.pokemon2 = LASSE.ida;
+LASSE.avatar = LASSE.fussball = LASSE.familie = LASSE.taschenmonster = LASSE.taschenmonster2 = LASSE.ida;
 for (const k of Object.keys(LASSE)) if (/^(c_|w3_|hd_|lg_|pg_|ur_|at_|ab_|en_|bh_)/.test(k)) LASSE[k] = LASSE.ida;
 const IDA8_HERO = `<svg viewBox="0 0 240 200" overflow="visible"><circle cx="120" cy="110" r="92" fill="#f8e6ec"/>${[[34, 44, 7, "#f2c4d0"], [206, 54, 9, "#c9ccd2"], [44, 160, 6, "#c9ccd2"], [204, 150, 7, "#f2c4d0"]].map(([x, y, r, c]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`).join("")}<g transform="translate(40 8) scale(1.6)">${LASSE.ida.replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "")}</g></svg>`;
 { const baseRP = renderPlayers; renderPlayers = function () { baseRP(); const h = document.getElementById("hero"); if (h) { h.classList.remove("family"); h.classList.add("t3hero"); h.innerHTML = IDA8_HERO; } }; }
@@ -101,7 +101,7 @@ const IDA8_HERO = `<svg viewBox="0 0 240 200" overflow="visible"><circle cx="120
 
 // ---------- Monster-Welt (Welt 3): eigene Fantasie-Monster, Ida als Trainerin, eigene Fangkugeln ----------
 {
-  const T = THEMES.pokemon, six = T.levelScenes.slice(0, 6);
+  const T = THEMES.taschenmonster, six = T.levelScenes.slice(0, 6);
   const NAMEN6 = T.levelScenes.slice(0, 6).map(sc => sc.name);
   const pick9 = [0, 0, 1, 2, 2, 3, 4, 4, 5];
   six.forEach(sc => { OUTFIT[sc.name] = "ida_trainer"; sc.lasse = "ida_trainer"; });

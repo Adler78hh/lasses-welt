@@ -1,0 +1,73 @@
+<title>Schristians Welten</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: Kopf mit Umschalter Teil 1 / Teil 2, je Spiel eine Weltenleiste, dann zehn Welten mit je sechs Levelkarten im Raster */
+:root {
+  --bg: #f3f4f6; --surface: #ffffff; --ink: #18202c; --muted: #5d6675; --line: #dde1e7;
+  --accent: #1f5fae; --accent-soft: #e3ecf8; --shot: #e9ecf0;
+  --display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif; --body: "Inter", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11151b; --surface: #1a2028; --ink: #e8ecf2; --muted: #9aa4b2; --line: #2b333e; --accent: #7fb0ec; --accent-soft: #1d2b3d; --shot: #232a33; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #11151b; --surface: #1a2028; --ink: #e8ecf2; --muted: #9aa4b2; --line: #2b333e; --accent: #7fb0ec; --accent-soft: #1d2b3d; --shot: #232a33; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 64px; display: grid; gap: 28px; }
+h1, h2, h3, h4 { font-family: var(--display); margin: 0; text-wrap: balance; }
+.top { display: grid; gap: 14px; }
+.top h1 { font-size: clamp(30px, 6vw, 46px); font-weight: 800; letter-spacing: -.02em; line-height: 1.05; }
+.top p { margin: 0; color: var(--muted); max-width: 65ch; }
+.switch { display: flex; flex-wrap: wrap; gap: 8px; }
+.switch button { font: 600 14px var(--body); padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.switch button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.switch button:focus-visible, .worldnav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.game { display: grid; gap: 22px; }
+.gamehead h2 { font-size: clamp(24px, 4.5vw, 32px); font-weight: 800; letter-spacing: -.01em; }
+.gamehead p { margin: 4px 0 0; color: var(--muted); }
+.worldnav { display: flex; flex-wrap: wrap; gap: 6px; }
+.worldnav a { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px 5px 5px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-size: 13px; font-weight: 500; }
+.worldnav .num { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 600; font-size: 12px; font-variant-numeric: tabular-nums; }
+.world { display: grid; gap: 14px; scroll-margin-top: 16px; padding-top: 18px; border-top: 1px solid var(--line); }
+.world header { display: grid; gap: 2px; }
+.wno { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.world h3 { font-size: 24px; font-weight: 800; }
+.scenes { margin: 0; color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.lv { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; min-width: 0; }
+.shot { background: var(--shot); aspect-ratio: 4 / 4.2; display: grid; place-items: center; padding: 10px; max-width: 100%; }
+.shot img { max-height: 100%; max-width: 100%; object-fit: contain; display: block; border-radius: 6px; }
+.meta { padding: 12px 14px 14px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.lvno { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.meta h4 { font-size: 18px; font-weight: 600; }
+.word { font-size: 13px; color: var(--muted); } .word b { color: var(--accent); letter-spacing: .12em; }
+.hint { margin: 0; color: var(--muted); font-size: 13.5px; }
+dl { margin: 4px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 10px; }
+dl div { min-width: 0; } dl .wide { grid-column: 1 / -1; }
+dt { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+dd { margin: 0; font-size: 13.5px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+<div class="wrap">
+ <header class="top">
+  <h1>Schristians Welten</h1>
+  <p>Beide Christian-Spiele auf einen Blick: jede Welt mit ihren sechs Leveln, dem Namen des Schauplatzes und dem Spielfeld so, wie es auf dem Handy aussieht.</p>
+  <div class="switch" role="group" aria-label="Spiel wählen">
+   <button type="button" id="btn-teil-1" data-show="teil-1" aria-pressed="true">Teil 1 · Schristians Welt</button>
+   <button type="button" id="btn-teil-2" data-show="teil-2" aria-pressed="false">Teil 2 · Schristians große Welt</button>
+  </div>
+ </header>
+<!--SECTIONS-->
+</div>
+<script>
+(() => {
+  const games = [...document.querySelectorAll('.game')], btns = [...document.querySelectorAll('[data-show]')];
+  const pick = (id) => { if (!games.some(g => g.id === id)) id = 'teil-1';
+    games.forEach(g => g.hidden = g.id !== id); btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.show === id))); };
+  const fromHash = () => { const h = location.hash.slice(1); pick(h.startsWith('teil-2') ? 'teil-2' : 'teil-1');
+    if (h.includes('-w')) { const el = document.getElementById(h); if (el) el.scrollIntoView(); } };
+  btns.forEach(b => b.addEventListener('click', () => { location.hash = b.dataset.show; }));
+  window.addEventListener('hashchange', fromHash); fromHash();
+})();
+</script>

@@ -306,7 +306,7 @@ button:disabled { cursor: default; }
   .pennant, .fly, .fly .wings, .bird, .bird .wing, .fan, .clap, .pony .graze, .horse .peek, .trainer .notes, .win-card.prize .emblem { animation: none !important; }
   .fly, .bird { display: none; }
 }
-/* Pokémon-Welt */
+/* Taschenmonster-Welt */
 .pokewall .poke { transform-origin: 50% 90%; transform-box: view-box; animation: pokebob 2.6s ease-in-out infinite; }
 .pokewall .blink { transform-origin: 50% 50%; transform-box: fill-box; animation: blink 4.2s infinite; }
 .pokewall .sway { transform-origin: 50% 90%; animation: sway 3s ease-in-out infinite; }
@@ -965,14 +965,7 @@ button.primary, .lvl.next { background: linear-gradient(180deg, #9ff0ff 0%, #38b
       <path d="M17 44q-3 12 0 22M83 44q3 12 0 22" fill="none" stroke="#5a3a22" stroke-width="1.6" stroke-dasharray="3 3" opacity=".45"/>
       <ellipse cx="34" cy="88" rx="8" ry="4.5" fill="#5a3a22"/><ellipse cx="66" cy="88" rx="8" ry="4.5" fill="#5a3a22"/>
     </symbol>
-    <symbol id="pokeball" viewBox="0 0 100 100">
-      <ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/>
-      <path d="M16 50a34 34 0 0168 0z" fill="var(--c1, #e3350d)" stroke="#2d3036" stroke-width="3.5"/>
-      <path d="M16 50a34 34 0 0068 0z" fill="#ffffff" stroke="#2d3036" stroke-width="3.5"/>
-      <rect x="16" y="46" width="68" height="8" fill="#2d3036"/>
-      <circle cx="50" cy="50" r="11" fill="#2d3036"/><circle cx="50" cy="50" r="6.5" fill="#ffffff"/>
-      <ellipse cx="34" cy="30" rx="7" ry="4" fill="#ffffff" opacity=".6" transform="rotate(-30 34 30)"/>
-    </symbol>
+    <symbol id="pokeball" viewBox="0 0 100 100"><ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/><circle cx="50" cy="54" r="32" fill="#fbf7ef" stroke="#2d3036" stroke-width="3"/><path d="M22 40q28-26 56 0q-28 10-56 0z" fill="var(--c1, #e3350d)" stroke="#2d3036" stroke-width="3" stroke-linejoin="round"/><path d="M50 22l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z" fill="#ffd23a" stroke="#2d3036" stroke-width="1.6"/><path d="M30 66q20 14 40 0" stroke="#d9d2c4" stroke-width="3" fill="none"/></symbol>
     <symbol id="netzball" viewBox="0 0 100 100">
       <ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/>
       <clipPath id="netzball-top"><path d="M16 50a34 34 0 0168 0z"/></clipPath>
@@ -1113,14 +1106,7 @@ button.primary, .lvl.next { background: linear-gradient(180deg, #9ff0ff 0%, #38b
       <path d="M30 22q6-6 14-4" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".7"/>
       <path d="M74 20l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z" fill="url(#gold)" stroke="#9a6404" stroke-width="2"/>
     </symbol>
-    <symbol id="superball" viewBox="0 0 100 100">
-      <ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/>
-      <path d="M16 50a34 34 0 0168 0z" fill="#2f7ae5" stroke="#2d3036" stroke-width="3.5"/>
-      <path d="M26 32q8-4 14-14M74 32q-8-4-14-14" stroke="#ef4b4b" stroke-width="7" stroke-linecap="round"/>
-      <path d="M16 50a34 34 0 0068 0z" fill="#ffffff" stroke="#2d3036" stroke-width="3.5"/>
-      <rect x="16" y="46" width="68" height="8" fill="#2d3036"/><circle cx="50" cy="50" r="11" fill="#2d3036"/><circle cx="50" cy="50" r="6.5" fill="#ffffff"/>
-      <ellipse cx="36" cy="28" rx="6" ry="3.4" fill="#ffffff" opacity=".6" transform="rotate(-30 36 28)"/>
-    </symbol>
+    <symbol id="superball" viewBox="0 0 100 100"><ellipse cx="50" cy="90" rx="26" ry="5" fill="#00000024"/><circle cx="50" cy="54" r="32" fill="#fbf7ef" stroke="#2d3036" stroke-width="3"/><path d="M22 40q28-26 56 0q-28 10-56 0z" fill="#2f7ae5" stroke="#2d3036" stroke-width="3" stroke-linejoin="round"/><path d="M50 22l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z" fill="#ffd23a" stroke="#2d3036" stroke-width="1.6"/><path d="M30 66q20 14 40 0" stroke="#d9d2c4" stroke-width="3" fill="none"/></symbol>
     <symbol id="meisterorden" viewBox="0 0 100 100">
       <path d="M50 4l12 20 22-4-8 22 16 14-22 6-2 22-18-12-18 12-2-22-22-6 16-14-8-22 22 4z" fill="url(#gold)" stroke="#9a6404" stroke-width="3" stroke-linejoin="round"/>
       <circle cx="50" cy="52" r="20" fill="#2f7ae5" stroke="#9a6404" stroke-width="3"/>
@@ -1451,7 +1437,7 @@ const LASSE = {
 
 // ---------- Themen und Schauplätze ----------
 const THEMES = {};
-// Personen und Pokémon in Wandbildern tragen eine Kennung; das Spiel setzt jede höchstens viermal pro Level und gut verteilt
+// Personen und Taschenmonster in Wandbildern tragen eine Kennung; das Spiel setzt jede höchstens viermal pro Level und gut verteilt
 const personId = (s) => { let h = 5381; for (let i = 0; i < s.length; i++) h = (h * 33 + s.charCodeAt(i)) >>> 0; return h.toString(36); };
 const asPerson = (svg, id) => svg.replace("<svg", `<svg data-person="${id}"`);
 // Jede Welt hat drei Schauplätze (Level 1–3, 4–6, 7–9). Kiste und Ziel bleiben in der Welt gleich,
@@ -1733,8 +1719,42 @@ const TRAINER = `<svg viewBox="0 0 100 100" class="trainer">
   <g class="notes" fill="#2d3036"><text x="66" y="34" font-size="14" font-family="sans-serif">♪</text><text x="76" y="22" font-size="11" font-family="sans-serif">♪</text></g>
 </svg>`;
 
-// ----- Pokémon (Welt 3) -----
-// Eigene, vereinfachte Zeichnungen für ein privates Spiel. Je Schauplatz sitzen Pokémon des Typs in den Wänden.
+// ===================== Idas Welt: eigene Fantasie-Monster statt fremder Figuren =====================
+// Jedes Monster wird aus seinem Namen erzeugt: Typ (Wasser, Pflanze, Blitz, Feuer, Stein, Kampf, Psycho, Flug) bestimmt Farbe, Ohren und Schwanz.
+const MON_TYP = { schiggy: "wasser", karpador: "wasser", enton: "wasser", sterndu: "wasser", bisasam: "pflanze", myrapla: "pflanze", endivie: "pflanze", raupy: "pflanze",
+  pikachu: "blitz", pichu: "blitz", magnetilo: "blitz", glumanda: "feuer", glutexo: "feuer", glurak: "feuer", onix: "stein", kleinstein: "stein",
+  lucario: "kampf", machollo: "kampf", mewtu: "psycho", psiana: "psycho", taubsi: "flug" };
+const MON_FARBE = { wasser: ["#6ec6e8", "#e6f7ff"], pflanze: ["#86c96e", "#eaf8df"], blitz: ["#b9a6f2", "#f3eeff"], feuer: ["#f2875a", "#ffe8d6"], stein: ["#aaa49a", "#ecebe6"],
+  kampf: ["#e3a05c", "#fff0de"], psycho: ["#f0a8d8", "#fff0fa"], flug: ["#d9c08a", "#fbf5e6"] };
+const monHash = (s) => [...String(s)].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+function MON(name, size = 1) {
+  const typ = MON_TYP[name] || ["wasser", "pflanze", "blitz", "feuer", "stein", "kampf", "psycho", "flug"][monHash(name) % 8];
+  const [c, b] = MON_FARBE[typ], h = monHash(name), r = 24 + (h % 5), O = `stroke="#2d3036" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
+  const ohren = { wasser: `<path d="M30 46q-14-4-12-16 10 0 16 10zM70 46q14-4 12-16-10 0-16 10z" fill="${c}" ${O}/>`,
+    pflanze: `<path d="M50 34q-4-18 10-24 4 14-10 24z" fill="#5fae4a" ${O}/><path d="M55 22l-4 10" stroke="#3f8a32" stroke-width="1.6"/>`,
+    blitz: `<path d="M50 34v-14" stroke="#2d3036" stroke-width="2.4"/><path d="M50 8l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z" fill="#ffe680" ${O}/>`,
+    feuer: `<path d="M44 36q-6-14 6-24 0 8 6 10-2-6 4-10 4 14-6 24z" fill="#ffb03a" ${O}/>`,
+    stein: `<path d="M38 38l4-14 8 10 8-12 4 16z" fill="#8fd0e8" ${O}/>`,
+    kampf: `<path d="M28 44h44" stroke="#e2402f" stroke-width="6"/><path d="M72 44l10 6M72 44l8-6" stroke="#e2402f" stroke-width="4" stroke-linecap="round"/>`,
+    psycho: `<path d="M36 40q-4-14 4-18 6 6 4 16zM64 40q4-14-4-18-6 6-4 16z" fill="${c}" ${O}/><circle cx="50" cy="44" r="3.6" fill="#8b5cf6" ${O}/>`,
+    flug: `<path d="M24 62q-14-10-8-22 12 4 14 16zM76 62q14-10 8-22-12 4-14 16z" fill="#f4f1ea" ${O}/>` }[typ];
+  const schwanz = { wasser: `<path d="M74 78q16-2 14-16-8 8-14 8z" fill="${c}" ${O}/>`, pflanze: `<path d="M74 80q14 0 16-12-10 2-16 6z" fill="#5fae4a" ${O}/>`,
+    blitz: `<path d="M74 80q12-2 12-12" stroke="#2d3036" stroke-width="2.4" fill="none"/><circle cx="86" cy="66" r="4" fill="#ffe680" ${O}/>`,
+    feuer: `<path d="M74 80q14-2 12-16" stroke="${c}" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M86 66q-4-8 2-12 0 6 4 6-2 6-6 6z" fill="#ffb03a"/>`,
+    stein: "", kampf: "", psycho: `<path d="M74 80q16 2 16-14" stroke="${c}" stroke-width="5" fill="none" stroke-linecap="round"/>`, flug: "" }[typ];
+  const augenAbstand = 9 + (h % 3), mund = h % 2 ? `<path d="M45 70q5 5 10 0" stroke="#2d3036" stroke-width="2" fill="none" stroke-linecap="round"/>` : `<path d="M46 69q4 6 8 0z" fill="#c0392b" ${O}/>`;
+  return `<g transform="translate(50 56) scale(${size}) translate(-50 -56)">${schwanz}${ohren}
+    <ellipse cx="50" cy="${66 - r / 6}" rx="${r}" ry="${r - 2}" fill="${c}" ${O}/><ellipse cx="50" cy="${72 - r / 8}" rx="${r * .6}" ry="${r * .5}" fill="${b}"/>
+    <ellipse cx="38" cy="90" rx="8" ry="4" fill="${c}" ${O}/><ellipse cx="62" cy="90" rx="8" ry="4" fill="${c}" ${O}/>
+    ${[-1, 1].map(d => `<ellipse cx="${50 + d * augenAbstand}" cy="58" rx="4.2" ry="5" fill="#2d3036"/><circle cx="${50 + d * augenAbstand + 1.4}" cy="56.4" r="1.6" fill="#ffffff"/>`).join("")}
+    <ellipse cx="${50 - augenAbstand - 5}" cy="65" rx="3.4" ry="2" fill="#ff8fb1" opacity=".7"/><ellipse cx="${50 + augenAbstand + 5}" cy="65" rx="3.4" ry="2" fill="#ff8fb1" opacity=".7"/>${mund}</g>`;
+}
+const MON1 = (name) => `<g class="poke">${MON(name)}</g>`;
+// Eigene Fangkugel: helle Kapsel, farbige Kappe mit Stern, keine Mittelband-Knopf-Optik
+const FANGKUGEL = (cap = "#e2402f") => `<circle cx="50" cy="54" r="32" fill="#fbf7ef" stroke="#2d3036" stroke-width="3"/><path d="M22 40q28-26 56 0q-28 10-56 0z" fill="${cap}" stroke="#2d3036" stroke-width="3" stroke-linejoin="round"/><path d="M50 22l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z" fill="#ffd23a" stroke="#2d3036" stroke-width="1.6"/><path d="M30 66q20 14 40 0" stroke="#d9d2c4" stroke-width="3" fill="none"/><ellipse cx="36" cy="52" rx="5" ry="3" fill="#ffffff" opacity=".8"/>`;
+
+// ----- Taschenmonster (Welt 3) -----
+// Eigene, vereinfachte Zeichnungen für ein privates Spiel. Je Schauplatz sitzen Taschenmonster des Typs in den Wänden.
 const P_BASE = { "--ink": "#2d3036", "--muted": "#6b7590", "--accent": "#e3350d", "--accent-dark": "#a8240a", "--soft": "#fdecea", "--edge": "#e9d3cf", "--on-bg": "#5d6782" };
 const pad = (top, side, hi = "#ffffff") => `<rect x="3" y="9" width="94" height="88" rx="16" fill="${side}"/><rect x="3" y="3" width="94" height="86" rx="16" fill="${top}"/><rect x="3" y="3" width="94" height="86" rx="16" fill="url(#softlight)"/><rect x="14" y="10" width="26" height="6" rx="3" fill="${hi}" opacity=".35"/>`;
 const eye = (cx, cy, r = 4.5) => `<ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r * 1.15}" fill="#1a1a22"/><circle cx="${cx + r * .35}" cy="${cy - r * .4}" r="${r * .4}" fill="#ffffff"/>`;
@@ -1742,92 +1762,32 @@ const OL = `stroke="#2d3036" stroke-width="2.4" stroke-linejoin="round"`;
 
 // Wasser
 const waterPad = `${pad("#4aa8f0", "#2a78c8")}<path d="M10 40q8-6 16 0t16 0 16 0 16 0 16 0M10 64q8-6 16 0t16 0 16 0 16 0 16 0" fill="none" stroke="#ffffff" stroke-width="3" opacity=".45" stroke-linecap="round"/>`;
-const SCHIGGY = `<g class="poke">
-  <path d="M30 92q-2-30 20-30t20 30z" fill="#a0622d" ${OL}/><path d="M38 92q0-22 12-22t12 22z" fill="#f2df9a" ${OL}/>
-  <circle cx="50" cy="44" r="24" fill="#7fc8f0" ${OL}/>
-  <g class="blink">${eye(41, 44, 5)}${eye(59, 44, 5)}</g>
-  <path d="M43 56q7 6 14 0" fill="#c0392b" ${OL}/></g>`;
-const KARPADOR = `<g class="poke">
-  <path d="M74 60l18-14v32z" fill="#f2f2f2" ${OL}/>
-  <ellipse cx="48" cy="60" rx="30" ry="24" fill="#f0652d" ${OL}/>
-  <path d="M30 40l8-18 8 14 8-16 8 16 6-10 2 14" fill="#f7c948" ${OL}/>
-  <circle cx="34" cy="56" r="8" fill="#ffffff" ${OL}/><circle cx="34" cy="56" r="2" fill="#1a1a22"/>
-  <ellipse cx="22" cy="68" rx="5" ry="6" fill="#f7d6b0" ${OL}/>
-  <path d="M24 64q-12-2-14 10" fill="none" stroke="#f7c948" stroke-width="3" stroke-linecap="round"/>
-  <path d="M46 70q6 6 12 0M56 64q6 6 12 0" fill="none" stroke="#c94a1a" stroke-width="2"/></g>`;
-const ENTON = `<g class="poke">
-  <ellipse cx="50" cy="80" rx="22" ry="14" fill="#f7d34a" ${OL}/>
-  <circle cx="50" cy="48" r="24" fill="#f7d34a" ${OL}/>
-  <path d="M46 24q-2-10 2-14M50 24v-14M54 24q2-10-2-14" fill="none" stroke="#2d3036" stroke-width="2.4" stroke-linecap="round"/>
-  <circle cx="40" cy="44" r="6" fill="#ffffff" ${OL}/><circle cx="60" cy="44" r="6" fill="#ffffff" ${OL}/>
-  <circle cx="40" cy="44" r="1.6" fill="#1a1a22"/><circle cx="60" cy="44" r="1.6" fill="#1a1a22"/>
-  <ellipse cx="50" cy="58" rx="12" ry="6" fill="#f6e3b4" ${OL}/>
-  <path d="M26 46q-6-14 6-20M74 46q6-14-6-20" fill="none" stroke="#f7d34a" stroke-width="7" stroke-linecap="round"/></g>`;
-const STERNDU = `<g class="poke spin-slow">
-  <path d="M50 14l9 24 26 2-20 16 7 26-22-15-22 15 7-26-20-16 26-2z" fill="#c98a52" ${OL}/>
-  <circle cx="50" cy="52" r="9" fill="#f5c542" ${OL}/><circle cx="50" cy="52" r="5" fill="#e83b3b"/></g>`;
+const SCHIGGY = MON1("schiggy");
+const KARPADOR = MON1("karpador");
+const ENTON = MON1("enton");
+const STERNDU = MON1("sterndu");
 
 // Pflanzen
 const bushPad = `${pad("#4fb058", "#2f8a3a")}<g fill="#6fd06f" opacity=".6"><circle cx="22" cy="70" r="6"/><circle cx="80" cy="30" r="5"/><circle cx="74" cy="74" r="4"/></g>`;
-const BISASAM = `<g class="poke">
-  <ellipse cx="54" cy="74" rx="28" ry="16" fill="#7fd1b9" ${OL}/>
-  <path d="M60 58q-4-26 14-30 14 6 6 30z" fill="#4caf50" ${OL}/><path d="M68 30q4 14-2 28" fill="none" stroke="#2e7d32" stroke-width="2"/>
-  <ellipse cx="36" cy="54" rx="22" ry="18" fill="#7fd1b9" ${OL}/>
-  <path d="M20 40l-4-10 10 6zM50 38l6-9 0 12z" fill="#7fd1b9" ${OL}/>
-  <g class="blink"><ellipse cx="28" cy="54" rx="4.5" ry="5" fill="#e53935"/><circle cx="29.5" cy="52" r="1.6" fill="#fff"/><ellipse cx="44" cy="54" rx="4.5" ry="5" fill="#e53935"/><circle cx="45.5" cy="52" r="1.6" fill="#fff"/></g>
-  <path d="M30 64q6 4 12 0" fill="none" stroke="#2d3036" stroke-width="2.2" stroke-linecap="round"/>
-  <circle cx="58" cy="76" r="3" fill="#3f9e86"/><circle cx="48" cy="82" r="2.4" fill="#3f9e86"/></g>`;
-const MYRAPLA = `<g class="poke sway">
-  ${[-50, -25, 0, 25, 50].map(a => `<path d="M50 40q-8-22 0-34 8 12 0 34z" fill="#4caf50" ${OL} transform="rotate(${a} 50 42)"/>`).join("")}
-  <circle cx="50" cy="64" r="22" fill="#3d5bb8" ${OL}/>
-  <g class="blink"><ellipse cx="42" cy="62" rx="4" ry="5" fill="#e53935"/><ellipse cx="58" cy="62" rx="4" ry="5" fill="#e53935"/></g>
-  <path d="M44 72q6 4 12 0" fill="none" stroke="#2d3036" stroke-width="2.2" stroke-linecap="round"/>
-  <ellipse cx="40" cy="88" rx="6" ry="3" fill="#2b3f86"/><ellipse cx="60" cy="88" rx="6" ry="3" fill="#2b3f86"/></g>`;
-const ENDIVIE = `<g class="poke">
-  <path d="M50 30q-6-26 20-28-2 22-20 28z" fill="#5fbf4a" ${OL}/>
-  <ellipse cx="50" cy="80" rx="18" ry="12" fill="#d8f0a8" ${OL}/>
-  <circle cx="50" cy="52" r="22" fill="#d8f0a8" ${OL}/>
-  ${[36, 44, 56, 64].map(x => `<circle cx="${x}" cy="72" r="3.4" fill="#5fbf4a" ${OL}/>`).join("")}
-  <g class="blink">${eye(42, 50, 4.5)}${eye(58, 50, 4.5)}</g>
-  <path d="M45 60q5 4 10 0" fill="none" stroke="#2d3036" stroke-width="2.2" stroke-linecap="round"/></g>`;
+const BISASAM = MON1("bisasam");
+const MYRAPLA = MON1("myrapla");
+const ENDIVIE = MON1("endivie");
 
 // Blitz
 const voltPad = `${pad("#ffd84a", "#d9a90c")}<path d="M3 72h94v14q0 3-3 3H6q-3 0-3-3z" fill="#2d3036"/><path d="M10 72l-6 17M24 72l-6 17M38 72l-6 17M52 72l-6 17M66 72l-6 17M80 72l-6 17M94 72l-6 17" stroke="#ffd84a" stroke-width="5"/>`;
-const PIKACHU = `<g class="poke">
-  <path d="M74 70l14-14-8-2 12-16-20 12 6 2-14 12z" fill="#f7d02c" ${OL}/>
-  <path d="M30 40l-16-28 26 18zM70 40l16-28-26 18z" fill="#f7d02c" ${OL}/>
-  <path d="M16 15l-2-3 9 6zM84 15l2-3-9 6z" fill="#1a1a22"/>
-  <ellipse cx="50" cy="78" rx="20" ry="14" fill="#f7d02c" ${OL}/>
-  <circle cx="50" cy="50" r="24" fill="#f7d02c" ${OL}/>
-  <g class="blink">${eye(40, 46, 4.5)}${eye(60, 46, 4.5)}</g>
-  <circle class="cheek" cx="32" cy="58" r="6" fill="#e8402c"/><circle class="cheek" cx="68" cy="58" r="6" fill="#e8402c"/>
-  <path d="M47 56l3 2 3-2M44 60q6 6 12 0" fill="none" stroke="#2d3036" stroke-width="2" stroke-linecap="round"/></g>`;
-const PICHU = `<g class="poke">
-  <path d="M34 46l-24-22 30 8zM66 46l24-22-30 8z" fill="#f9e27a" ${OL}/>
-  <path d="M10 24l9 3-6 5zM90 24l-9 3 6 5z" fill="#1a1a22"/>
-  <ellipse cx="50" cy="80" rx="16" ry="11" fill="#f9e27a" ${OL}/>
-  <circle cx="50" cy="56" r="20" fill="#f9e27a" ${OL}/>
-  <g class="blink">${eye(42, 54, 4)}${eye(58, 54, 4)}</g>
-  <circle class="cheek" cx="36" cy="64" r="4.5" fill="#f28fb0"/><circle class="cheek" cx="64" cy="64" r="4.5" fill="#f28fb0"/>
-  <path d="M46 64q4 4 8 0" fill="none" stroke="#2d3036" stroke-width="2" stroke-linecap="round"/></g>`;
-const MAGNETILO = `<g class="poke float">
-  <path d="M18 54h-6v-8h6M82 54h6v-8h-6" fill="none" stroke="#2d3036" stroke-width="2.4"/>
-  <path d="M28 50q-14 0-14 12t14 12" fill="none" stroke="#9aa3b1" stroke-width="7"/><path d="M72 50q14 0 14 12t-14 12" fill="none" stroke="#9aa3b1" stroke-width="7"/>
-  <rect x="22" y="46" width="8" height="8" fill="#e83b3b"/><rect x="22" y="70" width="8" height="8" fill="#3d6ee8"/>
-  <rect x="70" y="46" width="8" height="8" fill="#e83b3b"/><rect x="70" y="70" width="8" height="8" fill="#3d6ee8"/>
-  <circle cx="50" cy="56" r="22" fill="#c9ced8" ${OL}/>
-  <path d="M50 34v-14" stroke="#2d3036" stroke-width="3"/><path d="M44 18h12" stroke="#2d3036" stroke-width="4" stroke-linecap="round"/>
-  <circle cx="50" cy="56" r="10" fill="#ffffff" ${OL}/><circle class="blink" cx="50" cy="56" r="4" fill="#1a1a22"/></g>`;
+const PIKACHU = MON1("pikachu");
+const PICHU = MON1("pichu");
+const MAGNETILO = MON1("magnetilo");
 
 const pokeTile = (padSvg, mon) => `<svg data-person="pk${personId(mon)}" viewBox="0 0 100 100" class="pokewall">${padSvg}<g transform="translate(6 2) scale(.88)">${mon}</g></svg>`;
 
-THEMES.pokemon = {
-  title: "Pokémon", emblem: "pokeball", box: "pokeball", rolls: true,
-  boxWord: "Pokébälle", pushWord: "Würfe",
-  hint: "Roll jeden Pokéball auf eine Arena-Plattform. Pokébälle lassen sich nur schieben, nicht ziehen.",
-  winTitle: "Volltreffer!", winText: (m, p) => `Alle Pokébälle liegen bereit. ${m} Schritte, ${p} Würfe.`,
+THEMES.taschenmonster = {
+  title: "Taschenmonster", emblem: "pokeball", box: "pokeball", rolls: true,
+  boxWord: "Fangkugeln", pushWord: "Würfe",
+  hint: "Roll jeden Fangkugel auf eine Arena-Plattform. Fangkugeln lassen sich nur schieben, nicht ziehen.",
+  winTitle: "Volltreffer!", winText: (m, p) => `Alle Fangkugeln liegen bereit. ${m} Schritte, ${p} Würfe.`,
   confetti: ["#e3350d", "#ffffff", "#2d3036", "#f7d02c"],
-  prize: { symbol: "orden", title: "Arena-Orden!", text: (m) => `Du hast die Pokémon-Welt gemeistert! Finale in ${m} Schritten.` },
+  prize: { symbol: "orden", title: "Arena-Orden!", text: (m) => `Du hast die Taschenmonster-Welt gemeistert! Finale in ${m} Schritten.` },
   pal: { ...P_BASE, "--bg": "#fff1ec", "--bg-2": "#fffaf8", "--floor-a": "#f3e2b3", "--floor-b": "#eed9a3" },
   target: () => `<svg viewBox="0 0 100 100">
     <ellipse cx="50" cy="56" rx="38" ry="30" fill="#2d303622"/>
@@ -1840,7 +1800,7 @@ THEMES.pokemon = {
     </g>
   </svg>`,
   scenes: [
-    { name: "Wasser-Pokémon",
+    { name: "Wasser-Taschenmonster",
       pal: { "--bg": "#dff3ff", "--bg-2": "#f5fbff", "--floor-a": "#f3e2b3", "--floor-b": "#eed9a3" },
       floor: (x, y) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${(x + y) % 2 ? "var(--floor-b)" : "var(--floor-a)"}"/>
         ${pick(x, y, 1, 6) === 0 ? `<path d="M${30 + pick(x, y, 2, 40)} 60q6-10 12 0z" fill="#f7a8b8" stroke="#c97a8a" stroke-width="1.6"/>` : ""}
@@ -1848,14 +1808,14 @@ THEMES.pokemon = {
       wall: (x, y) => { const k = pick(x, y, 0, 8); const mons = [SCHIGGY, KARPADOR, ENTON, STERNDU]; return k < 4 ? pokeTile(waterPad, mons[k]) : `<svg viewBox="0 0 100 100">${waterPad}</svg>`; },
       deco: (x, y) => pick(x, y, 9, 5) === 0 ? `<svg viewBox="0 0 100 100"><path d="M36 70q14-30 28 0z" fill="#f7a8b8" stroke="#c97a8a" stroke-width="2.4"/><path d="M50 44v26M42 50l6 20M58 50l-6 20" stroke="#c97a8a" stroke-width="1.6"/></svg>` : "",
       extras: () => [0, 1, 2, 3].map(i => `<span class="bubble" style="left:${12 + i * 24}%;animation-delay:${-i * 1.7}s"></span>`).join("") },
-    { name: "Pflanzen-Pokémon",
+    { name: "Pflanzen-Taschenmonster",
       pal: { "--bg": "#e4f6dc", "--bg-2": "#f7fdf3", "--floor-a": "#b5e39a", "--floor-b": "#a9da8c" },
       floor: (x, y) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${(x + y) % 2 ? "var(--floor-b)" : "var(--floor-a)"}"/>
         ${pick(x, y, 1, 4) === 0 ? `<path d="M${25 + pick(x, y, 2, 40)} ${30 + pick(x, y, 3, 40)}q8-8 14 0-8 8-14 0z" fill="#6cbf57"/>` : ""}</svg>`,
       wall: (x, y) => { const k = pick(x, y, 0, 7); const mons = [BISASAM, MYRAPLA, ENDIVIE]; return k < 3 ? pokeTile(bushPad, mons[k]) : `<svg viewBox="0 0 100 100">${bushPad}</svg>`; },
       deco: (x, y) => { const k = pick(x, y, 9, 5); return k === 0 ? `<svg viewBox="0 0 100 100"><rect x="44" y="56" width="12" height="20" rx="4" fill="#f6e3c6" stroke="#2d3036" stroke-width="2"/><path d="M30 58q20-30 40 0z" fill="#e83b3b" stroke="#2d3036" stroke-width="2.2"/><circle cx="44" cy="48" r="3" fill="#fff"/><circle cx="56" cy="52" r="2.4" fill="#fff"/></svg>` : k === 1 ? `<svg viewBox="0 0 100 100">${flower(50, 56, "#ffe066", 5)}</svg>` : ""; },
       extras: () => [0, 1, 2].map(i => `<span class="leaf" style="left:${15 + i * 32}%;animation-delay:${-i * 2.6}s"></span>`).join("") },
-    { name: "Blitz-Pokémon",
+    { name: "Blitz-Taschenmonster",
       pal: { "--bg": "#fff8d6", "--bg-2": "#fffdf2", "--floor-a": "#dfe3ea", "--floor-b": "#d5dae2" },
       floor: (x, y) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${(x + y) % 2 ? "var(--floor-b)" : "var(--floor-a)"}"/>
         <rect x="3" y="3" width="94" height="94" rx="6" fill="none" stroke="#c3c9d3" stroke-width="2"/>
@@ -1866,41 +1826,8 @@ THEMES.pokemon = {
   ]
 };
 
-// Lasse als Pokémon-Trainer: rot-weiße Kappe, blaue Jacke, Jeans, rote Turnschuhe
-LASSE.pokemon = `<svg viewBox="0 0 100 100">
-  <!-- Lasse im Ash-Look: rot-weiße Kappe mit grünem L für Lasse, blaue Weste mit weißem Kragen über schwarzem Shirt,
-       grüne fingerlose Handschuhe, Jeans, schwarz-rote Turnschuhe und Pikachu auf der Schulter -->
-  <ellipse class="shadow" cx="50" cy="93" rx="20" ry="4.5" fill="#00000026"/>
-  <g class="body">
-    <rect x="39" y="72" width="9" height="16" rx="4" fill="#3d5bb8" stroke="${INK}" stroke-width="1.8"/>
-    <rect x="52" y="72" width="9" height="16" rx="4" fill="#3d5bb8" stroke="${INK}" stroke-width="1.8"/>
-    <path d="M35 91q0-6 7.5-6t7.5 6zM50 91q0-6 7.5-6t7.5 6z" fill="#2d3036" stroke="${INK}" stroke-width="1.6"/>
-    <path d="M36 89h13M51 89h13" stroke="#e3350d" stroke-width="2.4"/><path d="M38 87h4M53 87h4" stroke="#ffffff" stroke-width="1.6"/>
-    <path d="M36 56q0-7 14-7t14 7l1 18H35z" fill="#2d3036" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>
-    <path d="M33 56q0-8 9-8l4 26H32zM67 56q0-8-9-8l-4 26h14z" fill="#2f6fd6" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>
-    <path d="M42 48l4 8 4-6 4 6 4-8" fill="#ffffff" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"/>
-    <path d="M28 54q2-6 7-6l2 10-8 2zM72 54q-2-6-7-6l-2 10 8 2z" fill="#2f6fd6" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"/>
-    <path d="M29 58l8-2M71 58l-8-2" stroke="#ffffff" stroke-width="1.8"/>
-    <circle cx="30" cy="64" r="5.2" fill="#3fae4a" stroke="${INK}" stroke-width="2"/><path d="M27 61h6" stroke="${SKIN}" stroke-width="2.4" stroke-linecap="round"/>
-    <circle cx="70" cy="64" r="5.2" fill="#3fae4a" stroke="${INK}" stroke-width="2"/><path d="M67 61h6" stroke="${SKIN}" stroke-width="2.4" stroke-linecap="round"/>
-    <circle cx="50" cy="32" r="24" fill="${SKIN}" stroke="${INK}" stroke-width="2.4"/>
-    <path d="M25 30l-5 6 7-1-4 7 8-5M75 30l5 6-7-1 4 7-8-5" fill="${HAIR}" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"/>
-    <path d="M25 30q0-24 25-24t25 24z" fill="#e3350d" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
-    <path d="M33 29q0-18 17-18t17 18z" fill="#ffffff" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
-    <path d="M46 16v10h9" fill="none" stroke="#2fa84f" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M22 30q28-7 56 0l-3 6q-25-6-50 0z" fill="#e3350d" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
-    <path d="M36 35l4-4 4 4 4-4 4 4 4-4 4 4 4-4" fill="${HAIR}" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/>
-    ${FACE}
-    <g class="buddy">
-      <path d="M72 40l-6-14 10 8zM88 40l6-14-10 8z" fill="#f7d02c" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/>
-      <path d="M66 26l2.4 5 2-1.6zM94 26l-2.4 5-2-1.6z" fill="#2d3036"/>
-      <ellipse cx="80" cy="46" rx="11" ry="9.5" fill="#f7d02c" stroke="${INK}" stroke-width="1.8"/>
-      <circle cx="76" cy="45" r="1.8" fill="#2d3036"/><circle cx="84" cy="45" r="1.8" fill="#2d3036"/>
-      <circle cx="72" cy="49" r="2.4" fill="#e8402c"/><circle cx="88" cy="49" r="2.4" fill="#e8402c"/>
-      <path d="M78 49.5q2 2 4 0" fill="none" stroke="${INK}" stroke-width="1.2" stroke-linecap="round"/>
-    </g>
-  </g>
-</svg>`;
+// Lasse als Taschenmonster-Trainer: rot-weiße Kappe, blaue Jacke, Jeans, rote Turnschuhe
+LASSE.taschenmonster = "";
 
 // ----- Lego (Welt 4) -----
 // Duplo, Lego City (Feuerwehr, Polizei), Lego Weltraum. Geschoben werden bunte Legosteine.
@@ -2364,7 +2291,7 @@ LASSE.schulkind = `<svg viewBox="0 0 100 100">
   </g>
 </svg>`;
 
-// ===== Welten 7–10: Tennis, Essen, Pokémon 2, Familie =====
+// ===== Welten 7–10: Tennis, Essen, Taschenmonster 2, Familie =====
 const svgT = (inner) => `<svg viewBox="0 0 100 100">${inner}</svg>`;
 const K = `stroke="#2d3036" stroke-width="2.2" stroke-linejoin="round"`;
 const dashTarget = (shape, fxColor = "#ffcc33") => `<svg viewBox="0 0 100 100">${shape}
@@ -2522,52 +2449,38 @@ LASSE.koch = lasseBase("#ffffff", "#3d5bb8", "#ffffff",
   `<path d="M26 33q-3 6 1 10 1-6 4-8zM74 33q3 6-1 10-1-6-4-8z" fill="${HAIR}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>
    <path d="M28 26h44v-6q8-2 6-10-2-8-12-4-4-10-16-6-12-4-16 6-10-4-12 4-2 8 6 10z" fill="#ffffff" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><path d="M28 26q22 4 44 0" stroke="${INK}" stroke-width="2" fill="none"/>`);
 
-// ---------- Welt 9: Pokémon 2 (Kampf, Psycho, Feuer) ----------
+// ---------- Welt 9: Taschenmonster 2 (Kampf, Psycho, Feuer) ----------
 const dojoPad = `${pad("#c9a06a", "#8a6a3c")}<path d="M3 30h94M3 60h94" stroke="#8a6a3c" stroke-width="3"/>`;
 const psyPad = `${pad("#b07ad6", "#7a4aa6")}<path d="M50 30a12 12 0 1 1-12 12 8 8 0 1 1 8-8" fill="none" stroke="#e7d4ff" stroke-width="3" opacity=".7"/>`;
 const lavaPad = `${pad("#5a3a34", "#3a2420")}<path d="M12 70l14-10 10 8 16-14 12 10 14-8 10 6" fill="none" stroke="#ff7a1a" stroke-width="3.4" class="lava"/>`;
-const MACHOLLO = `<g class="poke"><path d="M28 92q0-26 22-26t22 26z" fill="#9fb3c8" ${OL}/><path d="M24 70l-8 10M76 70l8 10" stroke="#9fb3c8" stroke-width="9" stroke-linecap="round"/><circle cx="50" cy="48" r="22" fill="#9fb3c8" ${OL}/>
-  <path d="M40 26l-2-12 8 8 4-12 4 12 8-8-2 12z" fill="#7d93ab" ${OL}/><g class="blink"><ellipse cx="42" cy="46" rx="3" ry="5" fill="#e53935"/><ellipse cx="58" cy="46" rx="3" ry="5" fill="#e53935"/></g><path d="M42 58h16" stroke="#2d3036" stroke-width="2.4" stroke-linecap="round"/></g>`;
-const MENKI = `<g class="poke"><path d="M28 34l-8-8 14 2zM72 34l8-8-14 2z" fill="#f2e1c0" ${OL}/><circle cx="50" cy="56" r="30" fill="#f2e1c0" ${OL}/><path d="M24 52q2-10 8-12M76 52q-2-10-8-12" stroke="#a0784a" stroke-width="3" fill="none"/>
-  <ellipse cx="50" cy="60" rx="10" ry="8" fill="#e9a6a6" ${OL}/><circle cx="46" cy="60" r="2" fill="#2d3036"/><circle cx="54" cy="60" r="2" fill="#2d3036"/><g class="blink"><path d="M34 44l8 4M66 44l-8 4" stroke="#2d3036" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="50" r="2.4" fill="#2d3036"/><circle cx="60" cy="50" r="2.4" fill="#2d3036"/></g></g>`;
-const ABRA = `<g class="poke float"><path d="M30 92q0-28 20-28t20 28z" fill="#8a5a2b" ${OL}/><path d="M28 30l-6-18 14 10zM72 30l6-18-14 10z" fill="#f2c94c" ${OL}/><ellipse cx="50" cy="46" rx="24" ry="20" fill="#f2c94c" ${OL}/>
-  <path d="M38 46q4 3 8 0M54 46q4 3 8 0" stroke="#2d3036" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M42 30l8 4 8-4" stroke="#8a5a2b" stroke-width="3" fill="none"/></g>`;
-const TRAUMATO = `<g class="poke"><ellipse cx="50" cy="74" rx="22" ry="16" fill="#8a5a2b" ${OL}/><circle cx="50" cy="44" r="22" fill="#f2c94c" ${OL}/><path d="M50 50q0 18-6 24" stroke="#f2c94c" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M50 50q0 18-6 24" stroke="#2d3036" stroke-width="2" fill="none" opacity=".4"/>
-  <g class="blink"><path d="M38 40q4-4 8 0M54 40q4-4 8 0" stroke="#2d3036" stroke-width="2.6" fill="none"/></g></g>`;
-const MEW = `<g class="poke float"><path d="M64 70q22 4 18-20t8-22" fill="none" stroke="#ffb3d1" stroke-width="5" stroke-linecap="round"/><ellipse cx="46" cy="70" rx="14" ry="12" fill="#ffb3d1" ${OL}/>
-  <path d="M30 34l-4-14 12 8zM62 34l4-14-12 8z" fill="#ffb3d1" ${OL}/><circle cx="46" cy="44" r="18" fill="#ffb3d1" ${OL}/><g class="blink"><ellipse cx="40" cy="44" rx="4.4" ry="6" fill="#3d6ee8"/><ellipse cx="52" cy="44" rx="4.4" ry="6" fill="#3d6ee8"/><circle cx="41" cy="42" r="1.6" fill="#fff"/><circle cx="53" cy="42" r="1.6" fill="#fff"/></g></g>`;
-const GLUMANDA = `<g class="poke"><path d="M66 72q16-6 16-26" fill="none" stroke="#f08a3c" stroke-width="8" stroke-linecap="round"/><path class="tailflame" d="M82 42q10-10 0-24-12 12 0 24z" fill="#ffb02e"/><path d="M82 40q4-6 0-12-6 6 0 12z" fill="#ffe36b"/>
-  <ellipse cx="48" cy="72" rx="20" ry="18" fill="#f08a3c" ${OL}/><ellipse cx="48" cy="76" rx="12" ry="12" fill="#ffe3a1"/><circle cx="46" cy="42" r="22" fill="#f08a3c" ${OL}/>
-  <g class="blink"><ellipse cx="38" cy="40" rx="4.4" ry="6" fill="#1a1a22"/><ellipse cx="56" cy="40" rx="4.4" ry="6" fill="#1a1a22"/><circle cx="39.4" cy="37.6" r="1.8" fill="#fff"/><circle cx="57.4" cy="37.6" r="1.8" fill="#fff"/></g>
-  <path d="M38 52q8 6 16 0" fill="#c0392b" ${OL}/></g>`;
-const FUKANO = `<g class="poke"><path d="M24 40l-6-16 16 8zM76 40l6-16-16 8z" fill="#f08a3c" ${OL}/><ellipse cx="50" cy="76" rx="22" ry="14" fill="#f08a3c" ${OL}/><path d="M32 30q-6-14 18-14t18 14" fill="#fff3d6" ${OL}/>
-  <circle cx="50" cy="48" r="22" fill="#f08a3c" ${OL}/><path d="M30 46l8 2M70 46l-8 2M32 56l8 0M68 56l-8 0" stroke="#2d3036" stroke-width="3"/><ellipse cx="50" cy="58" rx="10" ry="7" fill="#fff3d6"/><circle cx="50" cy="55" r="3" fill="#2d3036"/>
-  <g class="blink"><circle cx="42" cy="44" r="3.4" fill="#1a1a22"/><circle cx="58" cy="44" r="3.4" fill="#1a1a22"/></g></g>`;
-const PONITA = `<g class="poke"><path class="tailflame" d="M44 26q-6-20 8-24 0 10 8 6 2 12-8 18z" fill="#ffb02e"/><path d="M50 28q0-10 6-12" stroke="#ff7a1a" stroke-width="5" fill="none"/>
-  <path d="M30 40q0-18 20-18t18 18l-2 30q-4 12-16 12t-16-12z" fill="#fff3d6" ${OL}/><path d="M36 28l-4-12 10 8zM64 28l4-12-10 8z" fill="#fff3d6" ${OL}/><ellipse cx="50" cy="70" rx="12" ry="8" fill="#ffe3c8" ${OL}/>
-  <g class="blink"><ellipse cx="40" cy="44" rx="4" ry="5.6" fill="#7a3b1d"/><ellipse cx="60" cy="44" rx="4" ry="5.6" fill="#7a3b1d"/><circle cx="41" cy="42" r="1.6" fill="#fff"/><circle cx="61" cy="42" r="1.6" fill="#fff"/></g></g>`;
-const VULPIX = `<g class="poke">${[-30, -10, 10, 30].map(a => `<path d="M60 74q20-10 18-30" stroke="#d9663a" stroke-width="7" fill="none" stroke-linecap="round" transform="rotate(${a} 60 74)"/>`).join("")}
-  <ellipse cx="46" cy="74" rx="18" ry="14" fill="#c95a2e" ${OL}/><path d="M26 36l-4-20 16 12zM66 36l4-20-16 12z" fill="#c95a2e" ${OL}/><circle cx="46" cy="46" r="20" fill="#c95a2e" ${OL}/><path d="M36 28q10-10 20 0-4 8-10 8t-10-8z" fill="#f08a3c"/>
-  <ellipse cx="46" cy="56" rx="8" ry="5" fill="#f5c79a"/><circle cx="46" cy="54" r="2.4" fill="#2d3036"/><g class="blink"><ellipse cx="38" cy="44" rx="3.6" ry="5" fill="#5a2a14"/><ellipse cx="54" cy="44" rx="3.6" ry="5" fill="#5a2a14"/></g></g>`;
-THEMES.pokemon2 = {
-  title: "Pokémon 2", emblem: "superball", box: "superball", rolls: true,
+const MACHOLLO = MON1("machollo");
+const MENKI = MON1("menki");
+const ABRA = MON1("abra");
+const TRAUMATO = MON1("traumato");
+const MEW = MON1("mew");
+const GLUMANDA = MON1("glumanda");
+const FUKANO = MON1("fukano");
+const PONITA = MON1("ponita");
+const VULPIX = MON1("vulpix");
+THEMES.taschenmonster2 = {
+  title: "Taschenmonster 2", emblem: "superball", box: "superball", rolls: true,
   boxWord: "Superbälle", pushWord: "Würfe",
   hint: "Roll jeden Superball auf eine Arena-Plattform. Bälle lassen sich nur schieben, nicht ziehen.",
   winTitle: "Volltreffer!", winText: (m, p) => `Alle Superbälle liegen bereit. ${m} Schritte, ${p} Würfe.`,
   confetti: ["#2f7ae5", "#ef4b4b", "#ffffff", "#ffb02e"],
-  prize: { symbol: "meisterorden", title: "Meister-Orden!", text: (m) => `Du bist Pokémon-Meister! Finale in ${m} Schritten.` },
+  prize: { symbol: "meisterorden", title: "Meister-Orden!", text: (m) => `Du bist Taschenmonster-Meister! Finale in ${m} Schritten.` },
   pal: { ...P_BASE, "--accent": "#2f7ae5", "--accent-dark": "#1a4bae", "--soft": "#e6efff", "--edge": "#cddcf5", "--bg": "#eef2ff", "--bg-2": "#fafbff", "--floor-a": "#e9d7b0", "--floor-b": "#e2cfa6" },
-  target: () => THEMES.pokemon.target(),
+  target: () => THEMES.taschenmonster.target(),
   scenes: [
-    { name: "Kampf-Pokémon", lasse: "pokemon", pal: { "--bg": "#fdf0e4", "--bg-2": "#fffaf4" },
+    { name: "Kampf-Taschenmonster", lasse: "taschenmonster", pal: { "--bg": "#fdf0e4", "--bg-2": "#fffaf4" },
       floor: (x, y) => svgT(`<rect width="100" height="100" fill="${(x + y) % 2 ? "#d9c58a" : "#e2cf96"}"/><rect x="3" y="3" width="94" height="94" fill="none" stroke="#2a3b2a" stroke-width="3"/><path d="M50 3v94" stroke="#c4b077" stroke-width="2"/>`),
       wall: (x, y) => { const k = pick(x, y, 0, 6); const mons = [MACHOLLO, MENKI, MACHOLLO]; return k < 3 ? pokeTile(dojoPad, mons[k]) : k === 3 ? svgT(`${dojoPad}<path d="M50 6v14" stroke="#2d3036" stroke-width="3"/><rect x="36" y="20" width="28" height="64" rx="12" fill="#ef4b4b" ${K}/><path d="M36 40h28M36 64h28" stroke="#ffffff" stroke-width="3"/>`) : svgT(dojoPad); },
       deco: () => "", extras: () => "" },
-    { name: "Psycho-Pokémon", lasse: "pokemon", pal: { "--bg": "#f3e9ff", "--bg-2": "#fcf9ff" },
+    { name: "Psycho-Taschenmonster", lasse: "taschenmonster", pal: { "--bg": "#f3e9ff", "--bg-2": "#fcf9ff" },
       floor: (x, y) => svgT(`<rect width="100" height="100" fill="${(x + y) % 2 ? "#e2d2f2" : "#ead9f8"}"/>${pick(x, y, 1, 4) === 0 ? `<circle cx="50" cy="50" r="14" fill="none" stroke="#c9a8ea" stroke-width="3"/>` : ""}`),
       wall: (x, y) => { const k = pick(x, y, 0, 6); const mons = [ABRA, TRAUMATO, MEW, ABRA]; return k < 4 ? pokeTile(psyPad, mons[k]) : svgT(psyPad); },
       deco: () => "", extras: () => Array.from({ length: 8 }, (_, i) => `<span class="glint" style="left:${(i * 37) % 100}%;top:${(i * 53) % 100}%;animation-delay:${-i * .5}s;background:#e7b8ff"></span>`).join("") },
-    { name: "Feuer-Pokémon", lasse: "pokemon", pal: { "--bg": "#2a1612", "--bg-2": "#4a241a", "--on-bg": "#ffd9c2", "--on-bg-strong": "#fff1e6" },
+    { name: "Feuer-Taschenmonster", lasse: "taschenmonster", pal: { "--bg": "#2a1612", "--bg-2": "#4a241a", "--on-bg": "#ffd9c2", "--on-bg-strong": "#fff1e6" },
       floor: (x, y) => svgT(`<rect width="100" height="100" fill="${(x + y) % 2 ? "#6b4a40" : "#73514a"}"/>${pick(x, y, 1, 4) === 0 ? `<path d="M20 70l16-10 14 6 18-12" fill="none" stroke="#ff7a1a" stroke-width="3" class="lava"/>` : ""}`),
       wall: (x, y) => { const k = pick(x, y, 0, 7); const mons = [GLUMANDA, GLUMANDA, FUKANO, PONITA, VULPIX]; return k < 5 ? pokeTile(lavaPad, mons[k]) : svgT(`${lavaPad}<path class="tailflame" d="M50 20q18 20 4 44-20-6-14-24 4 8 10 6-6-16 0-26z" fill="#ffb02e"/>`); },
       deco: () => "", extras: () => Array.from({ length: 8 }, (_, i) => `<span class="ember" style="left:${(i * 29) % 100}%;animation-delay:${-i * .8}s"></span>`).join("") }
@@ -2756,7 +2669,7 @@ LASSE.drummer = lasseBase("#2d3036", "#3d5bb8", "#ffffff",
   `<path d="M50 54l2.4 5 5.6.8-4 4 1 5.6-5-2.8-5 2.8 1-5.6-4-4 5.6-.8z" fill="#ffd35a"/>
    <g class="pick"><path d="M70 66L90 40M72 70L94 50" stroke="#c9935a" stroke-width="4" stroke-linecap="round"/><circle cx="90" cy="40" r="2.6" fill="#f6ead2"/><circle cx="94" cy="50" r="2.6" fill="#f6ead2"/></g>`,
   `${HAIR_STRUBBEL}<path d="M26 36q0-32 24-32t24 32" fill="none" stroke="#2d3036" stroke-width="5"/><rect x="20" y="30" width="11" height="18" rx="5.5" fill="#e0483a" stroke="${INK}" stroke-width="2"/><rect x="69" y="30" width="11" height="18" rx="5.5" fill="#e0483a" stroke="${INK}" stroke-width="2"/>`);
-// ===== Teil 2: Pokémon im Anime-Look (Cel-Shading: Grundfarbe, Schattenfläche, Glanzlicht, Tuschekontur) =====
+// ===== Teil 2: Taschenmonster im Anime-Look (Cel-Shading: Grundfarbe, Schattenfläche, Glanzlicht, Tuschekontur) =====
 const KI = "#2d3036";
 const kO = `stroke="${KI}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
 const kO2 = `stroke="${KI}" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"`;
@@ -2768,140 +2681,9 @@ const kFlame = (x, y, s = 1) => `<g class="tailflame" transform="translate(${x} 
 const kSpark = (x, y, r = 8) => `<path d="M${x} ${y - r}l${r * .3} ${r * .7} ${r * .7} ${r * .3}-${r * .7} ${r * .3}-${r * .3} ${r * .7}-${r * .3}-${r * .7}-${r * .7}-${r * .3} ${r * .7}-${r * .3}z" fill="#fff6a0" ${kO2} stroke-width="1.2"/>`;
 const kBolt = (x, y, s = 1, c = "#ffe14d") => `<path transform="translate(${x} ${y}) scale(${s})" d="M0 0l8-2-4 8 7-1-12 13 4-9-6 1z" fill="${c}" ${kO2} stroke-width="1.2"/>`;
 
-const PK = {
-  // Pikachu: kampfbereit, Blitzschweif, Funken an den Backen
-  pikachu: () => `
-    <path d="M60 76l14-6-5-6 15-12-6-5 12-16-24 10 6 7-14 9 5 6-12 6z" fill="#f7d02c" ${kO}/>${kSh("M60 76l14-6-5-6 4-3-4 6 5 6z")}<path d="M60 76l6-3-2-4-6 3z" fill="#8a5a2b"/>
-    <path d="M34 90q-6-18 4-30 12-8 24 0 10 12 4 30z" fill="#f7d02c" ${kO}/>${kSh("M58 62q8 12 4 28h-8q6-12 4-28z")}
-    <ellipse cx="40" cy="90" rx="7" ry="3.6" fill="#f7d02c" ${kO2}/><ellipse cx="60" cy="90" rx="7" ry="3.6" fill="#f7d02c" ${kO2}/>
-    <path d="M38 70q-8 2-8-4 2-4 8-2" fill="#f7d02c" ${kO2}/><path d="M62 70q8 2 8-4-2-4-8-2" fill="#f7d02c" ${kO2}/>
-    <path d="M34 36q-10-14-12-30 14 8 20 22z" fill="#f7d02c" ${kO}/><path d="M22 6q2 8 6 13l4-3q-4-6-10-10z" fill="${KI}"/>
-    <path d="M66 36q10-14 12-30-14 8-20 22z" fill="#f7d02c" ${kO}/><path d="M78 6q-2 8-6 13l-4-3q4-6 10-10z" fill="${KI}"/>
-    <path d="M28 46q0-20 22-20t22 20q0 16-22 16T28 46z" fill="#f7d02c" ${kO}/>${kSh("M60 58q10-4 12-12 0 12-12 15z")}${kHl("M36 36q6-6 14-6-8 3-11 9z")}
-    ${kEyeA(41, 44, 3.6, 4.4)}${kEyeA(59, 44, 3.6, 4.4)}
-    <path d="M48.6 50l1.4 1 1.4-1" stroke="${KI}" stroke-width="1.4" fill="none"/><path d="M45 53q2.5 3 5 0 2.5 3 5 0" stroke="${KI}" stroke-width="1.6" fill="none"/>
-    <circle cx="33" cy="52" r="5" fill="#e8402f" ${kO2} stroke-width="1.4"/><circle cx="67" cy="52" r="5" fill="#e8402f" ${kO2} stroke-width="1.4"/>
-    <g class="twinkle-d">${kBolt(16, 46, .9)}${kBolt(74, 44, .9)}</g>`,
-  // Bisasam: Vierbeiner mit Knolle, rote Augen
-  bisasam: () => `
-    <path d="M30 56q-4-22 18-28 22 4 20 26z" fill="#4fae5a" ${kO}/>${kSh("M54 30q16 6 14 24l-10 2q4-16-4-26z", .25)}<path d="M48 28q-2 10 0 26M36 40q6 6 12 14M60 38q-6 8-12 16" stroke="#2f7a3a" stroke-width="2" fill="none"/>${kHl("M36 38q4-8 12-10-6 4-8 12z", .45)}
-    <path d="M22 88q-6-18 6-26 20-10 42-2 14 6 10 28z" fill="#7fd3b8" ${kO}/>${kSh("M70 62q12 8 8 26h-10q6-14 2-26z")}
-    <path d="M24 88v4h10v-6M66 88v4h10v-6" fill="#7fd3b8" ${kO2}/>
-    <path d="M36 72l6-3 2 5-6 2zM62 78l5-2 2 4-5 2zM52 68l4-2 2 3-4 2z" fill="#3f9a86"/>
-    <path d="M14 66q-2-18 16-20 18 2 18 18 0 14-17 14-15 0-17-12z" fill="#7fd3b8" ${kO}/><path d="M16 48l2-8 6 6zM42 48l2-8-8 6z" fill="#7fd3b8" ${kO2}/>
-    ${kEyeA(23, 62, 3.6, 4.6, "#e2402f", -8)}${kEyeA(39, 62, 3.6, 4.6, "#e2402f", 8)}
-    <path d="M26 72q5 4 10 0" stroke="${KI}" stroke-width="1.6" fill="#c0392b"/>`,
-  // Schiggy: Schildkröte mit Panzer und Ringelschwanz
-  schiggy: () => `
-    <path d="M70 80q18 2 18-12-2-10-10-6 6 2 2 8-6 4-12 2z" fill="#6fbfe8" ${kO2}/>
-    <path d="M30 92q-8-26 6-40h28q14 14 6 40z" fill="#c98a4a" ${kO}/><path d="M36 56q14-4 28 0" stroke="#8a5a2b" stroke-width="3" fill="none"/>
-    <path d="M36 92q-4-20 2-34h24q6 14 2 34z" fill="#f6e2a0" ${kO2}/><path d="M38 66h24M37 76h26M38 86h24" stroke="#c9a85a" stroke-width="2"/>
-    <path d="M30 64q-12 2-14 10 6 4 14-2M70 64q12 2 14 10-6 4-14-2" fill="#6fbfe8" ${kO2}/>
-    <path d="M30 90h12v4H30zM58 90h12v4H58z" fill="#6fbfe8" ${kO2}/>
-    <path d="M26 34q0-24 24-24t24 24q0 18-24 18T26 34z" fill="#6fbfe8" ${kO}/>${kSh("M62 48q12-6 12-14 2 14-12 18z")}${kHl("M34 22q6-8 16-8-10 4-12 12z")}
-    ${kEyeA(40, 32, 4.2, 6, "#8a4a2b")}${kEyeA(60, 32, 4.2, 6, "#8a4a2b")}
-    <path d="M42 44q8 6 16 0" stroke="${KI}" stroke-width="1.8" fill="#fff"/>`,
-  // Taubsi: kleiner Vogel im Anflug
-  taubsi: () => `
-    <path d="M58 54q24-14 34-34-6 20-18 30 12-4 18-12-6 16-26 24z" fill="#b97a45" ${kO}/><path d="M64 52q16-10 24-24" stroke="#f0d9a8" stroke-width="3" fill="none"/>
-    <path d="M24 70q0-26 28-26 20 0 20 22 0 16-24 18-24 0-24-14z" fill="#b97a45" ${kO}/><path d="M34 72q2-14 16-14 14 0 14 12-2 10-16 10-14 0-14-8z" fill="#f0d9a8"/>${kSh("M60 48q14 6 12 20-4 10-12 12 8-14 0-32z")}
-    <path d="M20 46q-2-20 18-22 16 0 18 14 0 14-18 16-16 0-18-8z" fill="#b97a45" ${kO}/><path d="M30 26q-4-10 6-16-2 8 4 10 0-8 8-10-4 10-2 16" fill="#e2402f" ${kO2}/>
-    <path d="M21 36l-10 5 11 2z" fill="#9a9184" ${kO2}/><path d="M22 34q8-4 16 2-4 6-12 6z" fill="${KI}"/><circle cx="30" cy="37" r="3.2" fill="#fff"/><circle cx="30.6" cy="37.4" r="2" fill="${KI}"/><circle cx="29.6" cy="36.4" r=".8" fill="#fff"/>
-    <path d="M38 84v8l-4 2M48 84v8l4 2" stroke="#e8a05a" stroke-width="3" fill="none"/>`,
-  // Raupy: Raupe mit Fühler und Augenfleck
-  raupy: () => `
-    ${[[18, 82], [32, 80], [46, 76], [58, 68]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="10" fill="#8ccf4a" ${kO}/><ellipse cx="${x}" cy="${y + 9}" rx="3" ry="2" fill="#f6e2a0" ${kO2} stroke-width="1"/>`).join("")}${kSh("M10 86q8 8 18 4 8 4 16 0 8 2 14-6-6 10-16 10-8 4-16 0-10 4-16-8z")}
-    <path d="M52 52q0-24 20-24t20 24q0 20-20 20T52 52z" fill="#8ccf4a" ${kO}/>${kSh("M84 36q10 12 6 26-6 10-16 10 14-12 10-36z")}${kHl("M60 40q4-8 12-10-6 4-8 12z")}
-    <path d="M70 30q-4-14 6-22" stroke="${KI}" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M70 30q-4-14 6-22" stroke="#e2402f" stroke-width="3.6" fill="none" stroke-linecap="round"/>
-    <circle cx="60" cy="48" r="5" fill="#ffd23a" ${kO2} stroke-width="1.4"/><circle cx="60" cy="48" r="2.2" fill="${KI}"/>
-    ${kEyeA(76, 48, 5, 7)}<path d="M84 62q-6 4-12 1" stroke="${KI}" stroke-width="1.8" fill="none"/>`,
-  // Onix: Felsschlange in Ringen
-  onix: () => `
-    ${[[14, 84, 12], [30, 88, 13], [48, 84, 14], [62, 72, 13], [70, 56, 12], [66, 40, 11]].map(([x, y, r]) => `<path d="M${x - r} ${y}q0-${r} ${r}-${r}q${r} 0 ${r} ${r}q0 ${r * .8}-${r} ${r * .8}q-${r} 0-${r}-${r * .8}z" fill="#9a958c" ${kO}/><path d="M${x + r * .2} ${y - r * .5}q${r * .6} ${r * .2} ${r * .6} ${r}" stroke="#6b665e" stroke-width="2" fill="none"/>${kSh(`M${x + r * .3} ${y + r * .7}q${r * .7}-${r * .1} ${r * .7}-${r * .8}l0 ${r * .5}q-${r * .2} ${r * .5}-${r * .7} ${r * .3}z`)}`).join("")}
-    <path d="M44 32q-2-18 16-22 20 0 22 18 0 14-18 16-18 0-20-12z" fill="#a8a296" ${kO}/><path d="M58 12q2-8 8-10-2 6 0 10" fill="#a8a296" ${kO2}/>${kHl("M50 18q6-6 14-6-8 3-10 8z", .4)}
-    ${kEyeA(56, 26, 3, 3.6, KI, -10)}${kEyeA(72, 26, 3, 3.6, KI, 10)}<path d="M54 22l6 2M74 22l-6 2" stroke="${KI}" stroke-width="2.4"/><path d="M58 36q6 3 12 0" stroke="${KI}" stroke-width="2" fill="none"/>`,
-  // Kleinstein: Fels mit Armen
-  kleinstein: () => `
-    <path d="M30 50q-14-4-20 6-4 8 4 12 8-2 6-8 4 0 8-4" fill="#9a958c" ${kO}/><path d="M70 50q14-4 20 6 4 8-4 12-8-2-6-8-4 0-8-4" fill="#9a958c" ${kO}/>
-    <circle cx="14" cy="64" r="7" fill="#9a958c" ${kO2}/><circle cx="86" cy="64" r="7" fill="#9a958c" ${kO2}/>
-    <path d="M26 56q0-26 24-28 24 2 24 28 0 22-24 24-24-2-24-24z" fill="#a8a296" ${kO}/>${kSh("M64 34q12 10 10 24-2 16-14 20 8-20 4-44z")}${kHl("M34 40q6-10 16-12-8 4-12 14z", .4)}
-    <path d="M36 60l4 4M62 40l4 2M44 70l6 2" stroke="#6b665e" stroke-width="2"/>
-    <path d="M34 48l10 4M66 48l-10 4" stroke="${KI}" stroke-width="3"/>${kEyeA(42, 54, 2.8, 3.4)}${kEyeA(58, 54, 2.8, 3.4)}
-    <path d="M42 66q8-5 16 0" stroke="${KI}" stroke-width="2.4" fill="none"/>`,
-  // Lucario: aufrecht, Aura-Sphäre in den Pfoten
-  lucario: () => `
-    <path d="M36 30q-14 6-16 22 4-4 8-4-2 6 0 10 4-10 10-16zM64 30q14 6 16 22-4-4-8-4 2 6 0 10-4-10-10-16z" fill="${KI}"/>
-    <path d="M38 92l2-22h20l2 22h-8l-2-12-2 12z" fill="${KI}"/>${kHl("M42 74v14", .2)}
-    <path d="M30 50q-4 18 8 26h24q12-8 8-26-20-8-40 0z" fill="#3d7fd6" ${kO}/><path d="M38 52q12 10 24 0v18q-12 6-24 0z" fill="#f2e3a0" ${kO2}/><path d="M50 58l4 6-4 4-4-4z" fill="#f4f4f4" ${kO2}/>${kSh("M62 50q10 10 6 24l-6 2q4-14 0-26z")}
-    <path d="M32 54q-10 6-12 16l8 2q2-8 6-12M68 54q10 6 12 16l-8 2q-2-8-6-12" fill="#3d7fd6" ${kO2}/><path d="M20 70l-4-4M80 70l4-4" stroke="#f4f4f4" stroke-width="3"/>
-    <circle class="twinkle-d" cx="50" cy="76" r="10" fill="#7ab8ff" ${kO2}/><circle cx="50" cy="76" r="4.6" fill="#e6f2ff"/>
-    <path d="M38 30l-8-26 16 16zM62 30l8-26-16 16z" fill="#3d7fd6" ${kO}/><path d="M33 10l4 10 4-2zM67 10l-4 10-4-2z" fill="${KI}" opacity=".5"/>
-    <path d="M32 34q0-16 18-16t18 16q0 16-18 18-18-2-18-18z" fill="#3d7fd6" ${kO}/>${kHl("M38 24q6-4 12-4-6 2-8 6z")}
-    <path d="M31 33q9-3 19 1 10-4 19-1l-1 7q-8-3-18 1-10-4-18-1z" fill="${KI}"/>
-    ${kEyeA(41, 37, 3.4, 2.6, "#e2402f", -12)}${kEyeA(59, 37, 3.4, 2.6, "#e2402f", 12)}
-    <path d="M42 46q8 4 16 0-2 6-8 6t-8-6z" fill="#2a5aa8" ${kO2} stroke-width="1.4"/>`,
-  // Machollo: Muskelpaket mit drei Kämmen
-  machollo: () => `
-    <path d="M36 92l2-16h24l2 16h-10l-2-8-2 8z" fill="#8ea4bf" ${kO}/>
-    <path d="M30 76q-6-26 20-28 26 2 20 28z" fill="#9fb3c8" ${kO}/>${kSh("M62 50q12 8 8 26h-6q4-14-2-26z")}<path d="M42 58q8 4 16 0M44 66q6 2 12 0" stroke="#6b7f98" stroke-width="2" fill="none"/>
-    <path d="M30 56q-14 2-16 14 4 6 10 4 0-8 8-10M70 56q14 2 16 14-4 6-10 4 0-8-8-10" fill="#9fb3c8" ${kO2}/>
-    <circle cx="16" cy="74" r="6" fill="#9fb3c8" ${kO2}/><circle cx="84" cy="74" r="6" fill="#9fb3c8" ${kO2}/>
-    <path d="M34 34q0-16 16-16t16 16q0 14-16 14T34 34z" fill="#9fb3c8" ${kO}/>
-    <path d="M40 20l-4-12 8 8 4-12 4 12 8-8-4 12z" fill="#8ea4bf" ${kO2}/>
-    ${kEyeA(43, 34, 3, 3.4, "#e2402f", -10)}${kEyeA(57, 34, 3, 3.4, "#e2402f", 10)}<path d="M38 28l9 3M62 28l-9 3" stroke="${KI}" stroke-width="2.6"/>
-    <path d="M44 42q6 3 12 0" stroke="${KI}" stroke-width="2" fill="none"/>`,
-  // Mewtu: schwebend, Psycho-Kugel
-  mewtu: () => `
-    <path d="M58 76q26 6 30-14 2-10-6-12 6 8-2 14-10 6-24 2z" fill="#8f5fbf" ${kO}/>
-    <path d="M38 92q-6-12 2-20h20q8 8 2 20h-8l-4-10-4 10z" fill="#e6dcef" ${kO}/>${kSh("M58 72q8 8 4 20h-6z")}
-    <path d="M38 76q-4-14 2-26h20q6 12 2 26z" fill="#e6dcef" ${kO}/><path d="M39 76q-2-8 1-14h20q3 6 1 14z" fill="#8f5fbf" ${kO2}/>${kSh("M58 50q6 12 4 26h-4q2-14 0-26z")}
-    <path d="M40 44q-2-8 10-10 12 2 10 10l-2 8H42z" fill="#e6dcef" ${kO}/>
-    <path d="M40 50q-12 0-16 10 2 4 8 2 2-6 8-6M60 50q12 0 16 10-2 4-8 2-2-6-8-6" fill="#e6dcef" ${kO2}/>
-    <circle class="twinkle-d" cx="22" cy="68" r="10" fill="#b08aff" opacity=".85" ${kO2}/><circle cx="22" cy="68" r="5" fill="#f2e8ff"/>
-    <path d="M38 20q0-14 12-14t12 14q0 12-12 14-12-2-12-14z" fill="#e6dcef" ${kO}/><path d="M40 10l-6-6 2 10M60 10l6-6-2 10" fill="#e6dcef" ${kO2}/>${kSh("M56 30q6-4 6-10 2 10-6 14z")}
-    <path d="M58 26q8 4 4 14" stroke="#e6dcef" stroke-width="4" fill="none"/><path d="M58 26q8 4 4 14" stroke="${KI}" stroke-width="1" fill="none"/>
-    ${kEyeA(45, 21, 2.8, 2, "#8f5fbf", -14)}${kEyeA(55, 21, 2.8, 2, "#8f5fbf", 14)}<path d="M41 18l6 2M59 18l-6 2" stroke="${KI}" stroke-width="2"/>`,
-  // Psiana: Fuchs mit Stirnjuwel und gespaltenem Schweif
-  psiana: () => `
-    <path d="M70 74q20-2 22-22-8 8-14 6 10-6 10-18-12 12-20 18z" fill="#d9b8e8" ${kO}/>
-    <path d="M24 90q-4-22 12-30 22-8 36 2 10 10 4 28h-8l-2-10-24 2-2 8z" fill="#d9b8e8" ${kO}/>${kSh("M66 62q10 10 6 28h-6q4-14 0-28z")}
-    <path d="M30 90h8M60 90h8" stroke="${KI}" stroke-width="3"/>
-    <path d="M18 40l-6-26 18 16zM50 40l8-26-18 14z" fill="#d9b8e8" ${kO}/><path d="M16 22l4 10 4-2zM54 22l-4 10-4-2z" fill="#b08ac8"/>
-    <path d="M14 50q0-18 20-18t20 18q0 16-20 18-20-2-20-18z" fill="#d9b8e8" ${kO}/>${kHl("M20 40q6-6 14-6-8 3-10 8z")}
-    <path d="M34 38l3 4-3 3-3-3z" fill="#e2402f" ${kO2} stroke-width="1.2"/>
-    ${kEyeA(26, 50, 3.4, 3, "#8f5fbf", -14)}${kEyeA(42, 50, 3.4, 3, "#8f5fbf", 14)}<path d="M30 60q4 2 8 0" stroke="${KI}" stroke-width="1.6" fill="none"/>`,
-  // Glumanda: kleine Echse mit Schwanzflamme
-  glumanda: () => `
-    <path d="M62 80q22 0 24-24" stroke="${KI}" stroke-width="11" fill="none" stroke-linecap="round"/><path d="M62 80q22 0 24-24" stroke="#f08a3c" stroke-width="6" fill="none" stroke-linecap="round"/>${kFlame(84, 44, 1.1)}
-    <path d="M30 92q-8-22 6-34h28q14 12 6 34z" fill="#f08a3c" ${kO}/><path d="M38 92q-4-16 4-26h16q8 10 4 26z" fill="#ffe3a0"/>${kSh("M62 60q10 12 6 32h-6q4-18 0-32z")}
-    <path d="M32 64q-12 2-12 10 6 4 12 0M68 64q12 2 12 10-6 4-12 0" fill="#f08a3c" ${kO2}/>
-    <path d="M28 34q0-22 22-22t22 22q0 20-22 22-22-2-22-22z" fill="#f08a3c" ${kO}/>${kSh("M62 48q10-6 10-14 2 14-10 18z")}${kHl("M36 22q6-6 14-6-8 3-11 9z")}
-    ${kEyeA(41, 32, 4, 5.6, "#2b5fd9")}${kEyeA(59, 32, 4, 5.6, "#2b5fd9")}
-    <path d="M42 44q8 6 16 0" stroke="${KI}" stroke-width="1.8" fill="#c0392b"/>`,
-  // Glutexo: größer, Hinterkopf-Horn, entschlossener Blick
-  glutexo: () => `
-    <path d="M62 82q24 2 26-26" stroke="${KI}" stroke-width="11" fill="none" stroke-linecap="round"/><path d="M62 82q24 2 26-26" stroke="#d9452a" stroke-width="6" fill="none" stroke-linecap="round"/>${kFlame(86, 42, 1.25)}
-    <path d="M28 92q-6-24 8-36h28q14 12 8 36z" fill="#d9452a" ${kO}/><path d="M38 92q-4-16 4-28h16q8 12 4 28z" fill="#ffd8a0"/>${kSh("M62 58q12 12 8 34h-6q4-18-2-34z")}
-    <path d="M30 62q-14 2-14 12 6 4 12 0l2-4M70 62q14 2 14 12-6 4-12 0" fill="#d9452a" ${kO2}/><path d="M16 74l-3 3M20 76l-2 4" stroke="#fff" stroke-width="2"/>
-    <path d="M56 14l18-10-6 16z" fill="#d9452a" ${kO2}/>
-    <path d="M26 34q0-22 24-22t22 20q2 18-22 22-24-2-24-20z" fill="#d9452a" ${kO}/>${kHl("M34 22q6-6 14-6-8 3-11 9z")}
-    ${kEyeA(41, 32, 3.6, 4, "#2b5fd9", -14)}${kEyeA(59, 32, 3.6, 4, "#2b5fd9", 14)}<path d="M35 26l10 3M65 26l-10 3" stroke="${KI}" stroke-width="2.6"/>
-    <path d="M40 44q10 6 20 0l-2 4-3-2-3 3-3-3-3 2z" stroke="${KI}" stroke-width="1.6" fill="#fff"/>`,
-  // Glurak: Drache mit Flügeln, Feueratem
-  glurak: () => `
-    <path d="M40 46L8 16l4 18-8 2 12 12-6 6 30 8z" fill="#e8742c" ${kO}/><path d="M38 50L14 28l2 10 10 6-4 4 16 6z" fill="#2f8f8a"/>
-    <path d="M60 46l32-30-4 18 8 2-12 12 6 6-30 8z" fill="#e8742c" ${kO}/><path d="M62 50l24-22-2 10-10 6 4 4-16 6z" fill="#2f8f8a"/>
-    <path d="M60 84q20 6 26-10" stroke="${KI}" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M60 84q20 6 26-10" stroke="#e8742c" stroke-width="5" fill="none" stroke-linecap="round"/>${kFlame(84, 62, 1.1)}
-    <path d="M34 92q-8-28 8-42h16q16 14 8 42z" fill="#e8742c" ${kO}/><path d="M42 92q-4-22 4-36h8q8 14 4 36z" fill="#ffe3a0"/>${kSh("M58 50q14 14 8 42h-6q4-24-2-42z")}
-    <path d="M34 92h10M56 92h10" stroke="${KI}" stroke-width="4"/>
-    <path d="M46 52q-2-10 2-16h8q4 6 2 16z" fill="#e8742c" ${kO2}/>
-    <path d="M44 14l-4-10 8 6zM60 14l6-10-2 10z" fill="#e8742c" ${kO2}/>
-    <path d="M38 26q0-16 14-16t14 16q0 4-2 6l12 2q2 6-6 8H52q-14 0-14-16z" fill="#e8742c" ${kO}/>${kHl("M44 16q4-3 9-3-5 2-7 5z")}${kSh("M52 42h18q6-1 6-6-6 4-24 2z")}
-    ${kEyeA(48, 24, 3, 2.6, "#2b5fd9", -14)}${kEyeA(60, 24, 3, 2.6, "#2b5fd9", 14)}<path d="M43 20l8 3M65 20l-7 3" stroke="${KI}" stroke-width="2.2"/>
-    <path d="M62 36q6 1 10 0" stroke="${KI}" stroke-width="1.4"/><path class="lava" d="M76 36q10-6 18 0-6 2-4 6-8-4-14-6z" fill="#ffb02e" ${kO2} stroke-width="1.2"/>`
-};
+const PK = new Proxy({}, { get: (_, k) => typeof k === "string" ? () => MON(k) : undefined });
 
-// Kachel: farbiger Hintergrund (Gras, Fels, Dojo …) + Pokémon im Vordergrund
+// Kachel: farbiger Hintergrund (Gras, Fels, Dojo …) + Taschenmonster im Vordergrund
 const kMon = (bg, name, back = "") => () => asPerson(kB(bg, `${back}<g class="poke">${PK[name]()}</g>`), "pk-" + name);
 // Hintergründe
 const bgGrass = `<path d="M4 72q24-8 46 0t46 0v24H4z" fill="#3f9a4a"/><path d="M10 74l4-10 4 10M80 72l4-10 4 10" fill="#2f7a3a"/>`;
@@ -3084,7 +2866,7 @@ Object.assign(LASSE, {
   // Reiten
   stall: kLasse({ shirt: "#c0392b", pants: "#33507f", shoes: "#3f7a35", body: `<path d="M37 52h26M36 60h28M44 46v22M56 46v22" stroke="#8a231a" stroke-width="2"/><path d="M40 82h8v8h-8zM52 82h8v8h-8z" fill="#3f7a35"/>`, hand: `<path d="M70 70L86 30" stroke="#a8743f" stroke-width="3.6" stroke-linecap="round"/><path d="M80 32l4-14M85 34l5-13M90 36l5-12M80 32q8 4 15 4" stroke="#9aa3b1" stroke-width="2.4" fill="none" stroke-linecap="round"/>` }),
   turnier: kLasse({ shirt: "#1f2a44", pants: "#f4f1ea", shoes: KI, body: `<path d="M46 44l4 10 4-10z" fill="#ffffff" ${kO2}/><path d="M40 74h9v16h-9zM51 74h9v16h-9z" fill="${KI}"/><circle cx="50" cy="60" r="1.6" fill="#ffd23a"/>`, head: helmetRide("#1f2a44") }),
-  // Pokémon
+  // Taschenmonster
   pkWald: kLasse({ shirt: "#3fae4a", pants: "#6b5034", shoes: "#8a5a2b", glove: "#e2a983", body: `<path d="M40 46l4 22M60 46l-4 22" stroke="#a8743f" stroke-width="3.4"/>`, head: ashCap }),
   pkArena: kLasse({ shirt: "#e2402f", pants: "#33507f", shoes: KI, body: `<path d="M50 44v24" stroke="${KI}" stroke-width="2"/><path d="M56 52l3-3 3 3-3 3z" fill="#9aa3b1" ${kO2}/>`, head: ashCap }),
   dojo: kLasse({ shirt: "#ffffff", pants: "#ffffff", shoes: SKIN10, body: `<path d="M44 44l6 10 6-10" fill="none" stroke="${KI}" stroke-width="2"/><path d="M36 62h28" stroke="${KI}" stroke-width="4"/><path d="M48 62l-3 8M52 62l3 8" stroke="${KI}" stroke-width="3"/>`, head: `<path d="M31 18h38" stroke="#e2402f" stroke-width="5"/><path d="M68 18l8 4M68 18l7-3" stroke="#e2402f" stroke-width="3" stroke-linecap="round"/>` }),
@@ -3115,7 +2897,7 @@ Object.assign(LASSE, {
 const OUTFIT = {
   "Bolzplatz": "bolz", "HSV-Campus": "hsvTraining", "Volksparkstadion": "kapitaen",
   "Reiterhof": "stall", "Ausritt im Wald": "reiten", "Springturnier": "turnier",
-  "Route 1": "pokemon", "Vertania-Wald": "pkWald", "Arena Marmoria": "pkArena", "Kampf-Dojo": "dojo", "Psycho-Arena": "psycho", "Glumandas Vulkan": "vulkan",
+  "Wasser-Ufer": "taschenmonster", "Blätterwald": "pkWald", "Funkenfelsen": "pkArena", "Trainingshalle": "dojo", "Traumwolke": "psycho", "Feuerberg": "vulkan",
   "Baustelle": "lego", "Lego-Stadt": "legoPolizei", "Raumstation": "astro",
   "Bergkristall-Höhle": "steine", "Malachit-Mine": "lore", "Türkis-Tempel": "abenteuer",
   "Konservatorium Hamburg": "konzertWeste", "Laeiszhalle": "frack", "Elbphilharmonie": "schlagzeug",
@@ -3126,14 +2908,14 @@ const OUTFIT = {
 Object.assign(LASSE, {
   fussball: kLasse({ shirt: "#ffffff", pants: "#e2402f", shoes: KI, body: `<g transform="translate(57 52)">${kRaute}</g><text x="44" y="64" font-family="Bangers, Impact, sans-serif" font-size="11" fill="#0a5cb0">7</text>` }),
   reiten: kLasse({ shirt: "#3b5f8a", pants: "#eadfc8", shoes: KI, body: `<path d="M40 74h9v16h-9zM51 74h9v16h-9z" fill="${KI}"/>`, head: `<path d="M34 22q0-18 16-18t16 18z" fill="#222a3a" ${kO}/><path d="M32 22h36l-3 5H35z" fill="#222a3a" ${kO2}/>` }),
-  pokemon: kLasse({ shirt: "#2b5fd9", pants: "#33507f", shoes: "#e2402f", glove: "#3fae4a", body: `<path d="M44 40l6 6 6-6" fill="#fff" ${kO2}/><path d="M46 46v24M54 46v24" stroke="${KI}" stroke-width="5"/>`, head: ashCap + `<g class="buddy"><path d="M66 36l-4-10 8 6zM78 36l4-10-8 6z" fill="#f7d02c" ${kO2}/><ellipse cx="72" cy="42" rx="8" ry="7" fill="#f7d02c" ${kO2}/><circle cx="69" cy="41" r="1.3" fill="${KI}"/><circle cx="75" cy="41" r="1.3" fill="${KI}"/><circle cx="66" cy="44" r="1.6" fill="#e8402c"/><circle cx="78" cy="44" r="1.6" fill="#e8402c"/></g>` }),
+  taschenmonster: kLasse({ shirt: "#2b5fd9", pants: "#33507f", shoes: "#e2402f", glove: "#3fae4a", body: `<path d="M44 40l6 6 6-6" fill="#fff" ${kO2}/><path d="M46 46v24M54 46v24" stroke="${KI}" stroke-width="5"/>`, head: ashCap + `<g class="buddy"><path d="M66 36l-4-10 8 6zM78 36l4-10-8 6z" fill="#f7d02c" ${kO2}/><ellipse cx="72" cy="42" rx="8" ry="7" fill="#f7d02c" ${kO2}/><circle cx="69" cy="41" r="1.3" fill="${KI}"/><circle cx="75" cy="41" r="1.3" fill="${KI}"/><circle cx="66" cy="44" r="1.6" fill="#e8402c"/><circle cx="78" cy="44" r="1.6" fill="#e8402c"/></g>` }),
   lego: kLasse({ shirt: "#ffd23a", pants: "#33507f", shoes: "#e2402f", body: `<rect x="44" y="50" width="12" height="8" rx="1.6" fill="#e2402f" ${kO2}/>`, head: `<path d="M33 18q0-14 17-14t17 14z" fill="#ff8a1a" ${kO}/><rect x="30" y="17" width="40" height="5" rx="2" fill="#ff8a1a" ${kO2}/>` }),
   legoNoppe: kLasse({ shirt: "#ffd23a", pants: "#33507f", shoes: "#e2402f", hair: false, body: `<rect x="44" y="50" width="12" height="8" rx="1.6" fill="#e2402f" ${kO2}/>`, under: `<path d="M43.5 10.8V6.5h13v4.3" fill="${SKIN10}" ${kO2}/><ellipse cx="50" cy="6.5" rx="6.5" ry="2.2" fill="${SKIN10}" ${kO2}/><path d="M46.5 9v1" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".7"/>` }).replaceAll(SKIN10, "#ffd21f"),
   steine: kLasse({ shirt: "#a7473c", pants: "#5b4636", shoes: "#3b2a1e", body: `<path d="M40 44v26M50 42v28M60 44v26M33 56h35" stroke="#7a2f28" stroke-width="2"/>`, hand: `<path d="M72 68L84 30" stroke="#8a5a2b" stroke-width="4"/><path d="M74 34q12-10 22 2-10-3-12-1z" fill="#c9ced8" ${kO2}/>`, head: `<path d="M33 20q0-16 17-16t17 16z" fill="#ffd23a" ${kO}/><rect x="44" y="6" width="12" height="9" rx="3" fill="#c9ced8" ${kO2}/><circle cx="50" cy="10.5" r="2.6" fill="#fff6b0"/>` }),
   schlagzeug: kLasse({ shirt: KI, pants: "#33507f", shoes: "#ffffff", body: kStar(50, 54, 6, "#ffd23a"), hand: `<path d="M72 68L90 46M74 72L94 56" stroke="#c9935a" stroke-width="3.6" stroke-linecap="round"/>`, head: `<path d="M33 26q0-24 17-24t17 24" fill="none" stroke="${KI}" stroke-width="4"/><rect x="29" y="20" width="9" height="14" rx="4" fill="#e2402f" ${kO2}/><rect x="62" y="20" width="9" height="14" rx="4" fill="#e2402f" ${kO2}/>` }),
   tennis: kLasse({ shirt: "#ffffff", pants: "#ffffff", shoes: "#ffffff", body: `<path d="M44 42l6 5 6-5" fill="none" stroke="#2f7a4a" stroke-width="2.4"/>`, hand: `<path d="M72 68L80 46" stroke="${KI}" stroke-width="4"/><ellipse cx="84" cy="34" rx="9" ry="13" fill="#d7f03c55" stroke="#e2402f" stroke-width="3.4" transform="rotate(15 84 34)"/>`, head: `<path d="M35 16q15-6 30 0" stroke="#e2402f" stroke-width="5" fill="none"/>` }),
   essen: kLasse({ shirt: "#ffffff", pants: "#33507f", shoes: KI, body: `<path d="M40 50h20v20H40z" fill="#e2402f" ${kO2}/>`, head: `<path d="M36 16h28v-6q6-2 4-8-2-6-10-2-3-6-8-4-6-2-8 4-8-4-10 2-2 6 4 8z" fill="#ffffff" ${kO}/>` }),
-  pokemon2: kLasse({ shirt: KI, pants: "#33507f", shoes: "#e2402f", glove: "#3fae4a", body: `<path d="M34 48q0-8 16-8l-4 30H32zM66 48q0-8-16-8l4 30h14z" fill="#2b5fd9" ${kO2}/>`, head: ashCap }),
+  taschenmonster2: kLasse({ shirt: KI, pants: "#33507f", shoes: "#e2402f", glove: "#3fae4a", body: `<path d="M34 48q0-8 16-8l-4 30H32zM66 48q0-8-16-8l4 30h14z" fill="#2b5fd9" ${kO2}/>`, head: ashCap }),
   familie: kLasse({ shirt: "#3fae4a", pants: "#33507f", shoes: "#ffffff", body: `<path d="M38 56h24v12H38z" fill="#2f8a3a" ${kO2}/><path d="M42 44q8 6 16 0" fill="none" stroke="${KI}" stroke-width="1.6"/>`, head: `<path d="M33 18q0-14 17-14t17 14z" fill="#2b5fd9" ${kO}/><path d="M30 18h12v4H30z" fill="#2b5fd9" ${kO2}/>` })
 });
 LASSE.neutral = LASSE.familie;
@@ -3145,13 +2927,13 @@ const K_BOXES = {
   k2netz: `<clipPath id="k2netz-top"><path d="M18 52a32 32 0 0164 0z"/></clipPath><circle cx="50" cy="52" r="32" fill="#fff" ${kO}/><path d="M18 52a32 32 0 0164 0z" fill="#3fb6c8"/><g clip-path="url(#k2netz-top)"><path d="M30 14v38M42 14v38M58 14v38M70 14v38M14 30h72M14 42h72" stroke="${KI}" stroke-width="2.2"/></g><path d="M18 52a32 32 0 0164 0z" fill="none" ${kO}/><path d="M18 52h64" stroke="${KI}" stroke-width="5"/><circle cx="50" cy="52" r="9" fill="#fff" ${kO}/>`,
   k2tauch: `<clipPath id="k2tauch-top"><path d="M18 52a32 32 0 0164 0z"/></clipPath><circle cx="50" cy="52" r="32" fill="#fff" ${kO}/><path d="M18 52a32 32 0 0164 0z" fill="#2b5fd9"/><g clip-path="url(#k2tauch-top)"><path d="M16 30q6-5 12 0t12 0 12 0 12 0 12 0 12 0M16 42q6-5 12 0t12 0 12 0 12 0 12 0 12 0" stroke="#9fdcff" stroke-width="4" fill="none"/></g><path d="M18 52a32 32 0 0164 0z" fill="none" ${kO}/><path d="M18 52h64" stroke="${KI}" stroke-width="5"/><circle cx="50" cy="52" r="9" fill="#fff" ${kO}/>`,
   k2hyper: `<clipPath id="k2hyper-top"><path d="M18 52a32 32 0 0164 0z"/></clipPath><circle cx="50" cy="52" r="32" fill="#fff" ${kO}/><path d="M18 52a32 32 0 0164 0z" fill="#2d3036"/><g clip-path="url(#k2hyper-top)"><path d="M33 14v38M67 14v38" stroke="#ffd23a" stroke-width="9"/></g><path d="M18 52a32 32 0 0164 0z" fill="none" ${kO}/><path d="M18 52h64" stroke="${KI}" stroke-width="5"/><circle cx="50" cy="52" r="9" fill="#fff" ${kO}/>`,
-  k2poke: `<circle cx="50" cy="52" r="32" fill="#fff" ${kO}/><path d="M18 52a32 32 0 0164 0z" fill="var(--c1, #e2402f)" ${kO}/><path d="M18 52h64" stroke="${KI}" stroke-width="5"/><circle cx="50" cy="52" r="9" fill="#fff" ${kO}/>`,
+  k2poke: `${FANGKUGEL("var(--c1, #e2402f)")}`,
   k2lego: `<rect x="12" y="30" width="76" height="54" rx="5" fill="var(--c1, #ffd23a)" ${kO}/>${[30, 50, 70].map(a => `<rect x="${a - 8}" y="20" width="16" height="11" rx="3" fill="var(--c1, #ffd23a)" ${kO2}/>`).join("")}<path d="M18 40v36" stroke="#fff" stroke-width="4" opacity=".6"/>`,
   k2kristall: `<path d="M28 84l-6-34 14-26h28l14 26-6 34z" fill="var(--g1, #d6f6ff)" ${kO}/><path d="M36 24l14 30 14-30M22 50h56M50 54v30" stroke="${KI}" stroke-width="2" opacity=".55"/><path d="M34 34l6 12" stroke="#fff" stroke-width="4"/>`,
   k2snare: `<path d="M14 38v32q36 20 72 0V38" fill="#d7dce4" ${kO}/><path d="M14 50q36 18 72 0v8q-36 18-72 0z" fill="var(--c1, #e2402f)"/><ellipse cx="50" cy="38" rx="36" ry="12" fill="#fbf7ef" ${kO}/><path d="M58 16l-8 20M74 18L58 34" stroke="#c9935a" stroke-width="4"/>`,
   k2tennis: `<circle cx="50" cy="52" r="28" fill="#d7f03c" ${kO}/><path d="M26 36q20 16 0 32M74 36q-20 16 0 32" fill="none" stroke="#fff" stroke-width="4.4"/>`,
   k2pizza: `<rect x="12" y="30" width="76" height="50" rx="3" fill="#f2e3c6" ${kO}/><path d="M12 30l8-12h60l8 12" fill="#e9d7b2" ${kO2}/><circle cx="50" cy="56" r="14" fill="#e2402f" ${kO2}/><text x="50" y="60" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="10" fill="#fff">PIZZA</text>`,
-  k2super: `<circle cx="50" cy="52" r="32" fill="#fff" ${kO}/><path d="M18 52a32 32 0 0164 0z" fill="#2b5fd9" ${kO}/><path d="M28 34q8-4 12-14M72 34q-8-4-12-14" stroke="#e2402f" stroke-width="6"/><path d="M18 52h64" stroke="${KI}" stroke-width="5"/><circle cx="50" cy="52" r="9" fill="#fff" ${kO}/>`,
+  k2super: `${FANGKUGEL("#2b5fd9")}`,
   k2karton: `<rect x="12" y="26" width="76" height="60" rx="3" fill="#c9935a" ${kO}/><path d="M12 40h76M50 26v14" stroke="${KI}" stroke-width="2"/><rect x="40" y="22" width="20" height="10" fill="#e9d7b2" ${kO2}/><text x="50" y="70" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="14" fill="${KI}">${"IDA"}</text>`
 };
 document.querySelector("svg defs").insertAdjacentHTML("beforeend",
@@ -3241,31 +3023,31 @@ THEMES.reiten = theme2({
   ]
 });
 
-// ---------- 3 Pokémon ----------
+// ---------- 3 Taschenmonster ----------
 const kGrass = (n = 5) => Array.from({ length: n }, (_, i) => { const x = 10 + i * (80 / (n - 1)); return `<path d="M${x - 8} 92l8-52 8 52" fill="#2f7a3a" ${kO2}/>`; }).join("");
 const kMonPeek = (inner) => `<g class="poke">${inner}</g>`;
-THEMES.pokemon = theme2({
-  title: "Pokémon", emblem: "pokeball", box: "k2poke", rolls: true, boxWord: "Pokébälle", pushWord: "Würfe",
-  hint: "Roll jeden Pokéball in eine Arena-Markierung. Bälle lassen sich nur schieben, nicht ziehen.",
-  winTitle: "Gefangen!", winText: (m, p) => `Alle Pokébälle bereit. ${m} Schritte, ${p} Würfe.`,
-  prize: { symbol: "orden", title: "Felsorden!", text: (m) => `Arena Marmoria geschafft! Finale in ${m} Schritten.` },
+THEMES.taschenmonster = theme2({
+  title: "Taschenmonster", emblem: "pokeball", box: "k2poke", rolls: true, boxWord: "Fangkugeln", pushWord: "Würfe",
+  hint: "Roll jeden Fangkugel in eine Arena-Markierung. Bälle lassen sich nur schieben, nicht ziehen.",
+  winTitle: "Gefangen!", winText: (m, p) => `Alle Fangkugeln bereit. ${m} Schritte, ${p} Würfe.`,
+  prize: { symbol: "orden", title: "Felsorden!", text: (m) => `Funkenfelsen geschafft! Finale in ${m} Schritten.` },
   pal: { "--accent": "#e2402f", "--accent-dark": "#a82f22" },
   target: kTarget(`${kGlow(`<circle cx="50" cy="52" r="34" opacity="0"/>`)}<circle cx="50" cy="52" r="34" fill="none" stroke="#fff" stroke-width="6"/><circle cx="50" cy="52" r="34" fill="none" stroke="${KI}" stroke-width="2" stroke-dasharray="7 6"/>${kStar(50, 52, 12, "#fff")}`),
   scenes: [
-    kScene("Route 1", "pokemon", PAL("#eef6e2", "#fafdf4"), kFloor("#ebd59a", "#e6cf91", (x, y) => pick(x, y, 1, 4) === 0 ? `<circle cx="${30 + pick(x, y, 2, 40)}" cy="60" r="3" fill="#b89a5a"/>` : ""), [
+    kScene("Wasser-Ufer", "taschenmonster", PAL("#eef6e2", "#fafdf4"), kFloor("#ebd59a", "#e6cf91", (x, y) => pick(x, y, 1, 4) === 0 ? `<circle cx="${30 + pick(x, y, 2, 40)}" cy="60" r="3" fill="#b89a5a"/>` : ""), [
       () => kB("#3f9a4a", kGrass(5)), kMon("#bfe3f6", "pikachu", bgGrass), kMon("#bfe3f6", "bisasam", bgGrass),
       () => kB("#8f8a80", `<path d="M14 80q4-40 34-46 30 4 38 46z" fill="#a8a196" ${kO}/>`), () => kB("#3f9a4a", `<rect x="44" y="56" width="12" height="34" fill="#7a4a2a" ${kO2}/><circle cx="50" cy="40" r="28" fill="#2f7a3a" ${kO}/>`),
       kMon("#bfe3f6", "taubsi", bgGrass), kMon("#bfe3f6", "schiggy", bgGrass),
       () => kB("#c9b48c", `<rect x="18" y="20" width="64" height="40" fill="#fff" ${kO2}/>${kHand("ROUTE 1", KI, 15, 46)}<path d="M50 60v32" stroke="#8a5a2b" stroke-width="6"/>`)
     ], () => birdHTML()),
-    kScene("Vertania-Wald", "pokemon", PAL("#d9e8d0", "#eef6ea"), kFloor("#7a8a52", "#73844c", (x, y) => pick(x, y, 1, 5) === 0 ? `<path d="M30 40q6-8 12 0-6 6-12 0z" fill="#4f6a2a"/>` : ""), [
+    kScene("Blätterwald", "taschenmonster", PAL("#d9e8d0", "#eef6ea"), kFloor("#7a8a52", "#73844c", (x, y) => pick(x, y, 1, 5) === 0 ? `<path d="M30 40q6-8 12 0-6 6-12 0z" fill="#4f6a2a"/>` : ""), [
       () => kB("#1f4a2a", `<path d="M50 6l30 34H20zM50 22l34 38H16z" fill="#1f5a2f" ${kO2}/><rect x="44" y="60" width="12" height="32" fill="#4a3018" ${kO2}/>`),
       kMon("#5f8a4a", "raupy", bgForest), kMon("#5f8a4a", "pikachu", bgForest),
       kMon("#5f8a4a", "bisasam", bgForest),
       () => kB("#1f4a2a", `<path d="M10 70q20-30 40-10t40-10" stroke="#4a3018" stroke-width="10" fill="none"/><circle cx="70" cy="40" r="6" fill="#ffd23a" opacity=".8"/>`),
       () => kB("#2f5a2a", `<path d="M20 90q0-40 30-40t30 40z" fill="#3f7a3a" ${kO2}/>${[[30, 60], [50, 54], [68, 62]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="5" fill="#2b5fd9" ${kO2} stroke-width="1"/>`).join("")}`)
     ], () => [0, 1, 2].map(i => `<span class="leaf" style="left:${15 + i * 32}%;animation-delay:${-i * 2.6}s"></span>`).join("")),
-    kScene("Arena Marmoria", "pokemon", PAL("#ece6dc", "#f8f5ef"), kFloor("#b8b0a2", "#aea597", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M30 30l10 8-6 10" stroke="${KI}" stroke-width="1.6" fill="none" opacity=".4"/>` : ""), [
+    kScene("Funkenfelsen", "taschenmonster", PAL("#ece6dc", "#f8f5ef"), kFloor("#b8b0a2", "#aea597", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M30 30l10 8-6 10" stroke="${KI}" stroke-width="1.6" fill="none" opacity=".4"/>` : ""), [
       () => kB("#7a7266", `<path d="M14 84q4-40 34-46 30 4 38 46z" fill="#9a9184" ${kO}/><path d="M30 60q10-8 20-4" stroke="#fff" stroke-width="3" fill="none" opacity=".5"/>`),
       kMon("#cfc6b6", "kleinstein", bgRock),
       kMon("#cfc6b6", "onix", bgRock),
@@ -3452,28 +3234,28 @@ THEMES.essen = theme2({
   ]
 });
 
-// ---------- 9 Pokémon 2 ----------
-THEMES.pokemon2 = theme2({
-  title: "Pokémon 2", emblem: "superball", box: "k2super", rolls: true, boxWord: "Superbälle", pushWord: "Würfe",
+// ---------- 9 Taschenmonster 2 ----------
+THEMES.taschenmonster2 = theme2({
+  title: "Taschenmonster 2", emblem: "superball", box: "k2super", rolls: true, boxWord: "Superbälle", pushWord: "Würfe",
   hint: "Roll jeden Superball in eine Arena-Markierung. Bälle lassen sich nur schieben, nicht ziehen.",
   winTitle: "Volltreffer!", winText: (m, p) => `Alle Superbälle bereit. ${m} Schritte, ${p} Würfe.`,
-  prize: { symbol: "meisterorden", title: "Vulkanorden!", text: (m) => `Du bist Pokémon-Meister! Finale in ${m} Schritten.` },
+  prize: { symbol: "meisterorden", title: "Vulkanorden!", text: (m) => `Du bist Taschenmonster-Meister! Finale in ${m} Schritten.` },
   pal: { "--accent": "#2b5fd9", "--accent-dark": "#1a3f99" },
-  target: THEMES.pokemon.target,
+  target: THEMES.taschenmonster.target,
   scenes: [
-    kScene("Kampf-Dojo", "pokemon2", PAL("#f6ece0", "#fcf8f2"), kFloor("#e2cf96", "#d9c58a", () => `<rect x="3" y="3" width="94" height="94" fill="none" stroke="#2a3b2a" stroke-width="3"/>`), [
+    kScene("Trainingshalle", "taschenmonster2", PAL("#f6ece0", "#fcf8f2"), kFloor("#e2cf96", "#d9c58a", () => `<rect x="3" y="3" width="94" height="94" fill="none" stroke="#2a3b2a" stroke-width="3"/>`), [
       kMon("#f6ead2", "machollo", bgDojo), kMon("#f6ead2", "lucario", bgDojo),
       () => kB("#c9a06a", `<rect x="22" y="24" width="56" height="48" fill="#f6ead2" ${kO2}/><text x="50" y="58" text-anchor="middle" font-family="serif" font-weight="700" font-size="28" fill="${KI}">力</text>`),
       () => kB("#c9a06a", `<path d="M50 6v14" stroke="${KI}" stroke-width="3"/><rect x="36" y="20" width="28" height="64" rx="12" fill="#e2402f" ${kO2}/>`),
       (x, y) => kBricks("#8a6a4a", kGraffiti(x, y, ["POW!", "KAMPF"], ["#ffd23a", "#ff5fa2"]))
     ]),
-    kScene("Psycho-Arena", "pokemon2", PAL("#efe4ff", "#faf6ff"), kFloor("#e2d2f2", "#d8c6ec", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M50 38a12 12 0 1 1-12 12 8 8 0 1 1 8-8" fill="none" stroke="#a98ad0" stroke-width="3"/>` : ""), [
+    kScene("Traumwolke", "taschenmonster2", PAL("#efe4ff", "#faf6ff"), kFloor("#e2d2f2", "#d8c6ec", (x, y) => pick(x, y, 1, 4) === 0 ? `<path d="M50 38a12 12 0 1 1-12 12 8 8 0 1 1 8-8" fill="none" stroke="#a98ad0" stroke-width="3"/>` : ""), [
       kMon("#4a2a7a", "mewtu", bgPsy),
       kMon("#4a2a7a", "psiana", bgPsy),
       () => kB("#7a4aa6", `<circle cx="50" cy="50" r="24" fill="#f6e8ff" ${kO2}/><path d="M34 50q16-14 32 0-16 14-32 0z" fill="#fff" ${kO2}/><circle cx="50" cy="50" r="6" fill="#8b5cf6"/>`),
       () => kB("#7a4aa6", `<g class="float">${[[34, 44], [62, 36], [50, 64]].map(([a, b]) => `<path d="M${a} ${b - 10}l7 10-7 10-7-10z" fill="#e7b8ff" ${kO2}/>`).join("")}</g>`)
     ], () => Array.from({ length: 8 }, (_, i) => `<span class="glint" style="left:${(i * 37) % 100}%;top:${(i * 53) % 100}%;animation-delay:${-i * .5}s;background:#e7b8ff"></span>`).join("")),
-    kScene("Glumandas Vulkan", "pokemon2", PAL("#22100c", "#45201a", "#ffd9c2", "#fff1e6"), kFloor("#523a35", "#4a3430", (x, y) => pick(x, y, 1, 4) === 0 ? `<path class="lava" d="M10 70l20-10 16 8 22-14 22 10" fill="none" stroke="#ff7a1a" stroke-width="4"/>` : ""), [
+    kScene("Feuerberg", "taschenmonster2", PAL("#22100c", "#45201a", "#ffd9c2", "#fff1e6"), kFloor("#523a35", "#4a3430", (x, y) => pick(x, y, 1, 4) === 0 ? `<path class="lava" d="M10 70l20-10 16 8 22-14 22 10" fill="none" stroke="#ff7a1a" stroke-width="4"/>` : ""), [
       () => kB("#3a2622", `<path class="lava" d="M10 76l20-14 14 10 20-18 26 14" fill="none" stroke="#ff7a1a" stroke-width="5"/>`),
       kMon("#6a2a1a", "glumanda", bgLava), kMon("#6a2a1a", "glurak", bgLava),
       kMon("#6a2a1a", "glutexo", bgLava),
@@ -3581,9 +3363,9 @@ THEMES.familie = theme2({
     "Setz jedes Kuscheltier an seinen Platz. Kuscheltiere lassen sich nur schieben, nicht ziehen."], "Sachen");
 })();
 
-// Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Pokémon-Welten mit Superball-Varianten
+// Unterscheidbare Bälle: Fußball schwarz gefleckt auf Weiß, Hellrosa, Hellblau; Taschenmonster-Welten mit Superball-Varianten
 THEMES.fussball.boxColors = [["#2d3036", "#ffffff"], ["#2d3036", "#ffd3e4"], ["#2d3036", "#cfe6ff"], ["#2d3036", "#ffd2a8"], ["#2d3036", "#bff3ee"]];
-THEMES.pokemon.box = "k2super"; // gleiche Bälle wie in Pokémon 2: Superball, Meisterball, Premierball, Heilball
+THEMES.taschenmonster.box = "k2super"; // gleiche Bälle wie in Taschenmonster 2: Superball, Meisterball, Premierball, Heilball
 // ===== Lasses große Welt – Comic-Ebene: Bolzplatz mit Graffiti, Ball, Tor, Farbstimmungen und Effekte =====
 // Linien: sehr dunkles Grau, ca. 2 px, runde Enden. Flächen: kräftig, Cel-Shading mit einer zweiten dunkleren Fläche, keine Verläufe.
 const NI = KI;
@@ -3684,9 +3466,9 @@ const FX = (() => {
     el.style.cssText = `--x:${x};--y:${y};${extra}`; el.innerHTML = html; board().appendChild(el); setTimeout(() => el.remove(), life); };
   const dust = (x, y, dx, dy, big) => add("fx-dust", x, y, `<svg viewBox="0 0 100 100">${[[-14, 6, 9], [0, 0, 12], [14, 7, 8]].map(([ox, oy, r]) => `<circle cx="${50 + ox - dx * 10}" cy="${80 + oy}" r="${r * (big ? 1.25 : 1)}" fill="#ffffff" stroke="${NI}" stroke-width="2"/>`).join("")}</svg>`, 480, `--dx:${-dx};--dy:${-dy}`);
   // Passende Comic-Wörter je Welt
-  const WORDS = { fussball: ["TOR!", "ZACK!", "BÄM!"], reiten: ["HÜ!", "YEEHAA!", "HOPP!"], pokemon: ["GEFANGEN!", "ZACK!", "YES!"], lego: ["KLACK!", "KLICK!", "PASST!"],
+  const WORDS = { fussball: ["TOR!", "ZACK!", "BÄM!"], reiten: ["HÜ!", "YEEHAA!", "HOPP!"], taschenmonster: ["GEFANGEN!", "ZACK!", "YES!"], lego: ["KLACK!", "KLICK!", "PASST!"],
     steine: ["BLING!", "FUNKEL!", "GLITZER!"], schlagzeug: ["BUMM!", "TSCHING!", "BADUMM!"], tennis: ["ASS!", "PLOPP!", "OUT? NEIN!"], essen: ["LECKER!", "MJAM!", "HMMM!"],
-    pokemon2: ["GEFANGEN!", "WUMMS!", "SUPER!"], familie: ["SUPER!", "YES!", "TOLL!"], garten: ["CHAMPION!", "YES!"] };
+    taschenmonster2: ["GEFANGEN!", "WUMMS!", "SUPER!"], familie: ["SUPER!", "YES!", "TOLL!"], garten: ["CHAMPION!", "YES!"] };
   const words = () => (S && S.words) || WORDS[L && L.theme] || ["ZACK!", "BÄM!", "WUMMS!", "YES!"];
   // Lasse zeigt kurz eine Stimmung (Klasse am Sprite, wird nach der Animation wieder entfernt)
   const mood = (cls, ms) => { const el = document.getElementById("lasse"); if (!el) return; el.classList.remove("m-happy", "m-oops"); void el.offsetWidth; el.classList.add(cls);
@@ -3723,12 +3505,12 @@ const FX = (() => {
 // ---------- Farbstimmung je Bereich (helle Schauplätze bekommen frische, kräftigere Hintergründe) ----------
 const SCENE_MOODS = {
   "HSV-Campus": ["#cfe4ff", "#e3efff"], "Reiterhof": ["#f8e2a6", "#fbedc6"], "Ausritt im Wald": ["#c9e8b8", "#dcf1cf"], "Springturnier": ["#d3e3ff", "#e6efff"],
-  "Route 1": ["#d6f0ad", "#e6f6cb"], "Vertania-Wald": ["#b5dca8", "#cbe8c0"], "Arena Marmoria": ["#e8d4bc", "#f1e3d1"],
+  "Wasser-Ufer": ["#d6f0ad", "#e6f6cb"], "Blätterwald": ["#b5dca8", "#cbe8c0"], "Funkenfelsen": ["#e8d4bc", "#f1e3d1"],
   "Baustelle": ["#ffe27a", "#ffeca8"], "Lego-Stadt": ["#c9e0ff", "#deebff"],
   "Konservatorium Hamburg": ["#f2dcc4", "#f8e9d9"], "Laeiszhalle": ["#f2cbbd", "#f8ded4"],
   "Sandplatz-Turnier": ["#ffcba6", "#ffdcc2"], "Tennishalle": ["#cfe5f6", "#e1eff9"],
   "Foodtruck-Festival": ["#ffe0b8", "#ffebd0"], "Pizzeria": ["#ffd2c4", "#ffe2d8"], "Burger-Diner": ["#ffcde0", "#ffdeea"],
-  "Kampf-Dojo": ["#f6d9b8", "#fae6cf"], "Psycho-Arena": ["#e2d0ff", "#ece0ff"],
+  "Trainingshalle": ["#f6d9b8", "#fae6cf"], "Traumwolke": ["#e2d0ff", "#ece0ff"],
   "Sörens Proberaum": ["#ddd4f6", "#e9e3fa"], "Annas Klassenzimmer": ["#ffeda6", "#fff4c8"], "Idas Zimmer": ["#ffd4e7", "#ffe3ef"]
 };
 for (const T of Object.values(THEMES)) for (const S of (T.scenes || [])) if (SCENE_MOODS[S.name]) S.pal = { ...(S.pal || {}), "--bg": SCENE_MOODS[S.name][0], "--bg-2": SCENE_MOODS[S.name][1] };
@@ -3764,11 +3546,11 @@ const NEW_WALLS = {
   "Springturnier": [() => nTile("#7cc3f0", "#62a8d6", `<path d="M16 86V40M84 86V40" stroke="${NWK}" stroke-width="5"/><path d="M16 86V40M84 86V40" stroke="#ffffff" stroke-width="3"/>
       ${[48, 62].map(y => `<rect x="16" y="${y}" width="68" height="7" rx="3" fill="#e2402f" ${NW1}/>${[30, 50, 70].map(x => `<rect x="${x - 5}" y="${y}" width="10" height="7" fill="#ffffff"/>`).join("")}`).join("")}
       <g transform="translate(50 24)"><circle r="12" fill="#2a6ae0" ${NW1}/><circle r="6" fill="#ffd23a" ${NW1}/><path d="M-6 10l-4 14 6-4 4 6 0-14z" fill="#2a6ae0" ${NW1}/></g>`)],
-  // Pokémon
-  "Route 1": [() => nTile("#8fd36b", "#73b852", `<path d="M14 50l36-24 36 24z" fill="#e2402f" ${NW1}/><rect x="20" y="50" width="60" height="36" fill="#ffffff" ${NW1}/>
+  // Taschenmonster
+  "Wasser-Ufer": [() => nTile("#8fd36b", "#73b852", `<path d="M14 50l36-24 36 24z" fill="#e2402f" ${NW1}/><rect x="20" y="50" width="60" height="36" fill="#ffffff" ${NW1}/>
       <rect x="42" y="64" width="16" height="22" fill="#6fc3ff" ${NW1}/><path d="M50 32v12M44 38h12" stroke="#ffffff" stroke-width="4"/><rect x="24" y="56" width="12" height="10" fill="#6fc3ff" ${NW1}/><rect x="64" y="56" width="12" height="10" fill="#6fc3ff" ${NW1}/>`)],
-  "Vertania-Wald": [() => nTile("#4f9a4a", "#3e823a", `${[[30, 70, 16, "#e2402f"], [62, 60, 20, "#ff8a3d"], [72, 80, 10, "#e2402f"]].map(([x, y, r, c]) => `<rect x="${x - r * .3}" y="${y}" width="${r * .6}" height="${r * .9}" rx="3" fill="#f5e6c8" ${NW1}/><path d="M${x - r} ${y + 2}q0-${r}${r} -${r}t${r} ${r}z" fill="${c}" ${NW1}/><circle cx="${x - r * .35}" cy="${y - r * .35}" r="${r * .18}" fill="#ffffff"/>`).join("")}`)],
-  "Arena Marmoria": [() => nTile("#b9a68e", "#a08d75", `<rect x="22" y="22" width="56" height="56" rx="6" fill="#8a7a66" ${NW1}/><path d="M50 30l16 20-16 20-16-20z" fill="#9aa3b1" ${NW1}/><path d="M50 30l16 20H50z" fill="#c9ced8"/><path d="M50 30l16 20-16 20-16-20z" fill="none" ${NW1}/>${nWord("ORDEN", 50, 92, 12, "#ffd23a", 0)}`)],
+  "Blätterwald": [() => nTile("#4f9a4a", "#3e823a", `${[[30, 70, 16, "#e2402f"], [62, 60, 20, "#ff8a3d"], [72, 80, 10, "#e2402f"]].map(([x, y, r, c]) => `<rect x="${x - r * .3}" y="${y}" width="${r * .6}" height="${r * .9}" rx="3" fill="#f5e6c8" ${NW1}/><path d="M${x - r} ${y + 2}q0-${r}${r} -${r}t${r} ${r}z" fill="${c}" ${NW1}/><circle cx="${x - r * .35}" cy="${y - r * .35}" r="${r * .18}" fill="#ffffff"/>`).join("")}`)],
+  "Funkenfelsen": [() => nTile("#b9a68e", "#a08d75", `<rect x="22" y="22" width="56" height="56" rx="6" fill="#8a7a66" ${NW1}/><path d="M50 30l16 20-16 20-16-20z" fill="#9aa3b1" ${NW1}/><path d="M50 30l16 20H50z" fill="#c9ced8"/><path d="M50 30l16 20-16 20-16-20z" fill="none" ${NW1}/>${nWord("ORDEN", 50, 92, 12, "#ffd23a", 0)}`)],
   // Lego
   "Baustelle": [() => nTile("#ffd23a", "#e8b81a", `<path d="M30 90V16h6v74zM36 20h48v6H36z" fill="#e2402f" ${NW1}/>${[40, 52, 64, 76].map(x => `<path d="M${x} 20l6 6" stroke="${NWK}" stroke-width="1.4"/>`).join("")}
       <path d="M74 26v26" stroke="${NWK}" stroke-width="1.6"/><rect x="64" y="52" width="20" height="12" rx="2" fill="#2a6ae0" ${NW1}/><circle cx="69" cy="52" r="2" fill="#2a6ae0" ${NW1}/><circle cx="79" cy="52" r="2" fill="#2a6ae0" ${NW1}/>`)],
@@ -3796,10 +3578,10 @@ const NEW_WALLS = {
       <path d="M30 86V62q0-14 20-14t20 14v24z" fill="#2d3036" ${NW1}/><path d="M36 82q4-14 14-8 10-6 14 8" fill="#ff8a3d"/><path d="M42 82q3-8 8-4 5-4 8 4" fill="#ffd23a"/>`)],
   "Burger-Diner": [() => nTile("#4fc3c9", "#3aa9af", `<path d="M34 36h32l-4 46H38z" fill="#ffffff" ${NW1}/><path d="M36 50h28l-2 30H38z" fill="#ff8fb1"/><path d="M34 36h32l-4 46H38z" fill="none" ${NW1}/>
       <path d="M38 36q0-12 12-12t12 12" fill="#ffffff" ${NW1}/><circle cx="50" cy="20" r="4" fill="#e2402f" ${NW1}/><path d="M56 30l10-22" stroke="#e2402f" stroke-width="3" stroke-linecap="round"/>`)],
-  // Pokémon 2
-  "Kampf-Dojo": [() => nTile("#c9965c", "#b07c44", `<path d="M20 20h60" stroke="${NWK}" stroke-width="5"/><path d="M30 20v66M70 20v66" stroke="${NWK}" stroke-width="3"/><circle cx="50" cy="52" r="22" fill="#e8b81a" ${NW1}/><circle cx="50" cy="52" r="12" fill="none" stroke="#c99a12" stroke-width="2"/><path d="M50 30v-10" stroke="${NWK}" stroke-width="2"/>`)],
-  "Psycho-Arena": [() => nTile("#8a6bd1", "#7458b8", `<path d="M30 80h40l-6-10H36z" fill="#4a3a7a" ${NW1}/><circle cx="50" cy="50" r="20" fill="#e3d4ff" ${NW1}/><path d="M50 30a20 20 0 0 1 20 20" fill="none" stroke="#ffffff" stroke-width="3" opacity=".7"/><path d="M44 50q6-8 12 0-6 8-12 0z" fill="#b98cff"/>`)],
-  "Glumandas Vulkan": [() => nTile("#5a2a1e", "#481f16", `<path d="M14 88l22-44h28l22 44z" fill="#7a3a26" ${NW1}/><path d="M36 44q4-16 14-6 10-10 14 6" fill="#ff8a3d" ${NW1}/><path d="M42 44l4 20M58 44l-2 26" stroke="#ff8a3d" stroke-width="4" stroke-linecap="round"/><circle cx="48" cy="22" r="4" fill="#ffd23a"/><circle cx="58" cy="14" r="3" fill="#ff8a3d"/>`)],
+  // Taschenmonster 2
+  "Trainingshalle": [() => nTile("#c9965c", "#b07c44", `<path d="M20 20h60" stroke="${NWK}" stroke-width="5"/><path d="M30 20v66M70 20v66" stroke="${NWK}" stroke-width="3"/><circle cx="50" cy="52" r="22" fill="#e8b81a" ${NW1}/><circle cx="50" cy="52" r="12" fill="none" stroke="#c99a12" stroke-width="2"/><path d="M50 30v-10" stroke="${NWK}" stroke-width="2"/>`)],
+  "Traumwolke": [() => nTile("#8a6bd1", "#7458b8", `<path d="M30 80h40l-6-10H36z" fill="#4a3a7a" ${NW1}/><circle cx="50" cy="50" r="20" fill="#e3d4ff" ${NW1}/><path d="M50 30a20 20 0 0 1 20 20" fill="none" stroke="#ffffff" stroke-width="3" opacity=".7"/><path d="M44 50q6-8 12 0-6 8-12 0z" fill="#b98cff"/>`)],
+  "Feuerberg": [() => nTile("#5a2a1e", "#481f16", `<path d="M14 88l22-44h28l22 44z" fill="#7a3a26" ${NW1}/><path d="M36 44q4-16 14-6 10-10 14 6" fill="#ff8a3d" ${NW1}/><path d="M42 44l4 20M58 44l-2 26" stroke="#ff8a3d" stroke-width="4" stroke-linecap="round"/><circle cx="48" cy="22" r="4" fill="#ffd23a"/><circle cx="58" cy="14" r="3" fill="#ff8a3d"/>`)],
   // Familie
   "Sörens Proberaum": [() => nTile("#6b5fa8", "#5a4f91", `<rect x="24" y="30" width="52" height="52" rx="6" fill="#2d3036" ${NW1}/><circle cx="50" cy="60" r="14" fill="#4a505c" ${NW1}/><rect x="30" y="36" width="40" height="8" rx="2" fill="#c9a66b" ${NW1}/>${[36, 44, 52, 60].map(x => `<circle cx="${x}" cy="40" r="1.6" fill="#2d3036"/>`).join("")}`)],
   "Annas Klassenzimmer": [() => nTile("#f0c45a", "#d9ab3f", `<path d="M50 84V64" stroke="${NWK}" stroke-width="4"/><path d="M36 86h28" stroke="${NWK}" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="40" r="22" fill="#5aa9e6" ${NW1}/><path d="M36 30q8 6 6 14-6 4-2 12M58 22q-2 10 6 12 6 6 2 14" fill="#7dd36b" ${NW1}/><path d="M28 40a22 22 0 0 0 44 0" fill="none" stroke="${NWK}" stroke-width="2"/>`)],
@@ -3830,7 +3612,7 @@ document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
     <circle cx="60" cy="32" r="2.4" fill="#2d3036"/>
   </symbol>`);
 // ===== Mehr Vielfalt in Teil 2: neue, kräftige Comic-Wandmotive für eintönige Schauplätze =====
-// Mischen sich zu 40 % unter die bisherigen Wände. Pokémon kommen hier nicht vor (sie zählen wie Personen).
+// Mischen sich zu 40 % unter die bisherigen Wände. Taschenmonster kommen hier nicht vor (sie zählen wie Personen).
 const MO = NK2, MI = NI;
 const mUse = (id, x = 20, y = 18, s = 60) => `<use href="#${id}" x="${x}" y="${y}" width="${s}" height="${s}"/>`;
 const mCup = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-14 -16h28v8q0 14-14 16-14-2-14-16z" fill="#ffd23a" ${MO}/><path d="M-14 -12q-8 0-8 6t8 6M14 -12q8 0 8 6t-8 6" fill="none" ${MO}/><rect x="-4" y="8" width="8" height="8" fill="#ffd23a" ${MO}/><rect x="-10" y="16" width="20" height="6" rx="2" fill="#8a5a2b" ${MO}/></g>`;
@@ -3860,18 +3642,18 @@ const MEHR_WAENDE = {
     () => nTile("#7cc3f0", "#62a8d6", mCup(50, 56, 1.6)),
     () => nTile("#8fd36b", "#73b852", `<path d="M20 86V30M80 86V30" stroke="${MI}" stroke-width="4"/>${[36, 50, 64].map((y, i) => `<rect x="20" y="${y}" width="60" height="7" rx="3" fill="${["#e2402f", "#fff", "#2b5fd9"][i]}" ${MO}/>`).join("")}`)
   ],
-  // --- Pokémon (nur Gegenstände) ---
-  "Route 1": [
+  // --- Taschenmonster (nur Gegenstände) ---
+  "Wasser-Ufer": [
     () => nTile("#8fd36b", "#73b852", mUse("pokeball", 22, 18, 56)),
     () => nTile("#8fd36b", "#73b852", `<rect x="20" y="20" width="60" height="40" rx="4" fill="#d9a066" ${MO}/><path d="M50 60v26" stroke="#8a5a2b" stroke-width="7"/>${nWord("ROUTE 1", 50, 46, 16, "#fff", 0)}`),
     () => nTile("#8fd36b", "#73b852", `<path d="M50 86V40" stroke="#8a5a2b" stroke-width="7"/><circle cx="50" cy="36" r="26" fill="#3fae4a" ${MO}/>${[[38, 30], [58, 26], [52, 46], [36, 46]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#2b5fd9" ${MO}/>`).join("")}`)
   ],
-  "Vertania-Wald": [
+  "Blätterwald": [
     () => nTile("#4f9a4a", "#3e823a", mUse("netzball", 22, 18, 56)),
     () => nTile("#5f8a4a", "#4c7239", `<path d="M14 80h72" stroke="#8a5a2b" stroke-width="8" stroke-linecap="round"/>${[[30, 60, "#e2402f"], [50, 52, "#ff8a3d"], [70, 62, "#e2402f"]].map(([x, y, c]) => `<path d="M${x - 12} ${y + 18}q0-22 12-22t12 22z" fill="${c}" ${MO}/><circle cx="${x - 4}" cy="${y + 6}" r="2.4" fill="#fff"/><circle cx="${x + 5}" cy="${y + 10}" r="2" fill="#fff"/>`).join("")}`),
     () => nTile("#4f9a4a", "#3e823a", `<path d="M30 20h40v50l-20 16-20-16z" fill="#f6ead2" ${MO}/>${nWord("ACHTUNG", 50, 46, 12, "#e2402f", 0)}<path d="M40 56l10-8 10 8" fill="none" stroke="${MI}" stroke-width="3"/>`)
   ],
-  "Arena Marmoria": [
+  "Funkenfelsen": [
     () => nTile("#b9a68e", "#a08d75", `<use href="#orden" x="18" y="14" width="64" height="64"/>`),
     () => nTile("#b9a68e", "#a08d75", `<path d="M30 86V30h40v56" fill="#8a7a66" ${MO}/><path d="M24 30h52l-6-12H30z" fill="#e2402f" ${MO}/>${nWord("ARENA", 50, 58, 16, "#ffd23a", 0)}`),
     () => nTile("#cfc6b6", "#b8ae9c", `<path d="M14 86l20-40 14 18 12-28 26 50z" fill="#8a7a66" ${MO}/><path d="M34 46l4 8M60 36l3 8" stroke="#fff" stroke-width="2"/>`)
@@ -3943,19 +3725,19 @@ const MEHR_WAENDE = {
     () => nTile("#4fc3c9", "#3aa9af", `<rect x="16" y="20" width="68" height="46" rx="20" fill="#ff8fb1" ${MO}/>${nWord("OPEN", 50, 52, 22, "#fff", 0)}<path d="M50 66v20" stroke="${MI}" stroke-width="4"/>`),
     () => nTile("#ffd23a", "#e8b81a", `<rect x="36" y="20" width="14" height="66" rx="5" fill="#e2402f" ${MO}/><rect x="54" y="26" width="14" height="60" rx="5" fill="#ffd23a" ${MO}/><rect x="38" y="12" width="10" height="10" fill="#e2402f" ${MO}/><rect x="56" y="18" width="10" height="10" fill="#ffd23a" ${MO}/>`)
   ],
-  // --- Pokémon 2 (nur Gegenstände) ---
-  "Kampf-Dojo": [
+  // --- Taschenmonster 2 (nur Gegenstände) ---
+  "Trainingshalle": [
     () => nTile("#c9965c", "#b07c44", `${[[36, "#e2402f"], [64, "#2b5fd9"]].map(([x, c]) => `<path d="M${x - 14} 30q0-12 14-12t14 12v30q0 12-14 12t-14-12z" fill="${c}" ${MO}/><rect x="${x - 12}" y="66" width="24" height="12" rx="3" fill="#fff" ${MO}/>`).join("")}`),
     () => nTile("#c9965c", "#b07c44", `<rect x="10" y="44" width="80" height="10" rx="4" fill="#5b6475" ${MO}/>${[16, 26, 74, 84].map((x, i) => `<rect x="${x - 4}" y="${i % 3 ? 34 : 28}" width="8" height="${i % 3 ? 30 : 42}" rx="3" fill="#2d3036" ${MO}/>`).join("")}`),
     () => nTile("#c9965c", "#b07c44", mUse("meisterorden", 18, 14, 64))
   ],
-  "Psycho-Arena": [
+  "Traumwolke": [
     () => nTile("#8a6bd1", "#7458b8", `<circle cx="50" cy="44" r="24" fill="#e3d4ff" ${MO}/><path d="M38 34q8-8 16-2" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M34 70h32l-6 14H40z" fill="#4a3a7a" ${MO}/>`),
     () => nTile("#8a6bd1", "#7458b8", `<path d="M40 86V50q0-6 6-6" fill="none" stroke="#e9eaee" stroke-width="7" stroke-linecap="round"/><path d="M46 44q4-28 18-30" fill="none" stroke="#e9eaee" stroke-width="7" stroke-linecap="round"/><ellipse cx="66" cy="16" rx="8" ry="10" fill="#e9eaee" ${MO}/>`),
     () => nTile("#4a3a7a", "#3d3066", `<path d="M62 18a28 28 0 1 0 0 64 22 22 0 1 1 0-64z" fill="#ffd23a" ${MO}/>${[[30, 26], [40, 52], [24, 70]].map(([x, y]) => `<path d="M${x} ${y - 5}l2 3 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z" fill="#fff"/>`).join("")}`),
     () => nTile("#8a6bd1", "#7458b8", mUse("hyperball", 22, 18, 56))
   ],
-  "Glumandas Vulkan": [
+  "Feuerberg": [
     () => nTile("#6a2a1a", "#55211a", `<path d="M24 82l52-12M24 70l52 12" stroke="#8a5a2b" stroke-width="7" stroke-linecap="round"/><path class="flame" d="M50 74q-22-18-6-46 4 12 10 8 2-12 10-18 12 26-14 56z" fill="#ff8a1a" ${MO}/><path d="M50 72q-8-8-2-20 6 8 8 2 6 10-6 18z" fill="#ffd23a"/>`),
     () => nTile("#6a2a1a", "#55211a", mUse("superball", 22, 18, 56)),
     () => nTile("#6a2a1a", "#55211a", `${mGem(50, 50, "#e2402f", 1.6)}`)
@@ -4017,7 +3799,7 @@ document.querySelector("svg defs").insertAdjacentHTML("beforeend",
     <path d="M24 36q10-8 20-8" stroke="#fff" stroke-width="4" fill="none" opacity=".8"/></symbol>`);
 
 // Wände: Reihenfolge entlang des Weges → Welt 1 am Start, Welt 10 am Ende der Runde
-const T2_WORLDS = ["fussball", "reiten", "pokemon", "lego", "steine", "schlagzeug", "tennis", "essen", "pokemon2", "familie"];
+const T2_WORLDS = ["fussball", "reiten", "taschenmonster", "lego", "steine", "schlagzeug", "tennis", "essen", "taschenmonster2", "familie"];
 let lapCache = null;
 function lapWorld(x, y) {
   if (!lapCache || lapCache.start !== start) {
@@ -4202,7 +3984,7 @@ const EXTRA_WALLS = {};
     if (typeof EXTRA_SHARE !== "undefined") EXTRA_SHARE[name] = Math.max(EXTRA_SHARE[name] || 4, 5);
   }
 })();
-// ===== Umbau: eine Pokémon-Welt mit sechs Designs, Welt 9 wird „Die drei ??? Kids“ (Teil 1 und Teil 2) =====
+// ===== Umbau: eine Taschenmonster-Welt mit sechs Designs, Welt 9 wird „Die drei ??? Kids“ (Teil 1 und Teil 2) =====
 // Welt 3: Wasser, Pflanzen, Blitz, Kampf, Psycho, Feuer (je ein Level). Welt 9: Justus und die Kaffeekanne,
 // Peter und Rocky Beach, Bobs Recherchen und Archiv. Geschoben werden Lupen, die Ziele sind Fußspuren.
 (() => {
@@ -4212,11 +3994,11 @@ const EXTRA_WALLS = {};
   const T1PAD = (top, side) => `<rect x="3" y="9" width="94" height="88" rx="16" fill="${side}"/><rect x="3" y="3" width="94" height="86" rx="16" fill="${top}"/><rect x="14" y="10" width="26" height="6" rx="3" fill="#ffffff" opacity=".3"/>`;
   const tile = (top, side) => (inner) => COMIC ? kB(top, inner) : svgT(`${T1PAD(top, side)}${inner}`);
 
-  // ---------- 1. Pokémon: sechs Designs in einer Welt ----------
-  const PK = THEMES.pokemon, P2 = THEMES.pokemon2;
+  // ---------- 1. Taschenmonster: sechs Designs in einer Welt ----------
+  const PK = THEMES.taschenmonster, P2 = THEMES.taschenmonster2;
   const SIX = [...PK.scenes, ...P2.scenes];
   PK.scenes = SIX; PK.levelScenes = SIX;
-  PK.levelNames = COMIC ? ["Route 1", "Vertania", "Marmoria", "Dojo", "Psycho", "Vulkan"] : ["Wasser", "Pflanzen", "Blitz", "Kampf", "Psycho", "Feuer"];
+  PK.levelNames = COMIC ? ["Wasser-Ufer", "Blätterwald", "Funkenfelsen", "Dojo", "Psycho", "Vulkan"] : ["Wasser", "Pflanzen", "Blitz", "Kampf", "Psycho", "Feuer"];
 
   // ---------- 2. Gemeinsame Symbole: Lupe, drei Fragezeichen, Detektiv-Ausweis ----------
   document.querySelector("svg defs").insertAdjacentHTML("beforeend", `
@@ -4480,12 +4262,12 @@ const EXTRA_WALLS = {};
     scenes: SC
   };
   D.mapIcon = "karte-fragen"; // Weltkarte: die drei Fragezeichen in Weiß, Rot und Blau
-  THEMES.pokemon2 = COMIC ? theme2(D) : D;
+  THEMES.taschenmonster2 = COMIC ? theme2(D) : D;
   // Weltkarte: Justus, Peter und Bob stehen bei Welt 9
   const baseDeco = mapDeco;
   mapDeco = function (shown, open, pts) {
     let html = baseDeco(shown, open, pts);
-    const i = shown.findIndex(w => w.theme === "pokemon2"), wi = WORLDS.indexOf(shown[i]);
+    const i = shown.findIndex(w => w.theme === "taschenmonster2"), wi = WORLDS.indexOf(shown[i]);
     // erst sichtbar, wenn die Welt der drei ??? komplett geschafft ist (im Cheat-Profil sofort)
     if (i < 0 || (!P().unlockAll && solvedIn(P(), wi) < NL(wi))) return html;
     const left = pts[i][0] < 50;
@@ -5003,7 +4785,7 @@ const FAMILY_HERO = `<svg viewBox="${typeof COMIC_LOGO === "undefined" ? "34 54 
     // Pommestüten: gleiche Pommes, Streifen in Blau, Grün, Lila (Original Rot)
     pommes: [[{ "#ef4b4b": "#2f7ae5" }], [{ "#ef4b4b": "#3fae4a" }], [{ "#ef4b4b": "#8b5cf6" }]],
     muffin: [[{ "#b8763e": "#ff9fc0", "#4a2a14": "#d6262b", "#f4f1ea": "#ffe3ef" }], [{ "#b8763e": "#c9b8f0", "#4a2a14": "#3a3a9a", "#f4f1ea": "#e3edff" }], [{ "#b8763e": "#ffe680", "#4a2a14": "#ffffff", "#f4f1ea": "#fff6c8" }]],
-    // Superbälle: Meisterball, Premierball, Heilball (der Hyperball gehört schon zu den Pokébällen)
+    // Superbälle: Meisterball, Premierball, Heilball (der Hyperball gehört schon zu den Fangkugeln)
     // danach weitere Bälle in eigenen Farben, damit auch große Level keine doppelten haben: Türkis, Orange, Gelb, Grün, Rot, Schwarz-Gold, Braun
     superball: [[{ "#2f7ae5": "#8b5cf6", "#ef4b4b": "#ff8fb1" }], [{ "#2f7ae5": "#ffffff" }], [{ "#2f7ae5": "#ff8fc8", "#ef4b4b": "#ffffff" }], ...MORE_BALLS("#2f7ae5", "#ef4b4b")],
     k2super: [[{ "#2b5fd9": "#8b5cf6", "#e2402f": "#ff8fb1" }], [{ "#2b5fd9": "#ffffff" }], [{ "#2b5fd9": "#ff8fc8", "#e2402f": "#ffffff" }], ...MORE_BALLS("#2b5fd9", "#e2402f")],
@@ -5028,7 +4810,7 @@ const FAMILY_HERO = `<svg viewBox="${typeof COMIC_LOGO === "undefined" ? "34 54 
     });
     VARIANTS[id] = ids;
   }
-  // Eigene Reihenfolgen (Pokébälle, Idas Klötze) haben Vorrang
+  // Eigene Reihenfolgen (Fangkugeln, Idas Klötze) haben Vorrang
   for (const T of Object.values(THEMES)) {
     const own = T.boxCycle;
     T.boxCycle = (l) => (own && own(l)) || VARIANTS[T.levelBox ? T.levelBox(l) : T.box] || null;
@@ -5197,7 +4979,7 @@ THEMES.neutral = {
 // Alle zehn Welten haben ihr Thema; die neutrale Welt bleibt als Rückfall.
 const WORLDS = WORLD_LEVELS.map((levels, i) => {
   const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pinguine", "urlaub", "atschie", "atributschi", "enni"][i] || "neutral";
-  return { theme, bonus: false, name: ["Fußball & HSV", "Musikalische Hunde", "Reihenendhaus", "Bauernhof", "Lego", "Pinguine", "Urlaub", "Atschibella", "Atributschi", "Enni"][i] || (THEMES[theme] && THEMES[theme].worldName) || ["Fußball & HSV", "Reiten", "Pokémon", "Lego", "Edelsteine", "Schlagzeug", "Tennis", "Essen", "Pokémon 2", "Familie", "Lasses Ehrenrunde"][i] || `Welt ${i + 1}`, levels };
+  return { theme, bonus: false, name: ["Fußball & HSV", "Musikalische Hunde", "Reihenendhaus", "Bauernhof", "Lego", "Pinguine", "Urlaub", "Atschibella", "Atributschi", "Enni"][i] || (THEMES[theme] && THEMES[theme].worldName) || ["Fußball & HSV", "Reiten", "Taschenmonster", "Lego", "Edelsteine", "Schlagzeug", "Tennis", "Essen", "Taschenmonster 2", "Familie", "Lasses Ehrenrunde"][i] || `Welt ${i + 1}`, levels };
 });
 const PER_WORLD = 9;
 // Anzahl Level je Welt: 9, der Bonus-Garten hat eins
@@ -5536,8 +5318,8 @@ const BW = {
 const BASE_WALL = {
   "Bolzplatz": ["ziegel", "#b5533c"], "HSV-Campus": ["paneel", "#e6ecf4"], "Volksparkstadion": ["paneel", "#2b3f7a"],
   "Reiterhof": ["bretter", "#9a6a3c"], "Ausritt im Wald": ["hecke", "#4f8a3a"], "Springturnier": ["latten", "#f2efe6"],
-  "Route 1": ["hecke", "#6fae4a"], "Vertania-Wald": ["hecke", "#3f7a35"], "Arena Marmoria": ["stein", "#9a8f80"],
-  "Kampf-Dojo": ["bretter", "#b5874f"], "Psycho-Arena": ["paneel", "#8b6fc0"], "Glumandas Vulkan": ["fels", "#5a2a20"],
+  "Wasser-Ufer": ["hecke", "#6fae4a"], "Blätterwald": ["hecke", "#3f7a35"], "Funkenfelsen": ["stein", "#9a8f80"],
+  "Trainingshalle": ["bretter", "#b5874f"], "Traumwolke": ["paneel", "#8b6fc0"], "Feuerberg": ["fels", "#5a2a20"],
   "Baustelle": ["lego", "#f2c230"], "Lego-Stadt": ["lego", "#e2402f"], "Raumstation": ["paneel", "#2b3352"],
   "Bergkristall-Höhle": ["fels", "#3d3532"], "Malachit-Mine": ["fels", "#3a4038"], "Türkis-Tempel": ["stein", "#8e7d5a"],
   "Konservatorium Hamburg": ["bretter", "#8a5a32"], "Laeiszhalle": ["paneel", "#6a2424"], "Elbphilharmonie": ["paneel", "#ece7dc"],
@@ -6587,7 +6369,7 @@ function buildBoard() {
       // Gleiche Wandteile nicht direkt neben- oder übereinander: notfalls eine andere Variante ziehen
       const fn = S ? S.wall : T.wall;
       // Auswahl unter mehreren Kandidaten (fest je Feld, daher bei jedem Neuaufbau gleich):
-      // Personen und Pokémon höchstens viermal und mit mindestens drei Feldern Abstand, gleiche Bilder nicht direkt nebeneinander,
+      // Personen und Taschenmonster höchstens viermal und mit mindestens drei Feldern Abstand, gleiche Bilder nicht direkt nebeneinander,
       // höchstens drei leere Flächen ohne Motiv, und ein Motiv möglichst nicht öfter als fünfmal
       const pid = (h) => (h.match(/data-person="([^"]+)"/) || [])[1];
       const plain = (h) => !/<(path|circle|ellipse|g|text|use|polygon|polyline|line|image)\b/.test(h.replace(/<g[^>]*class="(detail)?"/g, ""));
@@ -7593,206 +7375,8 @@ const LOESUNGEN = {"0-0":"drrruUlUdrruLuLLulldRDDlddrUdrrruuuulLulDrrrddlUruLL",
     return r;
   };
 })();
-// ===== Hauptrollen in den übrigen Pokémon-Leveln (Teil 1 und Teil 2) – gleicher Aufbau wie Schlapfels Garten =====
-// Wasser: Schiggy · Blitz: Pikachu · Kampf: Kleinstein · Psycho: Mewtu · Feuer: Glurak.
-// Je sechs Haltungen in den Wänden (jede höchstens viermal), passende Gegenstände, Begleiter hinter Lasse,
-// großes Pokémon am Rand (schläft, jubelt beim Sieg), Lasse im passenden Look, eigenes Startbild, Jubelwörter und Siegtitel.
-const PKS = { ink: "#2d3036" };
-const PKK = `stroke="${PKS.ink}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"`;
-let pkN = 0;
-const pkEyes = (face, pts, r = 3, col = PKS.ink) => face === "zu"
-  ? pts.map(([x, y]) => `<path d="M${x - r - 1} ${y}q${r + 1} ${r} ${2 * r + 2} 0" fill="none" ${PKK}/>`).join("")
-  : pts.map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * 1.2}" fill="${col}"/><circle cx="${x + r * .35}" cy="${y - r * .45}" r="${r * .4}" fill="#fff"/>`).join("");
-const pkMouth = (face, x, y, w = 8) => face === "jubel" ? `<path d="M${x - w / 2} ${y}q${w / 2} ${w} ${w} 0z" fill="#c0392b" ${PKK}/>`
-  : face === "mampf" ? `<ellipse cx="${x}" cy="${y + 1}" rx="${w / 3}" ry="${w / 4}" fill="#c0392b" ${PKK}/>` : `<path d="M${x - w / 2} ${y}q${w / 2} ${w / 2} ${w} 0" fill="none" ${PKK}/>`;
-const pkStars = (pts) => pts.map(([x, y]) => `<path d="M${x} ${y - 5}l1.6 3.4 3.6.4-2.6 2.4.8 3.6-3.4-1.8-3.4 1.8.8-3.6-2.6-2.4 3.6-.4z" fill="#ffd23a" stroke="${PKS.ink}" stroke-width="1"/>`).join("");
-const pkZ = (x, y) => `<text x="${x}" y="${y}" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="${PKS.ink}">z</text><text x="${x + 7}" y="${y - 9}" font-family="Fredoka, sans-serif" font-weight="700" font-size="9" fill="${PKS.ink}">z</text>`;
-const pkHeart = (x, y) => `<path d="M${x} ${y}c-5-5-10 0-5 5l5 5 5-5c5-5 0-10-5-5z" fill="#ff8fb1" ${PKK}/>`;
-const pkGrad = (id, a, b) => `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;
-
-// ---------- Schiggy: hellblaue Schildkröte, brauner Panzer mit hellem Rand, gelber Bauchpanzer, Ringelschwanz ----------
-function schiggy({ face = "auf", extra = "", front = "" } = {}) {
-  const id = "pks" + (++pkN), up = face === "jubel";
-  return `<g><defs>${pkGrad(id, "#a8e0f8", "#6cbfe6")}</defs><ellipse cx="50" cy="93" rx="24" ry="4" fill="#00000024"/>
-    <path d="M70 74q18 2 16-12-2-10-10-6-6 4 0 8 4 0 2-4" fill="url(#${id})" ${PKK}/>
-    <ellipse cx="50" cy="64" rx="25" ry="23" fill="#c27b3e" ${PKK}/><ellipse cx="50" cy="64" rx="25" ry="23" fill="none" stroke="#f3e0a6" stroke-width="4" transform="scale(.94) translate(3.2 4)"/>
-    ${[[38, 90], [62, 90]].map(([x, y]) => `<ellipse cx="${x}" cy="${y - 2}" rx="8" ry="6" fill="url(#${id})" ${PKK}/>`).join("")}
-    <path d="M36 50q14-6 28 0v26q-14 8-28 0z" fill="#f6dc7a" ${PKK}/><path d="M37 60h26M37 70h26M50 48v34" stroke="#c9a54a" stroke-width="1.6"/>
-    ${up ? `<path d="M30 54l-10-16M70 54l10-16" stroke="${PKS.ink}" stroke-width="10" stroke-linecap="round"/><path d="M30 54l-10-16M70 54l10-16" stroke="#8fd0f0" stroke-width="7" stroke-linecap="round"/>`
-         : `<path d="M30 56l-8 10M70 56l8 10" stroke="${PKS.ink}" stroke-width="10" stroke-linecap="round"/><path d="M30 56l-8 10M70 56l8 10" stroke="#8fd0f0" stroke-width="7" stroke-linecap="round"/>`}
-    <circle cx="50" cy="31" r="20" fill="url(#${id})" ${PKK}/><path d="M38 20q6-8 14-8" fill="none" stroke="#fff" stroke-width="3" opacity=".6"/>
-    ${face === "zu" ? pkEyes(face, [[42, 32], [58, 32]], 3.4) : pkEyes(face, [[42, 31], [58, 31]], 4.2, "#7a2a3a")}
-    ${pkMouth(face, 50, 41, 12)}${extra}</g>${front}`;
-}
-// ---------- Pikachu: gelb, lange Ohren mit schwarzen Spitzen, rote Backen, Blitzschwanz ----------
-function pikachu({ face = "auf", extra = "", front = "" } = {}) {
-  const id = "pkp" + (++pkN), up = face === "jubel";
-  return `<g><defs>${pkGrad(id, "#ffe46a", "#f6c62a")}</defs><ellipse cx="50" cy="93" rx="22" ry="4" fill="#00000024"/>
-    <path d="M66 74l12-4-4-10 14-4-6-12 12-6-20 4 4 10-14 4 4 10-8 2z" fill="#f6c62a" ${PKK}/><path d="M66 74l12-4-2-5-10 3z" fill="#8a5a2b"/>
-    <ellipse cx="50" cy="68" rx="19" ry="21" fill="url(#${id})" ${PKK}/>
-    ${[[41, 90], [59, 90]].map(([x, y]) => `<ellipse cx="${x}" cy="${y - 1}" rx="7" ry="4" fill="#f6c62a" ${PKK}/>`).join("")}
-    ${up ? `<path d="M34 60l-10-14M66 60l10-14" stroke="${PKS.ink}" stroke-width="8.6" stroke-linecap="round"/><path d="M34 60l-10-14M66 60l10-14" stroke="#ffe46a" stroke-width="5.6" stroke-linecap="round"/>`
-         : `<path d="M36 62l6 6M64 62l-6 6" stroke="${PKS.ink}" stroke-width="8.6" stroke-linecap="round"/><path d="M36 62l6 6M64 62l-6 6" stroke="#ffe46a" stroke-width="5.6" stroke-linecap="round"/>`}
-    <path d="M36 26L20 2l20 16z" fill="#ffe46a" ${PKK}/><path d="M20 2l7 10 5-4z" fill="${PKS.ink}"/><path d="M64 26L80 2 60 18z" fill="#ffe46a" ${PKK}/><path d="M80 2l-7 10-5-4z" fill="${PKS.ink}"/>
-    <ellipse cx="50" cy="36" rx="20" ry="17" fill="url(#${id})" ${PKK}/><path d="M38 26q6-6 12-6" fill="none" stroke="#fff" stroke-width="3" opacity=".6"/>
-    ${pkEyes(face, [[42, 34], [58, 34]], 3.2)}<circle cx="34" cy="42" r="5" fill="#e8423a"/><circle cx="66" cy="42" r="5" fill="#e8423a"/>
-    <circle cx="50" cy="39" r="1.2" fill="${PKS.ink}"/>${face === "jubel" ? pkMouth(face, 50, 43, 9) : `<path d="M46 43q2 2 4 0 2 2 4 0" fill="none" ${PKK}/>`}${extra}</g>${front}`;
-}
-// ---------- Kleinstein: grauer Felsbrocken mit zwei kräftigen Armen, buschige Brauen, schwebt ----------
-function kleinstein({ face = "auf", extra = "", front = "" } = {}) {
-  const id = "pkk" + (++pkN), up = face === "jubel";
-  const arm = (s) => up
-    ? `<path d="M${50 + s * 20} 52q${s * 14} -4 ${s * 18} -22" fill="none" stroke="${PKS.ink}" stroke-width="13" stroke-linecap="round"/><path d="M${50 + s * 20} 52q${s * 14} -4 ${s * 18} -22" fill="none" stroke="#a9a49a" stroke-width="9.6" stroke-linecap="round"/><circle cx="${50 + s * 38}" cy="28" r="9" fill="#a9a49a" ${PKK}/>`
-    : `<path d="M${50 + s * 20} 52q${s * 16} 0 ${s * 18} 14" fill="none" stroke="${PKS.ink}" stroke-width="13" stroke-linecap="round"/><path d="M${50 + s * 20} 52q${s * 16} 0 ${s * 18} 14" fill="none" stroke="#a9a49a" stroke-width="9.6" stroke-linecap="round"/><circle cx="${50 + s * 38}" cy="68" r="9" fill="#a9a49a" ${PKK}/>`;
-  return `<g><defs><radialGradient id="${id}" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#c9c4b8"/><stop offset="1" stop-color="#8e887c"/></radialGradient></defs>
-    <ellipse cx="50" cy="93" rx="18" ry="3.4" fill="#00000020"/>${arm(-1)}${arm(1)}
-    <path d="M28 52q-2-22 20-26 24-2 26 20 2 22-22 26-22 0-24-20z" fill="url(#${id})" ${PKK}/>
-    ${[[36, 38, 3], [64, 62, 2.6], [40, 66, 2], [60, 34, 2]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#7a7468"/>`).join("")}<path d="M56 30l6 4M34 58l4 4" stroke="#7a7468" stroke-width="2"/>
-    <path d="M36 42l10 4M64 42l-10 4" stroke="${PKS.ink}" stroke-width="4" stroke-linecap="round"/>
-    ${pkEyes(face, [[42, 50], [58, 50]], 2.6)}${pkMouth(face, 50, 60, 10)}${extra}</g>${front}`;
-}
-// ---------- Mewtu: grau-weiß, lila Bauch und Schwanz, Hornohren, Röhre vom Kopf zum Nacken ----------
-function mewtu({ face = "auf", extra = "", front = "" } = {}) {
-  const id = "pkm" + (++pkN), up = face === "jubel";
-  return `<g><defs>${pkGrad(id, "#f1eef6", "#cfc8dc")}</defs><ellipse cx="50" cy="94" rx="20" ry="3.6" fill="#00000024"/>
-    <path d="M58 76q26 6 30-12 2-12-8-10" fill="none" stroke="${PKS.ink}" stroke-width="12" stroke-linecap="round"/><path d="M58 76q26 6 30-12 2-12-8-10" fill="none" stroke="#9b6bc9" stroke-width="8.4" stroke-linecap="round"/>
-    <path d="M42 80l-4 12h8l2-10M58 80l4 12h-8l-2-10" fill="url(#${id})" ${PKK}/>
-    <path d="M38 48q12-6 24 0l2 32q-14 6-28 0z" fill="url(#${id})" ${PKK}/><path d="M42 62q8-4 16 0l1 18q-9 4-18 0z" fill="#9b6bc9" ${PKK}/>
-    ${up ? `<path d="M38 52l-14-16M62 52l14-16" stroke="${PKS.ink}" stroke-width="7" stroke-linecap="round"/><path d="M38 52l-14-16M62 52l14-16" stroke="#e6e2ef" stroke-width="4.4" stroke-linecap="round"/>${[[22, 32], [78, 32]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4" fill="#e6e2ef" ${PKK}/>`).join("")}`
-         : `<path d="M38 54l-10 12M62 54l10 12" stroke="${PKS.ink}" stroke-width="7" stroke-linecap="round"/><path d="M38 54l-10 12M62 54l10 12" stroke="#e6e2ef" stroke-width="4.4" stroke-linecap="round"/>${[[27, 68], [73, 68]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4" fill="#e6e2ef" ${PKK}/>`).join("")}`}
-    <path d="M56 32q10 4 6 16" fill="none" stroke="${PKS.ink}" stroke-width="7" stroke-linecap="round"/><path d="M56 32q10 4 6 16" fill="none" stroke="#cfc8dc" stroke-width="4.4" stroke-linecap="round"/>
-    <path d="M38 22l-4-14 10 8zM62 22l4-14-10 8z" fill="url(#${id})" ${PKK}/>
-    <path d="M36 30q0-14 14-14t14 14q0 12-14 14-14-2-14-14z" fill="url(#${id})" ${PKK}/>
-    ${face === "zu" ? pkEyes(face, [[44, 30], [56, 30]], 2.6) : pkEyes(face, [[44, 30], [56, 30]], 2.8, "#7a3fb0")}${pkMouth(face, 50, 38, 6)}${extra}</g>${front}`;
-}
-// ---------- Glurak: orange Drache, heller Bauch, Flügel innen türkis, Hörner, Flammenschwanz ----------
-function glurak({ face = "auf", extra = "", front = "" } = {}) {
-  const id = "pkg" + (++pkN), up = face === "jubel";
-  return `<g><defs>${pkGrad(id, "#ffa25a", "#e8702a")}<radialGradient id="${id}f"><stop offset="0" stop-color="#fff3a0"/><stop offset=".5" stop-color="#ffb02e"/><stop offset="1" stop-color="#e8402f"/></radialGradient></defs>
-    <ellipse cx="50" cy="94" rx="24" ry="4" fill="#00000024"/>
-    <path d="M38 54Q22 40 6 18q4 18 2 34 8-4 14 0 6-6 16 2z" fill="#e8702a" ${PKK}/><path d="M36 52Q22 40 10 26q3 14 2 22 6-2 10 1 6-4 14 3z" fill="#3a8fa0"/><path d="M62 54Q78 40 94 18q-4 18-2 34-8-4-14 0-6-6-16 2z" fill="#e8702a" ${PKK}/><path d="M64 52Q78 40 90 26q-3 14-2 22-6-2-10 1-6-4-14 3z" fill="#3a8fa0"/>
-    <path d="M64 80q20 4 22-14" fill="none" stroke="${PKS.ink}" stroke-width="10" stroke-linecap="round"/><path d="M64 80q20 4 22-14" fill="none" stroke="#e8702a" stroke-width="7" stroke-linecap="round"/>
-    <path class="flame" d="M86 66q-10-10 0-24 10 12 0 24z" fill="url(#${id}f)" ${PKK}/>
-    ${[[40, 90], [60, 90]].map(([x, y]) => `<ellipse cx="${x}" cy="${y - 2}" rx="8" ry="5" fill="#e8702a" ${PKK}/>`).join("")}
-    <ellipse cx="50" cy="66" rx="20" ry="22" fill="url(#${id})" ${PKK}/><ellipse cx="50" cy="70" rx="12" ry="16" fill="#f6dfa0"/>
-    ${up ? `<path d="M32 56l-10-14M68 56l10-14" stroke="${PKS.ink}" stroke-width="9" stroke-linecap="round"/><path d="M32 56l-10-14M68 56l10-14" stroke="#ffa25a" stroke-width="6" stroke-linecap="round"/>`
-         : `<path d="M32 58l-6 10M68 58l6 10" stroke="${PKS.ink}" stroke-width="9" stroke-linecap="round"/><path d="M32 58l-6 10M68 58l6 10" stroke="#ffa25a" stroke-width="6" stroke-linecap="round"/>`}
-    <path d="M40 22l-4-12 9 7zM60 22l4-12-9 7z" fill="#f6dfa0" ${PKK}/>
-    <path d="M34 34q0-16 16-16t16 16q0 6-6 10H40q-6-4-6-10z" fill="url(#${id})" ${PKK}/><path d="M40 40q10 8 20 0" fill="#ffa25a" ${PKK}/>
-    ${face === "zu" ? pkEyes(face, [[43, 31], [57, 31]], 2.6) : pkEyes(face, [[43, 31], [57, 31]], 2.8, "#1f6a8a")}${pkMouth(face, 50, 42, 10)}${extra}</g>${front}`;
-}
-
-// ---------- Kachelhintergründe, Gegenstände, Lasse-Looks ----------
-const pkPad = (top, side, ground) => `${pad(top, side)}<path d="M3 74q24-6 47 0t47 0v14q0 3-3 3H6q-3 0-3-3z" fill="${ground}"/>`;
-const pkTileWith = (padSvg) => (inner) => `<svg viewBox="0 0 100 100">${padSvg}<g transform="translate(4 4) scale(.92)">${inner}</g></svg>`;
-const POKE_STARS = {
-  "Wasser-Pokémon": { name: "schiggy", draw: schiggy, tile: pkTileWith(pkPad("#e3f4ff", "#9fc6e6", "#7fc8f0")),
-    extras: { item: { front: `<g transform="translate(66 60)"><rect x="0" y="0" width="22" height="12" rx="4" fill="#ff8a1a" ${PKK}/><rect x="16" y="10" width="6" height="10" rx="2" fill="#ff8a1a" ${PKK}/><path d="M-2 4q-10-2-18 4" fill="none" stroke="#7fc8f0" stroke-width="4" stroke-linecap="round"/></g>` },
-      cool: { extra: `<path d="M34 28h32v6q-4 6-10 2l-4-4h-4l-4 4q-6 4-10-2z" fill="${PKS.ink}"/><path d="M38 30l6 4" stroke="#fff" stroke-width="1.6"/>` } },
-    items: [
-      `<ellipse cx="50" cy="60" rx="30" ry="24" fill="#c27b3e" ${PKK}/><path d="M30 50h40M24 62h52M30 74h40M50 36v48" stroke="#8a5a2b" stroke-width="3"/><ellipse cx="50" cy="60" rx="30" ry="24" fill="none" stroke="#f3e0a6" stroke-width="4"/>`,
-      `<path d="M20 70q30-40 60 0z" fill="#f6b6c6" ${PKK}/>${[30, 40, 50, 60, 70].map(x => `<path d="M50 70L${x} 42" stroke="#d87a92" stroke-width="2"/>`).join("")}<circle cx="70" cy="40" r="6" fill="#fff" ${PKK}/><circle cx="30" cy="44" r="4" fill="#fff" ${PKK}/>`,
-      `<path d="M18 54h64v8q-4 10-14 4l-8-6h-4l-8 6q-10 6-14-4z" fill="${PKS.ink}"/><path d="M28 56l10 6M64 56l10 6" stroke="#fff" stroke-width="2.4"/>`
-    ],
-    lasse: ["#7fc8f0", "#3d6fb3", "#ffffff", `<path d="M40 56h20v20H40z" fill="#f6dc7a" stroke="${INK}" stroke-width="1.6"/>`,
-      `${HAIR_STRUBBEL}<path d="M26 26h48v6q-4 8-14 4l-6-4h-8l-6 4q-10 4-14-4z" fill="${INK}"/><path d="M30 28l8 4M62 28l8 4" stroke="#fff" stroke-width="2"/>`],
-    words: ["Schiggy!", "Platsch!"], win: "Schiggy jubelt!", sleepZ: [70, 22] },
-  "Blitz-Pokémon": { name: "pikachu", draw: pikachu, tile: pkTileWith(pkPad("#fff6d6", "#e6cf8a", "#b6dc7a")),
-    extras: { item: { front: `<g transform="translate(70 56)"><rect x="0" y="6" width="14" height="28" rx="5" fill="#e8423a" ${PKK}/><path d="M3 6l4-8 4 8z" fill="#fff" ${PKK}/><rect x="2" y="16" width="10" height="8" fill="#fff"/></g>` },
-      cool: { front: `<path d="M84 24l-8 14h6l-4 12 12-16h-6l4-10z" fill="#ffd23a" ${PKK}/>` } },
-    items: [
-      `<rect x="38" y="24" width="24" height="56" rx="10" fill="#e8423a" ${PKK}/><path d="M42 24l8-14 8 14z" fill="#fff" ${PKK}/><rect x="40" y="44" width="20" height="16" fill="#fff"/><text x="50" y="56" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="9" fill="#e8423a">K</text>`,
-      `<path d="M56 10L30 54h18l-8 36 32-46H54l12-34z" fill="#ffd23a" ${PKK}/>`,
-      `${[[36, 50, "#e8423a"], [56, 46, "#2b5fd9"], [46, 64, "#ffd23a"], [64, 64, "#e8423a"]].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="10" fill="${c}" ${PKK}/><path d="M${x} ${y - 10}q2-6 6-8" fill="none" stroke="#3fae4a" stroke-width="3"/>`).join("")}`
-    ],
-    lasse: ["#ffd84a", "#8a5a2b", "#e8423a", `<path d="M44 58l6-8-2 6h6l-6 10 2-8z" fill="${INK}"/>`,
-      `${HAIR_STRUBBEL}<path d="M24 30q0-24 26-24t26 24z" fill="#ffd84a" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><path d="M30 14L18-10l20 12zM70 14l12-24-20 12z" fill="#ffd84a" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/><path d="M18-10l6 9 5-3zM82-10l-6 9-5-3z" fill="${INK}"/><path d="M22 30h56" stroke="${INK}" stroke-width="3"/>`],
-    words: ["Pika!", "Pikachu!"], win: "Pikachu freut sich!", sleepZ: [72, 20] },
-  "Kampf-Pokémon": { name: "kleinstein", draw: kleinstein, tile: pkTileWith(pkPad("#f3e6d2", "#c9a87a", "#b8a58a")),
-    extras: { item: { front: `<g transform="translate(8 74)"><rect x="0" y="6" width="34" height="5" rx="2" fill="#5b6475" ${PKK}/><rect x="2" y="0" width="7" height="17" rx="2" fill="#2d3036" ${PKK}/><rect x="25" y="0" width="7" height="17" rx="2" fill="#2d3036" ${PKK}/></g>` },
-      cool: { front: `<path d="M8 86l10-14 8 10 8-16 12 20z" fill="#a9a49a" ${PKK}/>` } },
-    items: [
-      `<path d="M14 84l14-30 16 12 12-26 18 22 12 22z" fill="#a9a49a" ${PKK}/><circle cx="40" cy="70" r="3" fill="#7a7468"/><circle cx="64" cy="60" r="3" fill="#7a7468"/>`,
-      `<rect x="14" y="46" width="72" height="8" rx="3" fill="#5b6475" ${PKK}/>${[18, 28, 64, 74].map(x => `<rect x="${x}" y="34" width="8" height="32" rx="3" fill="#2d3036" ${PKK}/>`).join("")}`,
-      `<path d="M50 16l26 14v28L50 76 24 58V30z" fill="#a9a49a" ${PKK}/><path d="M50 26l16 8v18L50 62 34 52V34z" fill="#8e887c" ${PKK}/><text x="50" y="96" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="11" fill="${PKS.ink}">FELSORDEN</text>`
-    ],
-    lasse: ["#a9a49a", "#5b6475", "#2d3036", `<path d="M38 60h24" stroke="#7a7468" stroke-width="4"/>`,
-      `${HAIR_STRUBBEL}<path d="M24 30q0-24 26-24t26 24z" fill="#a9a49a" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><circle cx="38" cy="18" r="3" fill="#7a7468"/><circle cx="58" cy="14" r="2.4" fill="#7a7468"/><path d="M32 22l10 4M68 22l-10 4" stroke="${INK}" stroke-width="3"/><path d="M22 30h56" stroke="${INK}" stroke-width="3"/>`],
-    words: ["Kleinstein!", "Rumms!"], win: "Kleinstein ist stark!", sleepZ: [68, 30] },
-  "Psycho-Pokémon": { name: "mewtu", draw: mewtu, tile: pkTileWith(pkPad("#f3ecff", "#c9b4e6", "#c9a8e8")),
-    extras: { item: { front: `<g><circle cx="50" cy="18" r="11" fill="#7a3fb0" opacity=".85" ${PKK}/><circle cx="50" cy="18" r="6" fill="#d9c4ff"/></g>` },
-      cool: { front: `${[[16, 30], [84, 34], [20, 62]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="none" stroke="#9b6bc9" stroke-width="2.4"/>`).join("")}` } },
-    items: [
-      `<circle cx="50" cy="50" r="24" fill="#7a3fb0" ${PKK}/><circle cx="50" cy="50" r="14" fill="#d9c4ff"/><circle cx="44" cy="44" r="5" fill="#fff" opacity=".7"/>`,
-      `<rect x="34" y="16" width="32" height="68" rx="14" fill="#cfe9ff" fill-opacity=".7" ${PKK}/><path d="M38 60q12 6 24 0v16q-12 8-24 0z" fill="#9fd8ff"/><rect x="30" y="80" width="40" height="8" rx="3" fill="#5b6475" ${PKK}/>`,
-      `<path d="M40 88V50q0-6 6-6" fill="none" stroke="${PKS.ink}" stroke-width="10" stroke-linecap="round"/><path d="M40 88V50q0-6 6-6" fill="none" stroke="#e9eaee" stroke-width="7" stroke-linecap="round"/><path d="M46 44q4-26 18-28" fill="none" stroke="${PKS.ink}" stroke-width="10" stroke-linecap="round"/><path d="M46 44q4-26 18-28" fill="none" stroke="#e9eaee" stroke-width="7" stroke-linecap="round"/><ellipse cx="66" cy="14" rx="9" ry="11" fill="#e9eaee" ${PKK}/>`
-    ],
-    lasse: ["#e6e2ef", "#9b6bc9", "#5b6475", `<path d="M40 62h20v14H40z" fill="#9b6bc9" stroke="${INK}" stroke-width="1.6"/>`,
-      `${HAIR_STRUBBEL}<path d="M24 30q0-24 26-24t26 24z" fill="#e6e2ef" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><path d="M32 14l-6-14 14 8zM68 14l6-14-14 8z" fill="#e6e2ef" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/><path d="M22 30h56" stroke="${INK}" stroke-width="3"/>`],
-    words: ["Psi!", "Wow!"], win: "Mewtu staunt!", sleepZ: [66, 18] },
-  "Feuer-Pokémon": { name: "glurak", draw: glurak, tile: pkTileWith(pkPad("#fde3d0", "#d9a07a", "#b8764a")),
-    extras: { item: { front: `<path class="flame" d="M40 40q-16-4-30 4 14 6 30 2z" fill="#ffb02e" ${PKK}/><path d="M40 42q-10-2-20 2 10 3 20 1z" fill="#fff3a0"/>` },
-      cool: { front: `<path d="M80 86l-6-10 4 2 0-8 6 8 2-4 2 12z" fill="#ffb02e" ${PKK}/>` } },
-    items: [
-      `<path d="M24 82l52-12M24 70l52 12" stroke="#8a5a2b" stroke-width="7" stroke-linecap="round"/><path class="flame" d="M50 74q-22-18-6-46 4 12 10 8 2-12 10-18 12 26-14 56z" fill="#ff8a1a" ${PKK}/><path d="M50 72q-8-8-2-20 6 8 8 2 6 10-6 18z" fill="#ffd23a"/>`,
-      `<path d="M50 20l12 22-12 40-12-40z" fill="#e2402f" ${PKK}/><path d="M38 42h24" stroke="#ffd23a" stroke-width="2"/>`,
-      `<path d="M14 84l22-40h28l22 40z" fill="#7a3a26" ${PKK}/><path d="M36 44q4-16 14-6 10-10 14 6" fill="#ff8a3d" ${PKK}/><path d="M42 44l4 20M58 44l-2 16" stroke="#ffb02e" stroke-width="4"/>`
-    ],
-    lasse: ["#ffa25a", "#e8702a", "#2d3036", `<ellipse cx="50" cy="66" rx="8" ry="10" fill="#f6dfa0" stroke="${INK}" stroke-width="1.4"/>`,
-      `${HAIR_STRUBBEL}<path d="M24 30q0-24 26-24t26 24z" fill="#ffa25a" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><path d="M34 12l-6-12 12 6zM66 12l6-12-12 6z" fill="#f6dfa0" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/><path d="M22 30h56" stroke="${INK}" stroke-width="3"/>`],
-    words: ["Fauch!", "Feuer!"], win: "Glurak brüllt vor Freude!", sleepZ: [70, 18] }
-};
-
-// ---------- Einbau in die Schauplätze ----------
-const POKE_MAP = {}; // Bild je Pokémon für die Weltkarte
-// Teil 2 (Comic): die Schauplätze heißen anders, die Kacheln bekommen Comic-Hintergründe
-const PK_COMIC = typeof kO !== "undefined";
-const PK_ALIAS = { "Route 1": ["Wasser-Pokémon", "#bfe3a0"], "Vertania-Wald": ["Blitz-Pokémon", "#5f9a52"], "Arena Marmoria": ["Kampf-Pokémon", "#c9c0b0"],
-  "Psycho-Arena": ["Psycho-Pokémon", "#b48ad6"], "Glumandas Vulkan": ["Feuer-Pokémon", "#6a2e22"] };
-for (const T of [THEMES.pokemon, THEMES.pokemon2]) for (const S of T.scenes) {
-  let cfg = POKE_STARS[S.name];
-  if (!cfg && PK_COMIC && PK_ALIAS[S.name]) { const [key, bg] = PK_ALIAS[S.name];
-    cfg = { ...POKE_STARS[key], tile: (inner) => kB(bg, `<g transform="translate(4 4) scale(.92)">${inner}</g>`) }; }
-  if (!cfg) continue;
-  const d = cfg.draw, [zx, zy] = cfg.sleepZ;
-  const poses = [d(), d({ face: "zu", extra: pkZ(zx, zy) }), d({ face: "mampf", ...cfg.extras.item }), d({ face: "jubel", extra: pkStars([[14, 20], [86, 16], [12, 50]]) }),
-    d(cfg.extras.cool), d({ extra: pkHeart(80, 16) })];
-  const people = poses.map((p, i) => () => asPerson(cfg.tile(p), cfg.name + i));
-  const things = cfg.items.map(it => () => cfg.tile(it));
-  const base = S.wall, list = [...people, ...people, ...things];
-  // eigene Motive zu zwei Dritteln, sonst die bisherigen Wände des Schauplatzes
-  // Teil 2 behält mehr von seinen Comic-Wänden: dort nur ein Drittel eigene Motive
-  S.wall = (x, y) => pick(x, y, 31, 3) < (PK_COMIC ? 1 : 2) ? list[pick(x, y, 32, list.length)]() : base(x, y);
-  LASSE["pk_" + cfg.name] = lasseBase(...cfg.lasse);
-  S.lasse = "pk_" + cfg.name; S.words = cfg.words; S.winTitle = cfg.win;
-  S.side = { l: [`<svg viewBox="0 0 100 200"><g transform="translate(0 96)"><g class="sl-sleep">${d({ face: "zu", extra: pkZ(zx, zy) })}</g><g class="sl-awake">${d({ face: "jubel" })}</g></g></svg>`], r: [] };
-  S.introIcon = cfg.tile(d({ face: "jubel" }));
-  S.companion = d();
-  POKE_MAP[cfg.name] = d();
-  if (typeof EXTRA_SHARE !== "undefined") EXTRA_SHARE[S.name] = 3;
-}
-// Weltkarte: alle Pokémon bei der Pokémon-Insel (Welt 3)
-(() => {
-  const baseDeco = mapDeco;
-  mapDeco = function (shown, open, pts) {
-    let html = baseDeco(shown, open, pts);
-    // erst sichtbar, wenn die Pokémon-Welt komplett geschafft ist (im Cheat-Profil sofort); dann stehen Schlapfel, Schiggy und Glurak bei Welt 3, Pikachu bei Welt 4, Kleinstein und Mewtu bei Welt 5
-    const pw = WORLDS.findIndex(w => w.theme === "pokemon"); if (pw < 0 || (!P().unlockAll && solvedIn(P(), pw) < NL(pw))) return html;
-    const add = (theme, list) => { const i = shown.findIndex(w => w.theme === theme); if (i < 0) return;
-      list.forEach(([svg, dx, dy], k) => { html += `<div class="mapdeco mapfig" style="left:${pts[i][0] + dx}%;top:${pts[i][1] + dy}px;width:52px;height:52px;animation-delay:${-k * .9}s"><svg viewBox="0 0 100 100" overflow="visible">${svg}</svg></div>`; }); };
-    // seit dem Umbau gibt es nur noch eine Pokémon-Welt: alle fünf stehen dort
-    if (PK_COMIC) add("pokemon", [[POKE_MAP.schiggy, 30, -10], [POKE_MAP.pikachu, 44, 24], [POKE_MAP.glurak, 30, 58]]);
-    else {
-      add("pokemon", [[POKE_MAP.schiggy, 56, -16], [POKE_MAP.glurak, 64, 34]]);
-      // Pikachu steht bei Welt 4 zwischen Arne und Matze
-      add("lego", [[POKE_MAP.pikachu, -28.4, 50]]);
-    }
-    add("steine", [[POKE_MAP.kleinstein, 40, -4], [POKE_MAP.mewtu, 54, 30]]);
-    return html;
-  };
-})();
 // ===== Begleiter und eigener Siegtitel je Schauplatz (Teil 1 und Teil 2) =====
-// Ein Pokémon läuft einen Schritt hinter Lasse her; S.winTitle ersetzt den Siegtitel des Themas.
+// Ein Taschenmonster läuft einen Schritt hinter Lasse her; S.winTitle ersetzt den Siegtitel des Themas.
 // Begleiter läuft einen Schritt hinter Lasse her (nur Bild, blockiert nichts)
 (() => {
   let prev = null, comp = null;
