@@ -1,7 +1,7 @@
 
 // ===================== Idas Welt =====================
-// Ida, 8 Jahre: rundes Gesicht, eher schmale Augen, dunkelblonde Locken im Bauernzopf, Kleidung in Grau und blassem Pink.
-const IDA8_HAAR = "#a07a44", IDA8_HAAR2 = "#86642f", IDA8_HAUT = "#f3d6bf", IDA8_PINK = "#f2c4d0", IDA8_GRAU = "#9a9ea6";
+// Ida, 8 Jahre: rundes Gesicht, eher schmale Augen, hellblonde Locken im Bauernzopf, Kleidung in Grau und blassem Pink.
+const IDA8_HAAR = "#d2ab6b", IDA8_HAAR2 = "#b48b4c", IDA8_HAUT = "#f3d6bf", IDA8_PINK = "#f2c4d0", IDA8_GRAU = "#9a9ea6";
 const idaHead8 = (extra = "") => `
   <g>
     ${[0, 1, 2, 3, 4, 5].map(i => `<ellipse cx="${64 + i * .5}" cy="${38 + i * 5}" rx="${5.4 - i * .45}" ry="3.8" fill="${IDA8_HAAR}" stroke="#2d3036" stroke-width="1.6"/>`).join("")}
@@ -26,15 +26,12 @@ function kIda8(o = {}) {
 }
 // Grundoutfit: blasspinker Pulli mit grauem Kragen und Herz, graue Leggings, weiße Schuhe
 LASSE.ida = kIda8({ body: `<path d="M42 44q8 6 16 0" stroke="${IDA8_GRAU}" stroke-width="3" fill="none"/><path d="M50 60c-5-4-5-8-2-8 1 0 2 1 2 1s1-1 2-1c3 0 3 4-2 8z" fill="#ffffff" stroke="#2d3036" stroke-width="1.2"/>` });
-// Monster-Trainerin: graue Jacke über dem pinken Shirt, Kappe in Pink und Grau
-LASSE.ida_trainer = kIda8({ shirt: IDA8_GRAU, body: `<path d="M44 44v24" stroke="${IDA8_PINK}" stroke-width="5"/><path d="M50 44v24" stroke="#2d3036" stroke-width="1.2"/>`,
-  head: `<path d="M31 22q0-17 19-17t19 17z" fill="${IDA8_PINK}" stroke="#2d3036" stroke-width="2.2"/><path d="M31 22h38" stroke="${IDA8_GRAU}" stroke-width="4"/><path d="M62 21h14l-2 4H62z" fill="${IDA8_GRAU}" stroke="#2d3036" stroke-width="1.6"/><path d="M50 10l2 4 4 .5-3 3 .8 4-3.8-2-3.8 2 .8-4-3-3 4-.5z" fill="#ffffff"/>` });
-LASSE.avatar = LASSE.fussball = LASSE.familie = LASSE.taschenmonster = LASSE.taschenmonster2 = LASSE.ida;
+LASSE.avatar = LASSE.fussball = LASSE.familie = LASSE.ida;
 for (const k of Object.keys(LASSE)) if (/^(c_|w3_|hd_|lg_|pg_|ur_|at_|ab_|en_|bh_)/.test(k)) LASSE[k] = LASSE.ida;
 const IDA8_HERO = `<svg viewBox="0 0 240 200" overflow="visible"><circle cx="120" cy="110" r="92" fill="#f8e6ec"/>${[[34, 44, 7, "#f2c4d0"], [206, 54, 9, "#c9ccd2"], [44, 160, 6, "#c9ccd2"], [204, 150, 7, "#f2c4d0"]].map(([x, y, r, c]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`).join("")}<g transform="translate(40 8) scale(1.6)">${LASSE.ida.replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "")}</g></svg>`;
 { const baseRP = renderPlayers; renderPlayers = function () { baseRP(); const h = document.getElementById("hero"); if (h) { h.classList.remove("family"); h.classList.add("t3hero"); h.innerHTML = IDA8_HERO; } }; }
 
-// ---------- Neun schlichte Welten: Grundwand, ruhiger Boden, einfache Bildkacheln; Arne und Matze je einmal pro Level ----------
+// ---------- Zehn schlichte Welten: Grundwand, ruhiger Boden, einfache Bildkacheln; Arne und Matze je einmal pro Level ----------
 {
   const PL = ["#e2402f", "#2b5fd9", "#3fae4a", "#ffd23a", "#8b5cf6", "#ff8a1a", "#ff5fa2", "#4fd1c5"];
   const O = `stroke="#2d3036" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"`;
@@ -47,6 +44,7 @@ const IDA8_HERO = `<svg viewBox="0 0 240 200" overflow="visible"><circle cx="120
     wuerfel: (c) => `<rect x="20" y="22" width="60" height="60" rx="12" fill="${c}" ${O}/>${[[36, 38], [64, 38], [50, 52], [36, 66], [64, 66]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#ffffff"/>`).join("")}`,
     klotz: (c) => `<rect x="14" y="36" width="72" height="48" rx="5" fill="${c}" ${O}/>${[30, 50, 70].map(x => `<rect x="${x - 8}" y="24" width="16" height="13" rx="4" fill="${c}" ${O}/>`).join("")}`,
     truhe: (c) => `<rect x="16" y="44" width="68" height="40" rx="4" fill="#b5803f" ${O}/><path d="M16 44q34-26 68 0z" fill="${c}" ${O}/><rect x="44" y="44" width="12" height="16" rx="2" fill="#ffd23a" ${O}/>`,
+    ballon: (c) => `<path d="M50 70q-4 10 2 22" stroke="#2d3036" stroke-width="2" fill="none"/><ellipse cx="50" cy="42" rx="24" ry="28" fill="${c}" ${O}/><path d="M46 70h8l-4-6z" fill="${c}" ${O}/><ellipse cx="41" cy="31" rx="5" ry="8" fill="#ffffff" opacity=".6"/>`,
     laterne: (c) => `<path d="M50 10v12" stroke="#2d3036" stroke-width="3"/><path d="M26 30q24-12 48 0v40q-24 16-48 0z" fill="${c}" ${O}/><circle cx="50" cy="52" r="10" fill="#fff6a0" opacity=".85"/>`
   };
   document.querySelector("svg defs").insertAdjacentHTML("beforeend", Object.keys(ITEMS).map(k => PL.map((c, i) =>
@@ -69,7 +67,7 @@ const IDA8_HERO = `<svg viewBox="0 0 240 200" overflow="visible"><circle cx="120
   const W = [
     ["i5w1", "Rosa Ziegel", "ziegel", ["#e6a3b4", "#c9ccd2", "#d9b0c8"], ["#f6eef0", "#eef0f4", "#f4eef6"], "kiste"],
     ["i5w2", "Holzhaus", "bretter", ["#c9a27a", "#a9adb5", "#d6b6a0"], ["#f3ece4", "#eceef2", "#f6efe9"], "geschenk"],
-    null,
+    ["i5w3", "Wolkenzimmer", "farbe", ["#9fc6e6", "#b8d8c8", "#c9c4e6"], ["#f1f7fc", "#eff7f3", "#f3f2fb"], "ballon"],
     ["i5w4", "Heckengarten", "hecke", ["#7fb36a", "#9fc48a", "#86b8a0"], ["#eef6e8", "#f3f6ec", "#ecf5f0"], "ball"],
     ["i5w5", "Steinburg", "stein", ["#a8a7b0", "#b8acb6", "#9ea9b0"], ["#f0f0f3", "#f4eff3", "#eef2f4"], "truhe"],
     ["i5w6", "Fliesenbad", "fliesen", ["#9fd0e0", "#f2c4d0", "#c9ccd2"], ["#f2f8fb", "#fbf2f5", "#f3f4f6"], "eimer"],
@@ -79,8 +77,8 @@ const IDA8_HERO = `<svg viewBox="0 0 240 200" overflow="visible"><circle cx="120
     ["i5w10", "Sternenschloss", "paneel", ["#8f8fc0", "#b9a6d2", "#a3a8c8"], ["#f0f0f8", "#f4f0f8", "#eef0f6"], "laterne"]
   ];
   const platz = kTarget(`${kGlow(`<rect x="12" y="14" width="76" height="74" opacity="0"/>`)}<rect x="12" y="14" width="76" height="74" rx="14" fill="none" stroke="#e58fac" stroke-width="5" stroke-dasharray="10 7"/><path d="M50 66C36 56 36 42 44 41c3 0 5 2 6 4 1-2 3-4 6-4 8 1 8 15-6 25z" fill="#f2a7bb"/>`);
-  const NAMEN = { kiste: ["Kiste", "Kisten"], geschenk: ["Geschenk", "Geschenke"], ball: ["Ball", "Bälle"], truhe: ["Truhe", "Truhen"], eimer: ["Eimer", "Eimer"], klotz: ["Baustein", "Bausteine"], wuerfel: ["Würfel", "Würfel"], kissen: ["Kissen", "Kissen"], laterne: ["Laterne", "Laternen"] };
-  const JEDE = { kiste: "jede", geschenk: "jedes", ball: "jeden", truhe: "jede", eimer: "jeden", klotz: "jeden", wuerfel: "jeden", kissen: "jedes", laterne: "jede" };
+  const NAMEN = { kiste: ["Kiste", "Kisten"], geschenk: ["Geschenk", "Geschenke"], ball: ["Ball", "Bälle"], truhe: ["Truhe", "Truhen"], eimer: ["Eimer", "Eimer"], klotz: ["Baustein", "Bausteine"], wuerfel: ["Würfel", "Würfel"], kissen: ["Kissen", "Kissen"], laterne: ["Laterne", "Laternen"], ballon: ["Ballon", "Ballons"] };
+  const JEDE = { kiste: "jede", geschenk: "jedes", ball: "jeden", truhe: "jede", eimer: "jeden", klotz: "jeden", wuerfel: "jeden", kissen: "jedes", laterne: "jede", ballon: "jeden" };
   W.forEach((w, wi) => { if (!w) return;
     const [key, title, style, cols, floors, item] = w;
     const scenes = cols.map((c, si) => { const name = `${title} ${si + 1}`; BASE_WALL[name] = [style, c]; OUTFIT[name] = "ida";
@@ -93,25 +91,10 @@ const IDA8_HERO = `<svg viewBox="0 0 240 200" overflow="visible"><circle cx="120
       winTitle: () => ["SUPER!", "TOLL!", "JUCHHU!", "KLASSE!"][wi % 4], winText: (m, p) => `Geschafft! ${m} Schritte, ${p} Schübe.`,
       prize: { symbol: "i5preis", title: "Goldener Stern!", text: (m) => `Welt „${title}“ geschafft! Finale in ${m} Schritten.` },
       pal: { "--accent": "#d97b98", "--accent-dark": "#b05a78" }, target: platz, scenes,
-      levelScenes: [0, 0, 0, 1, 1, 1, 2, 2, 2].map(i => scenes[i]),
+      levelScenes: [0, 0, 1, 1, 2, 2].map(i => scenes[i]),
       levelName: (l) => title, levelBox: () => `i5${item}-0`, boxCycle: () => PL.map((_, i) => `i5${item}-${i}`)
     });
   });
-}
-
-// ---------- Monster-Welt (Welt 3): eigene Fantasie-Monster, Ida als Trainerin, eigene Fangkugeln ----------
-{
-  const T = THEMES.taschenmonster, six = T.levelScenes.slice(0, 6);
-  const NAMEN6 = T.levelScenes.slice(0, 6).map(sc => sc.name);
-  const pick9 = [0, 0, 1, 2, 2, 3, 4, 4, 5];
-  six.forEach(sc => { OUTFIT[sc.name] = "ida_trainer"; sc.lasse = "ida_trainer"; });
-  T.levelScenes = pick9.map(i => six[i]); T.scenes = six;
-  Object.assign(T, { title: "Monster-Welt", worldName: "Monster-Welt", boxWord: "Fangkugeln", levelNames: pick9.map(i => NAMEN6[i]),
-    levelName: (l) => NAMEN6[pick9[l]],
-    hint: () => "Roll jede Fangkugel auf ihren Platz. Kugeln lassen sich nur schieben, nicht ziehen.",
-    winTitle: () => "GEFANGEN!", winText: (m, p) => `Alle Kugeln am Platz! ${m} Schritte, ${p} Würfe.`,
-    prize: { symbol: "orden", title: "Monster-Orden!", text: (m) => `Du hast die Monster-Welt gemeistert, Ida! Finale in ${m} Schritten.` } });
-  six.forEach((sc, i) => { sc.winTitle = undefined; });
 }
 
 // ---------- Weltkarte: nur Arne und Matze, die beiden Onkel, stehen bei Welt 1 ----------

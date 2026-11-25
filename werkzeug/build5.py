@@ -1,5 +1,5 @@
 # Idas Welt: Grundlage ist die fertige Datei von Schristians Welt (Teil 3). Eigene Figur Ida, Arne und Matze als Onkel,
-# 90 leichte Level aus Microban I, II und III, eigene Fantasie-Monster statt fremder Figuren, eigener Look in Grau und Pink.
+# 60 leichte Level aus Microban I, II und III (6 je Welt, nach Bestwert sortiert), zehn Welten im gleichen schlichten Design, eigener Look in Grau und Pink.
 import json, os, re
 D = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(D, "../christians-welt/index.html")
@@ -13,9 +13,7 @@ def rep(a, b, n=1):
 # ---- Y2K-Look von Teil 3 entfernen ----
 rep(open(os.path.join(D, "t3.css"), encoding="utf-8").read(), "")
 
-# ---- fremde Figuren ersetzen: eigene Monster und Fangkugeln (gemeinsames Werkzeug) ----
-from neutral import neutralize, rename
-s = neutralize(s, D)
+# Schristians Welt ist schon bereinigt (Bereinigung in build3.py): keine fremden Figuren, keine fremden Namen
 
 # ---- Kopf, Titel, Spielstand ----
 rep('<meta name="theme-color" content="#1b2a6b">', '<meta name="theme-color" content="#f6e9ee">')
@@ -30,25 +28,27 @@ rep('let store = { players: [{ id: "christian", name: "Schristian", solved: {}, 
 a = s.index('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?'); b = s.index(">", a) + 1
 s = s[:a] + '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;700;800&display=swap">' + s[b:]
 
-# ---- Level: 10 Welten mit je 9 Leveln ----
+# ---- Level: 10 Welten mit je 6 Leveln ----
 i = s.index("const WORLD_LEVELS = "); j = s.index("\n", i)
-s = s[:i] + "const WORLD_LEVELS = " + json.dumps([[{"n": l["n"], "m": l["m"]} for l in LV[w * 9:w * 9 + 9]] for w in range(10)], ensure_ascii=False) + ";" + s[j:]
+s = s[:i] + "const WORLD_LEVELS = " + json.dumps([[{"n": l["n"], "m": l["m"]} for l in LV[w * 6:w * 6 + 6]] for w in range(10)], ensure_ascii=False) + ";" + s[j:]
 i = s.index("const OPTIMAL = "); j = s.index("\n", i)
-s = s[:i] + "const OPTIMAL = " + json.dumps({f"{w}-{k}": LV[w * 9 + k]["opt"] for w in range(10) for k in range(9)}) + ";" + s[j:]
+s = s[:i] + "const OPTIMAL = " + json.dumps({f"{w}-{k}": LV[w * 6 + k]["opt"] for w in range(10) for k in range(6)}) + ";" + s[j:]
 
-# ---- Welten von Idas Welt (Welt 3: Monster-Welt) ----
+# ---- Welten von Idas Welt: zehn schlichte Welten ----
 rep('const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pinguine", "urlaub", "atschie", "atributschi", "enni"][i] || "neutral";',
-    'const theme = ["i5w1", "i5w2", "taschenmonster", "i5w4", "i5w5", "i5w6", "i5w7", "i5w8", "i5w9", "i5w10"][i] || "neutral";')
+    'const theme = ["i5w1", "i5w2", "i5w3", "i5w4", "i5w5", "i5w6", "i5w7", "i5w8", "i5w9", "i5w10"][i] || "neutral";')
 a = s.index('bonus: false, name: ["Fußball & HSV",'); b = s.index("][i]", a)
-s = s[:a] + 'bonus: false, name: ["Rosa Ziegel", "Holzhaus", "Monster-Welt", "Heckengarten", "Steinburg", "Fliesenbad", "Bausteinstadt", "Felsenpfad", "Kuschelzimmer", "Sternenschloss"' + s[b:]
-
-# ---- Welt 3 im Design von Lasses Welt 3: alte Schauplätze sichern, bevor Teil 2 sie ersetzt ----
-rep("THEMES.taschenmonster = theme2({", "const IDA_T1_MON = { mon: THEMES.taschenmonster, mon2: THEMES.taschenmonster2 };\nTHEMES.taschenmonster = theme2({")
+s = s[:a] + 'bonus: false, name: ["Rosa Ziegel", "Holzhaus", "Wolkenzimmer", "Heckengarten", "Steinburg", "Fliesenbad", "Bausteinstadt", "Felsenpfad", "Kuschelzimmer", "Sternenschloss"' + s[b:]
 
 # ---- Ida, Welten, Look ----
-k = s.index("function buildBoard() {"); s = s[:k] + open(os.path.join(D, "t5.js"), encoding="utf-8").read() + "\n" + open(os.path.join(D, "t5-w3.js"), encoding="utf-8").read() + "\n" + s[k:]
+k = s.index("function buildBoard() {"); s = s[:k] + open(os.path.join(D, "t5.js"), encoding="utf-8").read() + "\n" + s[k:]
 k = s.rindex("</style>"); s = s[:k] + open(os.path.join(D, "t5.css"), encoding="utf-8").read() + s[k:]
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
-s = rename(s)
+# ---- Lösungsbuch: die Lösungen dieses Spiels, über den Levelnamen den Leveln zugeordnet ----
+SOL = json.dumps({l["n"]: l["sol"] for l in LV}, ensure_ascii=False)
+s, k = re.subn(r"const LOESUNGEN_N = \{[^\n]*?\};", lambda m: f"const LOESUNGEN_N = {SOL};", s)
+if not k:
+    s, k = re.subn(r"const LOESUNGEN = \{[^\n]*?\};", lambda m: f"const LOESUNGEN_N = {SOL};\nconst LOESUNGEN = new Proxy({{}}, {{ get: (_, k) => {{ const [w, l] = String(k).split(\"-\").map(Number), lv = WORLDS[w] && WORLDS[w].levels[l]; return lv ? LOESUNGEN_N[lv.n] : undefined; }} }});", s)
+assert k == 1, "Lösungsbuch nicht gefunden"
 open(OUT, "w", encoding="utf-8").write(s)
 print("geschrieben", OUT, len(s))

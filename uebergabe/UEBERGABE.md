@@ -11,7 +11,7 @@ Erste Nachricht im neuen Chat zum Beispiel: **„Lies `uebergabe/UEBERGABE.md` u
 | Lasses große Welt (Teil 2) | `grosse-welt/` | https://adler78hh.github.io/lasses-welt/grosse-welt/ | https://claude.ai/artifact/T7kP4vPNka4zsqTEszUPHR |
 | Schristians Welt | `christians-welt/` | https://adler78hh.github.io/lasses-welt/christians-welt/ | https://claude.ai/artifact/FRSA9bvQSAj2goJ7PwXngd |
 | Schristians große Welt | `christians-grosse-welt/` | https://adler78hh.github.io/lasses-welt/christians-grosse-welt/ | https://claude.ai/artifact/QnbWFuGbFNYmhv3g4pfVX4 |
-| Idas Welt | `idas-welt/` | https://adler78hh.github.io/lasses-welt/idas-welt/ | https://claude.ai/artifact/Sa7CcVMCUpTSdF3bDVvH57 |
+| Idas Welt | `idas-welt/` | https://adler78hh.github.io/lasses-welt/idas-welt/ | https://claude.ai/artifact/1nvrSSJ4nBxGxAmVbQ8wCf |
 
 Weitere Seiten: Übersicht aller Welten der Christian-Spiele https://claude.ai/artifact/5ywBJtudkXU6J8BDZZa9mz ·
 Download-Seite https://claude.ai/artifact/Rx4FyxmazweiSnHAvez2Se (enthält nur Lasses Spiele) ·
@@ -22,7 +22,7 @@ Commits als `Adler78hh` mit der E-Mail des Kontoinhabers.
 
 ## Wichtige Absprachen
 
-- **Lasses Welt und Lasses große Welt nicht verändern.** Ausdrücklicher Wunsch. Ausnahme auf Wunsch: Das Wort „Pokémon“ ist dort durch „Taschenmonster“ ersetzt.
+- **Lasses Welt und Lasses große Welt nicht verändern.** Ausdrücklicher Wunsch.
 - Antworten auf Deutsch, am Ende Screenshots und Links.
 - Wenn um Besprechen oder Warten gebeten wird: erst fragen, dann bauen.
 - Jede Person höchstens einmal pro Level an der Wand (geprüft mit `werkzeug/check2.js`).
@@ -30,9 +30,7 @@ Commits als `Adler78hh` mit der E-Mail des Kontoinhabers.
 - Keine Schrift auf Wandkacheln, außer wo ein Schauplatz es erlaubt (`allowText`).
 - Keine echten Markenlogos selbst zeichnen. Logos, die der Nutzer schickt, dürfen als Bild eingesetzt werden
   (z. B. Nacht des Wissens, PriMa).
-- Keine bekannten, geschützten Figuren aus Zeichentrick- oder Spielserien nachzeichnen. Stattdessen eigene Figuren
-  (Fantasie-Monster, Kanarienvogel …). In den Christian-Spielen und Idas Welt heißt alles „Taschenmonster“.
-- Lösungsbuch nur im Cheat-Profil.
+- Lösungsbuch nur im Cheat-Profil. In Christians Spielen und Idas Welt kommen die Lösungen beim Bauen aus `t3-`, `t4-` bzw. `t5-levels.json` (über den Levelnamen zugeordnet).
 
 ## So werden die Spiele gebaut
 
@@ -40,13 +38,13 @@ Alle Werkzeuge liegen in `werkzeug/` (siehe auch `werkzeug/LIESMICH.md`).
 
 1. `python3 werkzeug/build3.py` – baut **Schristians Welt** aus `grosse-welt/index.html` + `t3.js` + `t3.css`.
 2. `python3 werkzeug/build4.py` – baut **Schristians große Welt** aus Schristians Welt + `t4.js` + `t4.css`.
-3. `python3 werkzeug/build5.py` – baut **Idas Welt** aus Schristians Welt + `t5.js` + `t5-mon.js` + `t5.css`.
+3. `python3 werkzeug/build5.py` – baut **Idas Welt** aus Schristians Welt + `t5.js` + `t5.css` (Level: `t5-levels.json`).
 
-`werkzeug/neutral.py` entfernt dabei den übernommenen Figuren-Code und benennt in „Taschenmonster“ um.
-Änderungen an Christians Spielen also immer in `t3.js` (gilt für beide Christian-Teile) bzw. `t4.js`/`t5.js`,
-danach alle drei Bauschritte der Reihe nach ausführen.
+`build3.py` ersetzt dabei den übernommenen Figuren-Code durch eigene Fantasie-Monster.
+Änderungen an Christians Spielen also immer in `t3.js` (gilt für beide Christian-Teile) bzw. `t4.js`,
+danach beide Bauschritte der Reihe nach ausführen.
 
-Level: `t3-levels.json` (Schristians Welt), `t4-levels.json` (große Welt), `t5-levels.json` (Idas Welt), jeweils
+Level: `t3-levels.json` (Schristians Welt), `t4-levels.json` (große Welt), jeweils
 mit Bestwert und Lösung. Sammlungen: `microban1.json`, `microban2.json`, `microban3.json`. Löser: `solve.cpp`
 (`g++ -O2 -o solve solve.cpp`, Level über stdin, Ende mit Leerzeile).
 
@@ -66,7 +64,7 @@ node werkzeug/check2.js $PWD/<ordner>/index.html
 
 ## Veröffentlichen
 
-1. In `<ordner>/sw.js` die erste Zeile auf einen neuen Cache-Namen setzen (z. B. `idas-welt-<md5 der index.html>`),
+1. In `<ordner>/sw.js` die erste Zeile auf einen neuen Cache-Namen setzen (z. B. `christians-welt-<md5 der index.html>`),
    damit Handys die neue Fassung laden.
 2. Commit und `git push origin main`. GitHub Pages ist nach ein bis zwei Minuten aktuell.
 3. Vorschau in Claude: Einzeldatei ohne Manifest-, Icon- und Service-Worker-Zeilen erzeugen
@@ -91,12 +89,14 @@ node werkzeug/check2.js $PWD/<ordner>/index.html
 
 Teil 1 im Y2K-Look, Teil 2 im ruhigen Stil 2026 (Hemd und Chino, Strich-Symbole, Atelier, dunkler Modus).
 
-**Idas Welt** (10 Welten × 9 Level, je 3 aus Microban I, II, III, leichteste zuerst): Ida (8 J., dunkelblonder
-Bauernzopf, Grau und blasses Pink), Arne und Matze als Onkel. Welten vorerst schlicht: Rosa Ziegel · Holzhaus ·
-Monster-Welt (eigene Fantasie-Monster, Fangkugeln) · Heckengarten · Steinburg · Fliesenbad · Bausteinstadt ·
-Felsenpfad · Kuschelzimmer · Sternenschloss.
+**Idas Welt** (10 Welten × 6 Level aus Microban I, II, III, nach Bestwert sortiert, leichteste zuerst): Ida (8 J., blonder
+Bauernzopf, Grau und blasses Pink), Arne und Matze als Onkel (je einmal pro Level an der Wand). Alle zehn Welten im gleichen
+schlichten Design (Grundwand, ruhiger Boden, Bildkacheln wie Herz, Stern, Blume, Regenbogen), je Welt ein eigener Gegenstand:
+Rosa Ziegel (Kisten) · Holzhaus (Geschenke) · Wolkenzimmer (Ballons) · Heckengarten (Bälle) · Steinburg (Truhen) ·
+Fliesenbad (Eimer) · Bausteinstadt (Bausteine) · Felsenpfad (Würfel) · Kuschelzimmer (Kissen) · Sternenschloss (Laternen).
 
 ## Offene Punkte
 
-- Idas Welt: Themen und Namen der Welten festlegen (Welt 3 hat jetzt das Design von Lasses Welt 3, Modul `werkzeug/t5-w3.js`), Ida-Figur ggf. nachschärfen.
-- Download-Seite: Christian-Spiele und Idas Welt fehlen noch.
+- Idas Welt: Themen der Welten festlegen, wenn gewünscht.
+
+- Download-Seite: die Christian-Spiele fehlen noch.
