@@ -40,7 +40,7 @@ Alle Werkzeuge liegen in `werkzeug/` (siehe auch `werkzeug/LIESMICH.md`).
 2. `python3 werkzeug/build4.py` – baut **Schristians große Welt** aus Schristians Welt + `t4.js` + `t4.css`.
 3. `python3 werkzeug/build5.py` – baut **Idas Welt** aus Schristians Welt + `t5.js` + `t5.css` (Level: `t5-levels.json`).
 
-`werkzeug/neutral.py` ersetzt dabei den übernommenen Figuren-Code durch eigene Fantasie-Monster (`monster.js`).
+`build3.py` ersetzt dabei den übernommenen Figuren-Code durch eigene Fantasie-Monster (`monster.js`).
 Änderungen an Christians Spielen also immer in `t3.js` (gilt für beide Christian-Teile) bzw. `t4.js`,
 danach beide Bauschritte der Reihe nach ausführen.
 

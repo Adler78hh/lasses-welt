@@ -13,7 +13,7 @@ def rep(a, b, n=1):
 # ---- Y2K-Look von Teil 3 entfernen ----
 rep(open(os.path.join(D, "t3.css"), encoding="utf-8").read(), "")
 
-# Schristians Welt ist schon bereinigt (neutral.py in build3.py): keine fremden Figuren, keine fremden Namen
+# Schristians Welt ist schon bereinigt (Bereinigung in build3.py): keine fremden Figuren, keine fremden Namen
 
 # ---- Kopf, Titel, Spielstand ----
 rep('<meta name="theme-color" content="#1b2a6b">', '<meta name="theme-color" content="#f6e9ee">')
