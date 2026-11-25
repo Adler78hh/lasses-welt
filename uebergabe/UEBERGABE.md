@@ -7,14 +7,14 @@ Erste Nachricht im neuen Chat zum Beispiel: **„Lies `uebergabe/UEBERGABE.md` u
 
 | Spiel | Ordner | Web-App | Vorschau in Claude |
 |---|---|---|---|
-| Lasses Welt (Teil 1) | `index.html` | https://adler78hh.github.io/lasses-welt/ | https://claude.ai/artifact/KdbduQYMyjA9U9jGZAiBwk |
-| Lasses große Welt (Teil 2) | `grosse-welt/` | https://adler78hh.github.io/lasses-welt/grosse-welt/ | https://claude.ai/artifact/T7kP4vPNka4zsqTEszUPHR |
-| Schristians Welt | `christians-welt/` | https://adler78hh.github.io/lasses-welt/christians-welt/ | https://claude.ai/artifact/FRSA9bvQSAj2goJ7PwXngd |
-| Schristians große Welt | `christians-grosse-welt/` | https://adler78hh.github.io/lasses-welt/christians-grosse-welt/ | https://claude.ai/artifact/QnbWFuGbFNYmhv3g4pfVX4 |
+| Lasses Welt (Teil 1) | `index.html` | https://adler78hh.github.io/lasses-welt/ | https://claude.ai/artifact/934pBrSNoQyKhwSwPCREDt |
+| Lasses große Welt (Teil 2) | `grosse-welt/` | https://adler78hh.github.io/lasses-welt/grosse-welt/ | https://claude.ai/artifact/YbHsF1cWwRdrx9WGTuHp1h |
+| Schristians Welt | `christians-welt/` | https://adler78hh.github.io/lasses-welt/christians-welt/ | https://claude.ai/artifact/N1f811HDJbVsYRGJp22efM |
+| Schristians große Welt | `christians-grosse-welt/` | https://adler78hh.github.io/lasses-welt/christians-grosse-welt/ | https://claude.ai/artifact/WXKb9weUcaR3rnLW8dC28b |
 | Idas Welt | `idas-welt/` | https://adler78hh.github.io/lasses-welt/idas-welt/ | https://claude.ai/artifact/1nvrSSJ4nBxGxAmVbQ8wCf |
 
 Weitere Seiten: Übersicht aller Welten der Christian-Spiele https://claude.ai/artifact/5ywBJtudkXU6J8BDZZa9mz ·
-Download-Seite https://claude.ai/artifact/Rx4FyxmazweiSnHAvez2Se (enthält nur Lasses Spiele) ·
+Download-Seite https://claude.ai/artifact/Rx4FyxmazweiSnHAvez2Se (alle fünf Spiele) ·
 Lösungsbuch https://claude.ai/artifact/7YRP6eXCUmSYjsqSM67Txq
 
 Repository: GitHub `Adler78hh/lasses-welt`, Branch `main`, veröffentlicht über GitHub Pages.
@@ -67,7 +67,7 @@ node werkzeug/check2.js $PWD/<ordner>/index.html
 1. In `<ordner>/sw.js` die erste Zeile auf einen neuen Cache-Namen setzen (z. B. `christians-welt-<md5 der index.html>`),
    damit Handys die neue Fassung laden.
 2. Commit und `git push origin main`. GitHub Pages ist nach ein bis zwei Minuten aktuell.
-3. Vorschau in Claude: Einzeldatei ohne Manifest-, Icon- und Service-Worker-Zeilen erzeugen
+3. Vorschau in Claude (und Download-Seite): Einzeldatei ohne Manifest-, Icon- und Service-Worker-Zeilen erzeugen
    (`grep -v 'rel="manifest"\|rel="apple-touch-icon"\|rel="icon"\|serviceWorker' <ordner>/index.html > datei.html`)
    und mit dem Artifact-Werkzeug unter der jeweiligen URL oben neu veröffentlichen.
 4. Übersicht der Christian-Welten neu erzeugen: `werkzeug/overview.js` (Screenshots und `data.json`), danach
@@ -99,4 +99,3 @@ Fliesenbad (Eimer) · Bausteinstadt (Bausteine) · Felsenpfad (Würfel) · Kusch
 
 - Idas Welt: Themen der Welten festlegen, wenn gewünscht.
 
-- Download-Seite: die Christian-Spiele fehlen noch.
