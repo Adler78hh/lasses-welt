@@ -1,5 +1,5 @@
 const { chromium } = require('playwright'); const fs = require('fs');
-const OUT = '/tmp/claude-0/-home-user-spiegeln/e4336a4d-df77-52fa-9238-4d17e24a1d58/scratchpad/ov';
+const OUT = process.env.OUT || require('path').join(__dirname, '../uebersicht-tmp'); require('fs').mkdirSync(OUT, { recursive: true });
 (async () => { const b = await chromium.launch(); const all = {};
  for (const [d, t] of [['christians-welt', 't3'], ['christians-grosse-welt', 't4']]) {
   const p = await b.newPage({ viewport: { width: 420, height: 900 }, reducedMotion: 'reduce', colorScheme: 'light' });
