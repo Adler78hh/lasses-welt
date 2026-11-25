@@ -1,5 +1,6 @@
 # Idas Welt: Grundlage ist die fertige Datei von Schristians Welt (Teil 3). Eigene Figur Ida, Arne und Matze als Onkel,
-# 60 leichte Level aus Microban I, II und III (6 je Welt, nach Bestwert sortiert), zehn Welten im gleichen schlichten Design, eigener Look in Grau und Pink.
+# 60 leichte Level aus Microban I, II und III (6 je Welt, nach Bestwert sortiert), sieben Welten im gleichen schlichten Design,
+# Welt 7–9 (Duplo, Monster, Idas Kinderzimmer) im Design von Lasses Welt (t5-lasse.js), eigener Look in Grau und Pink.
 import json, os, re
 D = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(D, "../christians-welt/index.html")
@@ -36,12 +37,15 @@ s = s[:i] + "const OPTIMAL = " + json.dumps({f"{w}-{k}": LV[w * 6 + k]["opt"] fo
 
 # ---- Welten von Idas Welt: zehn schlichte Welten ----
 rep('const theme = ["fussball", "hunde", "garten3", "bauernhof", "lego3", "pinguine", "urlaub", "atschie", "atributschi", "enni"][i] || "neutral";',
-    'const theme = ["i5w1", "i5w2", "i5w3", "i5w4", "i5w5", "i5w6", "i5w7", "i5w8", "i5w9", "i5w10"][i] || "neutral";')
+    'const theme = ["i5w1", "i5w2", "i5w3", "i5w4", "i5w5", "i5w6", "i5duplo", "i5mon", "i5kind", "i5w10"][i] || "neutral";')
 a = s.index('bonus: false, name: ["Fußball & HSV",'); b = s.index("][i]", a)
-s = s[:a] + 'bonus: false, name: ["Rosa Ziegel", "Holzhaus", "Wolkenzimmer", "Heckengarten", "Steinburg", "Fliesenbad", "Bausteinstadt", "Felsenpfad", "Kuschelzimmer", "Sternenschloss"' + s[b:]
+s = s[:a] + 'bonus: false, name: ["Rosa Ziegel", "Holzhaus", "Wolkenzimmer", "Heckengarten", "Steinburg", "Fliesenbad", "Duplo", "Monster", "Idas Kinderzimmer", "Sternenschloss"' + s[b:]
+
+# ---- Welten 7–9 im Design von Lasses Welt (Teil 1): dessen Themen sichern, bevor Teil 2 sie ersetzt ----
+rep("THEMES.monsterwelt = theme2({", "const IDA_T1 = { mon: THEMES.monsterwelt, mon2: THEMES.monsterwelt2, lego: THEMES.lego, fam: THEMES.familie };\nTHEMES.monsterwelt = theme2({")
 
 # ---- Ida, Welten, Look ----
-k = s.index("function buildBoard() {"); s = s[:k] + open(os.path.join(D, "t5.js"), encoding="utf-8").read() + "\n" + s[k:]
+k = s.index("function buildBoard() {"); s = s[:k] + open(os.path.join(D, "t5.js"), encoding="utf-8").read() + "\n" + open(os.path.join(D, "t5-lasse.js"), encoding="utf-8").read() + "\n" + s[k:]
 k = s.rindex("</style>"); s = s[:k] + open(os.path.join(D, "t5.css"), encoding="utf-8").read() + s[k:]
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 # ---- Lösungsbuch: die Lösungen dieses Spiels, über den Levelnamen den Leveln zugeordnet ----

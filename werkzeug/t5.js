@@ -63,7 +63,7 @@ const IDA8_HERO = `<svg viewBox="0 0 240 200" overflow="visible"><circle cx="120
   const onkel = (fig, id, bg) => () => asPerson(kB(bg, `<g transform="translate(8 10) scale(.84)">${fig}</g>`), id);
   const AR = onkel(ARNE, "arne", "#fff0e6"), MA = onkel(MATZE, "matze", "#e6eef9");
   const DECO = [herz("#ff8fb1"), stern("#ffd23a"), blume("#f2a7bb"), mond, fenster, ballon("#b9a6f2"), regenbogen, bild, herz("#b9a6f2"), stern("#f2a7bb"), blume("#9fd8ff"), ballon("#ff8fb1")];
-  // Welten: [Schlüssel, Name, Grundwand-Stil, drei Farben (je Schauplatz), Bodenfarben, Gegenstand]
+  // Welten: [Schlüssel, Name, Grundwand-Stil, drei Farben (je Schauplatz), Bodenfarben, Gegenstand]; null = Welt kommt aus t5-lasse.js
   const W = [
     ["i5w1", "Rosa Ziegel", "ziegel", ["#e6a3b4", "#c9ccd2", "#d9b0c8"], ["#f6eef0", "#eef0f4", "#f4eef6"], "kiste"],
     ["i5w2", "Holzhaus", "bretter", ["#c9a27a", "#a9adb5", "#d6b6a0"], ["#f3ece4", "#eceef2", "#f6efe9"], "geschenk"],
@@ -71,9 +71,9 @@ const IDA8_HERO = `<svg viewBox="0 0 240 200" overflow="visible"><circle cx="120
     ["i5w4", "Heckengarten", "hecke", ["#7fb36a", "#9fc48a", "#86b8a0"], ["#eef6e8", "#f3f6ec", "#ecf5f0"], "ball"],
     ["i5w5", "Steinburg", "stein", ["#a8a7b0", "#b8acb6", "#9ea9b0"], ["#f0f0f3", "#f4eff3", "#eef2f4"], "truhe"],
     ["i5w6", "Fliesenbad", "fliesen", ["#9fd0e0", "#f2c4d0", "#c9ccd2"], ["#f2f8fb", "#fbf2f5", "#f3f4f6"], "eimer"],
-    ["i5w7", "Bausteinstadt", "lego", ["#e6a3b4", "#9fb8e0", "#c9ccd2"], ["#f4f0f2", "#eff3f9", "#f2f3f5"], "klotz"],
-    ["i5w8", "Felsenpfad", "fels", ["#a88c78", "#9a9ea6", "#b8a08c"], ["#f3eee8", "#eff0f2", "#f5efe8"], "wuerfel"],
-    ["i5w9", "Kuschelzimmer", "farbe", ["#e6c3d0", "#c9ccd2", "#d8c8e8"], ["#fbf3f6", "#f3f4f6", "#f6f2fb"], "kissen"],
+    null, // i5w7: jetzt im Design von Lasses Welt (t5-lasse.js)
+    null, // i5w8: jetzt im Design von Lasses Welt (t5-lasse.js)
+    null, // i5w9: jetzt im Design von Lasses Welt (t5-lasse.js)
     ["i5w10", "Sternenschloss", "paneel", ["#8f8fc0", "#b9a6d2", "#a3a8c8"], ["#f0f0f8", "#f4f0f8", "#eef0f6"], "laterne"]
   ];
   const platz = kTarget(`${kGlow(`<rect x="12" y="14" width="76" height="74" opacity="0"/>`)}<rect x="12" y="14" width="76" height="74" rx="14" fill="none" stroke="#e58fac" stroke-width="5" stroke-dasharray="10 7"/><path d="M50 66C36 56 36 42 44 41c3 0 5 2 6 4 1-2 3-4 6-4 8 1 8 15-6 25z" fill="#f2a7bb"/>`);

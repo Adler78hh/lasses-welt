@@ -90,12 +90,20 @@ node werkzeug/check2.js $PWD/<ordner>/index.html
 Teil 1 im Y2K-Look, Teil 2 im ruhigen Stil 2026 (Hemd und Chino, Strich-Symbole, Atelier, dunkler Modus).
 
 **Idas Welt** (10 Welten × 6 Level aus Microban I, II, III, nach Bestwert sortiert, leichteste zuerst): Ida (8 J., blonder
-Bauernzopf, Grau und blasses Pink), Arne und Matze als Onkel (je einmal pro Level an der Wand). Alle zehn Welten im gleichen
-schlichten Design (Grundwand, ruhiger Boden, Bildkacheln wie Herz, Stern, Blume, Regenbogen), je Welt ein eigener Gegenstand:
-Rosa Ziegel (Kisten) · Holzhaus (Geschenke) · Wolkenzimmer (Ballons) · Heckengarten (Bälle) · Steinburg (Truhen) ·
-Fliesenbad (Eimer) · Bausteinstadt (Bausteine) · Felsenpfad (Würfel) · Kuschelzimmer (Kissen) · Sternenschloss (Laternen).
+Bauernzopf, Grau und blasses Pink), Arne und Matze als Onkel (je einmal pro Level an der Wand).
+Welten 1–6 und 10 im gleichen schlichten Design (Grundwand, ruhiger Boden, Bildkacheln wie Herz, Stern, Blume, Regenbogen), je Welt
+ein eigener Gegenstand: Rosa Ziegel (Kisten) · Holzhaus (Geschenke) · Wolkenzimmer (Ballons) · Heckengarten (Bälle) · Steinburg (Truhen) ·
+Fliesenbad (Eimer) · Sternenschloss (Laternen).
+Welten 7–9 im Design von Lasses Welt (Teil 1), Code in `werkzeug/t5-lasse.js`:
+7. Duplo: Duplo-Zoo (aus Lasses Welt, ohne ZOO-Schild) · Duplo-Bauernhof · Duplo-Traumhaus (beide neu im gleichen Duplo-Stil), je 2 Level, Duplo-Steine in 8 Farben
+8. Monster: Wasser · Pflanzen · Blitz · Kampf · Psycho · Feuer (ein Schauplatz pro Level, wie Lasses Taschenmonster-Welten, aber mit eigenen
+   Fantasie-Monstern und Fangkugeln), Ida als Trainerin
+9. Idas Kinderzimmer (aus Lasses Familien-Welt): Teddy, Puppen, Bett, Puppenhaus, Einhorn, Buch, Mobile; Papa Sören, Mama Anna, Arne und Matze
+   je einmal als Bild; geschoben werden die Buchstaben-Klötze I, D, A
+`build5.py` sichert dafür Lasses Themen (`IDA_T1`) im Code, bevor Teil 2 sie ersetzt.
 
 ## Offene Punkte
 
-- Idas Welt: Themen der Welten festlegen, wenn gewünscht.
+- Idas Welt: weitere Welten (1–6, 10) mit Themen versehen, wenn gewünscht.
+- Download-Seite enthält noch die alte Fassung von Idas Welt (vor Duplo, Monster, Kinderzimmer).
 
