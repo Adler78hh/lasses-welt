@@ -21,7 +21,7 @@ Commits als `Adler78hh` mit der E-Mail des Kontoinhabers.
 
 ## Wichtige Absprachen
 
-- **Lasses Welt und Lasses große Welt nicht verändern.** Ausdrücklicher Wunsch.
+- **Lasses Welt und Lasses große Welt nicht verändern.** Ausdrücklicher Wunsch. Ausnahme auf Wunsch: Das Wort „Pokémon“ ist dort durch „Taschenmonster“ ersetzt.
 - Antworten auf Deutsch, am Ende Screenshots und Links.
 - Wenn um Besprechen oder Warten gebeten wird: erst fragen, dann bauen.
 - Jede Person höchstens einmal pro Level an der Wand (geprüft mit `werkzeug/check2.js`).
