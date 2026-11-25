@@ -20,4 +20,4 @@ Die Spiele selbst sind die fertigen Dateien `index.html`, `grosse-welt/index.htm
 - Ablauf: `build3.py`, dann `build5.py`. Prüfen mit `durchspiel3.js idas-welt/index.html t5-levels.json` und `check2.js`.
 
 ## Bereinigung
-- `build3.py` ersetzt beim Bauen den aus Lasses großer Welt übernommenen Figuren-Code durch eigene Fantasie-Monster (`monster.js`) und eigene Fangkugeln und entfernt alle Namen dazu (Abschnitt „Bereinigung“ in `build3.py`).
+- `build3.py` ersetzt beim Bauen den aus Lasses großer Welt übernommenen Figuren-Code durch eigene Fantasie-Monster und eigene Fangkugeln und entfernt alle Namen dazu (Abschnitt „Bereinigung“ in `build3.py`).
