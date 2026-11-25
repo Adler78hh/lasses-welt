@@ -22,7 +22,9 @@ Commits als `Adler78hh` mit der E-Mail des Kontoinhabers.
 
 ## Wichtige Absprachen
 
-- **Lasses Welt und Lasses große Welt nicht verändern.** Ausdrücklicher Wunsch. Ausnahme auf Wunsch: Das Wort „Pokémon“ ist dort durch „Taschenmonster“ ersetzt, die Figuren- und Ortsnamen durch eigene (z. B. Blitzi, Panzerli, Apfelbrumm, Blätterwald).
+- **Lasses Welt und Lasses große Welt nicht verändern.** Ausdrücklicher Wunsch. Ausnahme auf Wunsch: Das Wort „Pokémon“ ist dort durch „Taschenmonster“ ersetzt, die Figuren- und Ortsnamen durch eigene (z. B. Blitzi, Panzerli, Apfelbrumm, Blätterwald), „Pokéball“ durch „Superball“.
+  Die Zeichnungen der Figuren sind dort noch die alten. `neutral.py` holt beim Bauen der Christian-Spiele die alten Stellen
+  zurück und macht daraus wie bisher „Monster“ und „Fangkugel“.
 - Antworten auf Deutsch, am Ende Screenshots und Links.
 - Wenn um Besprechen oder Warten gebeten wird: erst fragen, dann bauen.
 - Jede Person höchstens einmal pro Level an der Wand (geprüft mit `werkzeug/check2.js`).
@@ -92,7 +94,7 @@ node werkzeug/check2.js $PWD/<ordner>/index.html
 Teil 1 im Y2K-Look, Teil 2 im ruhigen Stil 2026 (Hemd und Chino, Strich-Symbole, Atelier, dunkler Modus).
 
 **Idas Welt** (10 Welten × 9 Level, je 3 aus Microban I, II, III, leichteste zuerst): Ida (8 J., dunkelblonder
-Bauernzopf, Grau und blasses Pink), Arne und Matze als Onkel (je einmal pro Level an der Wand). Alle zehn Welten im gleichen
+langer Bauernzopf, Grau und blasses Pink), Arne und Matze als Onkel (je einmal pro Level an der Wand). Alle zehn Welten im gleichen
 schlichten Design (Grundwand, ruhiger Boden, Bildkacheln wie Herz, Stern, Blume, Regenbogen), je Welt ein eigener Gegenstand:
 Rosa Ziegel (Kisten) · Holzhaus (Geschenke) · Wolkenzimmer (Ballons) · Heckengarten (Bälle) · Steinburg (Truhen) ·
 Fliesenbad (Eimer) · Bausteinstadt (Bausteine) · Felsenpfad (Würfel) · Kuschelzimmer (Kissen) · Sternenschloss (Laternen).
