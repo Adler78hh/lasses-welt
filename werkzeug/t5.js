@@ -94,9 +94,9 @@ const IDA5 = {};
     null, // i5w1: eigene Datei
     null, // i5w2: eigene Datei
     null, // i5w3: eigene Datei
-    ["i5w4", "Heckengarten", "hecke", ["#7fb36a", "#9fc48a", "#86b8a0"], ["#eef6e8", "#f3f6ec", "#ecf5f0"], "ball"],
-    ["i5w5", "Steinburg", "stein", ["#a8a7b0", "#b8acb6", "#9ea9b0"], ["#f0f0f3", "#f4eff3", "#eef2f4"], "truhe"],
-    ["i5w6", "Fliesenbad", "fliesen", ["#9fd0e0", "#f2c4d0", "#c9ccd2"], ["#f2f8fb", "#fbf2f5", "#f3f4f6"], "eimer"],
+    null, // i5w4: eigene Datei
+    null, // i5w5: eigene Datei
+    null, // i5w6: eigene Datei
     null, null, null,
     ["i5w10", "Sternenschloss", "paneel", ["#8f8fc0", "#b9a6d2", "#a3a8c8"], ["#f0f0f8", "#f4f0f8", "#eef0f6"], "laterne"]
   ];

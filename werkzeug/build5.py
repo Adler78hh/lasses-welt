@@ -58,10 +58,10 @@ s = s[:i] + "const OPTIMAL = " + json.dumps({f"{w}-{k}": LV[w * 6 + k]["opt"] fo
 
 # ---- Welten von Idas Welt ----
 s, k = re.subn(r'const theme = \[[^\]]*\]\[i\] \|\| "neutral";', 'const theme = ["i5w1", "i5w2", "i5w3", "i5w4", "i5w5", "i5w6", "lego", "pokemon", "familie", "i5w10"][i] || "neutral";', s); assert k == 1
-rep("bonus: i === 10, name: (THEMES[theme] && THEMES[theme].worldName) || [", 'bonus: false, name: ["Warnowblick", "Bützow", "Dinosaurier", "Heckengarten", "Steinburg", "Fliesenbad", "Duplo", "Taschenmonster", "Idas Kinderzimmer", "Sternenschloss"][i] || [')
+rep("bonus: i === 10, name: (THEMES[theme] && THEMES[theme].worldName) || [", 'bonus: false, name: ["Warnowblick", "Bützow", "Dinosaurier", "Helden", "Brettspiele", "Prinzessin", "Duplo", "Taschenmonster", "Idas Kinderzimmer", "Sternenschloss"][i] || [')
 
 # ---- Ida, schlichte Welten, Welten aus Lasses Welt (vor dem Aufbau der Designs), Abschluss am Ende ----
-A = open(os.path.join(D, "t5.js"), encoding="utf-8").read() + "\n" + open(os.path.join(D, "t5-w12.js"), encoding="utf-8").read() + "\n" + open(os.path.join(D, "t5-w3.js"), encoding="utf-8").read() + "\n" + open(os.path.join(D, "t5-lasse.js"), encoding="utf-8").read() + "\n"
+A = open(os.path.join(D, "t5.js"), encoding="utf-8").read() + "\n" + open(os.path.join(D, "t5-w12.js"), encoding="utf-8").read() + "\n" + open(os.path.join(D, "t5-w3.js"), encoding="utf-8").read() + "\n" + open(os.path.join(D, "t5-hunde.js"), encoding="utf-8").read() + "\n" + open(os.path.join(D, "t5-figuren.js"), encoding="utf-8").read() + "\n" + open(os.path.join(D, "t5-w456.js"), encoding="utf-8").read() + "\n" + open(os.path.join(D, "t5-lasse.js"), encoding="utf-8").read() + "\n"
 rep("// ---------- versteckte Welt für eigene Level ----------", A + "// ---------- versteckte Welt für eigene Level ----------")
 k = s.index('<script>if ("serviceWorker" in navigator)'); k = s.rindex("</script>", 0, k)
 s = s[:k] + open(os.path.join(D, "t5-ende.js"), encoding="utf-8").read() + s[k:]

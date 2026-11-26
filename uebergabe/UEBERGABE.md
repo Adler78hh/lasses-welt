@@ -39,7 +39,7 @@ Alle Werkzeuge liegen in `werkzeug/` (siehe auch `werkzeug/LIESMICH.md`).
 
 1. `python3 werkzeug/build3.py` – baut **Schristians Welt** aus `grosse-welt/index.html` + `t3.js` + `t3.css`.
 2. `python3 werkzeug/build4.py` – baut **Schristians große Welt** aus Schristians Welt + `t4.js` + `t4.css`.
-3. `python3 werkzeug/build5.py` – baut **Idas Welt** aus **Lasses Welt** (`index.html`) + `t5.js` + `t5-w12.js` + `t5-w3.js` + `t5-lasse.js` + `t5-ende.js` (Level: `t5-levels.json`).
+3. `python3 werkzeug/build5.py` – baut **Idas Welt** aus **Lasses Welt** (`index.html`) + `t5.js` + `t5-w12.js` + `t5-w3.js` + `t5-hunde.js` + `t5-figuren.js` + `t5-w456.js` + `t5-lasse.js` + `t5-ende.js` (Level: `t5-levels.json`).
    Rahmen, Weltkarte, Knöpfe und Schauplätze 7–9 kommen direkt von Lasse; Lasses Datei selbst wird dabei nicht verändert.
 
 `build3.py` ersetzt dabei den übernommenen Figuren-Code durch eigene Fantasie-Monster.
@@ -99,7 +99,15 @@ Welten mit eigenem Thema (Zeichenstil von Lasses Welt, Kacheln mit `pad`):
 2. Bützow (`t5-w12.js`): Stiftskirche · Rathaus am Markt · Krummes Haus (Backsteine), dann Schulkind in Bützow: Klassenzimmer · Schulhof · Schulweg (Schulranzen)
 3. Dinosaurier (`t5-w3.js`): Pflanzenfresser · Flugsaurier · Fleischfresser (je 2 Level), Dino-Eier in Nester; Idas Lieblingsdino
    Triceratops ist überall (Wände, Begleiter, groß am Rand, Emblem), Ida als Dino-Forscherin
-Welten 4–6 und 10 noch schlicht (Grundwand, Bildkacheln): Heckengarten (Bälle) · Steinburg (Truhen) · Fliesenbad (Eimer) · Sternenschloss (Laternen).
+4. Helden (`t5-w456.js`, Hunde in `t5-hunde.js`): angelehnt an Paw Patrol, aber eigene, naturgetreue Hunde in deutschen Uniformen:
+   Feuerwache (Dalmatiner, Feuerwehr) · Polizeiwache (Schäferhund, Polizei) · Rettungsteam (Bulldogge THW, Labrador Wasserrettung,
+   Mischling Stadtreinigung, Cockapoo Luftrettung); dann angelehnt an Bluey: blaue Australian Cattle Dogs in Garten mit Trampolin ·
+   Spielzimmer · Am Strand. Knochen zum Napf.
+5. Brettspiele (`t5-w456.js`, Figuren in `t5-figuren.js`): Spieleabend (Pöppel, Würfel, Spielbrett, 2 Level) · Kartenrunde
+   (Zahlenkarten wie UNO, ohne Logo, 2 Level) · „Wer war es?“ (Spukschloss, Gespenst, Truhen) · Meeple-Zirkus (Meeple aus Holz als Clown,
+   Dompteur, Jongleur, Seiltänzer, Turm, Einrad)
+6. Prinzessin (`t5-w456.js`): Schlossgarten · Thronsaal · Wolkenreich; Diamanten auf Samtkissen, fliegende Einhörner, Krönchen, Schlösser
+Welt 10 noch schlicht: Sternenschloss (Laternen).
 Welten 7–9 direkt aus Lasses Welt (Themen `lego`, `pokemon`, `familie` werden in `t5-lasse.js` angepasst):
 7. Duplo: Duplo-Zoo (wie bei Lasse) · Duplo-Bauernhof · Duplo-Traumhaus (beide neu im gleichen Duplo-Stil), je 2 Level
 8. Taschenmonster: Lasses Welt mit allen sechs Schauplätzen und Lasses Monstern (Panzerli, Apfelbrumm, Blitzi, Kiesel, Gedankling, Glutdrache), ein Schauplatz pro Level
@@ -108,6 +116,6 @@ Welten 7–9 direkt aus Lasses Welt (Themen `lego`, `pokemon`, `familie` werden 
 
 ## Offene Punkte
 
-- Idas Welt: geplant Welt 4 Helden (Hunde in deutschen Uniformen, angelehnt an Paw Patrol; drei Level mit blauen Hunden, angelehnt an Bluey) und Welt 5 Brettspiele (Klassiker, UNO, „Wer war es?“, Meeple im Zirkus).
+- Idas Welt: Welt 10 (Sternenschloss) hat noch kein eigenes Thema.
 - Download-Seite enthält noch die alte Fassung von Idas Welt (vor Duplo, Monster, Kinderzimmer).
 
