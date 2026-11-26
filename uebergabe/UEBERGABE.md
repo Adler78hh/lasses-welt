@@ -39,7 +39,7 @@ Alle Werkzeuge liegen in `werkzeug/` (siehe auch `werkzeug/LIESMICH.md`).
 
 1. `python3 werkzeug/build3.py` – baut **Schristians Welt** aus `grosse-welt/index.html` + `t3.js` + `t3.css`.
 2. `python3 werkzeug/build4.py` – baut **Schristians große Welt** aus Schristians Welt + `t4.js` + `t4.css`.
-3. `python3 werkzeug/build5.py` – baut **Idas Welt** aus **Lasses Welt** (`index.html`) + `t5.js` + `t5-lasse.js` + `t5-ende.js` (Level: `t5-levels.json`).
+3. `python3 werkzeug/build5.py` – baut **Idas Welt** aus **Lasses Welt** (`index.html`) + `t5.js` + `t5-w12.js` + `t5-w3.js` + `t5-lasse.js` + `t5-ende.js` (Level: `t5-levels.json`).
    Rahmen, Weltkarte, Knöpfe und Schauplätze 7–9 kommen direkt von Lasse; Lasses Datei selbst wird dabei nicht verändert.
 
 `build3.py` ersetzt dabei den übernommenen Figuren-Code durch eigene Fantasie-Monster.
@@ -94,8 +94,12 @@ Teil 1 im Y2K-Look, Teil 2 im ruhigen Stil 2026 (Hemd und Chino, Strich-Symbole,
 **Idas Welt** (10 Welten × 6 Level aus Microban I, II, III, nach Bestwert sortiert, leichteste zuerst), gebaut auf **Lasses Welt (Teil 1)**:
 gleicher Rahmen, gleiche Weltkarte und Knöpfe wie bei Lasse. Ida (8 J., blonder Bauernzopf, Grau und blasses Pink) im Zeichenstil von Lasse
 (Lasses Körper, eigener Kopf; in Lasses Schauplätzen trägt sie Lasses Outfits). Arne und Matze als Onkel (je einmal pro Level an der Wand).
-Welten 1–6 und 10 schlicht (Grundwand, ruhiger Boden, Bildkacheln wie Herz, Stern, Blume, Regenbogen), je Welt ein eigener Gegenstand:
-Rosa Ziegel (Kisten) · Holzhaus (Geschenke) · Wolkenzimmer (Ballons) · Heckengarten (Bälle) · Steinburg (Truhen) · Fliesenbad (Eimer) · Sternenschloss (Laternen).
+Welten mit eigenem Thema (Zeichenstil von Lasses Welt, Kacheln mit `pad`):
+1. Warnowblick (`t5-w12.js`): An der Warnow · Im Park · Garten mit Rehen (je 2 Level), Blumentöpfe auf Beete
+2. Bützow (`t5-w12.js`): Stiftskirche · Rathaus am Markt · Krummes Haus (Backsteine), dann Schulkind in Bützow: Klassenzimmer · Schulhof · Schulweg (Schulranzen)
+3. Dinosaurier (`t5-w3.js`): Pflanzenfresser · Flugsaurier · Fleischfresser (je 2 Level), Dino-Eier in Nester; Idas Lieblingsdino
+   Triceratops ist überall (Wände, Begleiter, groß am Rand, Emblem), Ida als Dino-Forscherin
+Welten 4–6 und 10 noch schlicht (Grundwand, Bildkacheln): Heckengarten (Bälle) · Steinburg (Truhen) · Fliesenbad (Eimer) · Sternenschloss (Laternen).
 Welten 7–9 direkt aus Lasses Welt (Themen `lego`, `pokemon`, `familie` werden in `t5-lasse.js` angepasst):
 7. Duplo: Duplo-Zoo (wie bei Lasse) · Duplo-Bauernhof · Duplo-Traumhaus (beide neu im gleichen Duplo-Stil), je 2 Level
 8. Taschenmonster: Lasses Welt mit allen sechs Schauplätzen und Lasses Monstern (Panzerli, Apfelbrumm, Blitzi, Kiesel, Gedankling, Glutdrache), ein Schauplatz pro Level
@@ -104,6 +108,6 @@ Welten 7–9 direkt aus Lasses Welt (Themen `lego`, `pokemon`, `familie` werden 
 
 ## Offene Punkte
 
-- Idas Welt: weitere Welten (1–6, 10) mit Themen versehen, wenn gewünscht.
+- Idas Welt: geplant Welt 4 Helden (Hunde in deutschen Uniformen, angelehnt an Paw Patrol; drei Level mit blauen Hunden, angelehnt an Bluey) und Welt 5 Brettspiele (Klassiker, UNO, „Wer war es?“, Meeple im Zirkus).
 - Download-Seite enthält noch die alte Fassung von Idas Welt (vor Duplo, Monster, Kinderzimmer).
 

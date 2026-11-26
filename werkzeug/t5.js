@@ -91,9 +91,9 @@ const IDA5 = {};
   const DECO = [herz("#ff8fb1"), stern("#ffd23a"), blume("#f2a7bb"), mond, fenster, ballon("#b9a6f2"), regenbogen, bild, herz("#b9a6f2"), stern("#f2a7bb"), blume("#9fd8ff"), ballon("#ff8fb1")];
   // Welten: [Schlüssel, Name, Grundwand-Stil, drei Farben (je Schauplatz), Bodenfarben, Gegenstand]; null = Welt aus Lasses Welt (Teil B)
   const W = [
-    ["i5w1", "Rosa Ziegel", "ziegel", ["#e6a3b4", "#c9ccd2", "#d9b0c8"], ["#f6eef0", "#eef0f4", "#f4eef6"], "kiste"],
-    ["i5w2", "Holzhaus", "bretter", ["#c9a27a", "#a9adb5", "#d6b6a0"], ["#f3ece4", "#eceef2", "#f6efe9"], "geschenk"],
-    ["i5w3", "Wolkenzimmer", "farbe", ["#9fc6e6", "#b8d8c8", "#c9c4e6"], ["#f1f7fc", "#eff7f3", "#f3f2fb"], "ballon"],
+    null, // i5w1: eigene Datei
+    null, // i5w2: eigene Datei
+    null, // i5w3: eigene Datei
     ["i5w4", "Heckengarten", "hecke", ["#7fb36a", "#9fc48a", "#86b8a0"], ["#eef6e8", "#f3f6ec", "#ecf5f0"], "ball"],
     ["i5w5", "Steinburg", "stein", ["#a8a7b0", "#b8acb6", "#9ea9b0"], ["#f0f0f3", "#f4eff3", "#eef2f4"], "truhe"],
     ["i5w6", "Fliesenbad", "fliesen", ["#9fd0e0", "#f2c4d0", "#c9ccd2"], ["#f2f8fb", "#fbf2f5", "#f3f4f6"], "eimer"],
