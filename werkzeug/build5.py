@@ -28,6 +28,26 @@ rep('${p.id === "lasse" ? "" :', '${p.id === "ida" ? "" :')
 # Lasses Umrechnung alter Spielstände (9 Level je Welt) gilt hier nicht
 rep("if (!store.v6) {", "if (false) {")
 
+# ---- Startseite und Weltkarte: Grautöne, Pink und sehr dunkles Fuchsia ----
+rep('const DEFAULT_PAL = { "--bg": "#dcecff", "--bg-2": "#f3f8ff", "--ink": "#4a3728", "--muted": "#6a7fa8", "--accent": "#2a6ae0", "--accent-dark": "#1a4bae", "--soft": "#e3edff", "--edge": "#c9daf5",',
+    'const DEFAULT_PAL = { "--bg": "#e4e1e4", "--bg-2": "#f7f5f7", "--ink": "#3a3439", "--muted": "#7a7178", "--accent": "#6e0f4c", "--accent-dark": "#430630", "--soft": "#f6dce8", "--edge": "#d6cbd2",')
+k = s.rindex("</style>")
+s = s[:k] + """/* Idas Welt: Startseite und Weltkarte in Grau, Pink und dunklem Fuchsia */
+html { background: #dcd8dc; }
+body[class=""] { background: radial-gradient(60% 40% at 12% 4%, #f8d3e3 0%, transparent 70%), radial-gradient(55% 40% at 95% 30%, #ffffff 0%, transparent 70%),
+  radial-gradient(70% 45% at 30% 100%, #ead0dd 0%, transparent 70%), linear-gradient(#efecef, #dcd8dc); background-attachment: scroll; min-height: 100vh; }
+body[class=""] .title h1 { color: #6e0f4c; text-shadow: 0 3px 0 #f2b8d0; }
+body[class=""] .player .face { background: #f6dce8; }
+body[class=""] .world button { box-shadow: 0 6px 0 #c9bcc4, 0 10px 24px #6e0f4c1f; }
+body[class=""] .world .wname { color: #430630; }
+body[class=""] .world.current button::after { border-color: #c2187a; }
+body[class=""] .topbar h2 { color: #6e0f4c; }
+""" + s[k:]
+
+# Wolken auf der Weltkarte: rosa-graue Kontur statt Hellblau
+a = s.index('<symbol id="wolke"'); b = s.index("</symbol>", a)
+s = s[:a] + s[a:b].replace("#c7d6ee", "#d9bccb").replace("#eef4ff", "#f8e8ef") + s[b:]
+
 # ---- Level: 10 Welten mit je 6 Leveln, kein Einstiegslevel von Lasse, kein Bonus-Garten ----
 i = s.index("const WORLD_LEVELS = "); j = s.index("\n", i)
 s = s[:i] + "const WORLD_LEVELS = " + json.dumps([[{"n": l["n"], "m": l["m"]} for l in LV[w * 6:w * 6 + 6]] for w in range(10)], ensure_ascii=False) + ";" + s[j:]

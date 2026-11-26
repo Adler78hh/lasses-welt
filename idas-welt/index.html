@@ -682,7 +682,7 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
       <path d="M8 11V8a4 4 0 018 0v3" fill="none" stroke="currentColor" stroke-width="2.6"/>
     </symbol>
     <symbol id="wolke" viewBox="0 0 170 120">
-      <g fill="#ffffff" stroke="#c7d6ee" stroke-width="3">
+      <g fill="#ffffff" stroke="#d9bccb" stroke-width="3">
         <circle cx="52" cy="66" r="30"/><circle cx="88" cy="48" r="38"/><circle cx="124" cy="68" r="28"/>
         <rect x="30" y="66" width="114" height="34" rx="17"/>
       </g>
@@ -690,9 +690,9 @@ body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-i
         <circle cx="52" cy="66" r="27"/><circle cx="88" cy="48" r="35"/><circle cx="124" cy="68" r="25"/>
         <rect x="32" y="68" width="110" height="30" rx="15"/>
       </g>
-      <ellipse cx="74" cy="36" rx="14" ry="7" fill="#eef4ff"/>
-      <g fill="#c7d6ee"><circle cx="72" cy="74" r="4"/><circle cx="98" cy="74" r="4"/></g>
-      <path d="M78 84q7 5 14 0" fill="none" stroke="#c7d6ee" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="74" cy="36" rx="14" ry="7" fill="#f8e8ef"/>
+      <g fill="#d9bccb"><circle cx="72" cy="74" r="4"/><circle cx="98" cy="74" r="4"/></g>
+      <path d="M78 84q7 5 14 0" fill="none" stroke="#d9bccb" stroke-width="3" stroke-linecap="round"/>
     </symbol>
     <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#ffe680"/><stop offset=".55" stop-color="#ffc533"/><stop offset="1" stop-color="#e09a0c"/>
@@ -3769,6 +3769,16 @@ document.head.insertAdjacentHTML("beforeend", `<style>
   @keyframes burst { 0% { transform: scale(.55); opacity: .45; } 55% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.08); opacity: .45; } }
   .sparkler { animation: twinkle2 .6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
   @media (prefers-reduced-motion: reduce) { .snow, .burst, .sparkler { animation: none !important; } .snow { display: none; } }
+/* Idas Welt: Startseite und Weltkarte in Grau, Pink und dunklem Fuchsia */
+html { background: #dcd8dc; }
+body[class=""] { background: radial-gradient(60% 40% at 12% 4%, #f8d3e3 0%, transparent 70%), radial-gradient(55% 40% at 95% 30%, #ffffff 0%, transparent 70%),
+  radial-gradient(70% 45% at 30% 100%, #ead0dd 0%, transparent 70%), linear-gradient(#efecef, #dcd8dc); background-attachment: scroll; min-height: 100vh; }
+body[class=""] .title h1 { color: #6e0f4c; text-shadow: 0 3px 0 #f2b8d0; }
+body[class=""] .player .face { background: #f6dce8; }
+body[class=""] .world button { box-shadow: 0 6px 0 #c9bcc4, 0 10px 24px #6e0f4c1f; }
+body[class=""] .world .wname { color: #430630; }
+body[class=""] .world.current button::after { border-color: #c2187a; }
+body[class=""] .topbar h2 { color: #6e0f4c; }
 </style>`);
 const snowHTML = () => Array.from({ length: 14 }, (_, i) => `<span class="snow" style="left:${(i * 37) % 100}%;--dur:${8 + (i % 5)}s;--delay:${-i * .9}s;transform:scale(${.5 + (i % 3) * .3})"></span>`).join("");
 
@@ -5572,7 +5582,7 @@ const totalSolved = (p) => Object.keys(p.solved).filter(k => !WORLDS[+k.split("-
 // ---------- Bildschirme ----------
 const screens = { players: "scr-players", map: "scr-map", levels: "scr-levels", game: "scr-game", toolbox: "scr-toolbox", editor: "scr-editor" };
 let screen = "players", curWorld = 0, curLevel = 0;
-const DEFAULT_PAL = { "--bg": "#dcecff", "--bg-2": "#f3f8ff", "--ink": "#4a3728", "--muted": "#6a7fa8", "--accent": "#2a6ae0", "--accent-dark": "#1a4bae", "--soft": "#e3edff", "--edge": "#c9daf5", "--floor-a": "#8fdc7c", "--floor-b": "#80d16d" };
+const DEFAULT_PAL = { "--bg": "#e4e1e4", "--bg-2": "#f7f5f7", "--ink": "#3a3439", "--muted": "#7a7178", "--accent": "#6e0f4c", "--accent-dark": "#430630", "--soft": "#f6dce8", "--edge": "#d6cbd2", "--floor-a": "#8fdc7c", "--floor-b": "#80d16d" };
 function applyPal(pal, cls) {
   document.body.removeAttribute("style");
   for (const [k, v] of Object.entries(pal)) document.body.style.setProperty(k, v);
